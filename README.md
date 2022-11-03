@@ -1,16 +1,11 @@
-# color_hap
+# ColorHap
 
-A new Flutter project.
+An open source random color generator written in Flutter.
 
-## Getting Started
+## Contributions
 
-This project is a starting point for a Flutter application.
+Contributions are welcome: code, text, documentation, design, graphics, suggestions. Please fork this repository and contribute back using [pull requests](https://github.com/tecdrop/color_hap/pulls), [submit an issue](https://github.com/tecdrop/color_hap/issues), or [send an email](https://www.tecdrop.com/support/).
 
-A few resources to get you started if this is your first Flutter project:
+## License
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+ColorHap is licensed under the [MIT license](LICENSE).
