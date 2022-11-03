@@ -36,6 +36,7 @@ class ColorHapApp extends StatelessWidget {
 
       // A black on white theme to go with the color intensive interface of the app
       theme: ThemeData(
+        primaryColor: Colors.black,
         colorScheme: ColorScheme.light(
           primary: Colors.white,
           onPrimary: Colors.black,
