@@ -26,14 +26,14 @@ class AppSettings {
 
   bool _fullScreenMode = false;
 
-  /// Whether the main screens are in full-screen mode.
+  /// Whether the main screens are in fullscreen mode.
   bool get fullScreenMode => _fullScreenMode;
   set fullScreenMode(bool value) {
     _fullScreenMode = value;
     _saveFullScreenMode();
   }
 
-  /// Saves the full-screen mode setting to persistent storage.
+  /// Saves the fullscreen mode setting to persistent storage.
   Future<void> _saveFullScreenMode() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.setBool(_fullScreenModeKey, _fullScreenMode);

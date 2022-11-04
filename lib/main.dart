@@ -11,14 +11,19 @@ import 'models/nameable_color.dart';
 import 'models/random_color.dart';
 import 'screens/color_info_screen.dart';
 import 'screens/random_color_screen.dart';
+import 'utils/utils.dart';
 
 Future<void> main() async {
-  // First try to load the app settings from Shared Preferences
   WidgetsFlutterBinding.ensureInitialized();
+
+  // First try to load the app settings from Shared Preferences
   await Future.any([
     AppSettings().load(),
     Future.delayed(const Duration(seconds: 5)),
   ]);
+
+  // Enter the platform's fullscreen mode if the fullscreen setting is on
+  if (AppSettings().fullScreenMode) Utils.setSystemFullscreen();
 
   // Then run the app
   runApp(const ColorHapApp());
@@ -65,7 +70,10 @@ class ColorHapApp extends StatelessWidget {
           case AppConst.colorInfoRoute:
             final NameableColor args = settings.arguments as NameableColor;
             return MaterialPageRoute(
-              builder: (_) => ColorInfoScreen(nameableColor: args),
+              builder: (_) => ColorInfoScreen(
+                nameableColor: args,
+                fullScreenMode: AppSettings().fullScreenMode,
+              ),
             );
         }
 

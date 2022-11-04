@@ -12,6 +12,7 @@ import '../common/ui_strings.dart';
 import '../models/nameable_color.dart';
 import '../models/random_color.dart';
 import '../utils/color_utils.dart';
+import '../utils/utils.dart';
 import '../widgets/color_display.dart';
 import '../widgets/internal/app_drawer.dart';
 
@@ -53,13 +54,18 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
   /// Performs the actions of the app bar.
   Future<void> _onAction(_AppBarActions action) async {
     switch (action) {
+
+      // Open the Color Information screen with the current color
       case _AppBarActions.colorInfo:
         await Navigator.pushNamed(context, AppConst.colorInfoRoute, arguments: _nameableColor);
         break;
+
+      // Toggle the fullscreen mode, including the platform's fullscreen mode
       case _AppBarActions.fullScreenMode:
         setState(() {
           AppSettings().fullScreenMode = !AppSettings().fullScreenMode;
         });
+        Utils.toggleSystemFullscreen(AppSettings().fullScreenMode);
         break;
     }
   }
@@ -128,10 +134,10 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   /// The primary widget displayed in the app bar.
   final Widget? title;
 
-  /// The color of the app bar in full-screen mode.
+  /// The color of the app bar in fullscreen mode.
   final Color color;
 
-  /// Whether the screen is currently in full-screen mode.
+  /// Whether the screen is currently in fullscreen mode.
   final bool fullScreenMode;
 
   /// The callback that is called when an app bar action is pressed.
@@ -140,10 +146,12 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      title: fullScreenMode ? null : title,
+
+      // In fullscreen mode seamlessly fill the app bar with the current color
       backgroundColor: fullScreenMode ? color : null,
       foregroundColor: fullScreenMode ? ColorUtils.contrastOf(color) : null,
       elevation: fullScreenMode ? 0.0 : null,
-      title: fullScreenMode ? null : title,
 
       // The common operations displayed in this app bar
       actions: <Widget>[

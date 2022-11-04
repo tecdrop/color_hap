@@ -55,7 +55,7 @@ class UIStrings {
   // -----------------------------------------------------------------------------------------------
 
   static const String colorInfoTooltip = 'Color information';
-  static const String fullScreenTooltip = 'Toggle full screen';
+  static const String fullScreenTooltip = 'Toggle fullscreen mode';
   static const String shuffleTooltip = 'Get a new random color';
 
   // -----------------------------------------------------------------------------------------------
