@@ -7,7 +7,7 @@
 import 'package:flutter/material.dart';
 
 import '../common/app_const.dart';
-import '../common/app_settings.dart';
+import '../common/app_settings.dart' as app_settings;
 import '../common/ui_strings.dart';
 import '../models/nameable_color.dart';
 import '../models/random_color.dart';
@@ -63,9 +63,9 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
       // Toggle the fullscreen mode, including the platform's fullscreen mode
       case _AppBarActions.fullScreenMode:
         setState(() {
-          AppSettings().fullScreenMode = !AppSettings().fullScreenMode;
+          app_settings.fullScreenMode = !app_settings.fullScreenMode;
         });
-        Utils.toggleSystemFullscreen(AppSettings().fullScreenMode);
+        Utils.toggleSystemFullscreen(app_settings.fullScreenMode);
         break;
     }
   }
@@ -90,7 +90,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         // The app bar
         appBar: _AppBar(
           title: Text(UIStrings.colorType[widget.colorType]!),
-          fullScreenMode: AppSettings().fullScreenMode,
+          fullScreenMode: app_settings.fullScreenMode,
           color: _nameableColor.color,
           onAction: _onAction,
         ),

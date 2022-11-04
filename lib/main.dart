@@ -5,25 +5,21 @@
 import 'package:flutter/material.dart';
 
 import 'common/app_const.dart';
-import 'common/app_settings.dart';
+import 'common/app_settings.dart' as app_settings;
 import 'common/ui_strings.dart';
 import 'models/nameable_color.dart';
 import 'models/random_color.dart';
 import 'screens/color_info_screen.dart';
 import 'screens/random_color_screen.dart';
-import 'utils/utils.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // First try to load the app settings from Shared Preferences
   await Future.any([
-    AppSettings().load(),
+    app_settings.loadSettings(),
     Future.delayed(const Duration(seconds: 5)),
   ]);
-
-  // Enter the platform's fullscreen mode if the fullscreen setting is on
-  if (AppSettings().fullScreenMode) Utils.setSystemFullscreen();
 
   // Then run the app
   runApp(const ColorHapApp());
@@ -61,7 +57,8 @@ class ColorHapApp extends StatelessWidget {
 
           // The default Random Color route
           case AppConst.randomColorRoute:
-            final ColorType args = settings.arguments as ColorType? ?? ColorType.webColor;
+            final ColorType args = settings.arguments as ColorType? ?? app_settings.colorType;
+            app_settings.colorType = args;
             return MaterialPageRoute(
               builder: (_) => RandomColorScreen(colorType: args),
             );
@@ -72,7 +69,7 @@ class ColorHapApp extends StatelessWidget {
             return MaterialPageRoute(
               builder: (_) => ColorInfoScreen(
                 nameableColor: args,
-                fullScreenMode: AppSettings().fullScreenMode,
+                fullScreenMode: app_settings.fullScreenMode,
               ),
             );
         }
