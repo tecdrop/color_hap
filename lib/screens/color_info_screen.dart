@@ -21,14 +21,14 @@ class ColorInfoScreen extends StatefulWidget {
   const ColorInfoScreen({
     super.key,
     required this.nameableColor,
-    this.fullScreenMode = false,
+    this.immersiveMode = false,
   });
 
   /// The nameable color to display in the information screen.
   final NameableColor nameableColor;
 
-  /// Whether the screen is currently in fullscreen mode.
-  final bool fullScreenMode;
+  /// Whether the screen is currently in immersive mode.
+  final bool immersiveMode;
 
   @override
   State<ColorInfoScreen> createState() => _ColorInfoScreenState();
@@ -92,13 +92,13 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
       // Fill the color information screen with the current color
       backgroundColor: color,
 
-      // A simple app bar with just the screen title. In fullscreen mode it is also seamless filled
+      // A simple app bar with just the screen title. In immersive mode it is also seamless filled
       // with the current color.
       appBar: AppBar(
-        title: widget.fullScreenMode ? null : const Text(UIStrings.colorInfoScreenTitle),
-        backgroundColor: widget.fullScreenMode ? color : null,
-        foregroundColor: widget.fullScreenMode ? ColorUtils.contrastOf(color) : null,
-        elevation: widget.fullScreenMode ? 0.0 : null,
+        title: widget.immersiveMode ? null : const Text(UIStrings.colorInfoScreenTitle),
+        backgroundColor: widget.immersiveMode ? color : null,
+        foregroundColor: widget.immersiveMode ? ColorUtils.contrastOf(color) : null,
+        elevation: widget.immersiveMode ? 0.0 : null,
       ),
 
       // The body contains a list view with all the color information items

@@ -69,7 +69,7 @@ class ColorHapApp extends StatelessWidget {
             return MaterialPageRoute(
               builder: (_) => ColorInfoScreen(
                 nameableColor: args,
-                fullScreenMode: app_settings.fullScreenMode,
+                immersiveMode: app_settings.immersiveMode,
               ),
             );
         }

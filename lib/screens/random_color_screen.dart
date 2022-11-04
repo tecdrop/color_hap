@@ -2,8 +2,6 @@
 // Use of this source code is governed by an MIT-style license that can be
 // found in the LICENSE file.
 
-// cSpell:ignore fullscreen
-
 import 'package:flutter/material.dart';
 
 import '../common/app_const.dart';
@@ -60,12 +58,12 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         await Navigator.pushNamed(context, AppConst.colorInfoRoute, arguments: _nameableColor);
         break;
 
-      // Toggle the fullscreen mode, including the platform's fullscreen mode
-      case _AppBarActions.fullScreenMode:
+      // Toggle the immersive mode, including the platform's fullscreen mode
+      case _AppBarActions.toggleImmersive:
         setState(() {
-          app_settings.fullScreenMode = !app_settings.fullScreenMode;
+          app_settings.immersiveMode = !app_settings.immersiveMode;
         });
-        Utils.toggleSystemFullscreen(app_settings.fullScreenMode);
+        Utils.toggleSystemFullscreen(app_settings.immersiveMode);
         break;
     }
   }
@@ -90,7 +88,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         // The app bar
         appBar: _AppBar(
           title: Text(UIStrings.colorType[widget.colorType]!),
-          fullScreenMode: app_settings.fullScreenMode,
+          immersiveMode: app_settings.immersiveMode,
           color: _nameableColor.color,
           onAction: _onAction,
         ),
@@ -118,7 +116,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 /// Enum that defines the actions of the app bar.
 enum _AppBarActions {
   colorInfo,
-  fullScreenMode,
+  toggleImmersive,
 }
 
 /// The app bar of the Random Color screen.
@@ -126,7 +124,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   const _AppBar({
     Key? key,
     required this.title,
-    required this.fullScreenMode,
+    required this.immersiveMode,
     required this.color,
     required this.onAction,
   }) : super(key: key);
@@ -134,11 +132,11 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   /// The primary widget displayed in the app bar.
   final Widget? title;
 
-  /// The color of the app bar in fullscreen mode.
+  /// The color of the app bar in immersive mode.
   final Color color;
 
-  /// Whether the screen is currently in fullscreen mode.
-  final bool fullScreenMode;
+  /// Whether the screen is currently in immersive mode.
+  final bool immersiveMode;
 
   /// The callback that is called when an app bar action is pressed.
   final Function(_AppBarActions action) onAction;
@@ -146,19 +144,19 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: fullScreenMode ? null : title,
+      title: immersiveMode ? null : title,
 
-      // In fullscreen mode seamlessly fill the app bar with the current color
-      backgroundColor: fullScreenMode ? color : null,
-      foregroundColor: fullScreenMode ? ColorUtils.contrastOf(color) : null,
-      elevation: fullScreenMode ? 0.0 : null,
+      // In immersive mode seamlessly fill the app bar with the current color
+      backgroundColor: immersiveMode ? color : null,
+      foregroundColor: immersiveMode ? ColorUtils.contrastOf(color) : null,
+      elevation: immersiveMode ? 0.0 : null,
 
       // The common operations displayed in this app bar
       actions: <Widget>[
         IconButton(
-          icon: fullScreenMode ? const Icon(Icons.fullscreen_exit) : const Icon(Icons.fullscreen),
-          tooltip: UIStrings.fullScreenTooltip,
-          onPressed: () => onAction(_AppBarActions.fullScreenMode),
+          icon: immersiveMode ? const Icon(Icons.fullscreen_exit) : const Icon(Icons.fullscreen),
+          tooltip: UIStrings.toggleImmersiveTooltip,
+          onPressed: () => onAction(_AppBarActions.toggleImmersive),
         ),
         IconButton(
           icon: const Icon(Icons.info_outline),

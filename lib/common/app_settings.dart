@@ -7,14 +7,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/random_color.dart';
 
 // -----------------------------------------------------------------------------------------------
-// fullScreenMode setting (not persistent)
+// immersiveMode setting (not persistent)
 // -----------------------------------------------------------------------------------------------
 
-bool _fullScreenMode = false;
+bool _immersiveMode = false;
 
-/// Whether the main screens are in fullscreen mode.
-bool get fullScreenMode => _fullScreenMode;
-set fullScreenMode(bool value) => _fullScreenMode = value;
+/// Whether the main screens are in immersive mode.
+bool get immersiveMode => _immersiveMode;
+set immersiveMode(bool value) => _immersiveMode = value;
 
 // -----------------------------------------------------------------------------------------------
 // colorType setting
