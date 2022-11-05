@@ -4,22 +4,22 @@
 
 import 'package:flutter/material.dart';
 
-import '../models/nameable_color.dart';
+import '../models/random_color.dart';
 import '../utils/color_utils.dart';
 
-/// A widget that displays the hex code and optional name of a nameable color.
+/// A widget that displays the hex code and optional name of a random color.
 class ColorDisplay extends StatelessWidget {
-  const ColorDisplay({super.key, required this.nameableColor});
+  const ColorDisplay({super.key, required this.randomColor});
 
-  /// The nameable color to display.
-  final NameableColor nameableColor;
+  /// The random color to display.
+  final RandomColor randomColor;
 
   @override
   Widget build(BuildContext context) {
-    final Color contrastColor = ColorUtils.contrastOf(nameableColor.color);
+    final Color contrastColor = ColorUtils.contrastOf(randomColor.color);
     final TextTheme textTheme = Theme.of(context).textTheme;
     final TextStyle? hexTestStyle =
-        nameableColor.name != null ? textTheme.titleMedium : textTheme.headlineMedium;
+        randomColor.name != null ? textTheme.titleMedium : textTheme.headlineMedium;
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -28,13 +28,13 @@ class ColorDisplay extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            ColorUtils.toHexString(nameableColor.color),
+            ColorUtils.toHexString(randomColor.color),
             style: hexTestStyle?.copyWith(color: contrastColor),
             textAlign: TextAlign.center,
           ),
-          if (nameableColor.name != null)
+          if (randomColor.name != null)
             Text(
-              nameableColor.name!,
+              randomColor.name!,
               style: textTheme.headlineMedium?.copyWith(color: contrastColor),
               textAlign: TextAlign.center,
             ),

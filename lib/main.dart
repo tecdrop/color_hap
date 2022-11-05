@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'common/app_const.dart';
 import 'common/app_settings.dart' as app_settings;
 import 'common/ui_strings.dart';
-import 'models/nameable_color.dart';
+import 'models/random_color.dart';
 import 'screens/color_info_screen.dart';
 import 'screens/random_color_screen.dart';
 
@@ -64,10 +64,10 @@ class ColorHapApp extends StatelessWidget {
 
           // The Color Information route
           case AppConst.colorInfoRoute:
-            final NameableColor args = settings.arguments as NameableColor;
+            final RandomColor args = settings.arguments as RandomColor;
             return MaterialPageRoute(
               builder: (_) => ColorInfoScreen(
-                nameableColor: args,
+                randomColor: args,
                 immersiveMode: app_settings.immersiveMode,
               ),
             );

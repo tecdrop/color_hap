@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import '../../common/app_const.dart';
 import '../../common/app_urls.dart';
 import '../../common/ui_strings.dart';
-import '../../models/nameable_color.dart';
+import '../../models/random_color_generator.dart';
 import '../../models/random_color.dart';
 import '../../utils/color_utils.dart';
 import '../../utils/utils.dart';
@@ -30,12 +30,12 @@ enum AppDrawerItems {
 class AppDrawer extends StatelessWidget {
   const AppDrawer({
     Key? key,
-    required this.nameableColor,
+    required this.randomColor,
     required this.colorType,
   }) : super(key: key);
 
-  /// The current nameable color that was randomly generated.
-  final NameableColor nameableColor;
+  /// The current random color.
+  final RandomColor randomColor;
 
   /// The current type of random colors generated in the Random Color screen.
   final ColorType colorType;
@@ -74,7 +74,7 @@ class AppDrawer extends StatelessWidget {
       // Open the Color Information screen with the current color
       case AppDrawerItems.colorInfo:
         Navigator.pop(context);
-        Navigator.pushNamed(context, AppConst.colorInfoRoute, arguments: nameableColor);
+        Navigator.pushNamed(context, AppConst.colorInfoRoute, arguments: randomColor);
         break;
 
       // Launch the external RGB Color Wallpaper Pro url
@@ -118,7 +118,7 @@ class AppDrawer extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: <Widget>[
-          _AppDrawerHeader(color: nameableColor.color),
+          _AppDrawerHeader(color: randomColor.color),
 
           // Random Web Color drawer item
           _buildItem(

@@ -7,16 +7,16 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-import 'nameable_color.dart';
+import 'random_color.dart';
 
 /// Generates a random web color (CSS named color).
 ///
-/// The returned [NameableColor] has both a [Color] value and a name.
-NameableColor nextRandomColor(Random random) {
+/// The returned [RandomColor] has both a [Color] value and a name.
+RandomColor nextRandomColor(Random random) {
   final int randomIndex = random.nextInt(_webColors.length);
   final namedColor = _webColors.entries.elementAt(randomIndex);
 
-  return NameableColor(
+  return RandomColor(
     color: Color(namedColor.key),
     name: namedColor.value,
     type: ColorType.webColor,

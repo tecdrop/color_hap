@@ -9,23 +9,23 @@ import 'package:share_plus/share_plus.dart';
 
 import '../common/app_urls.dart';
 import '../common/ui_strings.dart';
-import '../models/nameable_color.dart';
+import '../models/random_color.dart';
 import '../utils/color_utils.dart';
 import '../utils/utils.dart';
 
 /// The Color Information screen.
 ///
-/// Displays the given [NameableColor] in different formats, and allows the user to copy, share, or
+/// Displays the given [RandomColor] in different formats, and allows the user to copy, share, or
 /// search the Internet for any of the color information.
 class ColorInfoScreen extends StatefulWidget {
   const ColorInfoScreen({
     super.key,
-    required this.nameableColor,
+    required this.randomColor,
     this.immersiveMode = false,
   });
 
-  /// The nameable color to display in the information screen.
-  final NameableColor nameableColor;
+  /// The random color to display in the information screen.
+  final RandomColor randomColor;
 
   /// Whether the screen is currently in immersive mode.
   final bool immersiveMode;
@@ -53,7 +53,7 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
   @override
   void initState() {
     super.initState();
-    _buildInfoList(widget.nameableColor);
+    _buildInfoList(widget.randomColor);
   }
 
   /// When the copy FAB is pressed, copy the currently selected color information item to the
@@ -83,7 +83,7 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
   @override
   Widget build(BuildContext context) {
     final bool isPortrait = MediaQuery.of(context).size.height >= 500;
-    final Color color = widget.nameableColor.color;
+    final Color color = widget.randomColor.color;
     final Color contrastColor = ColorUtils.contrastOf(color);
     final Color selectedTileColor = Color.alphaBlend(contrastColor.withOpacity(0.25), color);
     final Color selectedColor = ColorUtils.contrastOf(selectedTileColor);
@@ -116,18 +116,18 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
   }
 
   /// Builds the color information list.
-  void _buildInfoList(NameableColor nameableColor) {
+  void _buildInfoList(RandomColor randomColor) {
     // Simply a convenience function that adds the given key/value info to the list.
     void addInfoItem(String key, String value) => _infoList.add(_InfoItem(key, value));
 
-    final Color color = nameableColor.color;
+    final Color color = randomColor.color;
 
-    if (nameableColor.name != null) {
-      addInfoItem(UIStrings.colorTitleInfo, nameableColor.title);
-      addInfoItem(UIStrings.colorNameInfo, nameableColor.name!);
+    if (randomColor.name != null) {
+      addInfoItem(UIStrings.colorTitleInfo, randomColor.title);
+      addInfoItem(UIStrings.colorNameInfo, randomColor.name!);
     }
     addInfoItem(UIStrings.hexInfo, ColorUtils.toHexString(color));
-    addInfoItem(UIStrings.colorTypeInfo, UIStrings.colorType[nameableColor.type]!);
+    addInfoItem(UIStrings.colorTypeInfo, UIStrings.colorType[randomColor.type]!);
     addInfoItem(UIStrings.rgbInfo, ColorUtils.toRGBString(color));
     addInfoItem(UIStrings.hsvInfo, ColorUtils.toHSVString(color));
     addInfoItem(UIStrings.hslInfo, ColorUtils.toHSLString(color));

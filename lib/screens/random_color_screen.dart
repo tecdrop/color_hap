@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import '../common/app_const.dart';
 import '../common/app_settings.dart' as app_settings;
 import '../common/ui_strings.dart';
-import '../models/nameable_color.dart';
+import '../models/random_color_generator.dart';
 import '../models/random_color.dart';
 import '../utils/color_utils.dart';
 import '../utils/utils.dart';
@@ -31,8 +31,8 @@ class RandomColorScreen extends StatefulWidget {
 }
 
 class _RandomColorScreenState extends State<RandomColorScreen> {
-  // The current random nameable color.
-  NameableColor _nameableColor = const NameableColor(
+  // The current random color.
+  RandomColor _randomColor = const RandomColor(
     color: AppConst.defaultColor,
     type: ColorType.trueColor,
   );
@@ -51,7 +51,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
       // Open the Color Information screen with the current color
       case _AppBarActions.colorInfo:
-        await Navigator.pushNamed(context, AppConst.colorInfoRoute, arguments: _nameableColor);
+        await Navigator.pushNamed(context, AppConst.colorInfoRoute, arguments: _randomColor);
         break;
 
       // Toggle the immersive mode, including the platform's fullscreen mode
@@ -64,11 +64,11 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
     }
   }
 
-  /// Generates a new random nameable color.
+  /// Generates a new random color.
   void _shuffleColor() {
-    final NameableColor nameableColor = nextRandomColor(widget.colorType);
+    final RandomColor randomColor = nextRandomColor(widget.colorType);
     setState(() {
-      _nameableColor = nameableColor;
+      _randomColor = randomColor;
     });
   }
 
@@ -78,25 +78,25 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
     return AnimatedSwitcher(
       duration: const Duration(seconds: 1),
       child: Scaffold(
-        key: ValueKey(_nameableColor.color.value), // required for the AnimatedSwitcher to work
-        backgroundColor: _nameableColor.color,
+        key: ValueKey(_randomColor.color.value), // required for the AnimatedSwitcher to work
+        backgroundColor: _randomColor.color,
 
         // The app bar
         appBar: _AppBar(
           title: Text(UIStrings.colorType[widget.colorType]!),
           immersiveMode: app_settings.immersiveMode,
-          color: _nameableColor.color,
+          color: _randomColor.color,
           onAction: _onAction,
         ),
 
         // The app drawer
         drawer: AppDrawer(
-          nameableColor: _nameableColor,
+          randomColor: _randomColor,
           colorType: widget.colorType,
         ),
 
         // A simple body with the centered color display
-        body: Center(child: ColorDisplay(nameableColor: _nameableColor)),
+        body: Center(child: ColorDisplay(randomColor: _randomColor)),
 
         // The shuffle floating action button
         floatingActionButton: FloatingActionButton(

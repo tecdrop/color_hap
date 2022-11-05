@@ -2,7 +2,7 @@
 // Use of this source code is governed by an MIT-style license that can be
 // found in the LICENSE file.
 
-import '../models/nameable_color.dart';
+import '../models/random_color.dart';
 
 /// User interface strings.
 class UIStrings {

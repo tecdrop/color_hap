@@ -8,16 +8,16 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-import 'nameable_color.dart';
+import 'random_color.dart';
 
 /// Generates a random named color.
 ///
-/// The returned [NameableColor] has both a [Color] value and a name.
-NameableColor nextRandomColor(Random random) {
+/// The returned [RandomColor] has both a [Color] value and a name.
+RandomColor nextRandomColor(Random random) {
   final int randomIndex = random.nextInt(_namedColors.length);
   final namedColor = _namedColors.entries.elementAt(randomIndex);
 
-  return NameableColor(
+  return RandomColor(
     color: Color(namedColor.key),
     name: namedColor.value,
     type: ColorType.namedColor,
