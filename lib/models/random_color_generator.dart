@@ -2,12 +2,13 @@
 // Use of this source code is governed by an MIT-style license that can be
 // found in the LICENSE file.
 
-// cSpell:ignore racg, rncg, rtcg, rwcg
+// cSpell:ignore rbcg, racg, rncg, rtcg, rwcg
 
 import 'dart:math';
 import 'package:flutter/material.dart';
 
 import 'random_color_generators/random_attractive_color_generator.dart' as racg;
+import 'random_color_generators/random_basic_color_generator.dart' as rbcg;
 import 'random_color_generators/random_named_color_generator.dart' as rncg;
 import 'random_color_generators/random_true_color_generator.dart' as rtcg;
 import 'random_color_generators/random_web_color_generator.dart' as rwcg;
@@ -32,6 +33,11 @@ Random _createRandom({bool secure = true}) {
 /// The returned random color has a name if the color value matches the built-in maps of named
 /// colors.
 RandomColor _getNamedColor(Color color, ColorType defaultType) {
+  final String? basicColorName = rbcg.getColorName(color);
+  if (basicColorName != null) {
+    return RandomColor(color: color, name: basicColorName, type: ColorType.basicColor);
+  }
+
   final String? webColorName = rwcg.getColorName(color);
   if (webColorName != null) {
     return RandomColor(color: color, name: webColorName, type: ColorType.webColor);
@@ -51,6 +57,8 @@ RandomColor _getNamedColor(Color color, ColorType defaultType) {
 /// value matches the built-in maps of named colors.
 RandomColor nextRandomColor(ColorType colorType) {
   switch (colorType) {
+    case ColorType.basicColor:
+      return rbcg.nextRandomColor(_random);
     case ColorType.webColor:
       return rwcg.nextRandomColor(_random);
     case ColorType.namedColor:
@@ -65,6 +73,8 @@ RandomColor nextRandomColor(ColorType colorType) {
 /// The number of available colors of the given type that can be used to generate the random color.
 int possibilityCount(ColorType colorType) {
   switch (colorType) {
+    case ColorType.basicColor:
+      return rbcg.possibilityCount;
     case ColorType.webColor:
       return rwcg.possibilityCount;
     case ColorType.namedColor:

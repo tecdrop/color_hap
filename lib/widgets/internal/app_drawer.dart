@@ -14,6 +14,7 @@ import '../../utils/utils.dart';
 
 /// The items that appear in the app drawer.
 enum AppDrawerItems {
+  randomBasicColor,
   randomWebColor,
   randomNamedColor,
   randomAttractiveColor,
@@ -50,6 +51,11 @@ class AppDrawer extends StatelessWidget {
     }
 
     switch (item) {
+
+      // Reopen the Random Color screen for generating random basic colors
+      case AppDrawerItems.randomBasicColor:
+        reopenRandomScreen(context, ColorType.basicColor);
+        break;
 
       // Reopen the Random Color screen for generating random web colors
       case AppDrawerItems.randomWebColor:
@@ -120,10 +126,20 @@ class AppDrawer extends StatelessWidget {
         children: <Widget>[
           _AppDrawerHeader(color: randomColor.color),
 
+          // Random Basic Color drawer item
+          _buildItem(
+            context,
+            icon: Icons.looks_two_outlined,
+            title: UIStrings.randomBasicColorDrawer,
+            subtitle: possibilities(ColorType.basicColor),
+            item: AppDrawerItems.randomBasicColor,
+            selected: colorType == ColorType.basicColor,
+          ),
+
           // Random Web Color drawer item
           _buildItem(
             context,
-            icon: Icons.looks_one_outlined,
+            icon: Icons.looks_3_outlined,
             title: UIStrings.randomWebColorDrawer,
             subtitle: possibilities(ColorType.webColor),
             item: AppDrawerItems.randomWebColor,
@@ -133,7 +149,7 @@ class AppDrawer extends StatelessWidget {
           // Random Named Color drawer item
           _buildItem(
             context,
-            icon: Icons.looks_two_outlined,
+            icon: Icons.looks_4_outlined,
             title: UIStrings.randomNamedColorDrawer,
             subtitle: possibilities(ColorType.namedColor),
             item: AppDrawerItems.randomNamedColor,
@@ -143,7 +159,7 @@ class AppDrawer extends StatelessWidget {
           // Random Attractive Color drawer item
           _buildItem(
             context,
-            icon: Icons.looks_3_outlined,
+            icon: Icons.looks_5_outlined,
             title: UIStrings.randomAttractiveColorDrawer,
             subtitle: UIStrings.randomAttractiveColorDrawerSubtitle,
             item: AppDrawerItems.randomAttractiveColor,
@@ -153,7 +169,7 @@ class AppDrawer extends StatelessWidget {
           // Random True Color drawer item
           _buildItem(
             context,
-            icon: Icons.looks_4_outlined,
+            icon: Icons.looks_6_outlined,
             title: UIStrings.randomTrueColorDrawer,
             subtitle: possibilities(ColorType.trueColor),
             item: AppDrawerItems.randomTrueColor,

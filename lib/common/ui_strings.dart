@@ -22,6 +22,7 @@ class UIStrings {
   static String copiedErrorSnack(String value) => 'Copy to clipboard failed: $value';
 
   static const Map<ColorType, String> colorType = {
+    ColorType.basicColor: 'Random Basic Color',
     ColorType.webColor: 'Random Web Color',
     ColorType.namedColor: 'Random Named Color',
     ColorType.attractiveColor: 'Random Attractive Color',
@@ -32,6 +33,7 @@ class UIStrings {
   // Drawer items
   // -----------------------------------------------------------------------------------------------
 
+  static const String randomBasicColorDrawer = 'Random Basic Colors';
   static const String randomWebColorDrawer = 'Random Web Colors';
   static const String randomNamedColorDrawer = 'Random Named Colors';
   static const String randomAttractiveColorDrawer = 'Random Attractive Colors';

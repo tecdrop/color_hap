@@ -16,8 +16,10 @@ import 'package:flutter_randomcolor/flutter_randomcolor.dart' as frc;
 // TODO: Use the app's random number generator provided as a parameter to generate the attractive
 // colors. Currently the `flutter_randomcolor` does not support this.
 Color nextRandomColor(Random random) {
-  // Uncomment the following line to test color matching to the built-in maps of named colors.
-  // return const Color(0xFF0B6207);
+  // Uncomment one of the following lines to test color matching of built-in maps of named colors.
+  // return const Color(0XFF0088FF); // azure basic color
+  // return const Color(0xFF800000); // maroon web color and Maroon named color
+  // return const Color(0xFF831923); // Merlot named color
 
   final frc.Options options = frc.Options(
     format: frc.Format.rgbArray,

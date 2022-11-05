@@ -8,6 +8,7 @@ import '../utils/color_utils.dart';
 
 /// An enum to specify the different kinds of random colors.
 enum ColorType {
+  basicColor,
   webColor,
   namedColor,
   attractiveColor,
