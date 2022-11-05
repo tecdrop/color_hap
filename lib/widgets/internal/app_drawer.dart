@@ -14,6 +14,7 @@ import '../../utils/utils.dart';
 
 /// The items that appear in the app drawer.
 enum AppDrawerItems {
+  randomMixedColor,
   randomBasicColor,
   randomWebColor,
   randomNamedColor,
@@ -51,6 +52,11 @@ class AppDrawer extends StatelessWidget {
     }
 
     switch (item) {
+
+      // Reopen the Random Color screen for generating random colors (of any type)
+      case AppDrawerItems.randomMixedColor:
+        reopenRandomScreen(context, ColorType.mixedColor);
+        break;
 
       // Reopen the Random Color screen for generating random basic colors
       case AppDrawerItems.randomBasicColor:
@@ -125,6 +131,18 @@ class AppDrawer extends StatelessWidget {
       child: ListView(
         children: <Widget>[
           _AppDrawerHeader(color: randomColor.color),
+
+          // Random Color drawer item
+          _buildItem(
+            context,
+            icon: Icons.looks_one_outlined,
+            title: UIStrings.randomMixedColorDrawer,
+            subtitle: possibilities(ColorType.mixedColor),
+            item: AppDrawerItems.randomMixedColor,
+            selected: colorType == ColorType.mixedColor,
+          ),
+
+          const Divider(),
 
           // Random Basic Color drawer item
           _buildItem(
