@@ -16,6 +16,9 @@ import 'package:flutter_randomcolor/flutter_randomcolor.dart' as frc;
 // TODO: Use the app's random number generator provided as a parameter to generate the attractive
 // colors. Currently the `flutter_randomcolor` does not support this.
 Color nextRandomColor(Random random) {
+  // Uncomment the following line to test color matching to the built-in maps of named colors.
+  // return const Color(0xFF0B6207);
+
   final frc.Options options = frc.Options(
     format: frc.Format.rgbArray,
     luminosity: frc.Luminosity.light,

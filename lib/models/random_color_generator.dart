@@ -7,11 +7,11 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-import 'random_attractive_color_generator.dart' as racg;
+import 'random_color_generators/random_attractive_color_generator.dart' as racg;
+import 'random_color_generators/random_named_color_generator.dart' as rncg;
+import 'random_color_generators/random_true_color_generator.dart' as rtcg;
+import 'random_color_generators/random_web_color_generator.dart' as rwcg;
 import 'random_color.dart';
-import 'random_named_color_generator.dart' as rncg;
-import 'random_true_color_generator.dart' as rtcg;
-import 'random_web_color_generator.dart' as rwcg;
 
 /// The private random number generator used to generate random colors.
 final Random _random = _createRandom();

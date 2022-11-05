@@ -11,7 +11,9 @@ import 'package:flutter/material.dart';
 
 /// Generates a random true color.
 Color nextRandomColor(Random random) {
+  // Uncomment the following line to test color matching to the built-in maps of named colors.
   // return const Color(0xFF48D1CC);
+
   return Color.fromRGBO(random.nextInt(256), random.nextInt(256), random.nextInt(256), 1.0);
   // return RandomColor.getNamedColor(color, ColorType.trueColor);
 }
