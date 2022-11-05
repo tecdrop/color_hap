@@ -2,45 +2,32 @@
 // Use of this source code is governed by an MIT-style license that can be
 // found in the LICENSE file.
 
+// This file implements a generator of random web colors (CSS named colors).
+
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 import 'nameable_color.dart';
-import 'random_color.dart';
 
-/// A generator of random web colors (CSS named colors).
-class RandomWebColor extends RandomColor {
-  /// Generates a random web color (CSS named color).
-  ///
-  /// The returned [NameableColor] has both a [Color] value and a name.
-  @override
-  NameableColor next() {
-    final int randomIndex = RandomColor.random.nextInt(_webColors.length);
-    final namedColor = _webColors.entries.elementAt(randomIndex);
+/// Generates a random web color (CSS named color).
+///
+/// The returned [NameableColor] has both a [Color] value and a name.
+NameableColor nextRandomColor(Random random) {
+  final int randomIndex = random.nextInt(_webColors.length);
+  final namedColor = _webColors.entries.elementAt(randomIndex);
 
-    return NameableColor(
-      color: Color(namedColor.key),
-      name: namedColor.value,
-      type: ColorType.webColor,
-    );
-  }
-
-  /// Returns the name of the given [Color], if the color is a valid web color.
-  static NameableColor? getNamedColor(Color color) {
-    final colorName = _webColors[color.value];
-    if (colorName != null) {
-      return NameableColor(
-        color: color,
-        name: colorName,
-        type: ColorType.webColor,
-      );
-    }
-
-    return null;
-  }
-
-  /// The number of available web colors that can be used to generate the random color.
-  static int get possibilities => _webColors.length;
+  return NameableColor(
+    color: Color(namedColor.key),
+    name: namedColor.value,
+    type: ColorType.webColor,
+  );
 }
+
+/// Returns the name of the given [Color], if the color is a valid web color.
+String? getColorName(Color color) => _webColors[color.value];
+
+/// The number of available web colors that can be used to generate the random color.
+int get possibilityCount => _webColors.length;
 
 // cSpell: disable
 

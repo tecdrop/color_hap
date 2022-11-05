@@ -8,7 +8,6 @@ import 'common/app_const.dart';
 import 'common/app_settings.dart' as app_settings;
 import 'common/ui_strings.dart';
 import 'models/nameable_color.dart';
-import 'models/random_color.dart';
 import 'screens/color_info_screen.dart';
 import 'screens/random_color_screen.dart';
 

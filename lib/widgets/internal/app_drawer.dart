@@ -9,9 +9,6 @@ import '../../common/app_urls.dart';
 import '../../common/ui_strings.dart';
 import '../../models/nameable_color.dart';
 import '../../models/random_color.dart';
-import '../../models/random_named_color.dart';
-import '../../models/random_true_color.dart';
-import '../../models/random_web_color.dart';
 import '../../utils/color_utils.dart';
 import '../../utils/utils.dart';
 
@@ -115,8 +112,8 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Simply a convenience function that returns a string with the number of possibilities.
-    String possibilities(int count) =>
-        UIStrings.possibilitiesDrawerSubtitle(Utils.intToCommaSeparatedString(count));
+    String possibilities(ColorType colorType) => UIStrings.possibilitiesDrawerSubtitle(
+        Utils.intToCommaSeparatedString(possibilityCount(colorType)));
 
     return Drawer(
       child: ListView(
@@ -128,7 +125,7 @@ class AppDrawer extends StatelessWidget {
             context,
             icon: Icons.looks_one_outlined,
             title: UIStrings.randomWebColorDrawer,
-            subtitle: possibilities(RandomWebColor.possibilities),
+            subtitle: possibilities(ColorType.webColor),
             item: AppDrawerItems.randomWebColor,
             selected: colorType == ColorType.webColor,
           ),
@@ -138,7 +135,7 @@ class AppDrawer extends StatelessWidget {
             context,
             icon: Icons.looks_two_outlined,
             title: UIStrings.randomNamedColorDrawer,
-            subtitle: possibilities(RandomNamedColor.possibilities),
+            subtitle: possibilities(ColorType.namedColor),
             item: AppDrawerItems.randomNamedColor,
             selected: colorType == ColorType.namedColor,
           ),
@@ -158,7 +155,7 @@ class AppDrawer extends StatelessWidget {
             context,
             icon: Icons.looks_4_outlined,
             title: UIStrings.randomTrueColorDrawer,
-            subtitle: possibilities(RandomTrueColor.possibilities),
+            subtitle: possibilities(ColorType.trueColor),
             item: AppDrawerItems.randomTrueColor,
             selected: colorType == ColorType.trueColor,
           ),

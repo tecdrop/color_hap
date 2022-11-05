@@ -2,48 +2,33 @@
 // Use of this source code is governed by an MIT-style license that can be
 // found in the LICENSE file.
 
+// This file implements a generator of random named colors imported from the
+// [Name that Color](https://chir.ag/projects/ntc/ntc.js) JavaScript library.
+
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 import 'nameable_color.dart';
-import 'random_color.dart';
 
-/// A generator of random named colors.
+/// Generates a random named color.
 ///
-/// The color names are imported from the [Name that Color](https://chir.ag/projects/ntc/ntc.js)
-/// JavaScript library.
-class RandomNamedColor extends RandomColor {
-  /// Generates a random named color.
-  ///
-  /// The returned [NameableColor] has both a [Color] value and a name.
-  @override
-  NameableColor next() {
-    final int randomIndex = RandomColor.random.nextInt(_namedColors.length);
-    final namedColor = _namedColors.entries.elementAt(randomIndex);
+/// The returned [NameableColor] has both a [Color] value and a name.
+NameableColor nextRandomColor(Random random) {
+  final int randomIndex = random.nextInt(_namedColors.length);
+  final namedColor = _namedColors.entries.elementAt(randomIndex);
 
-    return NameableColor(
-      color: Color(namedColor.key),
-      name: namedColor.value,
-      type: ColorType.namedColor,
-    );
-  }
-
-  /// Returns the name of the given [Color], if the color is a valid named color.
-  static NameableColor? getNamedColor(Color color) {
-    final colorName = _namedColors[color.value];
-    if (colorName != null) {
-      return NameableColor(
-        color: color,
-        name: colorName,
-        type: ColorType.namedColor,
-      );
-    }
-
-    return null;
-  }
-
-  /// The number of available named colors that can be used to generate the random color.
-  static int get possibilities => _namedColors.length;
+  return NameableColor(
+    color: Color(namedColor.key),
+    name: namedColor.value,
+    type: ColorType.namedColor,
+  );
 }
+
+/// Returns the name of the given [Color], if the color is a valid named color.
+String? getColorName(Color color) => _namedColors[color.value];
+
+/// The number of available named colors that can be used to generate the random color.
+int get possibilityCount => _namedColors.length;
 
 // cSpell: disable
 

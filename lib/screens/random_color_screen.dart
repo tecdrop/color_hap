@@ -37,15 +37,11 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
     type: ColorType.trueColor,
   );
 
-  // The random color generator.
-  late RandomColor randomColor;
-
   /// Creates the appropriate random color generator and shuffles the color on init state.
   @override
   void initState() {
     super.initState();
 
-    randomColor = RandomColor.fromType(widget.colorType);
     _shuffleColor();
   }
 
@@ -70,7 +66,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
   /// Generates a new random nameable color.
   void _shuffleColor() {
-    final NameableColor nameableColor = randomColor.next();
+    final NameableColor nameableColor = nextRandomColor(widget.colorType);
     setState(() {
       _nameableColor = nameableColor;
     });

@@ -5,7 +5,14 @@
 import 'package:flutter/material.dart';
 
 import '../utils/color_utils.dart';
-import 'random_color.dart';
+
+/// An enum to specify the different kinds of random colors.
+enum ColorType {
+  webColor,
+  namedColor,
+  attractiveColor,
+  trueColor,
+}
 
 /// A [Color] value that can also have a name.
 class NameableColor {
