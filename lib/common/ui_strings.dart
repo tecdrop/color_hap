@@ -34,6 +34,10 @@ class UIStrings {
   // Drawer items
   // -----------------------------------------------------------------------------------------------
 
+  static const String setWallpaperDrawer = 'Set A Color Wallpaper';
+  static const String setWallpaperDrawerSubtitle =
+      'Use RGB Color Wallpaper Pro\nand support our free apps!';
+
   static const String randomMixedColorDrawer = 'Random Colors';
   static const String randomBasicColorDrawer = 'Random Basic Colors';
   static const String randomWebColorDrawer = 'Random Web Colors';
@@ -44,15 +48,11 @@ class UIStrings {
   static String possibilitiesDrawerSubtitle(String length) => '$length possibilities';
 
   static const String colorInfoDrawer = 'Color Information';
-  static const String setWallpaperDrawer = 'Set Color Wallpaper';
-  static const String setWallpaperDrawerSubtitle = 'Using RGB Color Wallpaper Pro';
+  static const String previewColorDrawer = 'Preview Color';
 
-  static const String supportDrawer = 'Support';
+  static const String helpDrawer = 'Help & Support';
+  static const String sourceCodeDrawer = 'View App Source';
   static const String rateAppDrawer = 'Rate App';
-  static const String helpDrawer = 'Online Help';
-
-  static const String viewSourceDrawer = 'View App Source';
-  static const String viewSourceDrawerSubtitle = 'Yes, $appName is open source!';
 
   // -----------------------------------------------------------------------------------------------
   // Random Color Screen

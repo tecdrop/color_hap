@@ -14,6 +14,7 @@ import '../../utils/utils.dart';
 
 /// The items that appear in the app drawer.
 enum AppDrawerItems {
+  setWallpaper,
   randomMixedColor,
   randomBasicColor,
   randomWebColor,
@@ -21,11 +22,10 @@ enum AppDrawerItems {
   randomAttractiveColor,
   randomTrueColor,
   colorInfo,
-  setWallpaper,
-  support,
-  rateApp,
+  previewColor,
   help,
   viewSource,
+  rateApp,
 }
 
 /// The main Material Design drawer of the app, with the main app functions.
@@ -52,6 +52,12 @@ class AppDrawer extends StatelessWidget {
     }
 
     switch (item) {
+      // Launch the external RGB Color Wallpaper Pro url
+      case AppDrawerItems.setWallpaper:
+        Navigator.pop(context);
+        Utils.launchUrlExternal(context, AppUrls.setWallpaper);
+        break;
+
       // Reopen the Random Color screen for generating random colors (of any type)
       case AppDrawerItems.randomMixedColor:
         reopenRandomScreen(context, ColorType.mixedColor);
@@ -88,22 +94,11 @@ class AppDrawer extends StatelessWidget {
         Navigator.pushNamed(context, AppConst.colorInfoRoute, arguments: randomColor);
         break;
 
-      // Launch the external RGB Color Wallpaper Pro url
-      case AppDrawerItems.setWallpaper:
+      // Open the Preview Color screen with the current color
+      case AppDrawerItems.previewColor:
         Navigator.pop(context);
-        Utils.launchUrlExternal(context, AppUrls.setWallpaper);
-        break;
-
-      // Launch the external Support url
-      case AppDrawerItems.support:
-        Navigator.pop(context);
-        Utils.launchUrlExternal(context, AppUrls.support);
-        break;
-
-      // Launch the external Rate App url
-      case AppDrawerItems.rateApp:
-        Navigator.pop(context);
-        Utils.launchUrlExternal(context, AppUrls.rate);
+        // TODO: Implement the Preview Color screen
+        // Navigator.pushNamed(context, AppConst.previewColorRoute, arguments: randomColor);
         break;
 
       // Launch the external Online Help url
@@ -116,6 +111,12 @@ class AppDrawer extends StatelessWidget {
       case AppDrawerItems.viewSource:
         Navigator.pop(context);
         Utils.launchUrlExternal(context, AppUrls.viewSource);
+        break;
+
+      // Launch the external Rate App url
+      case AppDrawerItems.rateApp:
+        Navigator.pop(context);
+        Utils.launchUrlExternal(context, AppUrls.rate);
         break;
     }
   }
@@ -131,22 +132,33 @@ class AppDrawer extends StatelessWidget {
         children: <Widget>[
           _AppDrawerHeader(color: randomColor.color),
 
-          // Random Color drawer item
+          // The Set Color Wallpaper drawer item
+          ListTile(
+            contentPadding: const EdgeInsets.all(16.0),
+            tileColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.075),
+            leading: const Icon(Icons.wallpaper_rounded),
+            title: const Text(UIStrings.setWallpaperDrawer),
+            subtitle: const Text(UIStrings.setWallpaperDrawerSubtitle),
+            isThreeLine: true,
+            onTap: () => _onItemTap(context, AppDrawerItems.setWallpaper),
+          ),
+
+          const Divider(),
+
+          // All Random Colors drawer item
           _buildItem(
             context,
-            icon: Icons.looks_one_outlined,
+            icon: Icons.looks_one_rounded,
             title: UIStrings.randomMixedColorDrawer,
             subtitle: possibilities(ColorType.mixedColor),
             item: AppDrawerItems.randomMixedColor,
             selected: colorType == ColorType.mixedColor,
           ),
 
-          const Divider(),
-
           // Random Basic Color drawer item
           _buildItem(
             context,
-            icon: Icons.looks_two_outlined,
+            icon: Icons.looks_two_rounded,
             title: UIStrings.randomBasicColorDrawer,
             subtitle: possibilities(ColorType.basicColor),
             item: AppDrawerItems.randomBasicColor,
@@ -156,7 +168,7 @@ class AppDrawer extends StatelessWidget {
           // Random Web Color drawer item
           _buildItem(
             context,
-            icon: Icons.looks_3_outlined,
+            icon: Icons.looks_3_rounded,
             title: UIStrings.randomWebColorDrawer,
             subtitle: possibilities(ColorType.webColor),
             item: AppDrawerItems.randomWebColor,
@@ -166,7 +178,7 @@ class AppDrawer extends StatelessWidget {
           // Random Named Color drawer item
           _buildItem(
             context,
-            icon: Icons.looks_4_outlined,
+            icon: Icons.looks_4_rounded,
             title: UIStrings.randomNamedColorDrawer,
             subtitle: possibilities(ColorType.namedColor),
             item: AppDrawerItems.randomNamedColor,
@@ -176,7 +188,7 @@ class AppDrawer extends StatelessWidget {
           // Random Attractive Color drawer item
           _buildItem(
             context,
-            icon: Icons.looks_5_outlined,
+            icon: Icons.looks_5_rounded,
             title: UIStrings.randomAttractiveColorDrawer,
             subtitle: UIStrings.randomAttractiveColorDrawerSubtitle,
             item: AppDrawerItems.randomAttractiveColor,
@@ -186,7 +198,7 @@ class AppDrawer extends StatelessWidget {
           // Random True Color drawer item
           _buildItem(
             context,
-            icon: Icons.looks_6_outlined,
+            icon: Icons.looks_6_rounded,
             title: UIStrings.randomTrueColorDrawer,
             subtitle: possibilities(ColorType.trueColor),
             item: AppDrawerItems.randomTrueColor,
@@ -198,55 +210,43 @@ class AppDrawer extends StatelessWidget {
           // Color Information drawer item
           _buildItem(
             context,
-            icon: Icons.info_outline,
+            icon: Icons.info_rounded,
             title: UIStrings.colorInfoDrawer,
             item: AppDrawerItems.colorInfo,
           ),
 
-          // Set Color Wallpaper drawer item
+          // Preview Color drawer item
           _buildItem(
             context,
-            icon: Icons.wallpaper,
-            title: UIStrings.setWallpaperDrawer,
-            subtitle: UIStrings.setWallpaperDrawerSubtitle,
-            item: AppDrawerItems.setWallpaper,
+            icon: Icons.preview_rounded,
+            title: UIStrings.previewColorDrawer,
+            item: AppDrawerItems.previewColor,
           ),
 
           const Divider(),
 
-          // Support drawer item
+          // Help & Support drawer item
           _buildItem(
             context,
-            icon: Icons.contact_support_outlined,
-            title: UIStrings.supportDrawer,
-            item: AppDrawerItems.support,
+            icon: Icons.support_rounded,
+            title: UIStrings.helpDrawer,
+            item: AppDrawerItems.help,
+          ),
+
+          // View Source drawer item
+          _buildItem(
+            context,
+            icon: Icons.flutter_dash_rounded,
+            title: UIStrings.sourceCodeDrawer,
+            item: AppDrawerItems.viewSource,
           ),
 
           // Rate App drawer item
           _buildItem(
             context,
-            icon: Icons.star_rate_outlined,
+            icon: Icons.stars_rounded,
             title: UIStrings.rateAppDrawer,
             item: AppDrawerItems.rateApp,
-          ),
-
-          // Online Help drawer item
-          _buildItem(
-            context,
-            icon: Icons.help_center_outlined,
-            title: UIStrings.helpDrawer,
-            item: AppDrawerItems.help,
-          ),
-
-          const Divider(),
-
-          // View Source drawer item
-          _buildItem(
-            context,
-            icon: Icons.source_outlined,
-            title: UIStrings.viewSourceDrawer,
-            subtitle: UIStrings.viewSourceDrawerSubtitle,
-            item: AppDrawerItems.viewSource,
           ),
         ],
       ),
@@ -287,6 +287,8 @@ class _AppDrawerHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DrawerHeader(
+      padding: EdgeInsets.zero,
+      margin: EdgeInsets.zero,
       decoration: BoxDecoration(color: color),
       child: Center(
         child: Text(

@@ -11,8 +11,6 @@ class AppUrls {
 
   static const String setWallpaper =
       'https://play.google.com/store/apps/details?id=com.tecdrop.rgbcolorwallpaperpro&referrer=utm_source%3D$_appId%26utm_medium%3Dapp%26utm_campaign%3D${_appId}_${_editionId}_drawer';
-  static const String support =
-      'https://www.tecdrop.com/support/?utm_source=$_appId&utm_medium=app&utm_campaign=${_appId}_${_editionId}_drawer';
   static const String rate =
       'https://play.google.com/store/apps/details?id=com.tecdrop.colorhap&referrer=utm_source%3D$_appId%26utm_medium%3Dapp%26utm_campaign%3D${_appId}_${_editionId}_drawer';
   static const String help =
