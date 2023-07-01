@@ -4,6 +4,8 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:go_router/go_router.dart';
+
 import '../common/app_const.dart';
 import '../common/app_settings.dart' as app_settings;
 import '../common/ui_strings.dart';
@@ -25,6 +27,21 @@ class RandomColorScreen extends StatefulWidget {
 
   /// The type of random colors that are currently generated in this screen.
   final ColorType colorType;
+
+  /// The route builder for the Random Color screen.
+  static Widget routeBuilder(BuildContext context, GoRouterState state) {
+    // Get the color type from the route parameters
+    ColorType colorType = colorTypeIds.entries
+        .firstWhere(
+          (MapEntry<ColorType, String> entry) => entry.value == state.pathParameters['type'],
+          orElse: () => colorTypeIds.entries.first,
+        )
+        .key;
+
+    return RandomColorScreen(
+      colorType: colorType,
+    );
+  }
 
   @override
   State<RandomColorScreen> createState() => _RandomColorScreenState();

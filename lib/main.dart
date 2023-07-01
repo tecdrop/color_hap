@@ -4,11 +4,13 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:go_router/go_router.dart';
+
 import 'common/app_const.dart';
 import 'common/app_settings.dart' as app_settings;
 import 'common/ui_strings.dart';
-import 'models/random_color.dart';
 import 'screens/color_info_screen.dart';
+import 'screens/preview_color_screen.dart';
 import 'screens/random_color_screen.dart';
 
 Future<void> main() async {
@@ -24,13 +26,42 @@ Future<void> main() async {
   runApp(const ColorHapApp());
 }
 
+/// The route configuration for the app.
+final GoRouter _router = GoRouter(
+  routes: <RouteBase>[
+    // The root route of the app is the Random Color screen
+    GoRoute(
+      path: AppConst.homeRoute,
+      builder: (_, state) => RandomColorScreen(colorType: app_settings.colorType),
+      routes: [
+        // // The child route for the Random Color screen
+        // GoRoute(
+        //   path: '${AppConst.randomColorRoute}:type',
+        //   builder: ColorInfoScreen.routeBuilder,
+        // ),
+        //   // The child route for the Color Information screen
+        //   GoRoute(
+        //     path: '${AppConst.colorInfoRoute}/:color',
+        //     builder: ColorInfoScreen.routeBuilder,
+        //   ),
+        // The child route for the Preview Color screen
+        GoRoute(
+          path: '${AppConst.previewColorRoute}/:color',
+          builder: PreviewColorScreen.routeBuilder,
+        ),
+      ],
+    ),
+  ],
+);
+
 /// The ColorHap main application class.
 class ColorHapApp extends StatelessWidget {
   const ColorHapApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: _router,
       title: UIStrings.appName,
       debugShowCheckedModeBanner: false,
 
@@ -50,30 +81,30 @@ class ColorHapApp extends StatelessWidget {
       ),
 
       // App routes
-      initialRoute: AppConst.randomColorRoute,
-      onGenerateRoute: (settings) {
-        switch (settings.name) {
-          // The default Random Color route
-          case AppConst.randomColorRoute:
-            final ColorType args = settings.arguments as ColorType? ?? app_settings.colorType;
-            app_settings.colorType = args;
-            return MaterialPageRoute(
-              builder: (_) => RandomColorScreen(colorType: args),
-            );
+      // initialRoute: AppConst.randomColorRoute,
+      // onGenerateRoute: (settings) {
+      //   switch (settings.name) {
+      //     // The default Random Color route
+      //     case AppConst.randomColorRoute:
+      //       final ColorType args = settings.arguments as ColorType? ?? app_settings.colorType;
+      //       app_settings.colorType = args;
+      //       return MaterialPageRoute(
+      //         builder: (_) => RandomColorScreen(colorType: args),
+      //       );
 
-          // The Color Information route
-          case AppConst.colorInfoRoute:
-            final RandomColor args = settings.arguments as RandomColor;
-            return MaterialPageRoute(
-              builder: (_) => ColorInfoScreen(
-                randomColor: args,
-                immersiveMode: app_settings.immersiveMode,
-              ),
-            );
-        }
+      //     // The Color Information route
+      //     case AppConst.colorInfoRoute:
+      //       final RandomColor args = settings.arguments as RandomColor;
+      //       return MaterialPageRoute(
+      //         builder: (_) => ColorInfoScreen(
+      //           randomColor: args,
+      //           immersiveMode: app_settings.immersiveMode,
+      //         ),
+      //       );
+      //   }
 
-        return null; // Let onUnknownRoute handle this behavior.
-      },
+      //   return null; // Let onUnknownRoute handle this behavior.
+      // },
     );
   }
 }

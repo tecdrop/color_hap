@@ -82,4 +82,10 @@ class UIStrings {
   static const String copyTooltip = 'Copy current info to clipboard';
   static const String shareTooltip = 'Share current info';
   static const String searchTooltip = 'Search the current info on the Internet';
+
+  // -----------------------------------------------------------------------------------------------
+  // Invalid Color Screen
+  // -----------------------------------------------------------------------------------------------
+
+  static String invalidColor(String? colorCode) => 'Invalid color code: $colorCode';
 }

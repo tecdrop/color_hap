@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../common/app_const.dart';
 import '../../common/app_urls.dart';
@@ -97,8 +98,8 @@ class AppDrawer extends StatelessWidget {
       // Open the Preview Color screen with the current color
       case AppDrawerItems.previewColor:
         Navigator.pop(context);
-        // TODO: Implement the Preview Color screen
-        // Navigator.pushNamed(context, AppConst.previewColorRoute, arguments: randomColor);
+        final String colorCode = ColorUtils.toHexString(randomColor.color, withHash: false);
+        context.go('/${AppConst.previewColorRoute}/$colorCode');
         break;
 
       // Launch the external Online Help url

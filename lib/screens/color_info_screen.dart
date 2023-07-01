@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../common/app_urls.dart';
@@ -12,6 +13,7 @@ import '../common/ui_strings.dart';
 import '../models/random_color.dart';
 import '../utils/color_utils.dart';
 import '../utils/utils.dart';
+import 'invalid_color_screen.dart';
 
 /// The Color Information screen.
 ///
@@ -29,6 +31,29 @@ class ColorInfoScreen extends StatefulWidget {
 
   /// Whether the screen is currently in immersive mode.
   final bool immersiveMode;
+
+  /// The route builder for the Color Information screen.
+  static Widget routeBuilder(BuildContext context, GoRouterState state) {
+    // Get the color code from the route parameters
+    String? colorCode = state.pathParameters['color'];
+    Color? color = ColorUtils.rgbHexToColor(colorCode);
+
+    // If the color code is invalid, return the Invalid Color screen
+    if (color == null) {
+      return InvalidColorScreen(colorCode: colorCode);
+    }
+
+    return ColorInfoScreen(
+      randomColor: RandomColor(
+        color: color,
+        type: state.queryParameters['type'] != null
+            ? ColorType.values[int.parse(state.queryParameters['type']!)]
+            : ColorType.mixedColor,
+        name: state.queryParameters['name'],
+      ),
+      immersiveMode: state.queryParameters['immersive']?.toLowerCase() == 'true',
+    );
+  }
 
   @override
   State<ColorInfoScreen> createState() => _ColorInfoScreenState();

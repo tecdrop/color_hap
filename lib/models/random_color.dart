@@ -16,6 +16,15 @@ enum ColorType {
   trueColor,
 }
 
+const Map<ColorType, String> colorTypeIds = <ColorType, String>{
+  ColorType.mixedColor: 'mixed',
+  ColorType.basicColor: 'basic',
+  ColorType.webColor: 'web',
+  ColorType.namedColor: 'named',
+  ColorType.attractiveColor: 'attractive',
+  ColorType.trueColor: 'true',
+};
+
 /// A random color with a [Color] value, possibly a color name, and a color type.
 class RandomColor {
   const RandomColor({
