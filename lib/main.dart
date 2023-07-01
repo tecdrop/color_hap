@@ -1,4 +1,4 @@
-// Copyright 2020-2022 Tecdrop. All rights reserved.
+// Copyright 2020-2023 Tecdrop (www.tecdrop.com)
 // Use of this source code is governed by an MIT-style license that can be
 // found in the LICENSE file.
 
@@ -53,7 +53,6 @@ class ColorHapApp extends StatelessWidget {
       initialRoute: AppConst.randomColorRoute,
       onGenerateRoute: (settings) {
         switch (settings.name) {
-
           // The default Random Color route
           case AppConst.randomColorRoute:
             final ColorType args = settings.arguments as ColorType? ?? app_settings.colorType;

@@ -4,7 +4,6 @@
     "dart-code.flutter",
     "streetsidesoftware.code-spell-checker",
     "nhoizey.gremlins",
-    "henriiik.vscode-sort",
-    "adam-bender.commit-message-editor"
+    "henriiik.vscode-sort"
   ]
 }

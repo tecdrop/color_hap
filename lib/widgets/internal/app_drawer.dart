@@ -1,4 +1,4 @@
-// Copyright 2020-2022 Tecdrop. All rights reserved.
+// Copyright 2020-2023 Tecdrop (www.tecdrop.com)
 // Use of this source code is governed by a user license that can be
 // found in the LICENSE file.
 
@@ -52,7 +52,6 @@ class AppDrawer extends StatelessWidget {
     }
 
     switch (item) {
-
       // Reopen the Random Color screen for generating random colors (of any type)
       case AppDrawerItems.randomMixedColor:
         reopenRandomScreen(context, ColorType.mixedColor);

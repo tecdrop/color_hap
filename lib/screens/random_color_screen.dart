@@ -1,4 +1,4 @@
-// Copyright 2020-2022 Tecdrop. All rights reserved.
+// Copyright 2020-2023 Tecdrop (www.tecdrop.com)
 // Use of this source code is governed by an MIT-style license that can be
 // found in the LICENSE file.
 
@@ -48,7 +48,6 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
   /// Performs the actions of the app bar.
   Future<void> _onAction(_AppBarActions action) async {
     switch (action) {
-
       // Open the Color Information screen with the current color
       case _AppBarActions.colorInfo:
         await Navigator.pushNamed(context, AppConst.colorInfoRoute, arguments: _randomColor);
