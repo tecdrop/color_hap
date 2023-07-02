@@ -10,11 +10,10 @@ import '../../common/ui_strings.dart';
 import '../../models/color_type.dart';
 import '../../models/random_color_generator.dart';
 import '../../models/random_color.dart';
-import '../../screens/color_info_screen.dart';
-import '../../screens/preview_color_screen.dart';
+import '../../routes/color_info_route.dart' as color_info_route;
+import '../../routes/preview_color_route.dart' as preview_color_route;
 import '../../utils/color_utils.dart';
 import '../../utils/utils.dart';
-import '../../routes/color_info_route.dart' as color_info_route;
 
 /// The items that appear in the app drawer.
 enum AppDrawerItems {
@@ -101,7 +100,7 @@ class AppDrawer extends StatelessWidget {
       // Open the Preview Color screen with the current color
       case AppDrawerItems.previewColor:
         Navigator.pop(context);
-        PreviewColorScreen.go(context, randomColor.color);
+        preview_color_route.go(context, randomColor.color);
         break;
 
       // Launch the external Online Help url

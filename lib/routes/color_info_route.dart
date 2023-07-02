@@ -8,7 +8,6 @@ import 'package:go_router/go_router.dart';
 
 import '../common/app_const.dart';
 import '../common/app_settings.dart' as app_settings;
-import '../models/color_type.dart';
 import '../models/random_color.dart';
 import '../screens/color_info_screen.dart';
 import '../screens/invalid_color_screen.dart';
@@ -17,7 +16,7 @@ import '../utils/color_utils.dart';
 /// Constructs the [GoRoute] for the Color Information screen.
 GoRoute buildRoute() {
   return GoRoute(
-    path: '${AppConst.colorInfoRoute}/:color/:type/:name',
+    path: '${AppConst.colorInfoRoute}/:color',
     builder: _routeBuilder,
   );
 }
@@ -33,13 +32,15 @@ Widget _routeBuilder(BuildContext context, GoRouterState state) {
     return InvalidColorScreen(colorCode: colorCode);
   }
 
+  final RandomColor? randomColor = state.extra as RandomColor?;
+
   // Otherwise, return the Color Information screen with the provided color, color type, optional
   // color name, and the current immersive mode setting
   return ColorInfoScreen(
     randomColor: RandomColor(
       color: color,
-      type: parseColorType(state.pathParameters['type']),
-      name: state.pathParameters['name'],
+      type: randomColor?.type,
+      name: randomColor?.name,
     ),
     immersiveMode: app_settings.immersiveMode,
   );
@@ -48,8 +49,6 @@ Widget _routeBuilder(BuildContext context, GoRouterState state) {
 /// Navigates to the Color Information screen to show information about the provided color.
 void go(BuildContext context, RandomColor randomColor) {
   final String colorCode = ColorUtils.toHexString(randomColor.color, withHash: false);
-  final String colorType = colorTypeToString(randomColor.type);
-  final String colorName = randomColor.name ?? '';
 
-  context.go('/${AppConst.colorInfoRoute}/$colorCode/$colorType/$colorName');
+  context.go('/${AppConst.colorInfoRoute}/$colorCode', extra: randomColor);
 }
