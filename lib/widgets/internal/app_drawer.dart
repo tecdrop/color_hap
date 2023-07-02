@@ -3,13 +3,15 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../common/app_const.dart';
 import '../../common/app_urls.dart';
 import '../../common/ui_strings.dart';
+import '../../models/color_type.dart';
 import '../../models/random_color_generator.dart';
 import '../../models/random_color.dart';
+import '../../screens/color_info_screen.dart';
+import '../../screens/preview_color_screen.dart';
 import '../../utils/color_utils.dart';
 import '../../utils/utils.dart';
 
@@ -89,17 +91,16 @@ class AppDrawer extends StatelessWidget {
         reopenRandomScreen(context, ColorType.trueColor);
         break;
 
-      // Open the Color Information screen with the current color
+      // Open the Color Information screen with the current random color
       case AppDrawerItems.colorInfo:
         Navigator.pop(context);
-        Navigator.pushNamed(context, AppConst.colorInfoRoute, arguments: randomColor);
+        ColorInfoScreen.go(context, randomColor);
         break;
 
       // Open the Preview Color screen with the current color
       case AppDrawerItems.previewColor:
         Navigator.pop(context);
-        final String colorCode = ColorUtils.toHexString(randomColor.color, withHash: false);
-        context.go('/${AppConst.previewColorRoute}/$colorCode');
+        PreviewColorScreen.go(context, randomColor.color);
         break;
 
       // Launch the external Online Help url

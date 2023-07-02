@@ -39,11 +39,11 @@ final GoRouter _router = GoRouter(
         //   path: '${AppConst.randomColorRoute}:type',
         //   builder: ColorInfoScreen.routeBuilder,
         // ),
-        //   // The child route for the Color Information screen
-        //   GoRoute(
-        //     path: '${AppConst.colorInfoRoute}/:color',
-        //     builder: ColorInfoScreen.routeBuilder,
-        //   ),
+        // The child route for the Color Information screen
+        GoRoute(
+          path: '${AppConst.colorInfoRoute}/:color',
+          builder: ColorInfoScreen.routeBuilder,
+        ),
         // The child route for the Preview Color screen
         GoRoute(
           path: '${AppConst.previewColorRoute}/:color',

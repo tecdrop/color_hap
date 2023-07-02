@@ -4,7 +4,7 @@
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/random_color.dart';
+import '../models/color_type.dart';
 
 // -----------------------------------------------------------------------------------------------
 // immersiveMode setting (not persistent)

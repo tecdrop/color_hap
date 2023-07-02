@@ -8,6 +8,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
+import '../color_type.dart';
 import '../random_color.dart';
 
 /// Generates a random named color.

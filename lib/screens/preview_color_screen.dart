@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
 
+import '../common/app_const.dart';
 import '../utils/color_utils.dart';
 import 'invalid_color_screen.dart';
 
@@ -37,6 +38,12 @@ class PreviewColorScreen extends StatelessWidget {
     return PreviewColorScreen(
       color: color,
     );
+  }
+
+  /// Navigates to the Preview Color screen to show a full-screen preview of the provided color.
+  static void go(BuildContext context, Color color) {
+    final String colorCode = ColorUtils.toHexString(color, withHash: false);
+    context.go('/${AppConst.previewColorRoute}/$colorCode');
   }
 
   @override

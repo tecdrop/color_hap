@@ -7,6 +7,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
+import 'color_type.dart';
 import 'random_color_generators/random_attractive_color_generator.dart' as racg;
 import 'random_color_generators/random_basic_color_generator.dart' as rbcg;
 import 'random_color_generators/random_named_color_generator.dart' as rncg;

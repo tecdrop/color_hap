@@ -5,25 +5,7 @@
 import 'package:flutter/material.dart';
 
 import '../utils/color_utils.dart';
-
-/// An enum to specify the different kinds of random colors.
-enum ColorType {
-  mixedColor,
-  basicColor,
-  webColor,
-  namedColor,
-  attractiveColor,
-  trueColor,
-}
-
-const Map<ColorType, String> colorTypeIds = <ColorType, String>{
-  ColorType.mixedColor: 'mixed',
-  ColorType.basicColor: 'basic',
-  ColorType.webColor: 'web',
-  ColorType.namedColor: 'named',
-  ColorType.attractiveColor: 'attractive',
-  ColorType.trueColor: 'true',
-};
+import 'color_type.dart';
 
 /// A random color with a [Color] value, possibly a color name, and a color type.
 class RandomColor {
