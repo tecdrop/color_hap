@@ -9,9 +9,10 @@ import 'package:go_router/go_router.dart';
 import 'common/app_const.dart';
 import 'common/app_settings.dart' as app_settings;
 import 'common/ui_strings.dart';
-import 'screens/color_info_screen.dart';
 import 'screens/preview_color_screen.dart';
 import 'screens/random_color_screen.dart';
+
+import 'routes/color_info_route.dart' as color_info_route;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,10 +41,7 @@ final GoRouter _router = GoRouter(
         //   builder: ColorInfoScreen.routeBuilder,
         // ),
         // The child route for the Color Information screen
-        GoRoute(
-          path: '${AppConst.colorInfoRoute}/:color',
-          builder: ColorInfoScreen.routeBuilder,
-        ),
+        color_info_route.buildRoute(),
         // The child route for the Preview Color screen
         GoRoute(
           path: '${AppConst.previewColorRoute}/:color',

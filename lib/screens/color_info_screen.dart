@@ -5,18 +5,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../common/app_const.dart';
-import '../common/app_settings.dart' as app_settings;
 import '../common/app_urls.dart';
 import '../common/ui_strings.dart';
-import '../models/color_type.dart';
 import '../models/random_color.dart';
 import '../utils/color_utils.dart';
 import '../utils/utils.dart';
-import 'invalid_color_screen.dart';
 
 /// The Color Information screen.
 ///
@@ -34,41 +29,6 @@ class ColorInfoScreen extends StatefulWidget {
 
   /// Whether the screen is currently in immersive mode.
   final bool immersiveMode;
-
-  /// The route builder for the Color Information screen.
-  static Widget routeBuilder(BuildContext context, GoRouterState state) {
-    // Get the color code from the route parameters
-    String? colorCode = state.pathParameters['color'];
-    Color? color = ColorUtils.rgbHexToColor(colorCode);
-
-    // If the color code is invalid, return the Invalid Color screen
-    if (color == null) {
-      return InvalidColorScreen(colorCode: colorCode);
-    }
-
-    // Otherwise, return the Color Information screen with the provided color, color type, optional
-    // color name, and the current immersive mode setting
-    return ColorInfoScreen(
-      randomColor: RandomColor(
-        color: color,
-        type: parseColorType(state.queryParameters['type']),
-        name: state.queryParameters['name'],
-      ),
-      immersiveMode: app_settings.immersiveMode,
-    );
-  }
-
-  /// Navigates to the Color Information screen to show information about the provided color.
-  static void go(BuildContext context, RandomColor randomColor) {
-    final String colorCode = ColorUtils.toHexString(randomColor.color, withHash: false);
-    context.go(Uri(
-      path: '/${AppConst.colorInfoRoute}/$colorCode',
-      queryParameters: {
-        'type': colorTypeToString(randomColor.type),
-        if (randomColor.name != null) 'name': randomColor.name,
-      },
-    ).toString());
-  }
 
   @override
   State<ColorInfoScreen> createState() => _ColorInfoScreenState();

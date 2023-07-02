@@ -14,6 +14,7 @@ import '../../screens/color_info_screen.dart';
 import '../../screens/preview_color_screen.dart';
 import '../../utils/color_utils.dart';
 import '../../utils/utils.dart';
+import '../../routes/color_info_route.dart' as color_info_route;
 
 /// The items that appear in the app drawer.
 enum AppDrawerItems {
@@ -94,7 +95,7 @@ class AppDrawer extends StatelessWidget {
       // Open the Color Information screen with the current random color
       case AppDrawerItems.colorInfo:
         Navigator.pop(context);
-        ColorInfoScreen.go(context, randomColor);
+        color_info_route.go(context, randomColor);
         break;
 
       // Open the Preview Color screen with the current color
