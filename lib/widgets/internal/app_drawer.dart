@@ -4,7 +4,6 @@
 
 import 'package:flutter/material.dart';
 
-import '../../common/app_const.dart';
 import '../../common/app_urls.dart';
 import '../../common/ui_strings.dart';
 import '../../models/color_type.dart';
@@ -12,6 +11,7 @@ import '../../models/random_color_generator.dart';
 import '../../models/random_color.dart';
 import '../../routes/color_info_route.dart' as color_info_route;
 import '../../routes/preview_color_route.dart' as preview_color_route;
+import '../../routes/random_color_route.dart' as random_color_route;
 import '../../utils/color_utils.dart';
 import '../../utils/utils.dart';
 
@@ -47,13 +47,6 @@ class AppDrawer extends StatelessWidget {
 
   /// Starts a specific functionality of the app when the user taps a drawer [item].
   void _onItemTap(BuildContext context, AppDrawerItems item) {
-    // A convenience function to reopen the Random Color screen for generating a new type of random
-    // colors. Called by the four random color drawer items.
-    void reopenRandomScreen(BuildContext context, ColorType colorType) {
-      Navigator.pop(context);
-      Navigator.pushReplacementNamed(context, AppConst.randomColorRoute, arguments: colorType);
-    }
-
     switch (item) {
       // Launch the external RGB Color Wallpaper Pro url
       case AppDrawerItems.setWallpaper:
@@ -63,32 +56,37 @@ class AppDrawer extends StatelessWidget {
 
       // Reopen the Random Color screen for generating random colors (of any type)
       case AppDrawerItems.randomMixedColor:
-        reopenRandomScreen(context, ColorType.mixedColor);
+        Navigator.pop(context);
+        random_color_route.go(context, ColorType.mixedColor);
         break;
 
       // Reopen the Random Color screen for generating random basic colors
       case AppDrawerItems.randomBasicColor:
-        reopenRandomScreen(context, ColorType.basicColor);
+        Navigator.pop(context);
+        random_color_route.go(context, ColorType.basicColor);
         break;
 
       // Reopen the Random Color screen for generating random web colors
       case AppDrawerItems.randomWebColor:
-        reopenRandomScreen(context, ColorType.webColor);
+        Navigator.pop(context);
+        random_color_route.go(context, ColorType.webColor);
         break;
 
       // Reopen the Random Color screen for generating random named colors
       case AppDrawerItems.randomNamedColor:
-        reopenRandomScreen(context, ColorType.namedColor);
+        random_color_route.go(context, ColorType.namedColor);
         break;
 
       // Reopen the Random Color screen for generating random attractive colors
       case AppDrawerItems.randomAttractiveColor:
-        reopenRandomScreen(context, ColorType.attractiveColor);
+        Navigator.pop(context);
+        random_color_route.go(context, ColorType.attractiveColor);
         break;
 
       // Reopen the Random Color screen for generating random true colors
       case AppDrawerItems.randomTrueColor:
-        reopenRandomScreen(context, ColorType.trueColor);
+        Navigator.pop(context);
+        random_color_route.go(context, ColorType.trueColor);
         break;
 
       // Open the Color Information screen with the current random color

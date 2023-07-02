@@ -30,17 +30,6 @@ class RandomColorScreen extends StatefulWidget {
   /// The type of random colors that are currently generated in this screen.
   final ColorType colorType;
 
-  /// The route builder for the Random Color screen.
-  static Widget routeBuilder(BuildContext context, GoRouterState state) {
-    // Get the color type from the route parameters
-    ColorType colorType = parseColorType(state.pathParameters['type']);
-
-    // Return the Random Color screen with the provided color type
-    return RandomColorScreen(
-      colorType: colorType,
-    );
-  }
-
   @override
   State<RandomColorScreen> createState() => _RandomColorScreenState();
 }
