@@ -74,6 +74,7 @@ class AppDrawer extends StatelessWidget {
 
       // Reopen the Random Color screen for generating random named colors
       case AppDrawerItems.randomNamedColor:
+        Navigator.pop(context);
         random_color_route.go(context, ColorType.namedColor);
         break;
 

@@ -29,14 +29,16 @@ Future<void> main() async {
 
 /// The route configuration for the app.
 final GoRouter _router = GoRouter(
+  // initialLocation: '${AppConst.homeRoute}mixed',
   routes: <RouteBase>[
     // The root route of the app is the Random Color screen
     GoRoute(
-      path: AppConst.homeRoute,
-      builder: (_, state) => RandomColorScreen(colorType: app_settings.colorType),
+      path: AppConst.randomColorRoute,
+      // builder: (_, state) => RandomColorScreen(colorType: app_settings.colorType),
+      builder: random_color_route.routeBuilder,
       routes: [
         // // The child route for the Random Color screen
-        random_color_route.buildRoute(),
+        // random_color_route.buildRoute(),
         // The child route for the Color Information screen
         color_info_route.buildRoute(),
         // The child route for the Preview Color screen
