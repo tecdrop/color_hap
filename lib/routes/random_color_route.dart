@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import '../common/app_const.dart';
 import '../models/color_type.dart';
 import '../screens/random_color_screen.dart';
+import '../common/app_settings.dart' as app_settings;
 
 /// Constructs the [GoRoute] for the Random Color screen.
 // GoRoute buildRoute() {
@@ -20,21 +21,14 @@ import '../screens/random_color_screen.dart';
 
 /// The route builder for the Random Color screen.
 Widget routeBuilder(BuildContext context, GoRouterState state) {
-  // Get the color type from the route parameters
-  // ColorType colorType = parseColorType(state.pathParameters['type']);
-
-  // Get the color type from the route extra
-  ColorType colorType = state.extra as ColorType? ?? ColorType.mixedColor;
-
-  // Return the Random Color screen with the provided color type
+  // Return the Random Color screen with the current color type
   return RandomColorScreen(
-    colorType: colorType,
+    colorType: app_settings.colorType,
   );
 }
 
 /// Navigates to the Random Color screen to generate random colors of the specified type.
 void go(BuildContext context, ColorType colorType) {
-  // final String colorTypeString = colorTypeToString(colorType);
-  // context.go('/${AppConst.randomColorRoute}/$colorTypeString');
-  context.go(AppConst.randomColorRoute, extra: colorType);
+  app_settings.colorType = colorType;
+  context.go(AppConst.randomColorRoute);
 }

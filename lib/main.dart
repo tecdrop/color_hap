@@ -12,7 +12,6 @@ import 'common/ui_strings.dart';
 import 'routes/color_info_route.dart' as color_info_route;
 import 'routes/preview_color_route.dart' as preview_color_route;
 import 'routes/random_color_route.dart' as random_color_route;
-import 'screens/random_color_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,16 +28,12 @@ Future<void> main() async {
 
 /// The route configuration for the app.
 final GoRouter _router = GoRouter(
-  // initialLocation: '${AppConst.homeRoute}mixed',
   routes: <RouteBase>[
     // The root route of the app is the Random Color screen
     GoRoute(
       path: AppConst.randomColorRoute,
-      // builder: (_, state) => RandomColorScreen(colorType: app_settings.colorType),
       builder: random_color_route.routeBuilder,
       routes: [
-        // // The child route for the Random Color screen
-        // random_color_route.buildRoute(),
         // The child route for the Color Information screen
         color_info_route.buildRoute(),
         // The child route for the Preview Color screen
