@@ -4,9 +4,8 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:go_router/go_router.dart';
-
 import '../common/app_const.dart';
+import '../common/app_routes.dart';
 import '../common/app_settings.dart' as app_settings;
 import '../common/ui_strings.dart';
 import '../models/color_type.dart';
@@ -16,7 +15,6 @@ import '../utils/color_utils.dart';
 import '../utils/utils.dart';
 import '../widgets/color_display.dart';
 import '../widgets/internal/app_drawer.dart';
-import '../../routes/color_info_route.dart' as color_info_route;
 
 /// The Random Color screen, that is the home screen of the app.
 ///
@@ -54,7 +52,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
     switch (action) {
       // Open the Color Information screen with the current color
       case _AppBarActions.colorInfo:
-        color_info_route.go(context, _randomColor);
+        gotoColorInfoRoute(context, _randomColor);
         break;
 
       // Toggle the immersive mode, including the platform's fullscreen mode

@@ -9,9 +9,9 @@ class AppConst {
   AppConst._();
 
   // static const String homeRoute = '/';
-  static const String randomColorRoute = '/';
+  // static const String randomColorRoute = '/';
   // static const String randomColorRoute = 'random';
-  static const String colorInfoRoute = 'info';
+  // static const String colorInfoRoute = 'info';
   static const String previewColorRoute = 'preview';
 
   static const Color defaultColor = Colors.black;

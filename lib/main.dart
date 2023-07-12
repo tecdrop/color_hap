@@ -4,14 +4,9 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:go_router/go_router.dart';
-
-import 'common/app_const.dart';
+import 'common/app_routes.dart';
 import 'common/app_settings.dart' as app_settings;
 import 'common/ui_strings.dart';
-import 'routes/color_info_route.dart' as color_info_route;
-import 'routes/preview_color_route.dart' as preview_color_route;
-import 'routes/random_color_route.dart' as random_color_route;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,23 +21,6 @@ Future<void> main() async {
   runApp(const ColorHapApp());
 }
 
-/// The route configuration for the app.
-final GoRouter _router = GoRouter(
-  routes: <RouteBase>[
-    // The root route of the app is the Random Color screen
-    GoRoute(
-      path: AppConst.randomColorRoute,
-      builder: random_color_route.routeBuilder,
-      routes: [
-        // The child route for the Color Information screen
-        color_info_route.buildRoute(),
-        // The child route for the Preview Color screen
-        preview_color_route.buildRoute(),
-      ],
-    ),
-  ],
-);
-
 /// The ColorHap main application class.
 class ColorHapApp extends StatelessWidget {
   const ColorHapApp({super.key});
@@ -50,7 +28,7 @@ class ColorHapApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      routerConfig: _router,
+      routerConfig: appRouter,
       title: UIStrings.appName,
       debugShowCheckedModeBanner: false,
 
