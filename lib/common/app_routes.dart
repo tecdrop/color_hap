@@ -2,6 +2,7 @@
 // Use of this source code is governed by an MIT-style license that can be
 // found in the LICENSE file.
 
+import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
@@ -11,36 +12,34 @@ import '../models/color_type.dart';
 import '../models/random_color.dart';
 import '../screens/color_info_screen.dart';
 import '../screens/invalid_color_screen.dart';
+import '../screens/preview_color_screen.dart';
 import '../screens/random_color_screen.dart';
 import '../utils/color_utils.dart';
-import 'app_const.dart';
 
 /// The route configuration for the app.
 final GoRouter appRouter = GoRouter(
-  // The initial route of the app is the Random Color screen
-  initialLocation: '/mixed',
   routes: <RouteBase>[
     // The root route of the app is the Random Color screen
     GoRoute(
-      // path: AppConst.randomColorRoute,
-      path: '/:type',
+      path: '/',
       builder: _randomColorRouteBuilder,
       routes: [
+        // The child route for the Color Information screen
         GoRoute(
           path: 'info/:color',
           builder: _colorInfoRouteBuilder,
         ),
-        //   // The child route for the Color Information screen
-        //   // color_info_route.buildRoute(),
-        //   // The child route for the Preview Color screen
-        //   // preview_color_route.buildRoute(),
+        // The child route for the Preview Color screen
+        GoRoute(
+          path: 'preview/:color',
+          builder: _previewColorRouteBuilder,
+        ),
       ],
     ),
-    // The Color Information route
-    // GoRoute(
-    //   path: '/mixed/info/:color',
-    //   builder: _colorInfoRouteBuilder,
-    // ),
+    GoRoute(
+      path: '/:type',
+      redirect: _randomColorRouteRedirect,
+    ),
   ],
 );
 
@@ -50,15 +49,15 @@ final GoRouter appRouter = GoRouter(
 
 /// The route builder for the Random Color screen.
 Widget _randomColorRouteBuilder(BuildContext context, GoRouterState state) {
-  ColorType colorType = parseColorType(state.pathParameters['type']);
   return RandomColorScreen(
-    colorType: colorType,
+    colorType: app_settings.colorType,
   );
+}
 
-  // Return the Random Color screen with the current color type
-  // return RandomColorScreen(
-  //   colorType: app_settings.colorType,
-  // );
+/// The route redirect for the Random Color screen, when the color type is specified in the route.
+FutureOr<String?> _randomColorRouteRedirect(BuildContext context, GoRouterState state) {
+  app_settings.colorType = parseColorType(state.pathParameters['type']);
+  return '/';
 }
 
 /// Navigates to the Random Color screen to generate random colors of the specified type.
@@ -99,9 +98,32 @@ Widget _colorInfoRouteBuilder(BuildContext context, GoRouterState state) {
 /// Navigates to the Color Information screen to show information about the provided color.
 void gotoColorInfoRoute(BuildContext context, RandomColor randomColor) {
   final String colorCode = ColorUtils.toHexString(randomColor.color, withHash: false);
-  final String colorType = colorTypeToString(app_settings.colorType);
+  context.go('/info/$colorCode', extra: randomColor);
+}
 
-  // context.go('/${AppConst.colorInfoRoute}/$colorCode', extra: randomColor);
-  // context.push('/mixed/info/$colorCode', extra: randomColor);
-  context.go('/$colorType/info/$colorCode', extra: randomColor);
+// -----------------------------------------------------------------------------------------------
+// Preview Color Route
+// -----------------------------------------------------------------------------------------------
+
+/// The route builder for the Preview Color screen.
+Widget _previewColorRouteBuilder(BuildContext context, GoRouterState state) {
+  // Get the color code from the route parameters
+  String? colorCode = state.pathParameters['color'];
+  Color? color = ColorUtils.rgbHexToColor(colorCode);
+
+  // If the color code is invalid, return the Invalid Color screen
+  if (color == null) {
+    return InvalidColorScreen(colorCode: colorCode);
+  }
+
+  // Otherwise, return the Preview Color screen with the provided color
+  return PreviewColorScreen(
+    color: color,
+  );
+}
+
+/// Navigates to the Preview Color screen to show a full-screen preview of the provided color.
+void gotoPreviewColorRoute(BuildContext context, Color color) {
+  final String colorCode = ColorUtils.toHexString(color, withHash: false);
+  context.go('/preview/$colorCode');
 }

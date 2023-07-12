@@ -10,7 +10,6 @@ import '../../common/ui_strings.dart';
 import '../../models/color_type.dart';
 import '../../models/random_color_generator.dart';
 import '../../models/random_color.dart';
-import '../../routes/preview_color_route.dart' as preview_color_route;
 import '../../utils/color_utils.dart';
 import '../../utils/utils.dart';
 
@@ -98,7 +97,7 @@ class AppDrawer extends StatelessWidget {
       // Open the Preview Color screen with the current color
       case AppDrawerItems.previewColor:
         Navigator.pop(context);
-        preview_color_route.go(context, randomColor.color);
+        gotoPreviewColorRoute(context, randomColor.color);
         break;
 
       // Launch the external Online Help url
