@@ -11,6 +11,7 @@ import '../common/app_settings.dart' as app_settings;
 import '../models/color_type.dart';
 import '../models/random_color.dart';
 import '../screens/color_info_screen.dart';
+import '../screens/color_favorites_screen.dart';
 import '../screens/invalid_color_screen.dart';
 import '../screens/preview_color_screen.dart';
 import '../screens/random_color_screen.dart';
@@ -33,6 +34,10 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           path: 'preview/:color',
           builder: _previewColorRouteBuilder,
+        ),
+        GoRoute(
+          path: 'fav',
+          builder: _colorFavoritesRouteBuilder,
         ),
       ],
     ),
@@ -126,4 +131,18 @@ Widget _previewColorRouteBuilder(BuildContext context, GoRouterState state) {
 void gotoPreviewColorRoute(BuildContext context, Color color) {
   final String colorCode = ColorUtils.toHexString(color, withHash: false);
   context.go('/preview/$colorCode');
+}
+
+// -----------------------------------------------------------------------------------------------
+// Color Favorites Route
+// -----------------------------------------------------------------------------------------------
+
+/// The route builder for the Random Color screen.
+Widget _colorFavoritesRouteBuilder(BuildContext context, GoRouterState state) {
+  return const ColorFavoritesScreen();
+}
+
+/// Navigates to the Color Favorites screen to show the list of favorite colors.
+void gotoColorFavoritesRoute(BuildContext context) {
+  context.go('/fav');
 }

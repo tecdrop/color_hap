@@ -2,10 +2,10 @@
 // Use of this source code is governed by an MIT-style license that can be
 // found in the LICENSE file.
 
-import 'package:color_hap/models/random_color.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/color_type.dart';
+import '../models/color_favorites_list.dart';
 
 // -----------------------------------------------------------------------------------------------
 // immersiveMode setting (not persistent)
@@ -42,9 +42,10 @@ Future<void> _saveColorType() async {
 // favList setting
 // -----------------------------------------------------------------------------------------------
 
-const String _favListKey = 'favList';
+const String _colorFavoritesListKey = 'favList';
 
-List<RandomColor> favList = <RandomColor>[];
+ColorFavoritesList colorFavoritesList = ColorFavoritesList();
+// List<RandomColor> favList = <RandomColor>[];
 // List<RandomColor> _favList = <RandomColor>[];
 
 /// The list of favorite colors.

@@ -59,14 +59,18 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         break;
 
       case _AppBarActions.toggleFav:
-        if (_colorFavIndex >= 0) {
-          app_settings.favList.removeAt(_colorFavIndex);
-          _colorFavIndex = -1;
-        } else {
-          app_settings.favList.add(_randomColor);
-          _colorFavIndex = app_settings.favList.length - 1;
-        }
-        setState(() {});
+        // if (_colorFavIndex >= 0) {
+        //   app_settings.favList.removeAt(_colorFavIndex);
+        //   _colorFavIndex = -1;
+        // } else {
+        //   app_settings.favList.add(_randomColor);
+        //   _colorFavIndex = app_settings.favList.length - 1;
+        // }
+        // setState(() {});
+        setState(() {
+          _colorFavIndex =
+              app_settings.colorFavoritesList.toggle(_randomColor, index: _colorFavIndex);
+        });
         break;
 
       // Toggle the immersive mode, including the platform's fullscreen mode
@@ -83,7 +87,8 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
   void _shuffleColor() {
     final RandomColor randomColor = nextRandomColor(widget.colorType);
 
-    _colorFavIndex = app_settings.favList.indexWhere((element) => element == randomColor);
+    _colorFavIndex = app_settings.colorFavoritesList.indexOf(randomColor);
+    // _colorFavIndex = app_settings.favList.indexWhere((element) => element == randomColor);
     setState(() {
       _randomColor = randomColor;
     });

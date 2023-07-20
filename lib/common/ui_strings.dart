@@ -49,6 +49,7 @@ class UIStrings {
 
   static const String colorInfoDrawer = 'Color Information';
   static const String previewColorDrawer = 'Preview Color';
+  static const String colorFavoritesDrawer = 'Favorite Colors';
 
   static const String helpDrawer = 'Help & Support';
   static const String sourceCodeDrawer = 'View App Source';

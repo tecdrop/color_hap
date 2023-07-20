@@ -24,6 +24,7 @@ enum AppDrawerItems {
   randomTrueColor,
   colorInfo,
   previewColor,
+  colorFavorites,
   help,
   viewSource,
   rateApp,
@@ -98,6 +99,12 @@ class AppDrawer extends StatelessWidget {
       case AppDrawerItems.previewColor:
         Navigator.pop(context);
         gotoPreviewColorRoute(context, randomColor.color);
+        break;
+
+      // Open the Color Favorites screen
+      case AppDrawerItems.colorFavorites:
+        Navigator.pop(context);
+        gotoColorFavoritesRoute(context);
         break;
 
       // Launch the external Online Help url
@@ -220,6 +227,14 @@ class AppDrawer extends StatelessWidget {
             icon: Icons.preview_rounded,
             title: UIStrings.previewColorDrawer,
             item: AppDrawerItems.previewColor,
+          ),
+
+          // Color Favorites drawer item
+          _buildItem(
+            context,
+            icon: Icons.favorite_rounded,
+            title: UIStrings.colorFavoritesDrawer,
+            item: AppDrawerItems.colorFavorites,
           ),
 
           const Divider(),
