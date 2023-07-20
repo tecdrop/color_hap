@@ -45,6 +45,10 @@ final GoRouter appRouter = GoRouter(
       path: '/:type',
       redirect: _randomColorRouteRedirect,
     ),
+    GoRoute(
+      path: '/:colorType/:colorHex/:colorName',
+      builder: _givenColorRouteBuilder,
+    ),
   ],
 );
 
@@ -59,6 +63,28 @@ Widget _randomColorRouteBuilder(BuildContext context, GoRouterState state) {
   );
 }
 
+/// The route builder for the Random Color screen.
+Widget _givenColorRouteBuilder(BuildContext context, GoRouterState state) {
+  ColorType colorType = parseColorType(state.pathParameters['colorType']);
+  String? colorCode = state.pathParameters['colorHex'];
+  Color? color = ColorUtils.rgbHexToColor(colorCode);
+  String? colorName = state.pathParameters['colorName'];
+
+  // If the color code is invalid, return the Invalid Color screen
+  if (color == null) {
+    return InvalidColorScreen(colorCode: colorCode);
+  }
+
+  return RandomColorScreen(
+    colorType: colorType,
+    randomColor: RandomColor(
+      color: color,
+      type: colorType,
+      name: colorName,
+    ),
+  );
+}
+
 /// The route redirect for the Random Color screen, when the color type is specified in the route.
 FutureOr<String?> _randomColorRouteRedirect(BuildContext context, GoRouterState state) {
   app_settings.colorType = parseColorType(state.pathParameters['type']);
@@ -69,6 +95,13 @@ FutureOr<String?> _randomColorRouteRedirect(BuildContext context, GoRouterState 
 void gotoRandomColorRoute(BuildContext context, ColorType colorType) {
   app_settings.colorType = colorType;
   context.go('/${colorTypeToString(colorType)}');
+}
+
+/// Navigates to the Random Color screen and fills the screen with the given color.
+void gotoGivenColorRoute(BuildContext context, RandomColor randomColor) {
+  app_settings.colorType = randomColor.type ?? app_settings.colorType;
+  final String colorCode = ColorUtils.toHexString(randomColor.color, withHash: false);
+  context.go('/${colorTypeToString(app_settings.colorType)}/$colorCode/${randomColor.name}');
 }
 
 // -----------------------------------------------------------------------------------------------

@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 
+import '../common/app_routes.dart';
 import '../common/app_settings.dart' as app_settings;
 import '../models/random_color.dart';
 
@@ -28,7 +29,9 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
             return ListTile(
               tileColor: randomColor.color,
               title: Text(randomColor.title),
-              onTap: () {},
+              onTap: () {
+                gotoGivenColorRoute(context, randomColor);
+              },
             );
           },
         ));

@@ -21,7 +21,7 @@ class RandomColor {
   /// The color name. Can be null if the color is not a named color.
   final String? name;
 
-  /// The type of color: web, named, attractive, or a true color.
+  /// The type of this random color.
   final ColorType? type;
 
   /// The "title" of the this [RandomColor].
