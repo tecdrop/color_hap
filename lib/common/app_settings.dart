@@ -2,6 +2,7 @@
 // Use of this source code is governed by an MIT-style license that can be
 // found in the LICENSE file.
 
+import 'package:color_hap/models/random_color.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/color_type.dart';
@@ -36,6 +37,31 @@ Future<void> _saveColorType() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   await preferences.setInt(_colorTypeKey, _colorType.index);
 }
+
+// -----------------------------------------------------------------------------------------------
+// favList setting
+// -----------------------------------------------------------------------------------------------
+
+const String _favListKey = 'favList';
+
+List<RandomColor> favList = <RandomColor>[];
+// List<RandomColor> _favList = <RandomColor>[];
+
+/// The list of favorite colors.
+// List<RandomColor> get favList => _favList;
+// set favList(List<RandomColor> value) {
+//   _favList = value;
+//   _saveFavList();
+// }
+
+/// Saves the favorite colors list to persistent storage.
+// Future<void> _saveFavList() async {
+//   SharedPreferences preferences = await SharedPreferences.getInstance();
+//   await preferences.setStringList(
+//     _favListKey,
+//     _favList.map((RandomColor color) => color.title).toList(),
+//   );
+// }
 
 // -----------------------------------------------------------------------------------------------
 // Common

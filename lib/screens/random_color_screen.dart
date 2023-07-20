@@ -39,6 +39,9 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
     type: ColorType.trueColor,
   );
 
+  // The index of the current color in the favorites list.
+  int _colorFavIndex = -1;
+
   /// Creates the appropriate random color generator and shuffles the color on init state.
   @override
   void initState() {
@@ -55,6 +58,17 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         gotoColorInfoRoute(context, _randomColor);
         break;
 
+      case _AppBarActions.toggleFav:
+        if (_colorFavIndex >= 0) {
+          app_settings.favList.removeAt(_colorFavIndex);
+          _colorFavIndex = -1;
+        } else {
+          app_settings.favList.add(_randomColor);
+          _colorFavIndex = app_settings.favList.length - 1;
+        }
+        setState(() {});
+        break;
+
       // Toggle the immersive mode, including the platform's fullscreen mode
       case _AppBarActions.toggleImmersive:
         setState(() {
@@ -68,6 +82,8 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
   /// Generates a new random color.
   void _shuffleColor() {
     final RandomColor randomColor = nextRandomColor(widget.colorType);
+
+    _colorFavIndex = app_settings.favList.indexWhere((element) => element == randomColor);
     setState(() {
       _randomColor = randomColor;
     });
@@ -87,6 +103,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
           title: Text(UIStrings.colorType[widget.colorType]!),
           immersiveMode: app_settings.immersiveMode,
           color: _randomColor.color,
+          isFavorite: _colorFavIndex >= 0,
           onAction: _onAction,
         ),
 
@@ -112,6 +129,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
 /// Enum that defines the actions of the app bar.
 enum _AppBarActions {
+  toggleFav,
   colorInfo,
   toggleImmersive,
 }
@@ -123,6 +141,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.title,
     required this.immersiveMode,
     required this.color,
+    required this.isFavorite,
     required this.onAction,
   }) : super(key: key);
 
@@ -131,6 +150,9 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
 
   /// The color of the app bar in immersive mode.
   final Color color;
+
+  /// Whether the current color is added to the favorites list.
+  final bool isFavorite;
 
   /// Whether the screen is currently in immersive mode.
   final bool immersiveMode;
@@ -150,6 +172,11 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
 
       // The common operations displayed in this app bar
       actions: <Widget>[
+        IconButton(
+          icon: isFavorite ? const Icon(Icons.favorite) : const Icon(Icons.favorite_border),
+          tooltip: isFavorite ? UIStrings.removeFavTooltip : UIStrings.addFavTooltip,
+          onPressed: () => onAction(_AppBarActions.toggleFav),
+        ),
         IconButton(
           icon: immersiveMode ? const Icon(Icons.fullscreen_exit) : const Icon(Icons.fullscreen),
           tooltip: UIStrings.toggleImmersiveTooltip,

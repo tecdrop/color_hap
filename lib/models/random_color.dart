@@ -31,4 +31,19 @@ class RandomColor {
     final String hexString = ColorUtils.toHexString(color);
     return name != null ? '$name $hexString' : hexString;
   }
+
+  /// Overrides the equality operator to compare two [RandomColor] objects.
+  /// Two [RandomColor] objects are equal if they have the same color value, name, and type.
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is RandomColor &&
+          runtimeType == other.runtimeType &&
+          color == other.color &&
+          name == other.name &&
+          type == other.type;
+
+  /// Overrides the hash code getter to return the hash code of this [RandomColor].
+  @override
+  int get hashCode => color.hashCode ^ name.hashCode ^ type.hashCode;
 }
