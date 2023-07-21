@@ -25,8 +25,8 @@ class ColorDetailsScreen extends StatelessWidget {
           bottom: const TabBar(
             indicatorColor: Colors.black,
             tabs: [
-              Tab(icon: Icon(Icons.preview, color: Colors.black)),
-              Tab(icon: Icon(Icons.info, color: Colors.black)),
+              Tab(icon: Icon(Icons.fullscreen_outlined, color: Colors.black)),
+              Tab(icon: Icon(Icons.info_outline, color: Colors.black)),
             ],
           ),
         ),

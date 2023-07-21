@@ -63,19 +63,11 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
   void _onAction(_AppBarActions action) {
     switch (action) {
       // Open the Color Information screen with the current color
-      case _AppBarActions.colorInfo:
-        gotoColorInfoRoute(context, _randomColor);
+      case _AppBarActions.colorDetails:
+        gotoColorDetailsRoute(context, _randomColor);
         break;
 
       case _AppBarActions.toggleFav:
-        // if (_colorFavIndex >= 0) {
-        //   app_settings.favList.removeAt(_colorFavIndex);
-        //   _colorFavIndex = -1;
-        // } else {
-        //   app_settings.favList.add(_randomColor);
-        //   _colorFavIndex = app_settings.favList.length - 1;
-        // }
-        // setState(() {});
         setState(() {
           _colorFavIndex =
               app_settings.colorFavoritesList.toggle(_randomColor, index: _colorFavIndex);
@@ -144,7 +136,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 /// Enum that defines the actions of the app bar.
 enum _AppBarActions {
   toggleFav,
-  colorInfo,
+  colorDetails,
   toggleImmersive,
 }
 
@@ -197,9 +189,9 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
           onPressed: () => onAction(_AppBarActions.toggleImmersive),
         ),
         IconButton(
-          icon: const Icon(Icons.info_outline),
+          icon: const Icon(Icons.palette_outlined),
           tooltip: UIStrings.colorInfoTooltip,
-          onPressed: () => onAction(_AppBarActions.colorInfo),
+          onPressed: () => onAction(_AppBarActions.colorDetails),
         ),
       ],
     );

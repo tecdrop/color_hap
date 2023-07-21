@@ -48,8 +48,6 @@ class UIStrings {
   static String possibilitiesDrawerSubtitle(String length) => '$length possibilities';
 
   static const String colorDetailsDrawer = 'Color Details';
-  static const String colorInfoDrawer = 'Color Information';
-  static const String previewColorDrawer = 'Preview Color';
   static const String colorFavoritesDrawer = 'Favorite Colors';
 
   static const String helpDrawer = 'Help & Support';
