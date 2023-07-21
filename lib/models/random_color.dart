@@ -22,7 +22,7 @@ class RandomColor {
   final String? name;
 
   /// The type of this random color.
-  final ColorType? type;
+  final ColorType type;
 
   /// The "title" of the this [RandomColor].
   ///

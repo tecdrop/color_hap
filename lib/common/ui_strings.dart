@@ -47,6 +47,7 @@ class UIStrings {
   static const String randomTrueColorDrawer = 'Random True Colors';
   static String possibilitiesDrawerSubtitle(String length) => '$length possibilities';
 
+  static const String colorDetailsDrawer = 'Color Details';
   static const String colorInfoDrawer = 'Color Information';
   static const String previewColorDrawer = 'Preview Color';
   static const String colorFavoritesDrawer = 'Favorite Colors';

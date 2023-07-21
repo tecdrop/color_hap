@@ -30,7 +30,7 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
               tileColor: randomColor.color,
               title: Text(randomColor.title),
               onTap: () {
-                gotoGivenColorRoute(context, randomColor);
+                gotoColorDetailsRoute(context, randomColor, fromFav: true);
               },
             );
           },

@@ -22,8 +22,9 @@ enum AppDrawerItems {
   randomNamedColor,
   randomAttractiveColor,
   randomTrueColor,
-  colorInfo,
-  previewColor,
+  colorDetails,
+  // colorInfo,
+  // previewColor,
   colorFavorites,
   help,
   viewSource,
@@ -89,17 +90,23 @@ class AppDrawer extends StatelessWidget {
         gotoRandomColorRoute(context, ColorType.trueColor);
         break;
 
-      // Open the Color Information screen with the current random color
-      case AppDrawerItems.colorInfo:
+      // Open the Color Details screen with the current random color
+      case AppDrawerItems.colorDetails:
         Navigator.pop(context);
-        gotoColorInfoRoute(context, randomColor);
+        gotoColorDetailsRoute(context, randomColor);
         break;
 
-      // Open the Preview Color screen with the current color
-      case AppDrawerItems.previewColor:
-        Navigator.pop(context);
-        gotoPreviewColorRoute(context, randomColor.color);
-        break;
+      // // Open the Color Information screen with the current random color
+      // case AppDrawerItems.colorInfo:
+      //   Navigator.pop(context);
+      //   gotoColorInfoRoute(context, randomColor);
+      //   break;
+
+      // // Open the Preview Color screen with the current color
+      // case AppDrawerItems.previewColor:
+      //   Navigator.pop(context);
+      //   gotoPreviewColorRoute(context, randomColor.color);
+      //   break;
 
       // Open the Color Favorites screen
       case AppDrawerItems.colorFavorites:
@@ -213,21 +220,29 @@ class AppDrawer extends StatelessWidget {
 
           const Divider(),
 
-          // Color Information drawer item
+          // Color Details drawer item
           _buildItem(
             context,
-            icon: Icons.info_rounded,
-            title: UIStrings.colorInfoDrawer,
-            item: AppDrawerItems.colorInfo,
+            icon: Icons.palette,
+            title: UIStrings.colorDetailsDrawer,
+            item: AppDrawerItems.colorDetails,
           ),
 
-          // Preview Color drawer item
-          _buildItem(
-            context,
-            icon: Icons.preview_rounded,
-            title: UIStrings.previewColorDrawer,
-            item: AppDrawerItems.previewColor,
-          ),
+          // // Color Information drawer item
+          // _buildItem(
+          //   context,
+          //   icon: Icons.info_rounded,
+          //   title: UIStrings.colorInfoDrawer,
+          //   item: AppDrawerItems.colorInfo,
+          // ),
+
+          // // Preview Color drawer item
+          // _buildItem(
+          //   context,
+          //   icon: Icons.preview_rounded,
+          //   title: UIStrings.previewColorDrawer,
+          //   item: AppDrawerItems.previewColor,
+          // ),
 
           // Color Favorites drawer item
           _buildItem(

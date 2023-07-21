@@ -127,9 +127,7 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
       addInfoItem(UIStrings.colorNameInfo, randomColor.name!);
     }
     addInfoItem(UIStrings.hexInfo, ColorUtils.toHexString(color));
-    if (randomColor.type != null) {
-      addInfoItem(UIStrings.colorTypeInfo, UIStrings.colorType[randomColor.type]!);
-    }
+    addInfoItem(UIStrings.colorTypeInfo, UIStrings.colorType[randomColor.type]!);
     addInfoItem(UIStrings.rgbInfo, ColorUtils.toRGBString(color));
     addInfoItem(UIStrings.hsvInfo, ColorUtils.toHSVString(color));
     addInfoItem(UIStrings.hslInfo, ColorUtils.toHSLString(color));
