@@ -21,20 +21,30 @@ import '../utils/color_utils.dart';
 final GoRouter appRouter = GoRouter(
   routes: <RouteBase>[
     // The root route of the app is the Random Color screen
+    // GoRoute(
+    //   path: '/',
+    //   builder: _randomColorRouteBuilder,
+    //   routes: [
+    //     // The child route for the Color Information screen
+    //     GoRoute(
+    //       path: 'info/:color',
+    //       builder: _colorInfoRouteBuilder,
+    //     ),
+    //     // The child route for the Preview Color screen
+    //     GoRoute(
+    //       path: 'preview/:color',
+    //       builder: _previewColorRouteBuilder,
+    //     ),
+    //     GoRoute(
+    //       path: 'fav',
+    //       builder: _colorFavoritesRouteBuilder,
+    //     ),
+    //   ],
+    // ),
     GoRoute(
       path: '/',
-      builder: _randomColorRouteBuilder,
+      redirect: _defaultRandomColorRouteRedirect,
       routes: [
-        // The child route for the Color Information screen
-        GoRoute(
-          path: 'info/:color',
-          builder: _colorInfoRouteBuilder,
-        ),
-        // The child route for the Preview Color screen
-        GoRoute(
-          path: 'preview/:color',
-          builder: _previewColorRouteBuilder,
-        ),
         GoRoute(
           path: 'fav',
           builder: _colorFavoritesRouteBuilder,
@@ -42,13 +52,18 @@ final GoRouter appRouter = GoRouter(
       ],
     ),
     GoRoute(
-      path: '/:type',
-      redirect: _randomColorRouteRedirect,
+      // path: '/:colorType',
+      path: '/random/:colorType',
+      builder: _randomColorRouteBuilder,
     ),
-    GoRoute(
-      path: '/:colorType/:colorHex/:colorName',
-      builder: _givenColorRouteBuilder,
-    ),
+    // GoRoute(
+    //   path: '/fav',
+    //   builder: _colorFavoritesRouteBuilder,
+    // ),
+    // GoRoute(
+    //   path: '/:colorType/:colorHex/:colorName',
+    //   builder: _givenColorRouteBuilder,
+    // ),
   ],
 );
 
@@ -58,43 +73,59 @@ final GoRouter appRouter = GoRouter(
 
 /// The route builder for the Random Color screen.
 Widget _randomColorRouteBuilder(BuildContext context, GoRouterState state) {
+  ColorType colorType = parseColorType(state.pathParameters['colorType']);
+  app_settings.colorType = colorType;
   return RandomColorScreen(
     colorType: app_settings.colorType,
   );
 }
 
-/// The route builder for the Random Color screen.
-Widget _givenColorRouteBuilder(BuildContext context, GoRouterState state) {
-  ColorType colorType = parseColorType(state.pathParameters['colorType']);
-  String? colorCode = state.pathParameters['colorHex'];
-  Color? color = ColorUtils.rgbHexToColor(colorCode);
-  String? colorName = state.pathParameters['colorName'];
-
-  // If the color code is invalid, return the Invalid Color screen
-  if (color == null) {
-    return InvalidColorScreen(colorCode: colorCode);
-  }
-
-  return RandomColorScreen(
-    colorType: colorType,
-    randomColor: RandomColor(
-      color: color,
-      type: colorType,
-      name: colorName,
-    ),
-  );
-}
-
 /// The route redirect for the Random Color screen, when the color type is specified in the route.
-FutureOr<String?> _randomColorRouteRedirect(BuildContext context, GoRouterState state) {
-  app_settings.colorType = parseColorType(state.pathParameters['type']);
-  return '/';
+FutureOr<String?> _defaultRandomColorRouteRedirect(BuildContext context, GoRouterState state) {
+  // return '/${colorTypeToString(app_settings.colorType)}';
+  // return '/random/${colorTypeToString(app_settings.colorType)}';
+  return null;
 }
+
+// Widget _randomColorRouteBuilder(BuildContext context, GoRouterState state) {
+//   return RandomColorScreen(
+//     colorType: app_settings.colorType,
+//   );
+// }
+
+// /// The route builder for the Random Color screen.
+// Widget _givenColorRouteBuilder(BuildContext context, GoRouterState state) {
+//   ColorType colorType = parseColorType(state.pathParameters['colorType']);
+//   String? colorCode = state.pathParameters['colorHex'];
+//   Color? color = ColorUtils.rgbHexToColor(colorCode);
+//   String? colorName = state.pathParameters['colorName'];
+
+//   // If the color code is invalid, return the Invalid Color screen
+//   if (color == null) {
+//     return InvalidColorScreen(colorCode: colorCode);
+//   }
+
+//   return RandomColorScreen(
+//     colorType: colorType,
+//     randomColor: RandomColor(
+//       color: color,
+//       type: colorType,
+//       name: colorName,
+//     ),
+//   );
+// }
+
+// /// The route redirect for the Random Color screen, when the color type is specified in the route.
+// FutureOr<String?> _randomColorRouteRedirect(BuildContext context, GoRouterState state) {
+//   app_settings.colorType = parseColorType(state.pathParameters['type']);
+//   return '/';
+// }
 
 /// Navigates to the Random Color screen to generate random colors of the specified type.
 void gotoRandomColorRoute(BuildContext context, ColorType colorType) {
-  app_settings.colorType = colorType;
-  context.go('/${colorTypeToString(colorType)}');
+  // app_settings.colorType = colorType;
+  // context.go('/${colorTypeToString(colorType)}');
+  context.go('/random/${colorTypeToString(colorType)}');
 }
 
 /// Navigates to the Random Color screen and fills the screen with the given color.
@@ -178,4 +209,7 @@ Widget _colorFavoritesRouteBuilder(BuildContext context, GoRouterState state) {
 /// Navigates to the Color Favorites screen to show the list of favorite colors.
 void gotoColorFavoritesRoute(BuildContext context) {
   context.go('/fav');
+  // context.push('/fav');
+  // context.pushReplacement('/fav');
+  // context.replace('/fav');
 }

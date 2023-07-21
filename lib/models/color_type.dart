@@ -14,7 +14,8 @@ enum ColorType {
 
 /// A map of [ColorType] values to their string representation.
 const Map<ColorType, String> colorTypeIds = <ColorType, String>{
-  ColorType.mixedColor: '',
+  // ColorType.mixedColor: '',
+  ColorType.mixedColor: 'mixed',
   ColorType.basicColor: 'basic',
   ColorType.webColor: 'web',
   ColorType.namedColor: 'named',

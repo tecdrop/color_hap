@@ -23,13 +23,10 @@ class RandomColorScreen extends StatefulWidget {
   const RandomColorScreen({
     super.key,
     required this.colorType,
-    this.randomColor,
   });
 
   /// The type of random colors that are currently generated in this screen.
   final ColorType colorType;
-
-  final RandomColor? randomColor;
 
   @override
   State<RandomColorScreen> createState() => _RandomColorScreenState();
@@ -46,14 +43,18 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
   int _colorFavIndex = -1;
 
   /// Creates the appropriate random color generator and shuffles the color on init state.
-  @override
-  void initState() {
-    super.initState();
+  // @override
+  // void initState() {
+  //   super.initState();
 
-    if (widget.randomColor != null) {
-      _randomColor = widget.randomColor!;
-      _colorFavIndex = app_settings.colorFavoritesList.indexOf(_randomColor);
-    } else {
+  //   _shuffleColor();
+  // }
+
+  @override
+  void didUpdateWidget(RandomColorScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.colorType != widget.colorType) {
       _shuffleColor();
     }
   }
