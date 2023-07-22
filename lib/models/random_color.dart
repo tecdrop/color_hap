@@ -46,4 +46,17 @@ class RandomColor {
   /// Overrides the hash code getter to return the hash code of this [RandomColor].
   @override
   int get hashCode => color.hashCode ^ name.hashCode ^ type.hashCode;
+
+  /// Creates a [RandomColor] from a JSON object.
+  RandomColor.fromJson(Map<String, dynamic> json)
+      : color = Color(json['color']),
+        name = json['name'],
+        type = ColorType.values[json['type']];
+
+  /// Converts this [RandomColor] to a JSON object.
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'color': color.value,
+        'name': name,
+        'type': type.index,
+      };
 }

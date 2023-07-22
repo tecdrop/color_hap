@@ -2,21 +2,23 @@
 // Use of this source code is governed by an MIT-style license that can be
 // found in the LICENSE file.
 
+import 'dart:convert';
+
 import 'package:color_hap/models/random_color.dart';
 
 class ColorFavoritesList {
-  final List<RandomColor> _favList = <RandomColor>[];
+  final List<RandomColor> _list = <RandomColor>[];
 
   /// The number of colors in the favorites list.
-  int get length => _favList.length;
+  int get length => _list.length;
 
   /// Returns the index of the given [randomColor] in the favorites list, or -1 if it is not there.
   int indexOf(RandomColor randomColor) {
-    return _favList.indexOf(randomColor);
+    return _list.indexOf(randomColor);
   }
 
   /// Returns the color at the given [index] in the favorites list.
-  RandomColor elementAt(int index) => _favList.elementAt(index);
+  RandomColor elementAt(int index) => _list.elementAt(index);
 
   /// Removes the given [randomColor] from the favorites list if it is already there, or adds it to
   /// the list if it is not.
@@ -26,11 +28,24 @@ class ColorFavoritesList {
   int toggle(RandomColor randomColor, {int? index}) {
     index ??= indexOf(randomColor);
     if (index >= 0) {
-      _favList.removeAt(index);
+      _list.removeAt(index);
       return -1;
     } else {
-      _favList.add(randomColor);
-      return _favList.length - 1;
+      _list.add(randomColor);
+      return _list.length - 1;
     }
+  }
+
+  List<String> toJsonStringList() {
+    return _list.map((RandomColor color) => jsonEncode(color.toJson())).toList();
+  }
+
+  void loadFromJsonStringList(List<String>? jsonStringList) {
+    if (jsonStringList == null) return;
+
+    _list.clear();
+    _list.addAll(
+      jsonStringList.map((String jsonString) => RandomColor.fromJson(jsonDecode(jsonString))),
+    );
   }
 }

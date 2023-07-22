@@ -32,7 +32,7 @@ Future<void> _saveColorType() async {
 // favList setting
 // -----------------------------------------------------------------------------------------------
 
-const String _colorFavoritesListKey = 'favList';
+const String _colorFavoritesListKey = 'colorFavoritesList';
 
 ColorFavoritesList colorFavoritesList = ColorFavoritesList();
 // List<RandomColor> favList = <RandomColor>[];
@@ -46,13 +46,10 @@ ColorFavoritesList colorFavoritesList = ColorFavoritesList();
 // }
 
 /// Saves the favorite colors list to persistent storage.
-// Future<void> _saveFavList() async {
-//   SharedPreferences preferences = await SharedPreferences.getInstance();
-//   await preferences.setStringList(
-//     _favListKey,
-//     _favList.map((RandomColor color) => color.title).toList(),
-//   );
-// }
+Future<void> saveColorFavoritesList() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  await preferences.setStringList(_colorFavoritesListKey, colorFavoritesList.toJsonStringList());
+}
 
 // -----------------------------------------------------------------------------------------------
 // showColorInformation setting (not persistent)
@@ -68,4 +65,5 @@ bool showColorInformation = true;
 Future<void> loadSettings() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   _colorType = ColorType.values[preferences.getInt(_colorTypeKey) ?? 0];
+  colorFavoritesList.loadFromJsonStringList(preferences.getStringList(_colorFavoritesListKey));
 }

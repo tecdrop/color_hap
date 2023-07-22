@@ -5,7 +5,8 @@
 import 'package:flutter/material.dart';
 
 import '../common/app_routes.dart';
-import '../common/app_settings.dart' as app_settings;
+import '../common/app_settings.dart' as settings;
+import '../common/ui_strings.dart' as strings;
 import '../models/random_color.dart';
 
 class ColorFavoritesScreen extends StatefulWidget {
@@ -19,21 +20,46 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Favorites'),
-        ),
-        body: ListView.builder(
-          itemCount: app_settings.colorFavoritesList.length,
-          itemBuilder: (BuildContext context, int index) {
-            RandomColor randomColor = app_settings.colorFavoritesList.elementAt(index);
-            return ListTile(
-              tileColor: randomColor.color,
-              title: Text(randomColor.title),
-              onTap: () {
-                gotoColorDetailsRoute(context, randomColor, fromFav: true);
-              },
-            );
+      appBar: AppBar(
+        title: const Text(strings.favoriteColorsScreenTitle),
+      ),
+      body: settings.colorFavoritesList.length > 0
+          ? _buildFavoritesListView()
+          : _buildNoFavoritesMessage(),
+    );
+  }
+
+  Widget _buildFavoritesListView() {
+    return ListView.builder(
+      itemCount: settings.colorFavoritesList.length,
+      itemBuilder: (BuildContext context, int index) {
+        RandomColor randomColor = settings.colorFavoritesList.elementAt(index);
+        return ListTile(
+          tileColor: randomColor.color,
+          title: Text(randomColor.title),
+          onTap: () {
+            gotoColorDetailsRoute(context, randomColor, fromFav: true);
           },
-        ));
+        );
+      },
+    );
+  }
+
+  /// Builds a message to display when there are no favorite colors.
+  Widget _buildNoFavoritesMessage() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const Icon(Icons.favorite_border, size: 64),
+          const SizedBox(height: 16),
+          Text(
+            strings.noFavoritesMessage,
+            style: Theme.of(context).textTheme.titleLarge,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -69,6 +69,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         setState(() {
           _colorFavIndex =
               app_settings.colorFavoritesList.toggle(_randomColor, index: _colorFavIndex);
+          app_settings.saveColorFavoritesList();
         });
         break;
     }

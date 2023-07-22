@@ -81,3 +81,10 @@ const String shuffleTooltip = 'Get a new random color';
 // -----------------------------------------------------------------------------------------------
 
 String invalidColor(String? colorCode) => 'Invalid color code: $colorCode';
+
+// -----------------------------------------------------------------------------------------------
+// Favorite Colors Screen
+// -----------------------------------------------------------------------------------------------
+
+const String favoriteColorsScreenTitle = 'Favorite Colors';
+const String noFavoritesMessage = 'No favorite colors yet';
