@@ -4,7 +4,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../common/ui_strings.dart';
+import '../common/ui_strings.dart' as strings;
 import '../models/random_color.dart';
 import '../utils/color_utils.dart';
 
@@ -34,17 +34,17 @@ class ColorInfoList extends StatelessWidget {
         children: [
           // Add the color information list items
           if (randomColor.name != null) ...[
-            _buildInfoItem(UIStrings.colorTitleInfo, randomColor.title),
-            _buildInfoItem(UIStrings.colorNameInfo, randomColor.name!),
+            _buildInfoItem(strings.colorTitleInfo, randomColor.title),
+            _buildInfoItem(strings.colorNameInfo, randomColor.name!),
           ],
-          _buildInfoItem(UIStrings.hexInfo, ColorUtils.toHexString(color)),
-          _buildInfoItem(UIStrings.colorTypeInfo, UIStrings.colorType[randomColor.type]!),
-          _buildInfoItem(UIStrings.rgbInfo, ColorUtils.toRGBString(color)),
-          _buildInfoItem(UIStrings.hsvInfo, ColorUtils.toHSVString(color)),
-          _buildInfoItem(UIStrings.hslInfo, ColorUtils.toHSLString(color)),
-          _buildInfoItem(UIStrings.decimalInfo, ColorUtils.toDecimalString(color)),
-          _buildInfoItem(UIStrings.luminanceInfo, ColorUtils.luminanceString(color)),
-          _buildInfoItem(UIStrings.brightnessInfo, ColorUtils.brightnessString(color)),
+          _buildInfoItem(strings.hexInfo, ColorUtils.toHexString(color)),
+          _buildInfoItem(strings.colorTypeInfo, strings.colorType[randomColor.type]!),
+          _buildInfoItem(strings.rgbInfo, ColorUtils.toRGBString(color)),
+          _buildInfoItem(strings.hsvInfo, ColorUtils.toHSVString(color)),
+          _buildInfoItem(strings.hslInfo, ColorUtils.toHSLString(color)),
+          _buildInfoItem(strings.decimalInfo, ColorUtils.toDecimalString(color)),
+          _buildInfoItem(strings.luminanceInfo, ColorUtils.luminanceString(color)),
+          _buildInfoItem(strings.brightnessInfo, ColorUtils.brightnessString(color)),
         ],
       ),
     );

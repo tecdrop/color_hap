@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../common/ui_strings.dart';
+import '../common/ui_strings.dart' as strings;
 
 /// Various static utility functions.
 class Utils {
@@ -40,9 +40,9 @@ class Utils {
     ScaffoldMessengerState messengerState = ScaffoldMessenger.of(context);
     try {
       await Clipboard.setData(ClipboardData(text: value));
-      Utils.showSnackBarForAsync(messengerState, UIStrings.copiedSnack(value));
+      Utils.showSnackBarForAsync(messengerState, strings.copiedSnack(value));
     } catch (error) {
-      Utils.showSnackBarForAsync(messengerState, UIStrings.copiedErrorSnack(value));
+      Utils.showSnackBarForAsync(messengerState, strings.copiedErrorSnack(value));
     }
   }
 

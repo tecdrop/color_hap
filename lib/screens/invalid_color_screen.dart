@@ -4,7 +4,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../common/ui_strings.dart';
+import '../common/ui_strings.dart' as strings;
 
 /// The Invalid Color screen.
 ///
@@ -24,11 +24,11 @@ class InvalidColorScreen extends StatelessWidget {
     return Scaffold(
       // A basic app bar with the app name
       appBar: AppBar(
-        title: const Text(UIStrings.appName),
+        title: const Text(strings.appName),
       ),
       // The body of the screen displays the error message
       body: Center(
-        child: Text(UIStrings.invalidColor(colorCode)),
+        child: Text(strings.invalidColor(colorCode)),
       ),
     );
   }

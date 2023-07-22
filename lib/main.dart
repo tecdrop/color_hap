@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'common/app_routes.dart';
 import 'common/app_settings.dart' as app_settings;
-import 'common/ui_strings.dart';
+import 'common/ui_strings.dart' as strings;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +29,7 @@ class ColorHapApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig: appRouter,
-      title: UIStrings.appName,
+      title: strings.appName,
       debugShowCheckedModeBanner: false,
 
       // A black on white theme to go with the color intensive interface of the app

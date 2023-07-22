@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../../common/app_routes.dart';
 import '../../common/app_urls.dart';
-import '../../common/ui_strings.dart';
+import '../../common/ui_strings.dart' as strings;
 import '../../models/color_type.dart';
 import '../../models/random_color_generator.dart';
 import '../../models/random_color.dart';
@@ -123,8 +123,8 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Simply a convenience function that returns a string with the number of possibilities.
-    String possibilities(ColorType colorType) => UIStrings.possibilitiesDrawerSubtitle(
-        Utils.intToCommaSeparatedString(possibilityCount(colorType)));
+    String possibilities(ColorType colorType) => strings
+        .possibilitiesDrawerSubtitle(Utils.intToCommaSeparatedString(possibilityCount(colorType)));
 
     return Drawer(
       child: ListView(
@@ -136,8 +136,8 @@ class AppDrawer extends StatelessWidget {
             contentPadding: const EdgeInsets.all(16.0),
             tileColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.075),
             leading: const Icon(Icons.wallpaper_rounded),
-            title: const Text(UIStrings.setWallpaperDrawer),
-            subtitle: const Text(UIStrings.setWallpaperDrawerSubtitle),
+            title: const Text(strings.setWallpaperDrawer),
+            subtitle: const Text(strings.setWallpaperDrawerSubtitle),
             isThreeLine: true,
             onTap: () => _onItemTap(context, AppDrawerItems.setWallpaper),
           ),
@@ -148,7 +148,7 @@ class AppDrawer extends StatelessWidget {
           _buildItem(
             context,
             icon: Icons.looks_one_rounded,
-            title: UIStrings.randomMixedColorDrawer,
+            title: strings.randomMixedColorDrawer,
             subtitle: possibilities(ColorType.mixedColor),
             item: AppDrawerItems.randomMixedColor,
             selected: colorType == ColorType.mixedColor,
@@ -158,7 +158,7 @@ class AppDrawer extends StatelessWidget {
           _buildItem(
             context,
             icon: Icons.looks_two_rounded,
-            title: UIStrings.randomBasicColorDrawer,
+            title: strings.randomBasicColorDrawer,
             subtitle: possibilities(ColorType.basicColor),
             item: AppDrawerItems.randomBasicColor,
             selected: colorType == ColorType.basicColor,
@@ -168,7 +168,7 @@ class AppDrawer extends StatelessWidget {
           _buildItem(
             context,
             icon: Icons.looks_3_rounded,
-            title: UIStrings.randomWebColorDrawer,
+            title: strings.randomWebColorDrawer,
             subtitle: possibilities(ColorType.webColor),
             item: AppDrawerItems.randomWebColor,
             selected: colorType == ColorType.webColor,
@@ -178,7 +178,7 @@ class AppDrawer extends StatelessWidget {
           _buildItem(
             context,
             icon: Icons.looks_4_rounded,
-            title: UIStrings.randomNamedColorDrawer,
+            title: strings.randomNamedColorDrawer,
             subtitle: possibilities(ColorType.namedColor),
             item: AppDrawerItems.randomNamedColor,
             selected: colorType == ColorType.namedColor,
@@ -188,8 +188,8 @@ class AppDrawer extends StatelessWidget {
           _buildItem(
             context,
             icon: Icons.looks_5_rounded,
-            title: UIStrings.randomAttractiveColorDrawer,
-            subtitle: UIStrings.randomAttractiveColorDrawerSubtitle,
+            title: strings.randomAttractiveColorDrawer,
+            subtitle: strings.randomAttractiveColorDrawerSubtitle,
             item: AppDrawerItems.randomAttractiveColor,
             selected: colorType == ColorType.attractiveColor,
           ),
@@ -198,7 +198,7 @@ class AppDrawer extends StatelessWidget {
           _buildItem(
             context,
             icon: Icons.looks_6_rounded,
-            title: UIStrings.randomTrueColorDrawer,
+            title: strings.randomTrueColorDrawer,
             subtitle: possibilities(ColorType.trueColor),
             item: AppDrawerItems.randomTrueColor,
             selected: colorType == ColorType.trueColor,
@@ -210,7 +210,7 @@ class AppDrawer extends StatelessWidget {
           _buildItem(
             context,
             icon: Icons.palette,
-            title: UIStrings.colorDetailsDrawer,
+            title: strings.colorDetailsDrawer,
             item: AppDrawerItems.colorDetails,
           ),
 
@@ -218,7 +218,7 @@ class AppDrawer extends StatelessWidget {
           _buildItem(
             context,
             icon: Icons.favorite_rounded,
-            title: UIStrings.colorFavoritesDrawer,
+            title: strings.colorFavoritesDrawer,
             item: AppDrawerItems.colorFavorites,
           ),
 
@@ -228,7 +228,7 @@ class AppDrawer extends StatelessWidget {
           _buildItem(
             context,
             icon: Icons.support_rounded,
-            title: UIStrings.helpDrawer,
+            title: strings.helpDrawer,
             item: AppDrawerItems.help,
           ),
 
@@ -236,7 +236,7 @@ class AppDrawer extends StatelessWidget {
           _buildItem(
             context,
             icon: Icons.flutter_dash_rounded,
-            title: UIStrings.sourceCodeDrawer,
+            title: strings.sourceCodeDrawer,
             item: AppDrawerItems.viewSource,
           ),
 
@@ -244,7 +244,7 @@ class AppDrawer extends StatelessWidget {
           _buildItem(
             context,
             icon: Icons.stars_rounded,
-            title: UIStrings.rateAppDrawer,
+            title: strings.rateAppDrawer,
             item: AppDrawerItems.rateApp,
           ),
         ],
@@ -291,7 +291,7 @@ class _AppDrawerHeader extends StatelessWidget {
       decoration: BoxDecoration(color: color),
       child: Center(
         child: Text(
-          UIStrings.appName,
+          strings.appName,
           style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                 color: ColorUtils.contrastOf(color),
               ),

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../common/app_settings.dart' as settings;
-import '../common/ui_strings.dart';
+import '../common/ui_strings.dart' as strings;
 import '../models/random_color.dart';
 import '../utils/utils.dart';
 import '../widgets/color_info_list.dart';
@@ -41,7 +41,7 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
   Future<void> onInfoItemTap(String key, String value) async {
     ScaffoldMessengerState messengerState = ScaffoldMessenger.of(context);
     await Clipboard.setData(ClipboardData(text: value));
-    Utils.showSnackBarForAsync(messengerState, UIStrings.copiedSnack(value));
+    Utils.showSnackBarForAsync(messengerState, strings.copiedSnack(value));
   }
 
   @override
@@ -63,14 +63,14 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
   /// Builds the app bar for the Color Details screen.
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
-      title: const Text(UIStrings.colorDetailsScreenTitle),
+      title: const Text(strings.colorDetailsScreenTitle),
       actions: [
         // The toggle color information action button
         IconButton(
           icon: settings.showColorInformation
               ? const Icon(Icons.visibility_off_outlined)
               : const Icon(Icons.visibility_outlined),
-          tooltip: UIStrings.toggleColorInformation,
+          tooltip: strings.toggleColorInformation,
           onPressed: toggleColorInformation,
         ),
       ],

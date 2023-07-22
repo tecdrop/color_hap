@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import '../common/app_const.dart';
 import '../common/app_routes.dart';
 import '../common/app_settings.dart' as app_settings;
-import '../common/ui_strings.dart';
+import '../common/ui_strings.dart' as strings;
 import '../models/color_type.dart';
 import '../models/random_color_generator.dart';
 import '../models/random_color.dart';
@@ -96,7 +96,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
         // The app bar
         appBar: _AppBar(
-          title: Text(UIStrings.colorType[widget.colorType]!),
+          title: Text(strings.colorType[widget.colorType]!),
           isFavorite: _colorFavIndex >= 0,
           onAction: _onAction,
         ),
@@ -113,7 +113,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         // The shuffle floating action button
         floatingActionButton: FloatingActionButton(
           onPressed: _shuffleColor,
-          tooltip: UIStrings.shuffleTooltip,
+          tooltip: strings.shuffleTooltip,
           child: const Icon(Icons.shuffle),
         ),
       ),
@@ -154,12 +154,12 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: <Widget>[
         IconButton(
           icon: isFavorite ? const Icon(Icons.favorite) : const Icon(Icons.favorite_border),
-          tooltip: isFavorite ? UIStrings.removeFavTooltip : UIStrings.addFavTooltip,
+          tooltip: isFavorite ? strings.removeFavTooltip : strings.addFavTooltip,
           onPressed: () => onAction(_AppBarActions.toggleFav),
         ),
         IconButton(
           icon: const Icon(Icons.palette_outlined),
-          tooltip: UIStrings.colorInfoTooltip,
+          tooltip: strings.colorInfoTooltip,
           onPressed: () => onAction(_AppBarActions.colorDetails),
         ),
       ],
