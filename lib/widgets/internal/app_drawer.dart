@@ -134,7 +134,7 @@ class AppDrawer extends StatelessWidget {
           // The Set Color Wallpaper drawer item
           ListTile(
             contentPadding: const EdgeInsets.all(16.0),
-            tileColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.075),
+            // tileColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.075),
             leading: const Icon(Icons.wallpaper_rounded),
             title: const Text(strings.setWallpaperDrawer),
             subtitle: const Text(strings.setWallpaperDrawerSubtitle),
@@ -147,61 +147,74 @@ class AppDrawer extends StatelessWidget {
           // All Random Colors drawer item
           _buildItem(
             context,
-            icon: Icons.looks_one_rounded,
+            // icon: Icons.looks_one_rounded,
+            icon: colorType == ColorType.mixedColor
+                ? Icons.looks_one_rounded
+                : Icons.looks_one_outlined,
             title: strings.randomMixedColorDrawer,
             subtitle: possibilities(ColorType.mixedColor),
             item: AppDrawerItems.randomMixedColor,
-            selected: colorType == ColorType.mixedColor,
+            // selected: colorType == ColorType.mixedColor,
           ),
 
           // Random Basic Color drawer item
           _buildItem(
             context,
-            icon: Icons.looks_two_rounded,
+            // icon: Icons.looks_two_rounded,
+            icon: colorType == ColorType.basicColor
+                ? Icons.looks_two_rounded
+                : Icons.looks_two_outlined,
             title: strings.randomBasicColorDrawer,
             subtitle: possibilities(ColorType.basicColor),
             item: AppDrawerItems.randomBasicColor,
-            selected: colorType == ColorType.basicColor,
+            // selected: colorType == ColorType.basicColor,
           ),
 
           // Random Web Color drawer item
           _buildItem(
             context,
-            icon: Icons.looks_3_rounded,
+            // icon: Icons.looks_3_rounded,
+            icon: colorType == ColorType.webColor ? Icons.looks_3_rounded : Icons.looks_3_outlined,
             title: strings.randomWebColorDrawer,
             subtitle: possibilities(ColorType.webColor),
             item: AppDrawerItems.randomWebColor,
-            selected: colorType == ColorType.webColor,
+            // selected: colorType == ColorType.webColor,
           ),
 
           // Random Named Color drawer item
           _buildItem(
             context,
-            icon: Icons.looks_4_rounded,
+            // icon: Icons.looks_4_rounded,
+            icon:
+                colorType == ColorType.namedColor ? Icons.looks_4_rounded : Icons.looks_4_outlined,
             title: strings.randomNamedColorDrawer,
             subtitle: possibilities(ColorType.namedColor),
             item: AppDrawerItems.randomNamedColor,
-            selected: colorType == ColorType.namedColor,
+            // selected: colorType == ColorType.namedColor,
           ),
 
           // Random Attractive Color drawer item
           _buildItem(
             context,
-            icon: Icons.looks_5_rounded,
+            // icon: Icons.looks_5_rounded,
+            icon: colorType == ColorType.attractiveColor
+                ? Icons.looks_5_rounded
+                : Icons.looks_5_outlined,
             title: strings.randomAttractiveColorDrawer,
             subtitle: strings.randomAttractiveColorDrawerSubtitle,
             item: AppDrawerItems.randomAttractiveColor,
-            selected: colorType == ColorType.attractiveColor,
+            // selected: colorType == ColorType.attractiveColor,
           ),
 
           // Random True Color drawer item
           _buildItem(
             context,
-            icon: Icons.looks_6_rounded,
+            // icon: Icons.looks_6_rounded,
+            icon: colorType == ColorType.trueColor ? Icons.looks_6_rounded : Icons.looks_6_outlined,
             title: strings.randomTrueColorDrawer,
             subtitle: possibilities(ColorType.trueColor),
             item: AppDrawerItems.randomTrueColor,
-            selected: colorType == ColorType.trueColor,
+            // selected: colorType == ColorType.trueColor,
           ),
 
           const Divider(),
@@ -217,7 +230,8 @@ class AppDrawer extends StatelessWidget {
           // Color Favorites drawer item
           _buildItem(
             context,
-            icon: Icons.favorite_rounded,
+            // icon: Icons.favorite_rounded,
+            icon: Icons.favorite_outline_outlined,
             title: strings.colorFavoritesDrawer,
             item: AppDrawerItems.colorFavorites,
           ),
@@ -227,7 +241,7 @@ class AppDrawer extends StatelessWidget {
           // Help & Support drawer item
           _buildItem(
             context,
-            icon: Icons.support_rounded,
+            icon: Icons.support_outlined,
             title: strings.helpDrawer,
             item: AppDrawerItems.help,
           ),
@@ -235,7 +249,7 @@ class AppDrawer extends StatelessWidget {
           // View Source drawer item
           _buildItem(
             context,
-            icon: Icons.flutter_dash_rounded,
+            icon: Icons.code_outlined,
             title: strings.sourceCodeDrawer,
             item: AppDrawerItems.viewSource,
           ),
@@ -243,7 +257,7 @@ class AppDrawer extends StatelessWidget {
           // Rate App drawer item
           _buildItem(
             context,
-            icon: Icons.stars_rounded,
+            icon: Icons.thumb_up_alt_outlined,
             title: strings.rateAppDrawer,
             item: AppDrawerItems.rateApp,
           ),
