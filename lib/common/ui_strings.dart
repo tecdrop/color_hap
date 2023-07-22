@@ -61,7 +61,6 @@ class UIStrings {
   static const String colorInfoTooltip = 'Color information';
   static const String addFavTooltip = 'Add this random color to favorites';
   static const String removeFavTooltip = 'Remove this random color from favorites';
-  static const String toggleImmersiveTooltip = 'Toggle immersive mode';
   static const String shuffleTooltip = 'Get a new random color';
 
   // -----------------------------------------------------------------------------------------------

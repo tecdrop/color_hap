@@ -8,16 +8,6 @@ import '../models/color_type.dart';
 import '../models/color_favorites_list.dart';
 
 // -----------------------------------------------------------------------------------------------
-// immersiveMode setting (not persistent)
-// -----------------------------------------------------------------------------------------------
-
-bool _immersiveMode = false;
-
-/// Whether the main screens are in immersive mode.
-bool get immersiveMode => _immersiveMode;
-set immersiveMode(bool value) => _immersiveMode = value;
-
-// -----------------------------------------------------------------------------------------------
 // colorType setting
 // -----------------------------------------------------------------------------------------------
 

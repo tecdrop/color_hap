@@ -46,32 +46,6 @@ class ColorHapApp extends StatelessWidget {
           selectedColor: Colors.black,
         ),
       ),
-
-      // App routes
-      // initialRoute: AppConst.randomColorRoute,
-      // onGenerateRoute: (settings) {
-      //   switch (settings.name) {
-      //     // The default Random Color route
-      //     case AppConst.randomColorRoute:
-      //       final ColorType args = settings.arguments as ColorType? ?? app_settings.colorType;
-      //       app_settings.colorType = args;
-      //       return MaterialPageRoute(
-      //         builder: (_) => RandomColorScreen(colorType: args),
-      //       );
-
-      //     // The Color Information route
-      //     case AppConst.colorInfoRoute:
-      //       final RandomColor args = settings.arguments as RandomColor;
-      //       return MaterialPageRoute(
-      //         builder: (_) => ColorInfoScreen(
-      //           randomColor: args,
-      //           immersiveMode: app_settings.immersiveMode,
-      //         ),
-      //       );
-      //   }
-
-      //   return null; // Let onUnknownRoute handle this behavior.
-      // },
     );
   }
 }

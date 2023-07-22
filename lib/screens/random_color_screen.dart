@@ -11,8 +11,6 @@ import '../common/ui_strings.dart';
 import '../models/color_type.dart';
 import '../models/random_color_generator.dart';
 import '../models/random_color.dart';
-import '../utils/color_utils.dart';
-import '../utils/utils.dart';
 import '../widgets/color_display.dart';
 import '../widgets/internal/app_drawer.dart';
 
@@ -73,14 +71,6 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
               app_settings.colorFavoritesList.toggle(_randomColor, index: _colorFavIndex);
         });
         break;
-
-      // Toggle the immersive mode, including the platform's fullscreen mode
-      case _AppBarActions.toggleImmersive:
-        setState(() {
-          app_settings.immersiveMode = !app_settings.immersiveMode;
-        });
-        Utils.toggleSystemFullscreen(app_settings.immersiveMode);
-        break;
     }
   }
 
@@ -107,8 +97,6 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         // The app bar
         appBar: _AppBar(
           title: Text(UIStrings.colorType[widget.colorType]!),
-          immersiveMode: app_settings.immersiveMode,
-          color: _randomColor.color,
           isFavorite: _colorFavIndex >= 0,
           onAction: _onAction,
         ),
@@ -137,7 +125,6 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 enum _AppBarActions {
   toggleFav,
   colorDetails,
-  toggleImmersive,
 }
 
 /// The app bar of the Random Color screen.
@@ -145,8 +132,6 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   const _AppBar({
     Key? key,
     required this.title,
-    required this.immersiveMode,
-    required this.color,
     required this.isFavorite,
     required this.onAction,
   }) : super(key: key);
@@ -154,14 +139,8 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   /// The primary widget displayed in the app bar.
   final Widget? title;
 
-  /// The color of the app bar in immersive mode.
-  final Color color;
-
   /// Whether the current color is added to the favorites list.
   final bool isFavorite;
-
-  /// Whether the screen is currently in immersive mode.
-  final bool immersiveMode;
 
   /// The callback that is called when an app bar action is pressed.
   final Function(_AppBarActions action) onAction;
@@ -169,12 +148,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: immersiveMode ? null : title,
-
-      // In immersive mode seamlessly fill the app bar with the current color
-      backgroundColor: immersiveMode ? color : null,
-      foregroundColor: immersiveMode ? ColorUtils.contrastOf(color) : null,
-      elevation: immersiveMode ? 0.0 : null,
+      title: title,
 
       // The common operations displayed in this app bar
       actions: <Widget>[
@@ -182,11 +156,6 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
           icon: isFavorite ? const Icon(Icons.favorite) : const Icon(Icons.favorite_border),
           tooltip: isFavorite ? UIStrings.removeFavTooltip : UIStrings.addFavTooltip,
           onPressed: () => onAction(_AppBarActions.toggleFav),
-        ),
-        IconButton(
-          icon: immersiveMode ? const Icon(Icons.fullscreen_exit) : const Icon(Icons.fullscreen),
-          tooltip: UIStrings.toggleImmersiveTooltip,
-          onPressed: () => onAction(_AppBarActions.toggleImmersive),
         ),
         IconButton(
           icon: const Icon(Icons.palette_outlined),

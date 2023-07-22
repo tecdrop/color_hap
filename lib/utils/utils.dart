@@ -54,14 +54,4 @@ class Utils {
       Utils.showSnackBar(context, 'Failed to open $url');
     }
   }
-
-  /// Toggles the platform's fullscreen mode based on the boolean value of [fullscreen].
-  static void toggleSystemFullscreen(bool fullscreen) {
-    if (fullscreen) {
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-    } else {
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-          overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
-    }
-  }
 }
