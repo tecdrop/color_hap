@@ -11,24 +11,24 @@ import '../models/random_color.dart';
 import '../utils/utils.dart';
 import '../widgets/color_info_list.dart';
 
-/// The Color Details screen.
+/// The Color Info screen.
 ///
 /// Displays the given [RandomColor] in different formats, and other color information, and allows
 /// the user to toggle the visibility of the color information.
-class ColorDetailsScreen extends StatefulWidget {
-  const ColorDetailsScreen({
+class ColorInfoScreen extends StatefulWidget {
+  const ColorInfoScreen({
     super.key,
     required this.randomColor,
   });
 
-  /// The random color to display in the Color Details screen.
+  /// The random color to display in the Color Info screen.
   final RandomColor randomColor;
 
   @override
-  State<ColorDetailsScreen> createState() => _ColorDetailsScreenState();
+  State<ColorInfoScreen> createState() => _ColorInfoScreenState();
 }
 
-class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
+class _ColorInfoScreenState extends State<ColorInfoScreen> {
   /// Toggles the visibility of the color information.
   void toggleColorInformation() {
     setState(() {
@@ -60,10 +60,10 @@ class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
     );
   }
 
-  /// Builds the app bar for the Color Details screen.
+  /// Builds the app bar for the Color Info screen.
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
-      title: const Text(strings.colorDetailsScreenTitle),
+      title: const Text(strings.colorInfoScreenTitle),
       actions: [
         // The toggle color information action button
         IconButton(

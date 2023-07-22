@@ -53,9 +53,9 @@ class ColorInfoList extends StatelessWidget {
   /// Returns a color information list tile with the given [key] and [value].
   Widget _buildInfoItem(String key, String value) {
     return ListTile(
-      minVerticalPadding: 16.0,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      title: Text(value, style: const TextStyle(fontSize: 20.0)),
       subtitle: Text(key),
-      title: Text(value, style: const TextStyle(fontSize: 22.0)),
       onTap: () => onInfoItemTap?.call(key, value),
     );
   }

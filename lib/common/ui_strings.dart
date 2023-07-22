@@ -42,7 +42,7 @@ const String randomAttractiveColorDrawerSubtitle = 'A few million possibilities'
 const String randomTrueColorDrawer = 'Random True Colors';
 String possibilitiesDrawerSubtitle(String length) => '$length possibilities';
 
-const String colorDetailsDrawer = 'Color Details';
+const String colorInfoDrawer = 'Color Information';
 const String colorFavoritesDrawer = 'Favorite Colors';
 
 const String helpDrawer = 'Help & Support';
@@ -50,10 +50,10 @@ const String sourceCodeDrawer = 'View App Source';
 const String rateAppDrawer = 'Rate App';
 
 // -----------------------------------------------------------------------------------------------
-// Color Details Screen
+// Color Info Screen
 // -----------------------------------------------------------------------------------------------
 
-const String colorDetailsScreenTitle = 'Color Details';
+const String colorInfoScreenTitle = 'Color Information';
 const String toggleColorInformation = 'Toggle color information';
 
 const String colorNameInfo = 'Name';

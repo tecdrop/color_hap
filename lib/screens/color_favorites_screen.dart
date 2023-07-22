@@ -37,7 +37,7 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
         RandomColor randomColor = settings.colorFavoritesList.elementAt(index);
         return ColorFavoriteListItem(
           randomColor: randomColor,
-          onTap: () => gotoColorDetailsRoute(context, randomColor, fromFav: true),
+          onTap: () => gotoColorInfoRoute(context, randomColor, fromFav: true),
           onDeletePressed: () {
             setState(() {
               settings.colorFavoritesList.removeAt(index);

@@ -10,7 +10,7 @@ import 'package:go_router/go_router.dart';
 import '../common/app_settings.dart' as app_settings;
 import '../models/color_type.dart';
 import '../models/random_color.dart';
-import '../screens/color_details_screen.dart';
+import '../screens/color_info_screen.dart';
 import '../screens/color_favorites_screen.dart';
 import '../screens/invalid_color_screen.dart';
 import '../screens/random_color_screen.dart';
@@ -24,19 +24,19 @@ final GoRouter appRouter = GoRouter(
       path: '/',
       builder: _randomColorRouteBuilder,
       routes: [
-        // The child route for the Color Details screen
+        // The child route for the Color Info screen
         GoRoute(
           path: 'color/:colorType/:colorHex/:colorName',
-          builder: _colorDetailsRouteBuilder,
+          builder: _colorInfoRouteBuilder,
         ),
         GoRoute(
           path: 'fav',
           builder: _colorFavoritesRouteBuilder,
           routes: [
-            // The child route for the Color Details screen
+            // The child route for the Color Info screen
             GoRoute(
               path: 'color/:colorType/:colorHex/:colorName',
-              builder: _colorDetailsRouteBuilder,
+              builder: _colorInfoRouteBuilder,
             ),
           ],
         ),
@@ -73,11 +73,11 @@ void gotoRandomColorRoute(BuildContext context, ColorType colorType) {
 }
 
 // -----------------------------------------------------------------------------------------------
-// Color Details Route
+// Color Info Route
 // -----------------------------------------------------------------------------------------------
 
-/// The route builder for the Color Details screen.
-Widget _colorDetailsRouteBuilder(BuildContext context, GoRouterState state) {
+/// The route builder for the Color Info screen.
+Widget _colorInfoRouteBuilder(BuildContext context, GoRouterState state) {
   ColorType colorType = parseColorType(state.pathParameters['colorType']);
   String? colorCode = state.pathParameters['colorHex'];
   Color? color = ColorUtils.rgbHexToColor(colorCode);
@@ -88,7 +88,7 @@ Widget _colorDetailsRouteBuilder(BuildContext context, GoRouterState state) {
     return InvalidColorScreen(colorCode: colorCode);
   }
 
-  return ColorDetailsScreen(
+  return ColorInfoScreen(
     randomColor: RandomColor(
       color: color,
       type: colorType,
@@ -97,8 +97,8 @@ Widget _colorDetailsRouteBuilder(BuildContext context, GoRouterState state) {
   );
 }
 
-/// Navigates to the Color Details screen to show the details of the provided color.
-void gotoColorDetailsRoute(BuildContext context, RandomColor randomColor, {bool fromFav = false}) {
+/// Navigates to the Color Info screen to show information about the specified color.
+void gotoColorInfoRoute(BuildContext context, RandomColor randomColor, {bool fromFav = false}) {
   final String colorType = colorTypeToString(randomColor.type);
   final String colorCode = ColorUtils.toHexString(randomColor.color, withHash: false);
   // final String colorName = randomColor.name ?? '';

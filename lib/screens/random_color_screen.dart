@@ -61,8 +61,8 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
   void _onAction(_AppBarActions action) {
     switch (action) {
       // Open the Color Information screen with the current color
-      case _AppBarActions.colorDetails:
-        gotoColorDetailsRoute(context, _randomColor);
+      case _AppBarActions.colorInfo:
+        gotoColorInfoRoute(context, _randomColor);
         break;
 
       case _AppBarActions.toggleFav:
@@ -125,7 +125,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 /// Enum that defines the actions of the app bar.
 enum _AppBarActions {
   toggleFav,
-  colorDetails,
+  colorInfo,
 }
 
 /// The app bar of the Random Color screen.
@@ -159,9 +159,9 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
           onPressed: () => onAction(_AppBarActions.toggleFav),
         ),
         IconButton(
-          icon: const Icon(Icons.palette_outlined),
+          icon: const Icon(Icons.info_outline),
           tooltip: strings.colorInfoTooltip,
-          onPressed: () => onAction(_AppBarActions.colorDetails),
+          onPressed: () => onAction(_AppBarActions.colorInfo),
         ),
       ],
     );

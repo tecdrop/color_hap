@@ -22,7 +22,7 @@ enum AppDrawerItems {
   randomNamedColor,
   randomAttractiveColor,
   randomTrueColor,
-  colorDetails,
+  colorInfo,
   colorFavorites,
   help,
   viewSource,
@@ -88,10 +88,10 @@ class AppDrawer extends StatelessWidget {
         gotoRandomColorRoute(context, ColorType.trueColor);
         break;
 
-      // Open the Color Details screen with the current random color
-      case AppDrawerItems.colorDetails:
+      // Open the Color Info screen with the current random color
+      case AppDrawerItems.colorInfo:
         Navigator.pop(context);
-        gotoColorDetailsRoute(context, randomColor);
+        gotoColorInfoRoute(context, randomColor);
         break;
 
       // Open the Color Favorites screen
@@ -206,12 +206,12 @@ class AppDrawer extends StatelessWidget {
 
           const Divider(),
 
-          // Color Details drawer item
+          // Color Info drawer item
           _buildItem(
             context,
-            icon: Icons.palette,
-            title: strings.colorDetailsDrawer,
-            item: AppDrawerItems.colorDetails,
+            icon: Icons.info_outline,
+            title: strings.colorInfoDrawer,
+            item: AppDrawerItems.colorInfo,
           ),
 
           // Color Favorites drawer item
