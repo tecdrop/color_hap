@@ -3,40 +3,77 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
+import '../common/app_settings.dart' as settings;
+import '../common/ui_strings.dart';
 import '../models/random_color.dart';
+import '../utils/utils.dart';
+import '../widgets/color_info_list.dart';
 
-class ColorDetailsScreen extends StatelessWidget {
+/// The Color Details screen.
+///
+/// Displays the given [RandomColor] in different formats, and other color information, and allows
+/// the user to toggle the visibility of the color information.
+class ColorDetailsScreen extends StatefulWidget {
   const ColorDetailsScreen({
     super.key,
     required this.randomColor,
   });
 
+  /// The random color to display in the Color Details screen.
   final RandomColor randomColor;
 
   @override
+  State<ColorDetailsScreen> createState() => _ColorDetailsScreenState();
+}
+
+class _ColorDetailsScreenState extends State<ColorDetailsScreen> {
+  /// Toggles the visibility of the color information.
+  void toggleColorInformation() {
+    setState(() {
+      settings.showColorInformation = !settings.showColorInformation;
+    });
+  }
+
+  /// When a color information item is tapped, copy the value to the Clipboard, and show a
+  /// confirmation SnackBar.
+  Future<void> onInfoItemTap(String key, String value) async {
+    ScaffoldMessengerState messengerState = ScaffoldMessenger.of(context);
+    await Clipboard.setData(ClipboardData(text: value));
+    Utils.showSnackBarForAsync(messengerState, UIStrings.copiedSnack(value));
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        backgroundColor: randomColor.color,
-        appBar: AppBar(
-          title: Text(randomColor.title),
-          bottom: const TabBar(
-            indicatorColor: Colors.black,
-            tabs: [
-              Tab(icon: Icon(Icons.fullscreen_outlined, color: Colors.black)),
-              Tab(icon: Icon(Icons.info_outline, color: Colors.black)),
-            ],
-          ),
+    return Scaffold(
+      backgroundColor: widget.randomColor.color,
+      appBar: _buildAppBar(),
+      body: settings.showColorInformation
+          // Show the color information list
+          ? ColorInfoList(
+              randomColor: widget.randomColor,
+              onInfoItemTap: onInfoItemTap,
+            )
+          // Don't show anything, just the color as the background
+          : const SizedBox.shrink(),
+    );
+  }
+
+  /// Builds the app bar for the Color Details screen.
+  PreferredSizeWidget _buildAppBar() {
+    return AppBar(
+      title: const Text(UIStrings.colorDetailsScreenTitle),
+      actions: [
+        // The toggle color information action button
+        IconButton(
+          icon: settings.showColorInformation
+              ? const Icon(Icons.visibility_off_outlined)
+              : const Icon(Icons.visibility_outlined),
+          tooltip: UIStrings.toggleColorInformation,
+          onPressed: toggleColorInformation,
         ),
-        body: const TabBarView(
-          children: [
-            SizedBox.shrink(),
-            Text('Info'),
-          ],
-        ),
-      ),
+      ],
     );
   }
 }

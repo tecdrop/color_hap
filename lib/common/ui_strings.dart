@@ -55,6 +55,13 @@ class UIStrings {
   static const String rateAppDrawer = 'Rate App';
 
   // -----------------------------------------------------------------------------------------------
+  // Color Details Screen
+  // -----------------------------------------------------------------------------------------------
+
+  static const String colorDetailsScreenTitle = 'Color Details';
+  static const String toggleColorInformation = 'Toggle color information';
+
+  // -----------------------------------------------------------------------------------------------
   // Random Color Screen
   // -----------------------------------------------------------------------------------------------
 
