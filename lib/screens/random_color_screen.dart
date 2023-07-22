@@ -40,13 +40,13 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
   // The index of the current color in the favorites list.
   int _colorFavIndex = -1;
 
-  /// Creates the appropriate random color generator and shuffles the color on init state.
-  // @override
-  // void initState() {
-  //   super.initState();
+  /// Generates a new random color on state initialization.
+  @override
+  void initState() {
+    super.initState();
 
-  //   _shuffleColor();
-  // }
+    _shuffleColor();
+  }
 
   @override
   void didUpdateWidget(RandomColorScreen oldWidget) {

@@ -20,6 +20,9 @@ class ColorFavoritesList {
   /// Returns the color at the given [index] in the favorites list.
   RandomColor elementAt(int index) => _list.elementAt(index);
 
+  /// Removes the color at the given [index] from the favorites list.
+  RandomColor removeAt(int index) => _list.removeAt(index);
+
   /// Removes the given [randomColor] from the favorites list if it is already there, or adds it to
   /// the list if it is not.
   ///

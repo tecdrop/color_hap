@@ -8,6 +8,7 @@ import '../common/app_routes.dart';
 import '../common/app_settings.dart' as settings;
 import '../common/ui_strings.dart' as strings;
 import '../models/random_color.dart';
+import '../widgets/color_favorite_list_item.dart';
 
 class ColorFavoritesScreen extends StatefulWidget {
   const ColorFavoritesScreen({super.key});
@@ -34,11 +35,13 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
       itemCount: settings.colorFavoritesList.length,
       itemBuilder: (BuildContext context, int index) {
         RandomColor randomColor = settings.colorFavoritesList.elementAt(index);
-        return ListTile(
-          tileColor: randomColor.color,
-          title: Text(randomColor.title),
-          onTap: () {
-            gotoColorDetailsRoute(context, randomColor, fromFav: true);
+        return ColorFavoriteListItem(
+          randomColor: randomColor,
+          onTap: () => gotoColorDetailsRoute(context, randomColor, fromFav: true),
+          onDeletePressed: () {
+            setState(() {
+              settings.colorFavoritesList.removeAt(index);
+            });
           },
         );
       },

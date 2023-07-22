@@ -72,8 +72,8 @@ const String brightnessInfo = 'Brightness';
 // -----------------------------------------------------------------------------------------------
 
 const String colorInfoTooltip = 'Color information';
-const String addFavTooltip = 'Add this random color to favorites';
-const String removeFavTooltip = 'Remove this random color from favorites';
+const String addFavTooltip = 'Add color to favorites';
+const String removeFavTooltip = 'Remove color from favorites';
 const String shuffleTooltip = 'Get a new random color';
 
 // -----------------------------------------------------------------------------------------------
