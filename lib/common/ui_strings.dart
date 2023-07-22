@@ -61,21 +61,6 @@ class UIStrings {
   static const String colorDetailsScreenTitle = 'Color Details';
   static const String toggleColorInformation = 'Toggle color information';
 
-  // -----------------------------------------------------------------------------------------------
-  // Random Color Screen
-  // -----------------------------------------------------------------------------------------------
-
-  static const String colorInfoTooltip = 'Color information';
-  static const String addFavTooltip = 'Add this random color to favorites';
-  static const String removeFavTooltip = 'Remove this random color from favorites';
-  static const String shuffleTooltip = 'Get a new random color';
-
-  // -----------------------------------------------------------------------------------------------
-  // Color Info Screen
-  // -----------------------------------------------------------------------------------------------
-
-  static const String colorInfoScreenTitle = 'Color Information';
-
   static const String colorNameInfo = 'Name';
   static const String colorTitleInfo = 'Name & Code';
   static const String colorTypeInfo = 'Color type';
@@ -87,9 +72,14 @@ class UIStrings {
   static const String luminanceInfo = 'Luminance';
   static const String brightnessInfo = 'Brightness';
 
-  static const String copyTooltip = 'Copy current info to clipboard';
-  static const String shareTooltip = 'Share current info';
-  static const String searchTooltip = 'Search the current info on the Internet';
+  // -----------------------------------------------------------------------------------------------
+  // Random Color Screen
+  // -----------------------------------------------------------------------------------------------
+
+  static const String colorInfoTooltip = 'Color information';
+  static const String addFavTooltip = 'Add this random color to favorites';
+  static const String removeFavTooltip = 'Remove this random color from favorites';
+  static const String shuffleTooltip = 'Get a new random color';
 
   // -----------------------------------------------------------------------------------------------
   // Invalid Color Screen
