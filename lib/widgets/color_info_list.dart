@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../common/ui_strings.dart' as strings;
 import '../models/random_color.dart';
-import '../utils/color_utils.dart';
+import '../utils/color_utils.dart' as color_utils;
 
 /// A list view of color information items.
 class ColorInfoList extends StatelessWidget {
@@ -26,16 +26,10 @@ class ColorInfoList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color color = randomColor.color;
-    final Color contrastColor = ColorUtils.contrastOf(color);
 
     return ListTileTheme(
-      textColor: contrastColor,
-      // TODO: check out https://api.flutter.dev/flutter/material/ListTile/iconColor.html
-      // iconColor: contrastColor.withOpacity(0.6),
-      // iconColor: contrastColor.withOpacity(0.54),
-      // iconColor: ColorUtils.contrastForIcon(randomColor.color),
-      iconColor: ColorUtils.contrastIconColor(randomColor.color),
-      // iconColor: contrastColor,
+      textColor: color_utils.contrastColor(color),
+      iconColor: color_utils.contrastIconColor(randomColor.color),
       child: ListView(
         children: [
           // Add the color information list items
@@ -43,14 +37,14 @@ class ColorInfoList extends StatelessWidget {
             _buildInfoItem(strings.colorTitleInfo, randomColor.title),
             _buildInfoItem(strings.colorNameInfo, randomColor.name!),
           ],
-          _buildInfoItem(strings.hexInfo, ColorUtils.toHexString(color)),
+          _buildInfoItem(strings.hexInfo, color_utils.toHexString(color)),
           _buildInfoItem(strings.colorTypeInfo, strings.colorType[randomColor.type]!),
-          _buildInfoItem(strings.rgbInfo, ColorUtils.toRGBString(color)),
-          _buildInfoItem(strings.hsvInfo, ColorUtils.toHSVString(color)),
-          _buildInfoItem(strings.hslInfo, ColorUtils.toHSLString(color)),
-          _buildInfoItem(strings.decimalInfo, ColorUtils.toDecimalString(color)),
-          _buildInfoItem(strings.luminanceInfo, ColorUtils.luminanceString(color)),
-          _buildInfoItem(strings.brightnessInfo, ColorUtils.brightnessString(color)),
+          _buildInfoItem(strings.rgbInfo, color_utils.toRGBString(color)),
+          _buildInfoItem(strings.hsvInfo, color_utils.toHSVString(color)),
+          _buildInfoItem(strings.hslInfo, color_utils.toHSLString(color)),
+          _buildInfoItem(strings.decimalInfo, color_utils.toDecimalString(color)),
+          _buildInfoItem(strings.luminanceInfo, color_utils.luminanceString(color)),
+          _buildInfoItem(strings.brightnessInfo, color_utils.brightnessString(color)),
         ],
       ),
     );

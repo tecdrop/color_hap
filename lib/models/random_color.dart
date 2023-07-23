@@ -4,7 +4,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../utils/color_utils.dart';
+import '../utils/color_utils.dart' as color_utils;
 import 'color_type.dart';
 
 /// A random color with a [Color] value, possibly a color name, and a color type.
@@ -28,7 +28,7 @@ class RandomColor {
   ///
   /// Returns the color name and hex code, or only the hex code if the color doesn't have a name.
   String get title {
-    final String hexString = ColorUtils.toHexString(color);
+    final String hexString = color_utils.toHexString(color);
     return name != null ? '$name $hexString' : hexString;
   }
 

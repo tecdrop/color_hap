@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import '../common/app_settings.dart' as settings;
 import '../common/ui_strings.dart' as strings;
 import '../models/random_color.dart';
-import '../utils/utils.dart';
+import '../utils/utils.dart' as utils;
 import '../widgets/color_info_list.dart';
 
 /// The Color Info screen.
@@ -41,7 +41,7 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
   Future<void> onInfoItemTap(String key, String value) async {
     ScaffoldMessengerState messengerState = ScaffoldMessenger.of(context);
     await Clipboard.setData(ClipboardData(text: value));
-    Utils.showSnackBarForAsync(messengerState, strings.copiedSnack(value));
+    utils.showSnackBarForAsync(messengerState, strings.copiedSnack(value));
   }
 
   @override

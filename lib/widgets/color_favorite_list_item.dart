@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../common/ui_strings.dart' as strings;
 import '../models/random_color.dart';
-import '../utils/color_utils.dart';
+import '../utils/color_utils.dart' as color_utils;
 
 class ColorFavoriteListItem extends StatelessWidget {
   const ColorFavoriteListItem({
@@ -25,57 +25,21 @@ class ColorFavoriteListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color contrastColor = ColorUtils.contrastOf(randomColor.color);
-
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32.0),
+      // Fill the tile with the random color, and use the contrast color for the text
       tileColor: randomColor.color,
-      textColor: contrastColor,
-      // title: Text(randomColor.title),
-      // title: Text(randomColor.title, style: const TextStyle(fontSize: 22.0)),
+      textColor: color_utils.contrastColor(randomColor.color),
+      // Random color title and type
       title: Text(randomColor.title, style: const TextStyle(fontSize: 20.0)),
       subtitle: Text(strings.colorType[randomColor.type]!),
+      // The trailing widget is used to display the Delete button
       trailing: IconButton(
-        // TODO: check out https://github.com/flutter/flutter/blob/master/packages/flutter/lib/src/material/expand_icon.dart#L70
-        // icon: Icon(Icons.delete_outline, color: contrastColor),
-        // icon: Icon(Icons.delete_outline, color: contrastColor.withOpacity(0.54)),
-        // icon: Icon(Icons.delete_outline, color: contrastColor.withOpacity(0.60)),
-        // icon: Icon(Icons.delete_outline, color: Colors.black54),
-        // icon: Icon(Icons.delete_outline, color: ColorUtils.contrastForIcon(randomColor.color)),
-        icon: Icon(Icons.delete_outline, color: ColorUtils.contrastIconColor(randomColor.color)),
-        // icon: Icon(Icons.delete_outline),
+        icon: Icon(Icons.delete_outline, color: color_utils.contrastIconColor(randomColor.color)),
         tooltip: strings.removeFavTooltip,
         onPressed: onDeletePressed,
       ),
       onTap: onTap,
     );
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   final Color contrastColor = ColorUtils.contrastOf(randomColor.color);
-
-  //   final TextStyle largeTextStyle =
-  //       Theme.of(context).textTheme.headlineSmall!.copyWith(color: contrastColor);
-  //   final TextStyle smallTextStyle =
-  //       Theme.of(context).textTheme.titleSmall!.copyWith(color: contrastColor);
-
-  //   return Container(
-  //     color: randomColor.color,
-  //     padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32.0),
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         if (randomColor.name != null) Text(randomColor.name!, style: largeTextStyle),
-  //         Text(ColorUtils.toHexString(randomColor.color), style: largeTextStyle),
-  //         Text(strings.colorType[randomColor.type]!, style: smallTextStyle),
-  //         const SizedBox(height: 16),
-  //         IconButton(
-  //           icon: Icon(Icons.delete, color: contrastColor),
-  //           onPressed: () {},
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 }

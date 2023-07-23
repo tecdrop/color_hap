@@ -10,11 +10,11 @@ import 'package:go_router/go_router.dart';
 import '../common/app_settings.dart' as app_settings;
 import '../models/color_type.dart';
 import '../models/random_color.dart';
-import '../screens/color_info_screen.dart';
 import '../screens/color_favorites_screen.dart';
+import '../screens/color_info_screen.dart';
 import '../screens/invalid_color_screen.dart';
 import '../screens/random_color_screen.dart';
-import '../utils/color_utils.dart';
+import '../utils/color_utils.dart' as color_utils;
 
 /// The route configuration for the app.
 final GoRouter appRouter = GoRouter(
@@ -80,7 +80,7 @@ void gotoRandomColorRoute(BuildContext context, ColorType colorType) {
 Widget _colorInfoRouteBuilder(BuildContext context, GoRouterState state) {
   ColorType colorType = parseColorType(state.pathParameters['colorType']);
   String? colorCode = state.pathParameters['colorHex'];
-  Color? color = ColorUtils.rgbHexToColor(colorCode);
+  Color? color = color_utils.rgbHexToColor(colorCode);
   String? colorName = state.pathParameters['colorName'];
 
   // If the color code is invalid, return the Invalid Color screen
@@ -100,7 +100,7 @@ Widget _colorInfoRouteBuilder(BuildContext context, GoRouterState state) {
 /// Navigates to the Color Info screen to show information about the specified color.
 void gotoColorInfoRoute(BuildContext context, RandomColor randomColor, {bool fromFav = false}) {
   final String colorType = colorTypeToString(randomColor.type);
-  final String colorCode = ColorUtils.toHexString(randomColor.color, withHash: false);
+  final String colorCode = color_utils.toHexString(randomColor.color, withHash: false);
   // final String colorName = randomColor.name ?? '';
   context.go('${fromFav ? '/fav' : ''}/color/$colorType/$colorCode/${randomColor.name}');
   // context.go('${fromFav ? '/fav' : ''}/color/$colorType/$colorCode/$colorName');

@@ -5,7 +5,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/random_color.dart';
-import '../utils/color_utils.dart';
+import '../utils/color_utils.dart' as color_utils;
 
 /// A widget that displays the hex code and optional name of a random color.
 class ColorDisplay extends StatelessWidget {
@@ -16,7 +16,7 @@ class ColorDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color contrastColor = ColorUtils.contrastOf(randomColor.color);
+    final Color contrastColor = color_utils.contrastColor(randomColor.color);
     final TextTheme textTheme = Theme.of(context).textTheme;
     final TextStyle? hexTestStyle =
         randomColor.name != null ? textTheme.titleMedium : textTheme.headlineMedium;
@@ -28,7 +28,7 @@ class ColorDisplay extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            ColorUtils.toHexString(randomColor.color),
+            color_utils.toHexString(randomColor.color),
             style: hexTestStyle?.copyWith(color: contrastColor),
             textAlign: TextAlign.center,
           ),
