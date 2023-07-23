@@ -1,8 +1,10 @@
 {
   "dart.lineLength": 100,
   "cSpell.words": [
-    "Tecdrop",
     "colorhap",
-    "fullscreen"
+    "consts",
+    "fullscreen",
+    "noname",
+    "Tecdrop"
   ]
 }

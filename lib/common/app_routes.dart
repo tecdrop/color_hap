@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
 
-import '../common/app_settings.dart' as app_settings;
+import '../common/app_const.dart' as consts;
+import '../common/app_settings.dart' as settings;
 import '../models/color_type.dart';
 import '../models/random_color.dart';
 import '../screens/color_favorites_screen.dart';
@@ -56,19 +57,19 @@ final GoRouter appRouter = GoRouter(
 /// The route builder for the Random Color screen.
 Widget _randomColorRouteBuilder(BuildContext context, GoRouterState state) {
   return RandomColorScreen(
-    colorType: app_settings.colorType,
+    colorType: settings.colorType,
   );
 }
 
 /// The route redirect for the Random Color screen, when the color type is specified in the route.
 FutureOr<String?> _randomColorRouteRedirect(BuildContext context, GoRouterState state) {
-  app_settings.colorType = parseColorType(state.pathParameters['colorType']);
+  settings.colorType = parseColorType(state.pathParameters['colorType']);
   return '/';
 }
 
 /// Navigates to the Random Color screen to generate random colors of the specified type.
 void gotoRandomColorRoute(BuildContext context, ColorType colorType) {
-  app_settings.colorType = colorType;
+  settings.colorType = colorType;
   context.go('/${colorTypeToString(colorType)}');
 }
 
@@ -92,7 +93,7 @@ Widget _colorInfoRouteBuilder(BuildContext context, GoRouterState state) {
     randomColor: RandomColor(
       color: color,
       type: colorType,
-      name: colorName,
+      name: colorName != consts.noNameColorParam ? colorName : null,
     ),
   );
 }
@@ -101,9 +102,9 @@ Widget _colorInfoRouteBuilder(BuildContext context, GoRouterState state) {
 void gotoColorInfoRoute(BuildContext context, RandomColor randomColor, {bool fromFav = false}) {
   final String colorType = colorTypeToString(randomColor.type);
   final String colorCode = color_utils.toHexString(randomColor.color, withHash: false);
-  // final String colorName = randomColor.name ?? '';
-  context.go('${fromFav ? '/fav' : ''}/color/$colorType/$colorCode/${randomColor.name}');
-  // context.go('${fromFav ? '/fav' : ''}/color/$colorType/$colorCode/$colorName');
+  final String colorName = randomColor.name ?? consts.noNameColorParam;
+  // context.go('${fromFav ? '/fav' : ''}/color/$colorType/$colorCode/${randomColor.name}');
+  context.go('${fromFav ? '/fav' : ''}/color/$colorType/$colorCode/$colorName');
 }
 
 // -----------------------------------------------------------------------------------------------

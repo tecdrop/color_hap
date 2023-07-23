@@ -55,6 +55,7 @@ const String rateAppDrawer = 'Rate App';
 
 const String colorInfoScreenTitle = 'Color Information';
 const String toggleColorInformation = 'Toggle color information';
+const String webSearchColor = 'Search color on the web';
 
 const String colorNameInfo = 'Name';
 const String colorTitleInfo = 'Name & Code';
