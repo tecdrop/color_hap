@@ -23,6 +23,9 @@ class ColorFavoritesList {
   /// Removes the color at the given [index] from the favorites list.
   RandomColor removeAt(int index) => _list.removeAt(index);
 
+  /// Clears the favorites list.
+  void clear() => _list.clear();
+
   /// Removes the given [randomColor] from the favorites list if it is already there, or adds it to
   /// the list if it is not.
   ///

@@ -45,6 +45,11 @@ class ColorHapApp extends StatelessWidget {
           selectedTileColor: Colors.grey[300],
           selectedColor: Colors.black,
         ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.black,
+          ),
+        ),
       ),
     );
   }

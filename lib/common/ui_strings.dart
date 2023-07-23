@@ -89,3 +89,7 @@ String invalidColor(String? colorCode) => 'Invalid color code: $colorCode';
 
 const String favoriteColorsScreenTitle = 'Favorite Colors';
 const String noFavoritesMessage = 'No favorite colors yet';
+const String clearFavorites = 'Clear favorites';
+const String clearFavoritesDialogTitle = 'Clear favorites?';
+const String clearFavoritesDialogMessage = 'This will remove all colors from your favorites list.';
+const String clearFavoritesDialogPositiveAction = 'Clear';
