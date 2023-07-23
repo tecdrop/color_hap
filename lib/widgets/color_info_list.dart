@@ -31,8 +31,10 @@ class ColorInfoList extends StatelessWidget {
     return ListTileTheme(
       textColor: contrastColor,
       // TODO: check out https://api.flutter.dev/flutter/material/ListTile/iconColor.html
+      // iconColor: contrastColor.withOpacity(0.6),
       // iconColor: contrastColor.withOpacity(0.54),
-      iconColor: ColorUtils.contrastForIcon(randomColor.color),
+      // iconColor: ColorUtils.contrastForIcon(randomColor.color),
+      iconColor: ColorUtils.contrastIconColor(randomColor.color),
       // iconColor: contrastColor,
       child: ListView(
         children: [
