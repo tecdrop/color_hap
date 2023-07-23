@@ -15,6 +15,12 @@ class ColorUtils {
   static Color contrastOf(Color color) =>
       ThemeData.estimateBrightnessForColor(color) == Brightness.light ? Colors.black : Colors.white;
 
+  // TODO: check out https://github.com/flutter/flutter/blob/master/packages/flutter/lib/src/material/expand_icon.dart#L70
+  static Color contrastForIcon(Color color) =>
+      ThemeData.estimateBrightnessForColor(color) == Brightness.light
+          ? Colors.black54
+          : Colors.white60;
+
   /// Returns the hexadecimal string representation of the given [Color].
   static String toHexString(Color color, {bool withHash = true}) {
     final String hex = (color.value & 0xFFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase();

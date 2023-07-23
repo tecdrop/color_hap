@@ -36,7 +36,13 @@ class ColorFavoriteListItem extends StatelessWidget {
       title: Text(randomColor.title, style: const TextStyle(fontSize: 20.0)),
       subtitle: Text(strings.colorType[randomColor.type]!),
       trailing: IconButton(
-        icon: Icon(Icons.delete_outline, color: contrastColor),
+        // TODO: check out https://github.com/flutter/flutter/blob/master/packages/flutter/lib/src/material/expand_icon.dart#L70
+        // icon: Icon(Icons.delete_outline, color: contrastColor),
+        // icon: Icon(Icons.delete_outline, color: contrastColor.withOpacity(0.54)),
+        // icon: Icon(Icons.delete_outline, color: contrastColor.withOpacity(0.46)),
+        // icon: Icon(Icons.delete_outline, color: Colors.black54),
+        icon: Icon(Icons.delete_outline, color: ColorUtils.contrastForIcon(randomColor.color)),
+        // icon: Icon(Icons.delete_outline),
         tooltip: strings.removeFavTooltip,
         onPressed: onDeletePressed,
       ),

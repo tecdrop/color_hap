@@ -14,14 +14,14 @@ class ColorInfoList extends StatelessWidget {
   const ColorInfoList({
     super.key,
     required this.randomColor,
-    this.onInfoItemTap,
+    this.onCopyPressed,
   });
 
   /// The random color whose information is displayed in the list.
   final RandomColor randomColor;
 
-  /// A callback function that is called when a color information item is tapped.
-  final Function(String key, String value)? onInfoItemTap;
+  /// A callback function that is called when the copy button of an info item is pressed.
+  final Function(String key, String value)? onCopyPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +30,10 @@ class ColorInfoList extends StatelessWidget {
 
     return ListTileTheme(
       textColor: contrastColor,
+      // TODO: check out https://api.flutter.dev/flutter/material/ListTile/iconColor.html
+      // iconColor: contrastColor.withOpacity(0.54),
+      iconColor: ColorUtils.contrastForIcon(randomColor.color),
+      // iconColor: contrastColor,
       child: ListView(
         children: [
           // Add the color information list items
@@ -56,7 +60,10 @@ class ColorInfoList extends StatelessWidget {
       contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       title: Text(value, style: const TextStyle(fontSize: 20.0)),
       subtitle: Text(key),
-      onTap: () => onInfoItemTap?.call(key, value),
+      trailing: IconButton(
+        icon: const Icon(Icons.content_copy_outlined),
+        onPressed: () => onCopyPressed?.call(key, value),
+      ),
     );
   }
 }

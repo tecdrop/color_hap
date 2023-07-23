@@ -53,7 +53,7 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
           // Show the color information list
           ? ColorInfoList(
               randomColor: widget.randomColor,
-              onInfoItemTap: onInfoItemTap,
+              onCopyPressed: onInfoItemTap,
             )
           // Don't show anything, just the color as the background
           : const SizedBox.shrink(),
