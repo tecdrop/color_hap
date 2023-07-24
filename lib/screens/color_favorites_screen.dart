@@ -11,6 +11,9 @@ import '../models/random_color.dart';
 import '../widgets/color_favorite_list_item.dart';
 import '../widgets/confirmation_dialog_box.dart';
 
+/// The storage bucket used to store the scroll position of the list of favorite colors.
+final PageStorageBucket colorReferenceBucket = PageStorageBucket();
+
 /// The Color Favorites screen.
 ///
 /// Displays the list of favorite colors. The user can tap on a color to view its information, or
@@ -27,14 +30,14 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
   Future<void> _onAppBarAction(_AppBarActions action) async {
     switch (action) {
       // Clears all the favorite colors
-      case _AppBarActions.clearAll:
-        if (await showConfirmationDialogBox(
-              context,
-              title: strings.clearFavoritesDialogTitle,
-              content: strings.clearFavoritesDialogMessage,
-              positiveActionText: strings.clearFavoritesDialogPositiveAction,
-            ) ==
-            true) {
+      case _AppBarActions.clearFavorites:
+        bool? showConfirmation = await showConfirmationDialogBox(
+          context,
+          title: strings.clearFavoritesDialogTitle,
+          content: strings.clearFavoritesDialogMessage,
+          positiveActionText: strings.clearFavoritesDialogPositiveAction,
+        );
+        if (showConfirmation == true) {
           setState(() {
             settings.colorFavoritesList.clear();
           });
@@ -45,22 +48,30 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _AppBar(
-        title: const Text(strings.favoriteColorsScreenTitle),
-        onAction: _onAppBarAction,
+    // Use a [PageStorage] widget to store / restore the scroll position of the favorites list view
+    // while the app is running.
+    return PageStorage(
+      bucket: colorReferenceBucket,
+      child: Scaffold(
+        appBar: _AppBar(
+          title: const Text(strings.favoriteColorsScreenTitle),
+          clearEnabled: settings.colorFavoritesList.length > 0,
+          onAction: _onAppBarAction,
+        ),
+        body: settings.colorFavoritesList.length > 0
+            ? _buildFavoritesListView()
+            : _buildNoFavoritesMessage(),
       ),
-      body: settings.colorFavoritesList.length > 0
-          ? _buildFavoritesListView()
-          : _buildNoFavoritesMessage(),
     );
   }
 
   /// Builds the list of favorite colors.
   Widget _buildFavoritesListView() {
     return ListView.builder(
+      key: const PageStorageKey<String>('favoritesListView'),
       itemCount: settings.colorFavoritesList.length,
       itemBuilder: (BuildContext context, int index) {
+        // Build a list item for each favorite color
         RandomColor randomColor = settings.colorFavoritesList.elementAt(index);
         return ColorFavoriteListItem(
           randomColor: randomColor,
@@ -96,7 +107,7 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
 
 /// Enum that defines the actions of the app bar.
 enum _AppBarActions {
-  clearAll,
+  clearFavorites,
 }
 
 /// The app bar of the Color Info screen.
@@ -105,10 +116,14 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
     Key? key,
     required this.title,
     required this.onAction,
+    this.clearEnabled = true,
   }) : super(key: key);
 
   /// The primary widget displayed in the app bar.
   final Widget? title;
+
+  /// Whether the clear favorites action is enabled.
+  final bool clearEnabled;
 
   /// The callback that is called when an app bar action is pressed.
   final void Function(_AppBarActions action) onAction;
@@ -124,10 +139,11 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
         PopupMenuButton<_AppBarActions>(
           onSelected: onAction,
           itemBuilder: (BuildContext context) => <PopupMenuEntry<_AppBarActions>>[
-            // The web search action
-            const PopupMenuItem<_AppBarActions>(
-              value: _AppBarActions.clearAll,
-              child: Text(strings.clearFavorites),
+            // The clear favorites action
+            PopupMenuItem<_AppBarActions>(
+              value: _AppBarActions.clearFavorites,
+              enabled: clearEnabled,
+              child: const Text(strings.clearFavorites),
             ),
           ],
         ),
