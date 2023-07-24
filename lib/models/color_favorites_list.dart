@@ -40,7 +40,7 @@ class ColorFavoritesList {
   /// The optional [index] parameter can be used to specify the color index in the favorites list.
   int toggle(RandomColor randomColor, {int? index}) {
     index ??= indexOf(randomColor);
-    if (index >= 0) {
+    if (index >= 0 && index < _list.length) {
       _list.removeAt(index);
       return -1;
     } else {

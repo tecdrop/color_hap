@@ -104,6 +104,9 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         drawer: AppDrawer(
           randomColor: _randomColor,
           colorType: widget.colorType,
+          onShouldUpdateState: () => setState(() {
+            _colorFavIndex = settings.colorFavoritesList.indexOf(_randomColor);
+          }),
         ),
 
         // A simple body with the centered color display

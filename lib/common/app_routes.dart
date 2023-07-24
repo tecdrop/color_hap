@@ -134,6 +134,6 @@ Widget _colorFavoritesRouteBuilder(BuildContext context, GoRouterState state) {
 }
 
 /// Navigates to the Color Favorites screen to show the list of favorite colors.
-void gotoColorFavoritesRoute(BuildContext context) {
-  context.go('/fav');
+Future<void> gotoColorFavoritesRoute(BuildContext context) async {
+  return await context.push<void>('/fav');
 }

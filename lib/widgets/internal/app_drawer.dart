@@ -35,6 +35,7 @@ class AppDrawer extends StatelessWidget {
     Key? key,
     required this.randomColor,
     required this.colorType,
+    this.onShouldUpdateState,
   }) : super(key: key);
 
   /// The current random color.
@@ -42,6 +43,9 @@ class AppDrawer extends StatelessWidget {
 
   /// The current type of random colors generated in the Random Color screen.
   final ColorType colorType;
+
+  /// A callback function that is called when the the screen that opened the drawer should update.
+  final void Function()? onShouldUpdateState;
 
   /// Starts a specific functionality of the app when the user taps a drawer [item].
   void _onItemTap(BuildContext context, AppDrawerItems item) {
@@ -96,8 +100,11 @@ class AppDrawer extends StatelessWidget {
 
       // Open the Color Favorites screen
       case AppDrawerItems.colorFavorites:
-        Navigator.pop(context);
-        gotoColorFavoritesRoute(context);
+        (() async {
+          Navigator.pop(context);
+          await gotoColorFavoritesRoute(context);
+          onShouldUpdateState?.call();
+        }());
         break;
 
       // Launch the external Online Help url
