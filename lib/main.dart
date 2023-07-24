@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'common/app_routes.dart';
 import 'common/app_settings.dart' as app_settings;
+import 'common/app_theme.dart';
 import 'common/ui_strings.dart' as strings;
 
 Future<void> main() async {
@@ -28,29 +29,36 @@ class ColorHapApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      routerConfig: appRouter,
       title: strings.appName,
       debugShowCheckedModeBanner: false,
 
+      // The app routes configuration
+      routerConfig: appRouter,
+
       // A black on white theme to go with the color intensive interface of the app
-      theme: ThemeData(
-        primaryColor: Colors.black,
-        colorScheme: ColorScheme.light(
-          primary: Colors.white,
-          onPrimary: Colors.black,
-          secondary: const ColorScheme.light().surface,
-          onSecondary: const ColorScheme.light().onSurface,
-        ),
-        listTileTheme: ListTileThemeData(
-          selectedTileColor: Colors.grey[300],
-          selectedColor: Colors.black,
-        ),
-        textButtonTheme: TextButtonThemeData(
-          style: TextButton.styleFrom(
-            foregroundColor: Colors.black,
-          ),
-        ),
-      ),
+      theme: getAppTheme(false),
+
+      // On dark mode, use a white on black theme
+      darkTheme: getAppTheme(true),
+
+      // theme: ThemeData(
+      //   primaryColor: Colors.black,
+      //   colorScheme: ColorScheme.light(
+      //     primary: Colors.white,
+      //     onPrimary: Colors.black,
+      //     secondary: const ColorScheme.light().surface,
+      //     onSecondary: const ColorScheme.light().onSurface,
+      //   ),
+      //   listTileTheme: ListTileThemeData(
+      //     selectedTileColor: Colors.grey[300],
+      //     selectedColor: Colors.black,
+      //   ),
+      //   textButtonTheme: TextButtonThemeData(
+      //     style: TextButton.styleFrom(
+      //       foregroundColor: Colors.black,
+      //     ),
+      //   ),
+      // ),
     );
   }
 }
