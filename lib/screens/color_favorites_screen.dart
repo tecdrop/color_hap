@@ -38,12 +38,29 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
           positiveActionText: strings.clearFavoritesDialogPositiveAction,
         );
         if (showConfirmation == true) {
-          setState(() {
-            settings.colorFavoritesList.clear();
-          });
+          setState(() => settings.colorFavoritesList.clear());
         }
         break;
     }
+  }
+
+  /// Deletes the favorite color at the given [index] from the list.
+  ///
+  /// Also displays a snackbar with an undo action.
+  void _deleteFavoriteColor(int index) {
+    // First remove the color from the list
+    late final RandomColor randomColor;
+    setState(() => randomColor = settings.colorFavoritesList.removeAt(index));
+
+    // Then display a snackbar with an undo action
+    final snackBar = SnackBar(
+      content: const Text(strings.removedFromFavorites),
+      action: SnackBarAction(
+        label: strings.undoRemoveFromFavorites,
+        onPressed: () => setState(() => settings.colorFavoritesList.insert(index, randomColor)),
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   @override
@@ -76,11 +93,7 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
         return ColorFavoriteListItem(
           randomColor: randomColor,
           onTap: () => gotoColorInfoRoute(context, randomColor, fromFav: true),
-          onDeletePressed: () {
-            setState(() {
-              settings.colorFavoritesList.removeAt(index);
-            });
-          },
+          onDeletePressed: () => _deleteFavoriteColor(index),
         );
       },
     );
