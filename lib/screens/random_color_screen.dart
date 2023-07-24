@@ -48,6 +48,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
     _shuffleColor();
   }
 
+  /// Generates a new random color if the color type has changed.
   @override
   void didUpdateWidget(RandomColorScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -60,16 +61,16 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
   /// Performs the actions of the app bar.
   void _onAction(_AppBarActions action) {
     switch (action) {
-      // Open the Color Information screen with the current color
-      case _AppBarActions.colorInfo:
-        gotoColorInfoRoute(context, _randomColor);
-        break;
-
       case _AppBarActions.toggleFav:
+        // Toggle the current color in the favorites list
         setState(() {
           _colorFavIndex = settings.colorFavoritesList.toggle(_randomColor, index: _colorFavIndex);
           settings.saveColorFavoritesList();
         });
+        break;
+      // Open the Color Information screen with the current color
+      case _AppBarActions.colorInfo:
+        gotoColorInfoRoute(context, _randomColor);
         break;
     }
   }
@@ -77,9 +78,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
   /// Generates a new random color.
   void _shuffleColor() {
     final RandomColor randomColor = nextRandomColor(widget.colorType);
-
     _colorFavIndex = settings.colorFavoritesList.indexOf(randomColor);
-    // _colorFavIndex = app_settings.favList.indexWhere((element) => element == randomColor);
     setState(() {
       _randomColor = randomColor;
     });

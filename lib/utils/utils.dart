@@ -51,7 +51,8 @@ Future<void> copyToClipboard(BuildContext context, String value) async {
 ///
 /// Shows an error [SnackBar] if there is no support for launching the URL.
 Future<void> launchUrlExternal(BuildContext context, String url) async {
+  ScaffoldMessengerState messengerState = ScaffoldMessenger.of(context);
   if (!await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication)) {
-    showSnackBar(context, 'Failed to open $url');
+    showSnackBarForAsync(messengerState, 'Failed to open $url');
   }
 }

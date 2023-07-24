@@ -6,7 +6,9 @@ import 'dart:convert';
 
 import 'package:color_hap/models/random_color.dart';
 
+/// A list of favorite random colors.
 class ColorFavoritesList {
+  /// The list of [RandomColor] objects in the favorites list.
   final List<RandomColor> _list = <RandomColor>[];
 
   /// The number of colors in the favorites list.
@@ -47,10 +49,13 @@ class ColorFavoritesList {
     }
   }
 
+  /// Returns a list of JSON string representations of the colors in this [ColorFavoritesList].
   List<String> toJsonStringList() {
     return _list.map((RandomColor color) => jsonEncode(color.toJson())).toList();
   }
 
+  /// Loads the colors in this [ColorFavoritesList] from the given list of JSON string
+  /// representations.
   void loadFromJsonStringList(List<String>? jsonStringList) {
     if (jsonStringList == null) return;
 

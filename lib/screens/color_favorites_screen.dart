@@ -30,6 +30,12 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
   /// Performs the specified action on the app bar.
   Future<void> _onAppBarAction(_AppBarActions action) async {
     switch (action) {
+      // Exports the favorite colors as a CSV file
+      case _AppBarActions.exportFavoritesAsCsv:
+        ScaffoldMessengerState messengerState = ScaffoldMessenger.of(context);
+        await utils.copyToClipboard(context, settings.colorFavoritesList.toCsvString());
+        utils.showSnackBarForAsync(messengerState, strings.favoritesExported);
+        break;
       // Clears all the favorite colors
       case _AppBarActions.clearFavorites:
         bool? showConfirmation = await showConfirmationDialogBox(
@@ -41,12 +47,6 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
         if (showConfirmation == true) {
           setState(() => settings.colorFavoritesList.clear());
         }
-        break;
-      // Exports the favorite colors as a CSV file
-      case _AppBarActions.exportFavoritesAsCsv:
-        ScaffoldMessengerState messengerState = ScaffoldMessenger.of(context);
-        await utils.copyToClipboard(context, settings.colorFavoritesList.toCsvString());
-        utils.showSnackBarForAsync(messengerState, strings.favoritesExported);
         break;
     }
   }

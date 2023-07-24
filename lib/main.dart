@@ -5,7 +5,7 @@
 import 'package:flutter/material.dart';
 
 import 'common/app_routes.dart';
-import 'common/app_settings.dart' as app_settings;
+import 'common/app_settings.dart' as settings;
 import 'common/app_theme.dart';
 import 'common/ui_strings.dart' as strings;
 
@@ -14,7 +14,7 @@ Future<void> main() async {
 
   // First try to load the app settings from Shared Preferences
   await Future.any([
-    app_settings.loadSettings(),
+    settings.loadSettings(),
     Future.delayed(const Duration(seconds: 5)),
   ]);
 

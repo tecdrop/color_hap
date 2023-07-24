@@ -27,11 +27,13 @@ class ColorDisplay extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          // Display the color hex code
           Text(
             color_utils.toHexString(randomColor.color),
             style: hexTestStyle?.copyWith(color: contrastColor),
             textAlign: TextAlign.center,
           ),
+          // Display the color name if it is not null
           if (randomColor.name != null)
             Text(
               randomColor.name!,
