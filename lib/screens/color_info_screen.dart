@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../common/app_settings.dart' as settings;
-import '../common/app_urls.dart';
+import '../common/app_urls.dart' as urls;
 import '../common/ui_strings.dart' as strings;
 import '../models/random_color.dart';
 import '../utils/utils.dart' as utils;
@@ -41,7 +41,7 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
         break;
       // Opens the web browser to search for the current color
       case _AppBarActions.webSearch:
-        final String url = AppUrls.onlineSearch + Uri.encodeComponent(widget.randomColor.title);
+        final String url = urls.onlineSearch + Uri.encodeComponent(widget.randomColor.title);
         utils.launchUrlExternal(context, url);
         break;
     }

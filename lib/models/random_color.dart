@@ -67,7 +67,6 @@ class RandomColor {
 
   /// Converts this [RandomColor] to a CSV string.
   String toCsvString() {
-    // return '${color_utils.toHexString(color)},${name ?? ''},${type.toShortString()}';
     return [
       color_utils.toHexString(color),
       name ?? '',

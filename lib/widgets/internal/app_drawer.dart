@@ -5,7 +5,7 @@
 import 'package:flutter/material.dart';
 
 import '../../common/app_routes.dart';
-import '../../common/app_urls.dart';
+import '../../common/app_urls.dart' as urls;
 import '../../common/ui_strings.dart' as strings;
 import '../../models/color_type.dart';
 import '../../models/random_color_generator.dart';
@@ -49,7 +49,7 @@ class AppDrawer extends StatelessWidget {
       // Launch the external RGB Color Wallpaper Pro url
       case AppDrawerItems.setWallpaper:
         Navigator.pop(context);
-        utils.launchUrlExternal(context, AppUrls.setWallpaper);
+        utils.launchUrlExternal(context, urls.setWallpaper);
         break;
 
       // Reopen the Random Color screen for generating random colors (of any type)
@@ -103,19 +103,19 @@ class AppDrawer extends StatelessWidget {
       // Launch the external Online Help url
       case AppDrawerItems.help:
         Navigator.pop(context);
-        utils.launchUrlExternal(context, AppUrls.help);
+        utils.launchUrlExternal(context, urls.help);
         break;
 
       // Launch the external View Source url
       case AppDrawerItems.viewSource:
         Navigator.pop(context);
-        utils.launchUrlExternal(context, AppUrls.viewSource);
+        utils.launchUrlExternal(context, urls.viewSource);
         break;
 
       // Launch the external Rate App url
       case AppDrawerItems.rateApp:
         Navigator.pop(context);
-        utils.launchUrlExternal(context, AppUrls.rate);
+        utils.launchUrlExternal(context, urls.rate);
         break;
     }
   }

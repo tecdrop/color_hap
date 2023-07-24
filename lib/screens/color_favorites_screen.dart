@@ -79,7 +79,7 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
       child: Scaffold(
         appBar: _AppBar(
           title: const Text(strings.favoriteColorsScreenTitle),
-          clearEnabled: settings.colorFavoritesList.length > 0,
+          haveFavorites: settings.colorFavoritesList.length > 0,
           onAction: _onAppBarAction,
         ),
         body: settings.colorFavoritesList.length > 0
@@ -137,14 +137,14 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
     Key? key,
     required this.title,
     required this.onAction,
-    this.clearEnabled = true,
+    this.haveFavorites = true,
   }) : super(key: key);
 
   /// The primary widget displayed in the app bar.
   final Widget? title;
 
   /// Whether the clear favorites action is enabled.
-  final bool clearEnabled;
+  final bool haveFavorites;
 
   /// The callback that is called when an app bar action is pressed.
   final void Function(_AppBarActions action) onAction;
@@ -160,17 +160,18 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
         PopupMenuButton<_AppBarActions>(
           onSelected: onAction,
           itemBuilder: (BuildContext context) => <PopupMenuEntry<_AppBarActions>>[
+            // The export as CSV action
+            PopupMenuItem<_AppBarActions>(
+              value: _AppBarActions.exportFavoritesAsCsv,
+              enabled: haveFavorites,
+              child: const Text(strings.exportFavoritesAsCsv),
+            ),
+            const PopupMenuDivider(),
             // The clear favorites action
             PopupMenuItem<_AppBarActions>(
               value: _AppBarActions.clearFavorites,
-              enabled: clearEnabled,
+              enabled: haveFavorites,
               child: const Text(strings.clearFavorites),
-            ),
-            const PopupMenuDivider(),
-            // The export as CSV action
-            const PopupMenuItem<_AppBarActions>(
-              value: _AppBarActions.exportFavoritesAsCsv,
-              child: Text(strings.exportFavoritesAsCsv),
             ),
           ],
         ),

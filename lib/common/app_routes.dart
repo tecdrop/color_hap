@@ -20,7 +20,7 @@ import '../utils/color_utils.dart' as color_utils;
 /// The route configuration for the app.
 final GoRouter appRouter = GoRouter(
   routes: <RouteBase>[
-    // The root route of the app is the Random Color screen
+    // The home route of the app is the Random Color screen
     GoRoute(
       path: '/',
       builder: _randomColorRouteBuilder,
@@ -30,11 +30,12 @@ final GoRouter appRouter = GoRouter(
           path: 'color/:colorType/:colorHex/:colorName',
           builder: _colorInfoRouteBuilder,
         ),
+        // The child route for the Favorite Colors screen
         GoRoute(
           path: 'fav',
           builder: _colorFavoritesRouteBuilder,
           routes: [
-            // The child route for the Color Info screen
+            // The child route for the Color Info screen (from the Favorite Colors screen)
             GoRoute(
               path: 'color/:colorType/:colorHex/:colorName',
               builder: _colorInfoRouteBuilder,
@@ -43,6 +44,7 @@ final GoRouter appRouter = GoRouter(
         ),
       ],
     ),
+    // The route for the Random Color screen, when the color type is specified in the route
     GoRoute(
       path: '/:colorType',
       redirect: _randomColorRouteRedirect,
@@ -51,10 +53,10 @@ final GoRouter appRouter = GoRouter(
 );
 
 // -----------------------------------------------------------------------------------------------
-// Random Color Route
+// Random Color Route (Home)
 // -----------------------------------------------------------------------------------------------
 
-/// The route builder for the Random Color screen.
+/// The route builder for the Random Color screen, which is the home screen of the app.
 Widget _randomColorRouteBuilder(BuildContext context, GoRouterState state) {
   return RandomColorScreen(
     colorType: settings.colorType,
@@ -63,7 +65,6 @@ Widget _randomColorRouteBuilder(BuildContext context, GoRouterState state) {
 
 /// The route redirect for the Random Color screen, when the color type is specified in the route.
 FutureOr<String?> _randomColorRouteRedirect(BuildContext context, GoRouterState state) {
-  // settings.colorType = parseColorType(state.pathParameters['colorType']);
   settings.colorType = ColorType.fromShortString(state.pathParameters['colorType']);
   return '/';
 }
@@ -71,7 +72,6 @@ FutureOr<String?> _randomColorRouteRedirect(BuildContext context, GoRouterState 
 /// Navigates to the Random Color screen to generate random colors of the specified type.
 void gotoRandomColorRoute(BuildContext context, ColorType colorType) {
   settings.colorType = colorType;
-  // context.go('/${colorTypeToString(colorType)}');
   context.go('/${colorType.toShortString()}');
 }
 
@@ -81,7 +81,6 @@ void gotoRandomColorRoute(BuildContext context, ColorType colorType) {
 
 /// The route builder for the Color Info screen.
 Widget _colorInfoRouteBuilder(BuildContext context, GoRouterState state) {
-  // ColorType colorType = parseColorType(state.pathParameters['colorType']);
   ColorType colorType = ColorType.fromShortString(state.pathParameters['colorType']);
   String? colorCode = state.pathParameters['colorHex'];
   Color? color = color_utils.rgbHexToColor(colorCode);
@@ -103,11 +102,9 @@ Widget _colorInfoRouteBuilder(BuildContext context, GoRouterState state) {
 
 /// Navigates to the Color Info screen to show information about the specified color.
 void gotoColorInfoRoute(BuildContext context, RandomColor randomColor, {bool fromFav = false}) {
-  // final String colorType = colorTypeToString(randomColor.type);
   final String colorType = randomColor.type.toShortString();
   final String colorCode = color_utils.toHexString(randomColor.color, withHash: false);
   final String colorName = randomColor.name ?? consts.noNameColorParam;
-  // context.go('${fromFav ? '/fav' : ''}/color/$colorType/$colorCode/${randomColor.name}');
   context.go('${fromFav ? '/fav' : ''}/color/$colorType/$colorCode/$colorName');
 }
 

@@ -22,6 +22,7 @@ final Random _random = _createRandom();
 /// mixed random colors.
 final List<ColorType> _typeWeights = _initTypeWeights();
 
+/// Creates a secure or insecure random number generator depending on the given [secure] parameter.
 Random _createRandom({bool secure = true}) {
   Random random;
   try {
@@ -33,6 +34,8 @@ Random _createRandom({bool secure = true}) {
   return random;
 }
 
+/// Initializes the subjective list of [ColorType]s used to give some color types more "weight"
+/// when generating mixed random colors.
 List<ColorType> _initTypeWeights() {
   final List<ColorType> typeWeights = [];
 

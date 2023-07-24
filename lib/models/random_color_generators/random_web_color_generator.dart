@@ -2,7 +2,8 @@
 // Use of this source code is governed by an MIT-style license that can be
 // found in the LICENSE file.
 
-// This file implements a generator of random web colors (CSS named colors).
+/// Implements a generator of random web colors (CSS named colors).
+library;
 
 import 'dart:math';
 import 'package:flutter/material.dart';

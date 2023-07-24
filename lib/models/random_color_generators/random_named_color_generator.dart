@@ -2,8 +2,9 @@
 // Use of this source code is governed by an MIT-style license that can be
 // found in the LICENSE file.
 
-// This file implements a generator of random named colors imported from the
-// [Name that Color](https://chir.ag/projects/ntc/ntc.js) JavaScript library.
+/// Implements a generator of random named colors imported from the
+/// [Name that Color](https://chir.ag/projects/ntc/ntc.js) JavaScript library.
+library;
 
 import 'dart:math';
 import 'package:flutter/material.dart';
