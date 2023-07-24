@@ -36,29 +36,10 @@ class ColorHapApp extends StatelessWidget {
       routerConfig: appRouter,
 
       // A black on white theme to go with the color intensive interface of the app
-      theme: getAppTheme(false),
+      theme: getAppTheme(Brightness.light),
 
       // On dark mode, use a white on black theme
-      darkTheme: getAppTheme(true),
-
-      // theme: ThemeData(
-      //   primaryColor: Colors.black,
-      //   colorScheme: ColorScheme.light(
-      //     primary: Colors.white,
-      //     onPrimary: Colors.black,
-      //     secondary: const ColorScheme.light().surface,
-      //     onSecondary: const ColorScheme.light().onSurface,
-      //   ),
-      //   listTileTheme: ListTileThemeData(
-      //     selectedTileColor: Colors.grey[300],
-      //     selectedColor: Colors.black,
-      //   ),
-      //   textButtonTheme: TextButtonThemeData(
-      //     style: TextButton.styleFrom(
-      //       foregroundColor: Colors.black,
-      //     ),
-      //   ),
-      // ),
+      darkTheme: getAppTheme(Brightness.dark),
     );
   }
 }

@@ -111,7 +111,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         body: Center(child: ColorDisplay(randomColor: _randomColor)),
 
         // The shuffle floating action button
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: FloatingActionButton.large(
           onPressed: _shuffleColor,
           tooltip: strings.shuffleTooltip,
           child: const Icon(Icons.shuffle),

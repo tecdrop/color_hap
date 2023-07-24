@@ -5,8 +5,11 @@
 import 'package:flutter/material.dart';
 
 /// Returns the light or dark theme for the app.
-ThemeData getAppTheme(bool isDark) {
+ThemeData getAppTheme(Brightness brightness) {
+  final bool isDark = brightness == Brightness.dark;
+
   return ThemeData(
+    // The color scheme used by the app
     primaryColor: isDark ? Colors.white : Colors.black,
     colorScheme: isDark
         ? ColorScheme.dark(
@@ -21,14 +24,22 @@ ThemeData getAppTheme(bool isDark) {
             secondary: const ColorScheme.light().surface,
             onSecondary: const ColorScheme.light().onSurface,
           ),
-    // listTileTheme: ListTileThemeData(
-    //   selectedTileColor: Colors.grey[300],
-    //   selectedColor: Colors.black,
-    // ),
     textButtonTheme: TextButtonThemeData(
+      // The text color of text buttons
       style: TextButton.styleFrom(
         foregroundColor: isDark ? Colors.white : Colors.black,
       ),
+    ),
+
+    // Always use the dark background snack bar theme
+    snackBarTheme: SnackBarThemeData(
+      // Based on https://github.com/flutter/flutter/blob/master/packages/flutter/lib/src/material/snack_bar.dart#L859
+      backgroundColor: Color.alphaBlend(
+        const ColorScheme.light().onSurface.withOpacity(0.80),
+        const ColorScheme.light().surface,
+      ),
+      contentTextStyle: const TextStyle(color: Colors.white),
+      actionTextColor: Colors.white,
     ),
   );
 }
