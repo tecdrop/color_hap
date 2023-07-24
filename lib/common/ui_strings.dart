@@ -81,7 +81,9 @@ const String shuffleTooltip = 'Get a new random color';
 // Invalid Color Screen
 // -----------------------------------------------------------------------------------------------
 
-String invalidColor(String? colorCode) => 'Invalid color code: $colorCode';
+String invalidColor(String? colorCode) => 'Invalid color code:\n$colorCode';
+String invalidPage(String? uri) => 'Can\'t find a page for:\n$uri';
+const String goHome = 'Go Home';
 
 // -----------------------------------------------------------------------------------------------
 // Favorite Colors Screen

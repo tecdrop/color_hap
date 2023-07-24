@@ -9,16 +9,23 @@ import 'package:go_router/go_router.dart';
 
 import '../common/app_const.dart' as consts;
 import '../common/app_settings.dart' as settings;
+import '../common/ui_strings.dart' as strings;
 import '../models/color_type.dart';
 import '../models/random_color.dart';
 import '../screens/color_favorites_screen.dart';
 import '../screens/color_info_screen.dart';
-import '../screens/invalid_color_screen.dart';
+import '../screens/invalid_screen.dart';
 import '../screens/random_color_screen.dart';
 import '../utils/color_utils.dart' as color_utils;
 
 /// The route configuration for the app.
 final GoRouter appRouter = GoRouter(
+  // The error handler redirects to the Invalid screen
+  onException: (_, GoRouterState state, GoRouter router) {
+    router.go('/404', extra: state.uri.toString());
+  },
+
+  // The routes configuration
   routes: <RouteBase>[
     // The home route of the app is the Random Color screen
     GoRoute(
@@ -44,6 +51,15 @@ final GoRouter appRouter = GoRouter(
         ),
       ],
     ),
+
+    // The route for the Invalid screen, when the route is invalid
+    GoRoute(
+      path: '/404',
+      builder: (BuildContext context, GoRouterState state) {
+        return InvalidScreen(message: strings.invalidPage(state.extra as String?));
+      },
+    ),
+
     // The route for the Random Color screen, when the color type is specified in the route
     GoRoute(
       path: '/:colorType',
@@ -88,7 +104,7 @@ Widget _colorInfoRouteBuilder(BuildContext context, GoRouterState state) {
 
   // If the color code is invalid, return the Invalid Color screen
   if (color == null) {
-    return InvalidColorScreen(colorCode: colorCode);
+    return InvalidScreen(message: strings.invalidColor(colorCode));
   }
 
   return ColorInfoScreen(
