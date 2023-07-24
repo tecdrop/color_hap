@@ -63,14 +63,16 @@ Widget _randomColorRouteBuilder(BuildContext context, GoRouterState state) {
 
 /// The route redirect for the Random Color screen, when the color type is specified in the route.
 FutureOr<String?> _randomColorRouteRedirect(BuildContext context, GoRouterState state) {
-  settings.colorType = parseColorType(state.pathParameters['colorType']);
+  // settings.colorType = parseColorType(state.pathParameters['colorType']);
+  settings.colorType = ColorType.fromShortString(state.pathParameters['colorType']);
   return '/';
 }
 
 /// Navigates to the Random Color screen to generate random colors of the specified type.
 void gotoRandomColorRoute(BuildContext context, ColorType colorType) {
   settings.colorType = colorType;
-  context.go('/${colorTypeToString(colorType)}');
+  // context.go('/${colorTypeToString(colorType)}');
+  context.go('/${colorType.toShortString()}');
 }
 
 // -----------------------------------------------------------------------------------------------
@@ -79,7 +81,8 @@ void gotoRandomColorRoute(BuildContext context, ColorType colorType) {
 
 /// The route builder for the Color Info screen.
 Widget _colorInfoRouteBuilder(BuildContext context, GoRouterState state) {
-  ColorType colorType = parseColorType(state.pathParameters['colorType']);
+  // ColorType colorType = parseColorType(state.pathParameters['colorType']);
+  ColorType colorType = ColorType.fromShortString(state.pathParameters['colorType']);
   String? colorCode = state.pathParameters['colorHex'];
   Color? color = color_utils.rgbHexToColor(colorCode);
   String? colorName = state.pathParameters['colorName'];
@@ -100,7 +103,8 @@ Widget _colorInfoRouteBuilder(BuildContext context, GoRouterState state) {
 
 /// Navigates to the Color Info screen to show information about the specified color.
 void gotoColorInfoRoute(BuildContext context, RandomColor randomColor, {bool fromFav = false}) {
-  final String colorType = colorTypeToString(randomColor.type);
+  // final String colorType = colorTypeToString(randomColor.type);
+  final String colorType = randomColor.type.toShortString();
   final String colorCode = color_utils.toHexString(randomColor.color, withHash: false);
   final String colorName = randomColor.name ?? consts.noNameColorParam;
   // context.go('${fromFav ? '/fav' : ''}/color/$colorType/$colorCode/${randomColor.name}');

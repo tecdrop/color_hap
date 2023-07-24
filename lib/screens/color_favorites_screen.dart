@@ -8,6 +8,7 @@ import '../common/app_routes.dart';
 import '../common/app_settings.dart' as settings;
 import '../common/ui_strings.dart' as strings;
 import '../models/random_color.dart';
+import '../utils/utils.dart' as utils;
 import '../widgets/color_favorite_list_item.dart';
 import '../widgets/confirmation_dialog_box.dart';
 
@@ -40,6 +41,12 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
         if (showConfirmation == true) {
           setState(() => settings.colorFavoritesList.clear());
         }
+        break;
+      // Exports the favorite colors as a CSV file
+      case _AppBarActions.exportFavoritesAsCsv:
+        ScaffoldMessengerState messengerState = ScaffoldMessenger.of(context);
+        await utils.copyToClipboard(context, settings.colorFavoritesList.toCsvString());
+        utils.showSnackBarForAsync(messengerState, strings.favoritesExported);
         break;
     }
   }
@@ -121,6 +128,7 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
 /// Enum that defines the actions of the app bar.
 enum _AppBarActions {
   clearFavorites,
+  exportFavoritesAsCsv,
 }
 
 /// The app bar of the Color Info screen.
@@ -157,6 +165,12 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
               value: _AppBarActions.clearFavorites,
               enabled: clearEnabled,
               child: const Text(strings.clearFavorites),
+            ),
+            const PopupMenuDivider(),
+            // The export as CSV action
+            const PopupMenuItem<_AppBarActions>(
+              value: _AppBarActions.exportFavoritesAsCsv,
+              child: Text(strings.exportFavoritesAsCsv),
             ),
           ],
         ),

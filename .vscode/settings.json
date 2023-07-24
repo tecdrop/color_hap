@@ -5,6 +5,7 @@
     "consts",
     "fullscreen",
     "noname",
-    "Tecdrop"
+    "Tecdrop",
+    "writeln"
   ]
 }

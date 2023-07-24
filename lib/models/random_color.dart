@@ -35,17 +35,20 @@ class RandomColor {
   /// Overrides the equality operator to compare two [RandomColor] objects.
   /// Two [RandomColor] objects are equal if they have the same color value, name, and type.
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is RandomColor &&
-          runtimeType == other.runtimeType &&
-          color == other.color &&
-          name == other.name &&
-          type == other.type;
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        other is RandomColor &&
+            runtimeType == other.runtimeType &&
+            color == other.color &&
+            name == other.name &&
+            type == other.type;
+  }
 
   /// Overrides the hash code getter to return the hash code of this [RandomColor].
   @override
-  int get hashCode => color.hashCode ^ name.hashCode ^ type.hashCode;
+  int get hashCode {
+    return color.hashCode ^ name.hashCode ^ type.hashCode;
+  }
 
   /// Creates a [RandomColor] from a JSON object.
   RandomColor.fromJson(Map<String, dynamic> json)
@@ -54,9 +57,21 @@ class RandomColor {
         type = ColorType.values[json['type']];
 
   /// Converts this [RandomColor] to a JSON object.
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'color': color.value,
-        'name': name,
-        'type': type.index,
-      };
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'color': color.value,
+      'name': name,
+      'type': type.index,
+    };
+  }
+
+  /// Converts this [RandomColor] to a CSV string.
+  String toCsvString() {
+    // return '${color_utils.toHexString(color)},${name ?? ''},${type.toShortString()}';
+    return [
+      color_utils.toHexString(color),
+      name ?? '',
+      type.toShortString(),
+    ].join(',');
+  }
 }

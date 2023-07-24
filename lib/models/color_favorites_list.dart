@@ -59,4 +59,19 @@ class ColorFavoritesList {
       jsonStringList.map((String jsonString) => RandomColor.fromJson(jsonDecode(jsonString))),
     );
   }
+
+  /// Returns a CSV string representation of this [ColorFavoritesList].
+  String toCsvString() {
+    final StringBuffer csvBuffer = StringBuffer();
+
+    // Write the headers first
+    csvBuffer.writeln('color,name,type');
+
+    // Write the favorite colors
+    for (final RandomColor color in _list) {
+      csvBuffer.writeln(color.toCsvString());
+    }
+
+    return csvBuffer.toString();
+  }
 }
