@@ -44,6 +44,8 @@ String possibilitiesDrawerSubtitle(String length) => '$length possibilities';
 
 const String colorInfoDrawer = 'Color Information';
 const String colorFavoritesDrawer = 'Favorite Colors';
+String colorFavoritesSubtitle(String length, {bool isPlural = true}) =>
+    '$length color${isPlural ? 's' : ''}';
 
 const String helpDrawer = 'Help & Support';
 const String sourceCodeDrawer = 'View App Source';
