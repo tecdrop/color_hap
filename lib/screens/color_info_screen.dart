@@ -5,181 +5,131 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:share_plus/share_plus.dart';
-
-import '../common/app_urls.dart';
-import '../common/ui_strings.dart';
+import '../common/app_settings.dart' as settings;
+import '../common/app_urls.dart' as urls;
+import '../common/ui_strings.dart' as strings;
 import '../models/random_color.dart';
-import '../utils/color_utils.dart';
-import '../utils/utils.dart';
+import '../utils/utils.dart' as utils;
+import '../widgets/color_info_list.dart';
 
-/// The Color Information screen.
+/// The Color Info screen.
 ///
-/// Displays the given [RandomColor] in different formats, and allows the user to copy, share, or
-/// search the Internet for any of the color information.
+/// Displays the given [RandomColor] in different formats, and other color information, and allows
+/// the user to toggle the visibility of the color information.
 class ColorInfoScreen extends StatefulWidget {
   const ColorInfoScreen({
     super.key,
     required this.randomColor,
-    this.immersiveMode = false,
   });
 
-  /// The random color to display in the information screen.
+  /// The random color to display in the Color Info screen.
   final RandomColor randomColor;
-
-  /// Whether the screen is currently in immersive mode.
-  final bool immersiveMode;
 
   @override
   State<ColorInfoScreen> createState() => _ColorInfoScreenState();
 }
 
-/// A key/value pair representing a piece of color information.
-class _InfoItem {
-  final String key;
-  final String value;
-
-  _InfoItem(this.key, this.value);
-}
-
 class _ColorInfoScreenState extends State<ColorInfoScreen> {
-  /// The index of the currently selected information item in the list view.
-  int _selectedIndex = 0;
-
-  /// The color information list.
-  final List<_InfoItem> _infoList = [];
-
-  /// Build the color information list on init state.
-  @override
-  void initState() {
-    super.initState();
-    _buildInfoList(widget.randomColor);
+  /// Performs the specified action on the app bar.
+  void _onAppBarAction(_AppBarActions action) {
+    switch (action) {
+      // Toggles the visibility of the color information list
+      case _AppBarActions.toggleInfo:
+        setState(() {
+          settings.showColorInformation = !settings.showColorInformation;
+        });
+        break;
+      // Opens the web browser to search for the current color
+      case _AppBarActions.webSearch:
+        final String url = urls.onlineSearch + Uri.encodeComponent(widget.randomColor.title);
+        utils.launchUrlExternal(context, url);
+        break;
+    }
   }
 
-  /// When the copy FAB is pressed, copy the currently selected color information item to the
-  ///  Clipboard, and show a confirmation SnackBar.
-  Future<void> _onCopyPressed() async {
-    final String value = _infoList[_selectedIndex].value;
+  /// When the user presses the copy button on an item in the list, copy the value to the Clipboard,
+  /// and show a confirmation SnackBar.
+  Future<void> onItemCopyPressed(String key, String value) async {
     ScaffoldMessengerState messengerState = ScaffoldMessenger.of(context);
     await Clipboard.setData(ClipboardData(text: value));
-    Utils.showSnackBarForAsync(messengerState, UIStrings.copiedSnack(value));
-  }
-
-  /// When the share FAB is pressed, share the currently selected color information item via the
-  ///  platform's share dialog.
-  void _onSharePressed() {
-    final String value = _infoList[_selectedIndex].value;
-    Share.share(value, subject: UIStrings.appName);
-  }
-
-  /// When the search FAB is pressed, perform a web search for the currently selected color
-  ///  information item.
-  void _onSearchPressed() {
-    final String value = _infoList[_selectedIndex].value;
-    final String url = AppUrls.onlineSearch + Uri.encodeComponent(value);
-    Utils.launchUrlExternal(context, url);
+    utils.showSnackBarForAsync(messengerState, strings.copiedSnack(value));
   }
 
   @override
   Widget build(BuildContext context) {
-    final bool isPortrait = MediaQuery.of(context).size.height >= 500;
-    final Color color = widget.randomColor.color;
-    final Color contrastColor = ColorUtils.contrastOf(color);
-    final Color selectedTileColor = Color.alphaBlend(contrastColor.withOpacity(0.25), color);
-    final Color selectedColor = ColorUtils.contrastOf(selectedTileColor);
-
     return Scaffold(
-      // Fill the color information screen with the current color
-      backgroundColor: color,
-
-      // A simple app bar with just the screen title. In immersive mode it is also seamless filled
-      // with the current color.
-      appBar: AppBar(
-        title: widget.immersiveMode ? null : const Text(UIStrings.colorInfoScreenTitle),
-        backgroundColor: widget.immersiveMode ? color : null,
-        foregroundColor: widget.immersiveMode ? ColorUtils.contrastOf(color) : null,
-        elevation: widget.immersiveMode ? 0.0 : null,
+      backgroundColor: widget.randomColor.color,
+      appBar: _AppBar(
+        title: const Text(strings.colorInfoScreenTitle),
+        showColorInformation: settings.showColorInformation,
+        onAction: _onAppBarAction,
       ),
-
-      // The body contains a list view with all the color information items
-      body: ListTileTheme(
-        textColor: contrastColor,
-        selectedColor: selectedColor,
-        selectedTileColor: selectedTileColor,
-        child: ListView.builder(
-          itemCount: _infoList.length,
-          itemBuilder: (BuildContext context, int index) => _buildInfoListTile(index),
-        ),
-      ),
-      floatingActionButton: _buildFABs(isPortrait),
+      body: settings.showColorInformation
+          // Show the color information list
+          ? ColorInfoList(
+              randomColor: widget.randomColor,
+              onCopyPressed: onItemCopyPressed,
+            )
+          // Don't show anything, just the color as the background
+          : const SizedBox.shrink(),
     );
   }
+}
 
-  /// Builds the color information list.
-  void _buildInfoList(RandomColor randomColor) {
-    // Simply a convenience function that adds the given key/value info to the list.
-    void addInfoItem(String key, String value) => _infoList.add(_InfoItem(key, value));
+/// Enum that defines the actions of the app bar.
+enum _AppBarActions {
+  toggleInfo,
+  webSearch,
+}
 
-    final Color color = randomColor.color;
+/// The app bar of the Color Info screen.
+class _AppBar extends StatelessWidget implements PreferredSizeWidget {
+  const _AppBar({
+    Key? key,
+    required this.title,
+    required this.showColorInformation,
+    required this.onAction,
+  }) : super(key: key);
 
-    if (randomColor.name != null) {
-      addInfoItem(UIStrings.colorTitleInfo, randomColor.title);
-      addInfoItem(UIStrings.colorNameInfo, randomColor.name!);
-    }
-    addInfoItem(UIStrings.hexInfo, ColorUtils.toHexString(color));
-    addInfoItem(UIStrings.colorTypeInfo, UIStrings.colorType[randomColor.type]!);
-    addInfoItem(UIStrings.rgbInfo, ColorUtils.toRGBString(color));
-    addInfoItem(UIStrings.hsvInfo, ColorUtils.toHSVString(color));
-    addInfoItem(UIStrings.hslInfo, ColorUtils.toHSLString(color));
-    addInfoItem(UIStrings.decimalInfo, ColorUtils.toDecimalString(color));
-    addInfoItem(UIStrings.luminanceInfo, ColorUtils.luminanceString(color));
-    addInfoItem(UIStrings.brightnessInfo, ColorUtils.brightnessString(color));
-  }
+  /// The primary widget displayed in the app bar.
+  final Widget? title;
 
-  /// Returns a list tile with the name and value of the color information at the given [index].
-  Widget _buildInfoListTile(int index) {
-    final _InfoItem infoEntry = _infoList[index];
+  /// Whether the current color is added to the favorites list.
+  final bool showColorInformation;
 
-    return ListTile(
-      subtitle: Text(infoEntry.key),
-      title: Text(infoEntry.value),
-      selected: index == _selectedIndex,
-      onTap: () {
-        setState(() {
-          _selectedIndex = index;
-        });
-      },
-    );
-  }
+  /// The callback that is called when an app bar action is pressed.
+  final void Function(_AppBarActions action) onAction;
 
-  /// Builds the three main floating action buttons for copying, sharing and searching for the
-  /// currently selected color info.
-  Widget _buildFABs(bool isPortrait) {
-    return Flex(
-      direction: isPortrait ? Axis.vertical : Axis.horizontal,
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: <Widget>[
-        FloatingActionButton(
-          heroTag: 'copyFAB',
-          onPressed: _onCopyPressed,
-          tooltip: UIStrings.copyTooltip,
-          child: const Icon(Icons.copy),
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      title: title,
+
+      // The common operations displayed in this app bar
+      actions: <Widget>[
+        // The toggle color information action button
+        IconButton(
+          icon: settings.showColorInformation
+              ? const Icon(Icons.visibility_off_outlined)
+              : const Icon(Icons.visibility_outlined),
+          tooltip: strings.toggleColorInformation,
+          onPressed: () => onAction(_AppBarActions.toggleInfo),
         ),
-        isPortrait ? const SizedBox(height: 16.0) : const SizedBox(width: 16.0),
-        FloatingActionButton(
-          heroTag: 'shareFAB',
-          onPressed: _onSharePressed,
-          tooltip: UIStrings.shareTooltip,
-          child: const Icon(Icons.share),
-        ),
-        isPortrait ? const SizedBox(height: 16.0) : const SizedBox(width: 16.0),
-        FloatingActionButton(
-          heroTag: 'searchFAB',
-          onPressed: _onSearchPressed,
-          tooltip: UIStrings.searchTooltip,
-          child: const Icon(Icons.search),
+        // Add the Popup Menu items
+        PopupMenuButton<_AppBarActions>(
+          onSelected: onAction,
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<_AppBarActions>>[
+            // The web search action
+            const PopupMenuItem<_AppBarActions>(
+              value: _AppBarActions.webSearch,
+              child: Text(strings.webSearchColor),
+            ),
+          ],
         ),
       ],
     );
   }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

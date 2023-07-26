@@ -2,84 +2,102 @@
 // Use of this source code is governed by an MIT-style license that can be
 // found in the LICENSE file.
 
-import '../models/random_color.dart';
+import '../models/color_type.dart';
 
-/// User interface strings.
-class UIStrings {
-  UIStrings._();
+// -----------------------------------------------------------------------------------------------
+// App
+// -----------------------------------------------------------------------------------------------
 
-  // -----------------------------------------------------------------------------------------------
-  // App
-  // -----------------------------------------------------------------------------------------------
+const String appName = 'ColorHap';
 
-  static const String appName = 'ColorHap';
+// -----------------------------------------------------------------------------------------------
+// Common
+// -----------------------------------------------------------------------------------------------
 
-  // -----------------------------------------------------------------------------------------------
-  // Common
-  // -----------------------------------------------------------------------------------------------
+String copiedSnack(String value) => '$value copied to clipboard';
+String copiedErrorSnack(String value) => 'Copy to clipboard failed: $value';
 
-  static String copiedSnack(String value) => '$value copied to clipboard';
-  static String copiedErrorSnack(String value) => 'Copy to clipboard failed: $value';
+const Map<ColorType, String> colorType = {
+  ColorType.mixedColor: 'Random Color',
+  ColorType.basicColor: 'Random Basic Color',
+  ColorType.webColor: 'Random Web Color',
+  ColorType.namedColor: 'Random Named Color',
+  ColorType.attractiveColor: 'Random Attractive Color',
+  ColorType.trueColor: 'Random True Color',
+};
 
-  static const Map<ColorType, String> colorType = {
-    ColorType.mixedColor: 'Random Color',
-    ColorType.basicColor: 'Random Basic Color',
-    ColorType.webColor: 'Random Web Color',
-    ColorType.namedColor: 'Random Named Color',
-    ColorType.attractiveColor: 'Random Attractive Color',
-    ColorType.trueColor: 'Random True Color',
-  };
+// -----------------------------------------------------------------------------------------------
+// Drawer items
+// -----------------------------------------------------------------------------------------------
 
-  // -----------------------------------------------------------------------------------------------
-  // Drawer items
-  // -----------------------------------------------------------------------------------------------
+const String setWallpaperDrawer = 'Set A Color Wallpaper';
+const String setWallpaperDrawerSubtitle = 'Use RGB Color Wallpaper Pro\nand support our free apps!';
 
-  static const String setWallpaperDrawer = 'Set A Color Wallpaper';
-  static const String setWallpaperDrawerSubtitle =
-      'Use RGB Color Wallpaper Pro\nand support our free apps!';
+const String randomMixedColorDrawer = 'Random Colors';
+const String randomBasicColorDrawer = 'Random Basic Colors';
+const String randomWebColorDrawer = 'Random Web Colors';
+const String randomNamedColorDrawer = 'Random Named Colors';
+const String randomAttractiveColorDrawer = 'Random Attractive Colors';
+const String randomAttractiveColorDrawerSubtitle = 'A few million possibilities';
+const String randomTrueColorDrawer = 'Random True Colors';
+String possibilitiesDrawerSubtitle(String length) => '$length possibilities';
 
-  static const String randomMixedColorDrawer = 'Random Colors';
-  static const String randomBasicColorDrawer = 'Random Basic Colors';
-  static const String randomWebColorDrawer = 'Random Web Colors';
-  static const String randomNamedColorDrawer = 'Random Named Colors';
-  static const String randomAttractiveColorDrawer = 'Random Attractive Colors';
-  static const String randomAttractiveColorDrawerSubtitle = 'A few million possibilities';
-  static const String randomTrueColorDrawer = 'Random True Colors';
-  static String possibilitiesDrawerSubtitle(String length) => '$length possibilities';
+const String colorInfoDrawer = 'Color Information';
+const String colorFavoritesDrawer = 'Favorite Colors';
+String colorFavoritesSubtitle(String length, {bool isPlural = true}) =>
+    '$length color${isPlural ? 's' : ''}';
 
-  static const String colorInfoDrawer = 'Color Information';
-  static const String previewColorDrawer = 'Preview Color';
+const String helpDrawer = 'Help & Support';
+const String sourceCodeDrawer = 'View App Source';
+const String rateAppDrawer = 'Rate App';
 
-  static const String helpDrawer = 'Help & Support';
-  static const String sourceCodeDrawer = 'View App Source';
-  static const String rateAppDrawer = 'Rate App';
+// -----------------------------------------------------------------------------------------------
+// Color Info Screen
+// -----------------------------------------------------------------------------------------------
 
-  // -----------------------------------------------------------------------------------------------
-  // Random Color Screen
-  // -----------------------------------------------------------------------------------------------
+const String colorInfoScreenTitle = 'Color Information';
+const String toggleColorInformation = 'Toggle color information';
+const String webSearchColor = 'Search color on the web';
 
-  static const String colorInfoTooltip = 'Color information';
-  static const String toggleImmersiveTooltip = 'Toggle immersive mode';
-  static const String shuffleTooltip = 'Get a new random color';
+const String colorNameInfo = 'Name';
+const String colorTitleInfo = 'Name & Code';
+const String colorTypeInfo = 'Color type';
+const String hexInfo = 'Hex triplet';
+const String rgbInfo = 'RGB';
+const String hsvInfo = 'HSV';
+const String hslInfo = 'HSL';
+const String decimalInfo = 'Decimal';
+const String luminanceInfo = 'Luminance';
+const String brightnessInfo = 'Brightness';
 
-  // -----------------------------------------------------------------------------------------------
-  // Color Info Screen
-  // -----------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------
+// Random Color Screen
+// -----------------------------------------------------------------------------------------------
 
-  static const String colorInfoScreenTitle = 'Color Information';
+const String colorInfoTooltip = 'Color information';
+const String addFavTooltip = 'Add color to favorites';
+const String removeFavTooltip = 'Remove color from favorites';
+const String shuffleTooltip = 'Get a new random color';
 
-  static const String colorNameInfo = 'Name';
-  static const String colorTitleInfo = 'Name & Code';
-  static const String colorTypeInfo = 'Color type';
-  static const String hexInfo = 'Hex triplet';
-  static const String rgbInfo = 'RGB';
-  static const String hsvInfo = 'HSV';
-  static const String hslInfo = 'HSL';
-  static const String decimalInfo = 'Decimal';
-  static const String luminanceInfo = 'Luminance';
-  static const String brightnessInfo = 'Brightness';
+// -----------------------------------------------------------------------------------------------
+// Invalid Color Screen
+// -----------------------------------------------------------------------------------------------
 
-  static const String copyTooltip = 'Copy current info to clipboard';
-  static const String shareTooltip = 'Share current info';
-  static const String searchTooltip = 'Search the current info on the Internet';
-}
+String invalidColor(String? colorCode) => 'Invalid color code:\n$colorCode';
+String invalidPage(String? uri) => 'Can\'t find a page for:\n$uri';
+const String goHome = 'Go Home';
+
+// -----------------------------------------------------------------------------------------------
+// Favorite Colors Screen
+// -----------------------------------------------------------------------------------------------
+
+const String favoriteColorsScreenTitle = 'Favorite Colors';
+const String noFavoritesMessage = 'No favorite colors yet';
+const String removedFromFavorites = 'Removed from favorites';
+const String undoRemoveFromFavorites = 'Undo';
+const String clearFavorites = 'Clear favorites';
+const String clearFavoritesDialogTitle = 'Clear favorites?';
+const String clearFavoritesDialogMessage = 'This will remove all colors from your favorites list.';
+const String clearFavoritesDialogPositiveAction = 'Clear';
+const String exportFavoritesAsCsv = 'Export favorites as CSV';
+const String favoritesExported = 'Favorites exported to clipboard in CSV format';

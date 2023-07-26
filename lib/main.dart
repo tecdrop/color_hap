@@ -4,19 +4,17 @@
 
 import 'package:flutter/material.dart';
 
-import 'common/app_const.dart';
-import 'common/app_settings.dart' as app_settings;
-import 'common/ui_strings.dart';
-import 'models/random_color.dart';
-import 'screens/color_info_screen.dart';
-import 'screens/random_color_screen.dart';
+import 'common/app_routes.dart';
+import 'common/app_settings.dart' as settings;
+import 'common/app_theme.dart';
+import 'common/ui_strings.dart' as strings;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // First try to load the app settings from Shared Preferences
   await Future.any([
-    app_settings.loadSettings(),
+    settings.loadSettings(),
     Future.delayed(const Duration(seconds: 5)),
   ]);
 
@@ -30,50 +28,18 @@ class ColorHapApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: UIStrings.appName,
+    return MaterialApp.router(
+      title: strings.appName,
       debugShowCheckedModeBanner: false,
 
+      // The app routes configuration
+      routerConfig: appRouter,
+
       // A black on white theme to go with the color intensive interface of the app
-      theme: ThemeData(
-        primaryColor: Colors.black,
-        colorScheme: ColorScheme.light(
-          primary: Colors.white,
-          onPrimary: Colors.black,
-          secondary: const ColorScheme.light().surface,
-          onSecondary: const ColorScheme.light().onSurface,
-        ),
-        listTileTheme: ListTileThemeData(
-          selectedTileColor: Colors.grey[300],
-          selectedColor: Colors.black,
-        ),
-      ),
+      theme: getAppTheme(Brightness.light),
 
-      // App routes
-      initialRoute: AppConst.randomColorRoute,
-      onGenerateRoute: (settings) {
-        switch (settings.name) {
-          // The default Random Color route
-          case AppConst.randomColorRoute:
-            final ColorType args = settings.arguments as ColorType? ?? app_settings.colorType;
-            app_settings.colorType = args;
-            return MaterialPageRoute(
-              builder: (_) => RandomColorScreen(colorType: args),
-            );
-
-          // The Color Information route
-          case AppConst.colorInfoRoute:
-            final RandomColor args = settings.arguments as RandomColor;
-            return MaterialPageRoute(
-              builder: (_) => ColorInfoScreen(
-                randomColor: args,
-                immersiveMode: app_settings.immersiveMode,
-              ),
-            );
-        }
-
-        return null; // Let onUnknownRoute handle this behavior.
-      },
+      // On dark mode, use a white on black theme
+      darkTheme: getAppTheme(Brightness.dark),
     );
   }
 }

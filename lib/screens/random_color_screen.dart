@@ -4,13 +4,13 @@
 
 import 'package:flutter/material.dart';
 
-import '../common/app_const.dart';
-import '../common/app_settings.dart' as app_settings;
-import '../common/ui_strings.dart';
+import '../common/app_const.dart' as consts;
+import '../common/app_routes.dart';
+import '../common/app_settings.dart' as settings;
+import '../common/ui_strings.dart' as strings;
+import '../models/color_type.dart';
 import '../models/random_color_generator.dart';
 import '../models/random_color.dart';
-import '../utils/color_utils.dart';
-import '../utils/utils.dart';
 import '../widgets/color_display.dart';
 import '../widgets/internal/app_drawer.dart';
 
@@ -33,11 +33,14 @@ class RandomColorScreen extends StatefulWidget {
 class _RandomColorScreenState extends State<RandomColorScreen> {
   // The current random color.
   RandomColor _randomColor = const RandomColor(
-    color: AppConst.defaultColor,
+    color: consts.defaultColor,
     type: ColorType.trueColor,
   );
 
-  /// Creates the appropriate random color generator and shuffles the color on init state.
+  // The index of the current color in the favorites list.
+  int _colorFavIndex = -1;
+
+  /// Generates a new random color on state initialization.
   @override
   void initState() {
     super.initState();
@@ -45,20 +48,29 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
     _shuffleColor();
   }
 
+  /// Generates a new random color if the color type has changed.
+  @override
+  void didUpdateWidget(RandomColorScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.colorType != widget.colorType) {
+      _shuffleColor();
+    }
+  }
+
   /// Performs the actions of the app bar.
-  Future<void> _onAction(_AppBarActions action) async {
+  void _onAction(_AppBarActions action) {
     switch (action) {
+      case _AppBarActions.toggleFav:
+        // Toggle the current color in the favorites list
+        setState(() {
+          _colorFavIndex = settings.colorFavoritesList.toggle(_randomColor, index: _colorFavIndex);
+          settings.saveColorFavoritesList();
+        });
+        break;
       // Open the Color Information screen with the current color
       case _AppBarActions.colorInfo:
-        await Navigator.pushNamed(context, AppConst.colorInfoRoute, arguments: _randomColor);
-        break;
-
-      // Toggle the immersive mode, including the platform's fullscreen mode
-      case _AppBarActions.toggleImmersive:
-        setState(() {
-          app_settings.immersiveMode = !app_settings.immersiveMode;
-        });
-        Utils.toggleSystemFullscreen(app_settings.immersiveMode);
+        gotoColorInfoRoute(context, _randomColor);
         break;
     }
   }
@@ -66,6 +78,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
   /// Generates a new random color.
   void _shuffleColor() {
     final RandomColor randomColor = nextRandomColor(widget.colorType);
+    _colorFavIndex = settings.colorFavoritesList.indexOf(randomColor);
     setState(() {
       _randomColor = randomColor;
     });
@@ -82,9 +95,8 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
         // The app bar
         appBar: _AppBar(
-          title: Text(UIStrings.colorType[widget.colorType]!),
-          immersiveMode: app_settings.immersiveMode,
-          color: _randomColor.color,
+          title: Text(strings.colorType[widget.colorType]!),
+          isFavorite: _colorFavIndex >= 0,
           onAction: _onAction,
         ),
 
@@ -92,15 +104,18 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         drawer: AppDrawer(
           randomColor: _randomColor,
           colorType: widget.colorType,
+          onShouldUpdateState: () => setState(() {
+            _colorFavIndex = settings.colorFavoritesList.indexOf(_randomColor);
+          }),
         ),
 
         // A simple body with the centered color display
         body: Center(child: ColorDisplay(randomColor: _randomColor)),
 
         // The shuffle floating action button
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: FloatingActionButton.large(
           onPressed: _shuffleColor,
-          tooltip: UIStrings.shuffleTooltip,
+          tooltip: strings.shuffleTooltip,
           child: const Icon(Icons.shuffle),
         ),
       ),
@@ -110,8 +125,8 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
 /// Enum that defines the actions of the app bar.
 enum _AppBarActions {
+  toggleFav,
   colorInfo,
-  toggleImmersive,
 }
 
 /// The app bar of the Random Color screen.
@@ -119,19 +134,15 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   const _AppBar({
     Key? key,
     required this.title,
-    required this.immersiveMode,
-    required this.color,
+    required this.isFavorite,
     required this.onAction,
   }) : super(key: key);
 
   /// The primary widget displayed in the app bar.
   final Widget? title;
 
-  /// The color of the app bar in immersive mode.
-  final Color color;
-
-  /// Whether the screen is currently in immersive mode.
-  final bool immersiveMode;
+  /// Whether the current color is added to the favorites list.
+  final bool isFavorite;
 
   /// The callback that is called when an app bar action is pressed.
   final Function(_AppBarActions action) onAction;
@@ -139,23 +150,18 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: immersiveMode ? null : title,
-
-      // In immersive mode seamlessly fill the app bar with the current color
-      backgroundColor: immersiveMode ? color : null,
-      foregroundColor: immersiveMode ? ColorUtils.contrastOf(color) : null,
-      elevation: immersiveMode ? 0.0 : null,
+      title: title,
 
       // The common operations displayed in this app bar
       actions: <Widget>[
         IconButton(
-          icon: immersiveMode ? const Icon(Icons.fullscreen_exit) : const Icon(Icons.fullscreen),
-          tooltip: UIStrings.toggleImmersiveTooltip,
-          onPressed: () => onAction(_AppBarActions.toggleImmersive),
+          icon: isFavorite ? const Icon(Icons.favorite) : const Icon(Icons.favorite_border),
+          tooltip: isFavorite ? strings.removeFavTooltip : strings.addFavTooltip,
+          onPressed: () => onAction(_AppBarActions.toggleFav),
         ),
         IconButton(
           icon: const Icon(Icons.info_outline),
-          tooltip: UIStrings.colorInfoTooltip,
+          tooltip: strings.colorInfoTooltip,
           onPressed: () => onAction(_AppBarActions.colorInfo),
         ),
       ],

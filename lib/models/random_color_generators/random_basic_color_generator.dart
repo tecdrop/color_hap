@@ -2,11 +2,13 @@
 // Use of this source code is governed by an MIT-style license that can be
 // found in the LICENSE file.
 
-// This file implements a generator of random basic colors.
+/// Implements a generator of random basic colors.
+library;
 
 import 'dart:math';
 import 'package:flutter/material.dart';
 
+import '../color_type.dart';
 import '../random_color.dart';
 
 /// Generates a random basic color.

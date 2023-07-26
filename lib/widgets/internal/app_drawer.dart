@@ -4,13 +4,15 @@
 
 import 'package:flutter/material.dart';
 
-import '../../common/app_const.dart';
-import '../../common/app_urls.dart';
-import '../../common/ui_strings.dart';
+import '../../common/app_routes.dart';
+import '../../common/app_settings.dart' as settings;
+import '../../common/app_urls.dart' as urls;
+import '../../common/ui_strings.dart' as strings;
+import '../../models/color_type.dart';
 import '../../models/random_color_generator.dart';
 import '../../models/random_color.dart';
-import '../../utils/color_utils.dart';
-import '../../utils/utils.dart';
+import '../../utils/color_utils.dart' as color_utils;
+import '../../utils/utils.dart' as utils;
 
 /// The items that appear in the app drawer.
 enum AppDrawerItems {
@@ -22,7 +24,7 @@ enum AppDrawerItems {
   randomAttractiveColor,
   randomTrueColor,
   colorInfo,
-  previewColor,
+  colorFavorites,
   help,
   viewSource,
   rateApp,
@@ -34,6 +36,7 @@ class AppDrawer extends StatelessWidget {
     Key? key,
     required this.randomColor,
     required this.colorType,
+    this.onShouldUpdateState,
   }) : super(key: key);
 
   /// The current random color.
@@ -42,81 +45,85 @@ class AppDrawer extends StatelessWidget {
   /// The current type of random colors generated in the Random Color screen.
   final ColorType colorType;
 
+  /// A callback function that is called when the the screen that opened the drawer should update.
+  final void Function()? onShouldUpdateState;
+
   /// Starts a specific functionality of the app when the user taps a drawer [item].
   void _onItemTap(BuildContext context, AppDrawerItems item) {
-    // A convenience function to reopen the Random Color screen for generating a new type of random
-    // colors. Called by the four random color drawer items.
-    void reopenRandomScreen(BuildContext context, ColorType colorType) {
-      Navigator.pop(context);
-      Navigator.pushReplacementNamed(context, AppConst.randomColorRoute, arguments: colorType);
-    }
-
     switch (item) {
       // Launch the external RGB Color Wallpaper Pro url
       case AppDrawerItems.setWallpaper:
         Navigator.pop(context);
-        Utils.launchUrlExternal(context, AppUrls.setWallpaper);
+        utils.launchUrlExternal(context, urls.setWallpaper);
         break;
 
       // Reopen the Random Color screen for generating random colors (of any type)
       case AppDrawerItems.randomMixedColor:
-        reopenRandomScreen(context, ColorType.mixedColor);
+        Navigator.pop(context);
+        gotoRandomColorRoute(context, ColorType.mixedColor);
         break;
 
       // Reopen the Random Color screen for generating random basic colors
       case AppDrawerItems.randomBasicColor:
-        reopenRandomScreen(context, ColorType.basicColor);
+        Navigator.pop(context);
+        gotoRandomColorRoute(context, ColorType.basicColor);
         break;
 
       // Reopen the Random Color screen for generating random web colors
       case AppDrawerItems.randomWebColor:
-        reopenRandomScreen(context, ColorType.webColor);
+        Navigator.pop(context);
+        gotoRandomColorRoute(context, ColorType.webColor);
         break;
 
       // Reopen the Random Color screen for generating random named colors
       case AppDrawerItems.randomNamedColor:
-        reopenRandomScreen(context, ColorType.namedColor);
+        Navigator.pop(context);
+        gotoRandomColorRoute(context, ColorType.namedColor);
         break;
 
       // Reopen the Random Color screen for generating random attractive colors
       case AppDrawerItems.randomAttractiveColor:
-        reopenRandomScreen(context, ColorType.attractiveColor);
+        Navigator.pop(context);
+        gotoRandomColorRoute(context, ColorType.attractiveColor);
         break;
 
       // Reopen the Random Color screen for generating random true colors
       case AppDrawerItems.randomTrueColor:
-        reopenRandomScreen(context, ColorType.trueColor);
+        Navigator.pop(context);
+        gotoRandomColorRoute(context, ColorType.trueColor);
         break;
 
-      // Open the Color Information screen with the current color
+      // Open the Color Info screen with the current random color
       case AppDrawerItems.colorInfo:
         Navigator.pop(context);
-        Navigator.pushNamed(context, AppConst.colorInfoRoute, arguments: randomColor);
+        gotoColorInfoRoute(context, randomColor);
         break;
 
-      // Open the Preview Color screen with the current color
-      case AppDrawerItems.previewColor:
-        Navigator.pop(context);
-        // TODO: Implement the Preview Color screen
-        // Navigator.pushNamed(context, AppConst.previewColorRoute, arguments: randomColor);
+      // Open the Color Favorites screen
+      case AppDrawerItems.colorFavorites:
+        (() async {
+          Navigator.pop(context);
+          await gotoColorFavoritesRoute(context);
+          onShouldUpdateState?.call();
+        }());
         break;
 
       // Launch the external Online Help url
       case AppDrawerItems.help:
         Navigator.pop(context);
-        Utils.launchUrlExternal(context, AppUrls.help);
+        utils.launchUrlExternal(context, urls.help);
         break;
 
       // Launch the external View Source url
       case AppDrawerItems.viewSource:
         Navigator.pop(context);
-        Utils.launchUrlExternal(context, AppUrls.viewSource);
+        utils.launchUrlExternal(context, urls.viewSource);
         break;
 
       // Launch the external Rate App url
       case AppDrawerItems.rateApp:
         Navigator.pop(context);
-        Utils.launchUrlExternal(context, AppUrls.rate);
+        utils.launchUrlExternal(context, urls.rate);
         break;
     }
   }
@@ -124,8 +131,8 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Simply a convenience function that returns a string with the number of possibilities.
-    String possibilities(ColorType colorType) => UIStrings.possibilitiesDrawerSubtitle(
-        Utils.intToCommaSeparatedString(possibilityCount(colorType)));
+    String possibilities(ColorType colorType) => strings
+        .possibilitiesDrawerSubtitle(utils.intToCommaSeparatedString(possibilityCount(colorType)));
 
     return Drawer(
       child: ListView(
@@ -135,10 +142,9 @@ class AppDrawer extends StatelessWidget {
           // The Set Color Wallpaper drawer item
           ListTile(
             contentPadding: const EdgeInsets.all(16.0),
-            tileColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.075),
             leading: const Icon(Icons.wallpaper_rounded),
-            title: const Text(UIStrings.setWallpaperDrawer),
-            subtitle: const Text(UIStrings.setWallpaperDrawerSubtitle),
+            title: const Text(strings.setWallpaperDrawer),
+            subtitle: const Text(strings.setWallpaperDrawerSubtitle),
             isThreeLine: true,
             onTap: () => _onItemTap(context, AppDrawerItems.setWallpaper),
           ),
@@ -148,79 +154,84 @@ class AppDrawer extends StatelessWidget {
           // All Random Colors drawer item
           _buildItem(
             context,
-            icon: Icons.looks_one_rounded,
-            title: UIStrings.randomMixedColorDrawer,
+            icon: colorType == ColorType.mixedColor
+                ? Icons.looks_one_rounded
+                : Icons.looks_one_outlined,
+            title: strings.randomMixedColorDrawer,
             subtitle: possibilities(ColorType.mixedColor),
             item: AppDrawerItems.randomMixedColor,
-            selected: colorType == ColorType.mixedColor,
           ),
 
           // Random Basic Color drawer item
           _buildItem(
             context,
-            icon: Icons.looks_two_rounded,
-            title: UIStrings.randomBasicColorDrawer,
+            icon: colorType == ColorType.basicColor
+                ? Icons.looks_two_rounded
+                : Icons.looks_two_outlined,
+            title: strings.randomBasicColorDrawer,
             subtitle: possibilities(ColorType.basicColor),
             item: AppDrawerItems.randomBasicColor,
-            selected: colorType == ColorType.basicColor,
           ),
 
           // Random Web Color drawer item
           _buildItem(
             context,
-            icon: Icons.looks_3_rounded,
-            title: UIStrings.randomWebColorDrawer,
+            icon: colorType == ColorType.webColor ? Icons.looks_3_rounded : Icons.looks_3_outlined,
+            title: strings.randomWebColorDrawer,
             subtitle: possibilities(ColorType.webColor),
             item: AppDrawerItems.randomWebColor,
-            selected: colorType == ColorType.webColor,
           ),
 
           // Random Named Color drawer item
           _buildItem(
             context,
-            icon: Icons.looks_4_rounded,
-            title: UIStrings.randomNamedColorDrawer,
+            icon:
+                colorType == ColorType.namedColor ? Icons.looks_4_rounded : Icons.looks_4_outlined,
+            title: strings.randomNamedColorDrawer,
             subtitle: possibilities(ColorType.namedColor),
             item: AppDrawerItems.randomNamedColor,
-            selected: colorType == ColorType.namedColor,
           ),
 
           // Random Attractive Color drawer item
           _buildItem(
             context,
-            icon: Icons.looks_5_rounded,
-            title: UIStrings.randomAttractiveColorDrawer,
-            subtitle: UIStrings.randomAttractiveColorDrawerSubtitle,
+            icon: colorType == ColorType.attractiveColor
+                ? Icons.looks_5_rounded
+                : Icons.looks_5_outlined,
+            title: strings.randomAttractiveColorDrawer,
+            subtitle: strings.randomAttractiveColorDrawerSubtitle,
             item: AppDrawerItems.randomAttractiveColor,
-            selected: colorType == ColorType.attractiveColor,
           ),
 
           // Random True Color drawer item
           _buildItem(
             context,
-            icon: Icons.looks_6_rounded,
-            title: UIStrings.randomTrueColorDrawer,
+            icon: colorType == ColorType.trueColor ? Icons.looks_6_rounded : Icons.looks_6_outlined,
+            title: strings.randomTrueColorDrawer,
             subtitle: possibilities(ColorType.trueColor),
             item: AppDrawerItems.randomTrueColor,
-            selected: colorType == ColorType.trueColor,
           ),
 
           const Divider(),
 
-          // Color Information drawer item
+          // Color Info drawer item
           _buildItem(
             context,
-            icon: Icons.info_rounded,
-            title: UIStrings.colorInfoDrawer,
+            icon: Icons.info_outline,
+            title: strings.colorInfoDrawer,
             item: AppDrawerItems.colorInfo,
           ),
 
-          // Preview Color drawer item
+          // Color Favorites drawer item
           _buildItem(
             context,
-            icon: Icons.preview_rounded,
-            title: UIStrings.previewColorDrawer,
-            item: AppDrawerItems.previewColor,
+            icon: Icons.favorite_outline_outlined,
+            title: strings.colorFavoritesDrawer,
+            subtitle: strings.colorFavoritesSubtitle(
+              utils.intToCommaSeparatedString(settings.colorFavoritesList.length),
+              isPlural: settings.colorFavoritesList.length != 1,
+            ),
+            item: AppDrawerItems.colorFavorites,
           ),
 
           const Divider(),
@@ -228,24 +239,24 @@ class AppDrawer extends StatelessWidget {
           // Help & Support drawer item
           _buildItem(
             context,
-            icon: Icons.support_rounded,
-            title: UIStrings.helpDrawer,
+            icon: Icons.support_outlined,
+            title: strings.helpDrawer,
             item: AppDrawerItems.help,
           ),
 
           // View Source drawer item
           _buildItem(
             context,
-            icon: Icons.flutter_dash_rounded,
-            title: UIStrings.sourceCodeDrawer,
+            icon: Icons.code_outlined,
+            title: strings.sourceCodeDrawer,
             item: AppDrawerItems.viewSource,
           ),
 
           // Rate App drawer item
           _buildItem(
             context,
-            icon: Icons.stars_rounded,
-            title: UIStrings.rateAppDrawer,
+            icon: Icons.thumb_up_alt_outlined,
+            title: strings.rateAppDrawer,
             item: AppDrawerItems.rateApp,
           ),
         ],
@@ -292,9 +303,9 @@ class _AppDrawerHeader extends StatelessWidget {
       decoration: BoxDecoration(color: color),
       child: Center(
         child: Text(
-          UIStrings.appName,
+          strings.appName,
           style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                color: ColorUtils.contrastOf(color),
+                color: color_utils.contrastColor(color),
               ),
         ),
       ),

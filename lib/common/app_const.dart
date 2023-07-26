@@ -2,14 +2,13 @@
 // Use of this source code is governed by an MIT-style license that can be
 // found in the LICENSE file.
 
+/// Application-wide constants.
+library;
+
 import 'package:flutter/material.dart';
 
-/// Application-wide constants (e.g. app routes).
-class AppConst {
-  AppConst._();
+/// The default "random" color when the app starts and no real random color has been generated yet.
+const Color defaultColor = Colors.black;
 
-  static const String randomColorRoute = '/';
-  static const String colorInfoRoute = '/color-info';
-
-  static const Color defaultColor = Colors.black;
-}
+/// The parameter name for colors with no name.
+const String noNameColorParam = 'noname';
