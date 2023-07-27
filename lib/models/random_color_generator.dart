@@ -77,8 +77,18 @@ RandomColor _getNamedColor(Color color, ColorType defaultType) {
 /// The returned [RandomColor] has a name if it was generated from named colors, or if its color
 /// value matches the built-in maps of named colors.
 RandomColor nextRandomColor(ColorType colorType) {
+  // For debugging purposes
   // if (colorType != ColorType.randomColor) print(colorType);
   // print(_typeWeights);
+
+  // Hard-coded colors for taking screenshots
+  // return const RandomColor(color: Color(0XFF0088FF), name: 'azure', type: ColorType.basicColor);
+  // return const RandomColor(color: Color(0xFF8700FE), type: ColorType.trueColor);
+  // return const RandomColor(color: Color(0xFFFFEC13), name: 'Broom', type: ColorType.namedColor);
+  // return const RandomColor(color: Color(0xFF00FF22), type: ColorType.trueColor);
+  // return const RandomColor(color: Color(0XFFFF0000), name: 'red', type: ColorType.basicColor);
+  // return const RandomColor(color: Color(0XFFFF00FF), name: 'magenta', type: ColorType.basicColor);
+  return const RandomColor(color: Color(0XFF8800FF), name: 'violet', type: ColorType.basicColor);
 
   switch (colorType) {
     case ColorType.mixedColor:
