@@ -92,7 +92,7 @@ const String goHome = 'Go Home';
 // -----------------------------------------------------------------------------------------------
 
 const String favoriteColorsScreenTitle = 'Favorite Colors';
-const String noFavoritesMessage = 'No favorite colors yet';
+const String noFavoritesMessage = 'No favorite colors yet\n\nGo back home and start tapping on';
 const String removedFromFavorites = 'Removed from favorites';
 const String undoRemoveFromFavorites = 'Undo';
 const String clearFavorites = 'Clear favorites';

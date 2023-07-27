@@ -137,11 +137,12 @@ class AppDrawer extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: <Widget>[
+          // The app drawer header with a bottom margin
           _AppDrawerHeader(color: randomColor.color),
+          const SizedBox(height: 16.0),
 
           // The Set Color Wallpaper drawer item
           ListTile(
-            contentPadding: const EdgeInsets.all(16.0),
             leading: const Icon(Icons.wallpaper_rounded),
             title: const Text(strings.setWallpaperDrawer),
             subtitle: const Text(strings.setWallpaperDrawerSubtitle),

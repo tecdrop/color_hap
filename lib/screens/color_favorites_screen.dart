@@ -67,7 +67,10 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
         onPressed: () => setState(() => settings.colorFavoritesList.insert(index, randomColor)),
       ),
     );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    ScaffoldMessenger.of(context)
+      // The user may delete multiple colors in a row, so remove any existing snackbar before
+      ..removeCurrentSnackBar()
+      ..showSnackBar(snackBar);
   }
 
   @override
@@ -112,13 +115,13 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const Icon(Icons.favorite_border, size: 32),
-          const SizedBox(height: 16),
           Text(
             strings.noFavoritesMessage,
             style: Theme.of(context).textTheme.titleLarge,
             textAlign: TextAlign.center,
           ),
+          const SizedBox(height: 16.0),
+          const Icon(Icons.favorite_border, size: 32.0),
         ],
       ),
     );
