@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../common/custom_icons.dart' as custom_icons;
 import '../common/app_settings.dart' as settings;
 import '../common/app_urls.dart' as urls;
 import '../common/ui_strings.dart' as strings;
@@ -110,8 +111,8 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
         // The toggle color information action button
         IconButton(
           icon: settings.showColorInformation
-              ? const Icon(Icons.visibility_off_outlined)
-              : const Icon(Icons.visibility_outlined),
+              ? const Icon(custom_icons.reorder_off_outlined)
+              : const Icon(Icons.reorder_outlined),
           tooltip: strings.toggleColorInformation,
           onPressed: () => onAction(_AppBarActions.toggleInfo),
         ),
