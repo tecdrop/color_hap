@@ -88,7 +88,7 @@ RandomColor nextRandomColor(ColorType colorType) {
   // return const RandomColor(color: Color(0xFF00FF22), type: ColorType.trueColor);
   // return const RandomColor(color: Color(0XFFFF0000), name: 'red', type: ColorType.basicColor);
   // return const RandomColor(color: Color(0XFFFF00FF), name: 'magenta', type: ColorType.basicColor);
-  return const RandomColor(color: Color(0XFF8800FF), name: 'violet', type: ColorType.basicColor);
+  // return const RandomColor(color: Color(0XFF8800FF), name: 'violet', type: ColorType.basicColor);
 
   switch (colorType) {
     case ColorType.mixedColor:
