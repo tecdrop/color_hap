@@ -33,11 +33,11 @@ enum AppDrawerItems {
 /// The main Material Design drawer of the app, with the main app functions.
 class AppDrawer extends StatelessWidget {
   const AppDrawer({
-    Key? key,
+    super.key,
     required this.randomColor,
     required this.colorType,
     this.onShouldUpdateState,
-  }) : super(key: key);
+  });
 
   /// The current random color.
   final RandomColor randomColor;
@@ -289,9 +289,10 @@ class AppDrawer extends StatelessWidget {
 /// It is filled with a background color, and displays the app name.
 class _AppDrawerHeader extends StatelessWidget {
   const _AppDrawerHeader({
-    Key? key,
+    // ignore: unused_element
+    super.key,
     required this.color,
-  }) : super(key: key);
+  });
 
   /// The color to fill in the background of the drawer header.
   final Color color;

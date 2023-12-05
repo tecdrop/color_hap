@@ -86,11 +86,12 @@ enum _AppBarActions {
 /// The app bar of the Color Info screen.
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   const _AppBar({
-    Key? key,
+    // ignore: unused_element
+    super.key,
     required this.title,
     required this.showColorInformation,
     required this.onAction,
-  }) : super(key: key);
+  });
 
   /// The primary widget displayed in the app bar.
   final Widget? title;

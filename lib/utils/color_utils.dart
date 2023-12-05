@@ -7,7 +7,6 @@
 /// A collection of utility functions for working with colors.
 library;
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'utils.dart' as utils;
@@ -69,7 +68,7 @@ String luminanceString(Color color) {
 
 /// Returns the string representation (`light` or `dark`) of the brightness of the given [Color].
 String brightnessString(Color color) {
-  return describeEnum(ThemeData.estimateBrightnessForColor(color));
+  return ThemeData.estimateBrightnessForColor(color).name;
 }
 
 /// Converts an opaque hexadecimal color string into a Color value.
