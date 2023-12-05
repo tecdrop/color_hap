@@ -11,7 +11,7 @@ import '../common/ui_strings.dart' as strings;
 import '../models/color_type.dart';
 import '../models/random_color_generator.dart';
 import '../models/random_color.dart';
-import '../widgets/color_display.dart';
+import '../widgets/random_color_display.dart';
 import '../widgets/internal/app_drawer.dart';
 
 /// The Random Color screen, that is the home screen of the app.
@@ -86,38 +86,31 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Use an AnimatedSwitcher as a root widget to animate between the previous and current color
-    return AnimatedSwitcher(
-      duration: const Duration(seconds: 1),
-      child: Scaffold(
-        key: ValueKey(_randomColor.color.value), // required for the AnimatedSwitcher to work
-        backgroundColor: _randomColor.color,
+    return Scaffold(
+      // The app bar
+      appBar: _AppBar(
+        title: Text(strings.colorType[widget.colorType]!),
+        isFavorite: _colorFavIndex >= 0,
+        onAction: _onAction,
+      ),
 
-        // The app bar
-        appBar: _AppBar(
-          title: Text(strings.colorType[widget.colorType]!),
-          isFavorite: _colorFavIndex >= 0,
-          onAction: _onAction,
-        ),
+      // The app drawer
+      drawer: AppDrawer(
+        randomColor: _randomColor,
+        colorType: widget.colorType,
+        onShouldUpdateState: () => setState(() {
+          _colorFavIndex = settings.colorFavoritesList.indexOf(_randomColor);
+        }),
+      ),
 
-        // The app drawer
-        drawer: AppDrawer(
-          randomColor: _randomColor,
-          colorType: widget.colorType,
-          onShouldUpdateState: () => setState(() {
-            _colorFavIndex = settings.colorFavoritesList.indexOf(_randomColor);
-          }),
-        ),
+      // A simple body with the centered color display
+      body: Center(child: RandomColorDisplay(randomColor: _randomColor)),
 
-        // A simple body with the centered color display
-        body: Center(child: ColorDisplay(randomColor: _randomColor)),
-
-        // The shuffle floating action button
-        floatingActionButton: FloatingActionButton.large(
-          onPressed: _shuffleColor,
-          tooltip: strings.shuffleTooltip,
-          child: const Icon(Icons.shuffle),
-        ),
+      // The shuffle floating action button
+      floatingActionButton: FloatingActionButton.large(
+        onPressed: _shuffleColor,
+        tooltip: strings.shuffleTooltip,
+        child: const Icon(Icons.shuffle),
       ),
     );
   }

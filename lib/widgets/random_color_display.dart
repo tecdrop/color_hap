@@ -7,9 +7,15 @@ import 'package:flutter/material.dart';
 import '../models/random_color.dart';
 import '../utils/color_utils.dart' as color_utils;
 
-/// A widget that displays the hex code and optional name of a random color.
-class ColorDisplay extends StatelessWidget {
-  const ColorDisplay({super.key, required this.randomColor});
+/// A widget that displays a random color.
+///
+/// It fills the widget with the specified color, and displays the color hex code and optional name.
+/// It also animates the color change.
+class RandomColorDisplay extends StatelessWidget {
+  const RandomColorDisplay({
+    super.key,
+    required this.randomColor,
+  });
 
   /// The random color to display.
   final RandomColor randomColor;
@@ -21,7 +27,13 @@ class ColorDisplay extends StatelessWidget {
     final TextStyle? hexTestStyle =
         randomColor.name != null ? textTheme.titleMedium : textTheme.headlineMedium;
 
-    return Padding(
+    // Use an animated container to animate the color change
+    return AnimatedContainer(
+      duration: const Duration(seconds: 1),
+      color: randomColor.color,
+      width: double.infinity,
+      height: double.infinity,
+      alignment: Alignment.center,
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
