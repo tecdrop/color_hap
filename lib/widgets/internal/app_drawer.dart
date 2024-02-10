@@ -1,4 +1,4 @@
-// Copyright 2020-2023 Tecdrop (www.tecdrop.com)
+// Copyright 2020-2024 Tecdrop (www.tecdrop.com)
 // Use of this source code is governed by a user license that can be
 // found in the LICENSE file.
 
