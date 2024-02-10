@@ -88,7 +88,8 @@ FutureOr<String?> _randomColorRouteRedirect(BuildContext context, GoRouterState 
 /// Navigates to the Random Color screen to generate random colors of the specified type.
 void gotoRandomColorRoute(BuildContext context, ColorType colorType) {
   settings.colorType = colorType;
-  context.go('/${colorType.toShortString()}');
+  // Use replace to remain on the same top-level (home) route, but change the color type
+  context.replace('/${colorType.toShortString()}');
 }
 
 // -----------------------------------------------------------------------------------------------
