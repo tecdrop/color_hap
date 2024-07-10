@@ -2,6 +2,7 @@
 // Use of this source code is governed by an MIT-style license that can be
 // found in the LICENSE file.
 
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 import '../common/ui_strings.dart' as strings;
@@ -28,8 +29,14 @@ class ColorFavoriteListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+
     return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32.0),
+      // Use padding to constrain the width of the list items so they look ok on large screens
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: max(16.0, (width - 1024) / 2),
+        vertical: 32.0,
+      ),
 
       // Fill the tile with the random color, and use the contrast color for the text
       tileColor: randomColor.color,
