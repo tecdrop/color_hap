@@ -102,7 +102,8 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
 
         // The Color Web Search action
         IconButton(
-          icon: const Icon(Icons.travel_explore_outlined),
+          // icon: const Icon(custom_icons.search_web),
+          icon: const Icon(Icons.language_outlined),
           tooltip: strings.colorWebSearchAction,
           onPressed: () => onAction(_AppBarActions.colorWebSearch),
         ),

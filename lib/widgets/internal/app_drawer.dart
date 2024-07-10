@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import '../../common/app_routes.dart';
 import '../../common/app_settings.dart' as settings;
 import '../../common/app_urls.dart' as urls;
+import '../../common/custom_icons.dart' as custom_icons;
 import '../../common/ui_strings.dart' as strings;
 import '../../models/color_type.dart';
 import '../../models/random_color_generator.dart';
@@ -263,15 +264,17 @@ class AppDrawer extends StatelessWidget {
           // View Source drawer item
           _buildItem(
             context,
-            icon: Icons.code_outlined,
+            icon: custom_icons.github,
             title: strings.sourceCodeDrawer,
+            subtitle: strings.sourceCodeDrawerSubtitle,
             item: AppDrawerItems.viewSource,
           ),
 
           // Rate App drawer item
           _buildItem(
             context,
-            icon: Icons.thumb_up_alt_outlined,
+            // icon: Icons.thumb_up_alt_outlined,
+            icon: Icons.star_rate,
             title: strings.rateAppDrawer,
             item: AppDrawerItems.rateApp,
           ),

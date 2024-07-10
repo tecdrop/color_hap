@@ -30,7 +30,7 @@ const Map<ColorType, String> colorType = {
 // Drawer items
 // -----------------------------------------------------------------------------------------------
 
-const String setWallpaperDrawer = 'Set A Color Wallpaper';
+const String setWallpaperDrawer = 'Set a Color Wallpaper';
 const String setWallpaperDrawerSubtitle = 'Use RGB Color Wallpaper Pro\nand support our free apps!';
 
 const String randomMixedColorDrawer = 'Random Colors';
@@ -49,7 +49,8 @@ String colorFavoritesSubtitle(String length, {bool isPlural = true}) =>
     '$length color${isPlural ? 's' : ''}';
 
 const String helpDrawer = 'Help & Support';
-const String sourceCodeDrawer = 'View App Source';
+const String sourceCodeDrawer = 'Star on GitHub';
+const String sourceCodeDrawerSubtitle = 'Yes, it\'s open source!';
 const String rateAppDrawer = 'Rate App';
 
 // -----------------------------------------------------------------------------------------------
@@ -58,7 +59,8 @@ const String rateAppDrawer = 'Rate App';
 
 const String colorInfoScreenTitle = 'Color Information';
 const String colorPreviewAction = 'Preview color';
-const String colorWebSearchAction = 'Search color on the web';
+// const String colorWebSearchAction = 'Search color on the web';
+const String colorWebSearchAction = 'Get color information from the web';
 
 const String colorNameInfo = 'Name';
 const String colorTitleInfo = 'Name & Code';

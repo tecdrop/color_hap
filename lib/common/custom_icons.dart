@@ -15,5 +15,4 @@ const _kFontFam = 'CustomIcons';
 const String? _kFontPkg = null;
 
 // ignore: constant_identifier_names
-const IconData reorder_off_outlined =
-    IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+const IconData github = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
