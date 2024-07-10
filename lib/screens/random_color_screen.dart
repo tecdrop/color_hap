@@ -11,8 +11,10 @@ import '../common/ui_strings.dart' as strings;
 import '../models/color_type.dart';
 import '../models/random_color_generator.dart';
 import '../models/random_color.dart';
-import '../widgets/random_color_display.dart';
+import '../utils/color_utils.dart' as color_utils;
+import '../utils/utils.dart' as utils;
 import '../widgets/internal/app_drawer.dart';
+import '../widgets/random_color_display.dart';
 
 /// The Random Color screen, that is the home screen of the app.
 ///
@@ -84,6 +86,13 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
     });
   }
 
+  /// Copies the current color hex code and name (if available) to the clipboard.
+  Future<void> copyColor() async {
+    final String hexCode = color_utils.toHexString(_randomColor.color);
+    final String value = _randomColor.name != null ? '$hexCode ${_randomColor.name}' : hexCode;
+    await utils.copyToClipboard(context, value);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,7 +113,12 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
       ),
 
       // A simple body with the centered color display
-      body: Center(child: RandomColorDisplay(randomColor: _randomColor)),
+      body: Center(
+        child: RandomColorDisplay(
+          randomColor: _randomColor,
+          onLongPress: copyColor,
+        ),
+      ),
 
       // The shuffle floating action button
       floatingActionButton: FloatingActionButton.large(

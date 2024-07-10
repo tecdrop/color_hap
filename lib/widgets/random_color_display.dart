@@ -15,10 +15,14 @@ class RandomColorDisplay extends StatelessWidget {
   const RandomColorDisplay({
     super.key,
     required this.randomColor,
+    this.onLongPress,
   });
 
   /// The random color to display.
   final RandomColor randomColor;
+
+  /// The function to call when the user long-presses the color hex code and name.
+  final void Function()? onLongPress;
 
   @override
   Widget build(BuildContext context) {
@@ -35,24 +39,27 @@ class RandomColorDisplay extends StatelessWidget {
       height: double.infinity,
       alignment: Alignment.center,
       padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Display the color hex code
-          Text(
-            color_utils.toHexString(randomColor.color),
-            style: hexTestStyle?.copyWith(color: contrastColor),
-            textAlign: TextAlign.center,
-          ),
-          // Display the color name if it is not null
-          if (randomColor.name != null)
+      child: GestureDetector(
+        onLongPress: onLongPress,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            // Display the color hex code
             Text(
-              randomColor.name!,
-              style: textTheme.headlineMedium?.copyWith(color: contrastColor),
+              color_utils.toHexString(randomColor.color),
+              style: hexTestStyle?.copyWith(color: contrastColor),
               textAlign: TextAlign.center,
             ),
-        ],
+            // Display the color name if it is not null
+            if (randomColor.name != null)
+              Text(
+                randomColor.name!,
+                style: textTheme.headlineMedium?.copyWith(color: contrastColor),
+                textAlign: TextAlign.center,
+              ),
+          ],
+        ),
       ),
     );
   }

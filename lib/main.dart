@@ -19,6 +19,7 @@ Future<void> main() async {
     Future.delayed(const Duration(seconds: 5)),
   ]);
 
+  // Make imperative APIs (e.g. push) reflect in the browser URL
   GoRouter.optionURLReflectsImperativeAPIs = true;
 
   // Then run the app
