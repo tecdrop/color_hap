@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:color_hap/models/random_color.dart';
+import 'random_color.dart';
 
 /// A list of favorite random colors.
 class ColorFavoritesList {

@@ -2,6 +2,7 @@
 // Use of this source code is governed by an MIT-style license that can be
 // found in the LICENSE file.
 
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 import '../common/ui_strings.dart' as strings;
@@ -26,12 +27,19 @@ class ColorInfoList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color color = randomColor.color;
+    final double width = MediaQuery.of(context).size.width;
 
     return ListTileTheme(
       textColor: color_utils.contrastColor(color),
       iconColor: color_utils.contrastIconColor(randomColor.color),
       child: ListView(
-        children: [
+        // Use padding to constrain the width of the list view so it looks ok on large screens
+        padding: EdgeInsets.symmetric(
+          horizontal: max(0, (width - 800) / 2),
+          vertical: 16.0,
+        ),
+
+        children: <Widget>[
           // Add the color information list items
           if (randomColor.name != null) ...[
             _buildInfoItem(strings.colorTitleInfo, randomColor.title),
