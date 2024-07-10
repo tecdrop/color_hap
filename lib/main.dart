@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'common/app_routes.dart';
 import 'common/app_settings.dart' as settings;
@@ -17,6 +18,8 @@ Future<void> main() async {
     settings.loadSettings(),
     Future.delayed(const Duration(seconds: 5)),
   ]);
+
+  GoRouter.optionURLReflectsImperativeAPIs = true;
 
   // Then run the app
   runApp(const ColorHapApp());

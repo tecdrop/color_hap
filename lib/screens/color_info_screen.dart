@@ -5,8 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../common/custom_icons.dart' as custom_icons;
-import '../common/app_settings.dart' as settings;
+import '../common/app_routes.dart';
 import '../common/app_urls.dart' as urls;
 import '../common/ui_strings.dart' as strings;
 import '../models/random_color.dart';
@@ -17,7 +16,7 @@ import '../widgets/color_info_list.dart';
 ///
 /// Displays the given [RandomColor] in different formats, and other color information, and allows
 /// the user to toggle the visibility of the color information.
-class ColorInfoScreen extends StatefulWidget {
+class ColorInfoScreen extends StatelessWidget {
   const ColorInfoScreen({
     super.key,
     required this.randomColor,
@@ -26,23 +25,17 @@ class ColorInfoScreen extends StatefulWidget {
   /// The random color to display in the Color Info screen.
   final RandomColor randomColor;
 
-  @override
-  State<ColorInfoScreen> createState() => _ColorInfoScreenState();
-}
-
-class _ColorInfoScreenState extends State<ColorInfoScreen> {
   /// Performs the specified action on the app bar.
-  void _onAppBarAction(_AppBarActions action) {
+  void _onAppBarAction(BuildContext context, _AppBarActions action) {
     switch (action) {
-      // Toggles the visibility of the color information list
-      case _AppBarActions.toggleInfo:
-        setState(() {
-          settings.showColorInformation = !settings.showColorInformation;
-        });
+      // Navigates to the Color Preview screen
+      case _AppBarActions.colorPreview:
+        gotoColorPreviewRoute(context, randomColor.color);
         break;
+
       // Opens the web browser to search for the current color
-      case _AppBarActions.webSearch:
-        final String url = urls.onlineSearch + Uri.encodeComponent(widget.randomColor.title);
+      case _AppBarActions.colorWebSearch:
+        final String url = urls.onlineSearch + Uri.encodeComponent(randomColor.title);
         utils.launchUrlExternal(context, url);
         break;
     }
@@ -50,7 +43,7 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
 
   /// When the user presses the copy button on an item in the list, copy the value to the Clipboard,
   /// and show a confirmation SnackBar.
-  Future<void> onItemCopyPressed(String key, String value) async {
+  Future<void> onItemCopyPressed(BuildContext context, String key, String value) async {
     ScaffoldMessengerState messengerState = ScaffoldMessenger.of(context);
     await Clipboard.setData(ClipboardData(text: value));
     utils.showSnackBarForAsync(messengerState, strings.copiedSnack(value));
@@ -59,28 +52,23 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: widget.randomColor.color,
+      backgroundColor: randomColor.color,
       appBar: _AppBar(
         title: const Text(strings.colorInfoScreenTitle),
-        showColorInformation: settings.showColorInformation,
-        onAction: _onAppBarAction,
+        onAction: (action) => _onAppBarAction(context, action),
       ),
-      body: settings.showColorInformation
-          // Show the color information list
-          ? ColorInfoList(
-              randomColor: widget.randomColor,
-              onCopyPressed: onItemCopyPressed,
-            )
-          // Don't show anything, just the color as the background
-          : const SizedBox.shrink(),
+      body: ColorInfoList(
+        randomColor: randomColor,
+        onCopyPressed: (key, value) => onItemCopyPressed(context, key, value),
+      ),
     );
   }
 }
 
 /// Enum that defines the actions of the app bar.
 enum _AppBarActions {
-  toggleInfo,
-  webSearch,
+  colorPreview,
+  colorWebSearch,
 }
 
 /// The app bar of the Color Info screen.
@@ -89,15 +77,11 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
     // ignore: unused_element
     super.key,
     required this.title,
-    required this.showColorInformation,
     required this.onAction,
   });
 
   /// The primary widget displayed in the app bar.
   final Widget? title;
-
-  /// Whether the current color is added to the favorites list.
-  final bool showColorInformation;
 
   /// The callback that is called when an app bar action is pressed.
   final void Function(_AppBarActions action) onAction;
@@ -109,24 +93,18 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
 
       // The common operations displayed in this app bar
       actions: <Widget>[
-        // The toggle color information action button
+        // The Color Preview action
         IconButton(
-          icon: settings.showColorInformation
-              ? const Icon(custom_icons.reorder_off_outlined)
-              : const Icon(Icons.reorder_outlined),
-          tooltip: strings.toggleColorInformation,
-          onPressed: () => onAction(_AppBarActions.toggleInfo),
+          icon: const Icon(Icons.remove_red_eye_outlined),
+          tooltip: strings.colorPreviewAction,
+          onPressed: () => onAction(_AppBarActions.colorPreview),
         ),
-        // Add the Popup Menu items
-        PopupMenuButton<_AppBarActions>(
-          onSelected: onAction,
-          itemBuilder: (BuildContext context) => <PopupMenuEntry<_AppBarActions>>[
-            // The web search action
-            const PopupMenuItem<_AppBarActions>(
-              value: _AppBarActions.webSearch,
-              child: Text(strings.webSearchColor),
-            ),
-          ],
+
+        // The Color Web Search action
+        IconButton(
+          icon: const Icon(Icons.travel_explore_outlined),
+          tooltip: strings.colorWebSearchAction,
+          onPressed: () => onAction(_AppBarActions.colorWebSearch),
         ),
       ],
     );

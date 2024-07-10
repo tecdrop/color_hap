@@ -151,9 +151,10 @@ Widget _colorPreviewRouteBuilder(BuildContext context, GoRouterState state) {
 }
 
 /// Navigates to the Color Preview screen to show the specified color.
-void gotoColorPreviewRoute(BuildContext context, Color color) {
+Future<void> gotoColorPreviewRoute(BuildContext context, Color color) async {
   final String colorCode = color_utils.toHexString(color, withHash: false);
-  context.go('/preview/$colorCode');
+  // context.go('/preview/$colorCode');
+  return await context.push<void>('/preview/$colorCode');
 }
 
 // -----------------------------------------------------------------------------------------------
