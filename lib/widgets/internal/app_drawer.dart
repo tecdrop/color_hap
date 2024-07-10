@@ -131,7 +131,7 @@ class AppDrawer extends StatelessWidget {
       // Launch the external Rate App url
       case AppDrawerItems.rateApp:
         Navigator.pop(context);
-        utils.launchUrlExternal(context, urls.rate);
+        utils.launchUrlExternal(context, urls.getRateUrl());
         break;
     }
   }
