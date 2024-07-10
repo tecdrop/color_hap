@@ -116,6 +116,9 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
       body: Center(
         child: RandomColorDisplay(
           randomColor: _randomColor,
+          // Navigate to the Color Preview screen when the user double-taps the color code/name
+          onDoubleTap: () => gotoColorPreviewRoute(context, _randomColor.color),
+          // Copy the color hex code/name to the clipboard when the user long-presses it
           onLongPress: copyColor,
         ),
       ),

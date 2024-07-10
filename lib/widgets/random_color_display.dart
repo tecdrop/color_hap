@@ -15,11 +15,15 @@ class RandomColorDisplay extends StatelessWidget {
   const RandomColorDisplay({
     super.key,
     required this.randomColor,
+    this.onDoubleTap,
     this.onLongPress,
   });
 
   /// The random color to display.
   final RandomColor randomColor;
+
+  /// The function to call when the user double-taps the color hex code and name.
+  final void Function()? onDoubleTap;
 
   /// The function to call when the user long-presses the color hex code and name.
   final void Function()? onLongPress;
@@ -40,6 +44,7 @@ class RandomColorDisplay extends StatelessWidget {
       alignment: Alignment.center,
       padding: const EdgeInsets.all(16.0),
       child: GestureDetector(
+        onDoubleTap: onDoubleTap,
         onLongPress: onLongPress,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
