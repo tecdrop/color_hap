@@ -43,6 +43,7 @@ const String randomTrueColorDrawer = 'Random True Colors';
 String possibilitiesDrawerSubtitle(String length) => '$length possibilities';
 
 const String colorInfoDrawer = 'Color Information';
+const String colorPreviewDrawer = 'Color Preview';
 const String colorFavoritesDrawer = 'Favorite Colors';
 String colorFavoritesSubtitle(String length, {bool isPlural = true}) =>
     '$length color${isPlural ? 's' : ''}';

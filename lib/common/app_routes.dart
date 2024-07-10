@@ -14,6 +14,7 @@ import '../models/color_type.dart';
 import '../models/random_color.dart';
 import '../screens/color_favorites_screen.dart';
 import '../screens/color_info_screen.dart';
+import '../screens/color_preview_screen.dart';
 import '../screens/invalid_screen.dart';
 import '../screens/random_color_screen.dart';
 import '../utils/color_utils.dart' as color_utils;
@@ -37,6 +38,13 @@ final GoRouter appRouter = GoRouter(
           path: 'color/:colorType/:colorHex/:colorName',
           builder: _colorInfoRouteBuilder,
         ),
+
+        // The child route for the Color Preview screen
+        GoRoute(
+          path: 'preview/:colorHex',
+          builder: _colorPreviewRouteBuilder,
+        ),
+
         // The child route for the Favorite Colors screen
         GoRoute(
           path: 'fav',
@@ -123,6 +131,29 @@ void gotoColorInfoRoute(BuildContext context, RandomColor randomColor, {bool fro
   final String colorCode = color_utils.toHexString(randomColor.color, withHash: false);
   final String colorName = randomColor.name ?? consts.noNameColorParam;
   context.go('${fromFav ? '/fav' : ''}/color/$colorType/$colorCode/$colorName');
+}
+
+// -----------------------------------------------------------------------------------------------
+// Color Preview Route
+// -----------------------------------------------------------------------------------------------
+
+/// The route builder for the Color Preview screen.
+Widget _colorPreviewRouteBuilder(BuildContext context, GoRouterState state) {
+  String? colorCode = state.pathParameters['colorHex'];
+  Color? color = color_utils.rgbHexToColor(colorCode);
+
+  // If the color code is invalid, return the Invalid Color screen
+  if (color == null) {
+    return InvalidScreen(message: strings.invalidColor(colorCode));
+  }
+
+  return ColorPreviewScreen(color: color);
+}
+
+/// Navigates to the Color Preview screen to show the specified color.
+void gotoColorPreviewRoute(BuildContext context, Color color) {
+  final String colorCode = color_utils.toHexString(color, withHash: false);
+  context.go('/preview/$colorCode');
 }
 
 // -----------------------------------------------------------------------------------------------
