@@ -2,6 +2,7 @@
 
 Shuffle the basic colors, hundreds of web colors, thousands of named colors, a few million attractive colors, and sixteen million+ random true colors. Reuse, copy, or share colors, or search for colors on the Internet. Plus: shuffle colors in a beautiful immersive mode.
 
+### The native Android app
 
 <p>
   <img src="/repo-assets/screenshots/colorhap-android-screenshot-phone-random-mixed-color.png" alt="Random mixed color Android screenshot" width="24%">
@@ -13,6 +14,14 @@ Shuffle the basic colors, hundreds of web colors, thousands of named colors, a f
   <img src="/repo-assets/screenshots/colorhap-android-screenshot-phone-add-to-favorites.png" alt="Add to favorites Android screenshot" width="24%">
   <img src="/repo-assets/screenshots/colorhap-android-screenshot-phone-favorite-colors.png" alt="Favorite colors Android screenshot" width="24%">
 </p>
+
+
+### The PWA (Progressive Web App)
+
+| ColorHap running on macOS | 
+| :---: |
+| ![The ColorHap PWA on macOS](/repo-assets/screenshots/colorhap-pwa-screenshot-macos.png) |
+
 
 
 ## Try ColorHap
