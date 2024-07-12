@@ -1,6 +1,10 @@
 # ColorHap
 
-Shuffle the basic colors, hundreds of web colors, thousands of named colors, a few million attractive colors, and sixteen million+ random true colors. Reuse, copy, or share colors, or search for colors on the Internet. Plus: shuffle colors in a beautiful immersive mode.
+ColorHap is a versatile random color generator designed to spark creativity with millions of colors, including basic, web, named, attractive, and random true colors. It’s perfect for artists, designers, developers, and anyone working with colors, offering an easy way to shuffle, copy, reuse, and share colors.
+
+The latest update introduces a Full-Screen Color Preview for an immersive color experience and a redesigned Color Info Screen for a cleaner layout. Quick actions like long-press to copy codes and double-tap to preview colors improve usability. Enhanced layout for large screens ensures a better visual experience.
+
+Available as a native Android app and a Progressive Web App (PWA), ColorHap runs on multiple platforms without ads or internet access. It's a free and essential tool for exploring endless color possibilities and finding inspiration for any project.
 
 ### The native Android app
 
