@@ -5,14 +5,14 @@ Shuffle the basic colors, hundreds of web colors, thousands of named colors, a f
 ### The native Android app
 
 <p>
-  <img src="/repo-assets/screenshots/colorhap-android-screenshot-phone-random-mixed-color.png" alt="Random mixed color Android screenshot" width="24%">
-  <img src="/repo-assets/screenshots/colorhap-android-screenshot-phone-creativity.png" alt="Creativity Android screenshot" width="24%">
-  <img src="/repo-assets/screenshots/colorhap-android-screenshot-phone-random-named-color.png" alt="Random named color Android screenshot" width="24%">
-  <img src="/repo-assets/screenshots/colorhap-android-screenshot-phone-random-true-color.png" alt="Random true color Android screenshot" width="24%">
-  <img src="/repo-assets/screenshots/colorhap-android-screenshot-phone-color-information.png" alt="Color information Android screenshot" width="24%">
-  <img src="/repo-assets/screenshots/colorhap-android-screenshot-phone-web-search.png" alt="Web search Android screenshot" width="24%">
-  <img src="/repo-assets/screenshots/colorhap-android-screenshot-phone-add-to-favorites.png" alt="Add to favorites Android screenshot" width="24%">
-  <img src="/repo-assets/screenshots/colorhap-android-screenshot-phone-favorite-colors.png" alt="Favorite colors Android screenshot" width="24%">
+  <img src="/repo-assets/colorhap-android-screenshot-phone-random-mixed-color.png" alt="Random mixed color Android screenshot" width="24%">
+  <img src="/repo-assets/colorhap-android-screenshot-phone-creativity.png" alt="Creativity Android screenshot" width="24%">
+  <img src="/repo-assets/colorhap-android-screenshot-phone-random-named-color.png" alt="Random named color Android screenshot" width="24%">
+  <img src="/repo-assets/colorhap-android-screenshot-phone-random-true-color.png" alt="Random true color Android screenshot" width="24%">
+  <img src="/repo-assets/colorhap-android-screenshot-phone-color-information.png" alt="Color information Android screenshot" width="24%">
+  <img src="/repo-assets/colorhap-android-screenshot-phone-web-search.png" alt="Web search Android screenshot" width="24%">
+  <img src="/repo-assets/colorhap-android-screenshot-phone-add-to-favorites.png" alt="Add to favorites Android screenshot" width="24%">
+  <img src="/repo-assets/colorhap-android-screenshot-phone-favorite-colors.png" alt="Favorite colors Android screenshot" width="24%">
 </p>
 
 
@@ -20,7 +20,7 @@ Shuffle the basic colors, hundreds of web colors, thousands of named colors, a f
 
 | ColorHap running on macOS | 
 | :---: |
-| ![The ColorHap PWA on macOS](/repo-assets/screenshots/colorhap-pwa-screenshot-macos.png) |
+| ![The ColorHap PWA on macOS](/repo-assets/colorhap-pwa-screenshot-macos.png) |
 
 
 
