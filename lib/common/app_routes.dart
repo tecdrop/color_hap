@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../common/app_const.dart' as consts;
-import '../common/app_settings.dart' as settings;
 import '../common/ui_strings.dart' as strings;
 import '../models/color_type.dart';
 import '../models/random_color.dart';
@@ -67,12 +66,6 @@ final GoRouter appRouter = GoRouter(
         return InvalidScreen(message: strings.invalidPage(state.extra as String?));
       },
     ),
-
-    // The route for the Random Color screen, when the color type is specified in the route
-    GoRoute(
-      path: '/:colorType',
-      redirect: _randomColorRouteRedirect,
-    ),
   ],
 );
 
@@ -82,22 +75,7 @@ final GoRouter appRouter = GoRouter(
 
 /// The route builder for the Random Color screen, which is the home screen of the app.
 Widget _randomColorRouteBuilder(BuildContext context, GoRouterState state) {
-  return RandomColorScreen(
-    colorType: settings.colorType,
-  );
-}
-
-/// The route redirect for the Random Color screen, when the color type is specified in the route.
-FutureOr<String?> _randomColorRouteRedirect(BuildContext context, GoRouterState state) {
-  settings.colorType = ColorType.fromShortString(state.pathParameters['colorType']);
-  return '/';
-}
-
-/// Navigates to the Random Color screen to generate random colors of the specified type.
-void gotoRandomColorRoute(BuildContext context, ColorType colorType) {
-  settings.colorType = colorType;
-  // Use replace to remain on the same top-level (home) route, but change the color type
-  context.replace('/${colorType.toShortString()}');
+  return const RandomColorScreen();
 }
 
 // -----------------------------------------------------------------------------------------------

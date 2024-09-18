@@ -22,11 +22,7 @@ import '../widgets/random_color_display.dart';
 class RandomColorScreen extends StatefulWidget {
   const RandomColorScreen({
     super.key,
-    required this.colorType,
   });
-
-  /// The type of random colors that are currently generated in this screen.
-  final ColorType colorType;
 
   @override
   State<RandomColorScreen> createState() => _RandomColorScreenState();
@@ -50,16 +46,6 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
     _shuffleColor();
   }
 
-  /// Generates a new random color if the color type has changed.
-  @override
-  void didUpdateWidget(RandomColorScreen oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.colorType != widget.colorType) {
-      _shuffleColor();
-    }
-  }
-
   /// Performs the actions of the app bar.
   void _onAction(_AppBarActions action) {
     switch (action) {
@@ -79,7 +65,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
   /// Generates a new random color.
   void _shuffleColor() {
-    final RandomColor randomColor = nextRandomColor(widget.colorType);
+    final RandomColor randomColor = nextRandomColor(settings.colorType);
     _colorFavIndex = settings.colorFavoritesList.indexOf(randomColor);
     setState(() {
       _randomColor = randomColor;
@@ -98,7 +84,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
     return Scaffold(
       // The app bar
       appBar: _AppBar(
-        title: Text(strings.colorType[widget.colorType]!),
+        title: Text(strings.colorType[settings.colorType]!),
         isFavorite: _colorFavIndex >= 0,
         onAction: _onAction,
       ),
@@ -106,10 +92,20 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
       // The app drawer
       drawer: AppDrawer(
         randomColor: _randomColor,
-        colorType: widget.colorType,
+        colorType: settings.colorType,
+        onColorTypeChange: (ColorType colorType) {
+          settings.colorType = colorType;
+          _shuffleColor();
+        },
         onShouldUpdateState: () => setState(() {
           _colorFavIndex = settings.colorFavoritesList.indexOf(_randomColor);
         }),
+        onNextIdentityColor: () {
+          setState(() {
+            _randomColor = nextIdentityColor();
+            _colorFavIndex = settings.colorFavoritesList.indexOf(_randomColor);
+          });
+        },
       ),
 
       // A simple body with the centered color display

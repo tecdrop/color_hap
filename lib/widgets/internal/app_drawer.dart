@@ -38,7 +38,9 @@ class AppDrawer extends StatelessWidget {
     super.key,
     required this.randomColor,
     required this.colorType,
+    this.onColorTypeChange,
     this.onShouldUpdateState,
+    this.onNextIdentityColor,
   });
 
   /// The current random color.
@@ -47,8 +49,14 @@ class AppDrawer extends StatelessWidget {
   /// The current type of random colors generated in the Random Color screen.
   final ColorType colorType;
 
+  /// A callback function that is called when the color type changes.
+  final void Function(ColorType)? onColorTypeChange;
+
   /// A callback function that is called when the the screen that opened the drawer should update.
   final void Function()? onShouldUpdateState;
+
+  /// A callback function that is called to go to the next app identity color.
+  final void Function()? onNextIdentityColor;
 
   /// Starts a specific functionality of the app when the user taps a drawer [item].
   void _onItemTap(BuildContext context, AppDrawerItems item) {
@@ -62,37 +70,37 @@ class AppDrawer extends StatelessWidget {
       // Reopen the Random Color screen for generating random colors (of any type)
       case AppDrawerItems.randomMixedColor:
         Navigator.pop(context);
-        gotoRandomColorRoute(context, ColorType.mixedColor);
+        onColorTypeChange?.call(ColorType.mixedColor);
         break;
 
       // Reopen the Random Color screen for generating random basic colors
       case AppDrawerItems.randomBasicColor:
         Navigator.pop(context);
-        gotoRandomColorRoute(context, ColorType.basicColor);
+        onColorTypeChange?.call(ColorType.basicColor);
         break;
 
       // Reopen the Random Color screen for generating random web colors
       case AppDrawerItems.randomWebColor:
         Navigator.pop(context);
-        gotoRandomColorRoute(context, ColorType.webColor);
+        onColorTypeChange?.call(ColorType.webColor);
         break;
 
       // Reopen the Random Color screen for generating random named colors
       case AppDrawerItems.randomNamedColor:
         Navigator.pop(context);
-        gotoRandomColorRoute(context, ColorType.namedColor);
+        onColorTypeChange?.call(ColorType.namedColor);
         break;
 
       // Reopen the Random Color screen for generating random attractive colors
       case AppDrawerItems.randomAttractiveColor:
         Navigator.pop(context);
-        gotoRandomColorRoute(context, ColorType.attractiveColor);
+        onColorTypeChange?.call(ColorType.attractiveColor);
         break;
 
       // Reopen the Random Color screen for generating random true colors
       case AppDrawerItems.randomTrueColor:
         Navigator.pop(context);
-        gotoRandomColorRoute(context, ColorType.trueColor);
+        onColorTypeChange?.call(ColorType.trueColor);
         break;
 
       // Open the Color Info screen with the current random color
@@ -251,7 +259,11 @@ class AppDrawer extends StatelessWidget {
             item: AppDrawerItems.colorFavorites,
           ),
 
-          const Divider(),
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onLongPress: onNextIdentityColor,
+            child: const Divider(),
+          ),
 
           // Help & Support drawer item
           _buildItem(

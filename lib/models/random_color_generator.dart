@@ -77,19 +77,6 @@ RandomColor _getNamedColor(Color color, ColorType defaultType) {
 /// The returned [RandomColor] has a name if it was generated from named colors, or if its color
 /// value matches the built-in maps of named colors.
 RandomColor nextRandomColor(ColorType colorType) {
-  // For debugging purposes
-  // if (colorType != ColorType.randomColor) print(colorType);
-  // print(_typeWeights);
-
-  // Hard-coded colors for taking screenshots
-  // return const RandomColor(color: Color(0XFF0088FF), name: 'azure', type: ColorType.basicColor);
-  // return const RandomColor(color: Color(0xFF8700FE), type: ColorType.trueColor);
-  // return const RandomColor(color: Color(0xFFFFEC13), name: 'Broom', type: ColorType.namedColor);
-  // return const RandomColor(color: Color(0xFF00FF22), type: ColorType.trueColor);
-  // return const RandomColor(color: Color(0XFFFF0000), name: 'red', type: ColorType.basicColor);
-  // return const RandomColor(color: Color(0XFFFF00FF), name: 'magenta', type: ColorType.basicColor);
-  // return const RandomColor(color: Color(0XFF8800FF), name: 'violet', type: ColorType.basicColor);
-
   switch (colorType) {
     case ColorType.mixedColor:
       return nextRandomColor(_typeWeights[_random.nextInt(_typeWeights.length)]);
@@ -104,6 +91,27 @@ RandomColor nextRandomColor(ColorType colorType) {
     case ColorType.trueColor:
       return _getNamedColor(rtcg.nextRandomColor(_random), ColorType.trueColor);
   }
+}
+
+int _nextIdentityColorIndex = 0;
+
+/// Returns the next identity color from a list of predefined colors.
+///
+/// These colors are used internally for app screenshots and branding.
+RandomColor nextIdentityColor() {
+  const List<RandomColor> identityColors = [
+    RandomColor(color: Color(0XFF0088FF), name: 'azure', type: ColorType.basicColor),
+    RandomColor(color: Color(0xFF8700FE), type: ColorType.trueColor),
+    RandomColor(color: Color(0xFFFFEC13), name: 'Broom', type: ColorType.namedColor),
+    RandomColor(color: Color(0xFF00FF22), type: ColorType.trueColor),
+    RandomColor(color: Color(0XFFFF0000), name: 'red', type: ColorType.basicColor),
+    RandomColor(color: Color(0XFFFF00FF), name: 'magenta', type: ColorType.basicColor),
+    RandomColor(color: Color(0XFF8800FF), name: 'violet', type: ColorType.basicColor),
+  ];
+
+  final RandomColor randomColor = identityColors[_nextIdentityColorIndex];
+  _nextIdentityColorIndex = (_nextIdentityColorIndex + 1) % identityColors.length;
+  return randomColor;
 }
 
 /// The number of available colors of the given type that can be used to generate the random color.
