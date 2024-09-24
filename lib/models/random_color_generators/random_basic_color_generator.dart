@@ -1,6 +1,7 @@
-// Copyright 2020-2024 Tecdrop (www.tecdrop.com)
-// Use of this source code is governed by an MIT-style license that can be
-// found in the LICENSE file.
+// Copyright 2020-2024 Tecdrop (https://www.tecdrop.com/)
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://www.tecdrop.com/colorhap/license/.
 
 /// Implements a generator of random basic colors.
 library;
@@ -30,8 +31,6 @@ String? getColorName(Color color) => _basicColors[color.value];
 
 /// The number of available basic colors that can be used to generate the random color.
 int get possibilityCount => _basicColors.length;
-
-// cSpell: disable
 
 /// A map of integer [Color] value constants corresponding to basic named colors.
 ///
