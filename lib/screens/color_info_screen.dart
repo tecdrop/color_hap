@@ -11,6 +11,7 @@ import '../common/ui_strings.dart' as strings;
 import '../models/random_color.dart';
 import '../utils/utils.dart' as utils;
 import '../widgets/color_info_list.dart';
+import '../utils/color_utils.dart' as color_utils;
 
 /// The Color Info screen.
 ///
@@ -51,14 +52,31 @@ class ColorInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color color = randomColor.color;
+    final List<({String key, String value})> infos = [
+      if (randomColor.name != null) ...[
+        (key: strings.colorTitleInfo, value: randomColor.title),
+        (key: strings.colorNameInfo, value: randomColor.name!)
+      ],
+      (key: strings.hexInfo, value: color_utils.toHexString(color)),
+      (key: strings.colorTypeInfo, value: strings.colorType[randomColor.type]!),
+      (key: strings.rgbInfo, value: color_utils.toRGBString(color)),
+      (key: strings.hsvInfo, value: color_utils.toHSVString(color)),
+      (key: strings.hslInfo, value: color_utils.toHSLString(color)),
+      (key: strings.decimalInfo, value: color_utils.toDecimalString(color)),
+      (key: strings.luminanceInfo, value: color_utils.luminanceString(color)),
+      (key: strings.brightnessInfo, value: color_utils.brightnessString(color)),
+    ];
+
     return Scaffold(
-      backgroundColor: randomColor.color,
+      backgroundColor: color,
       appBar: _AppBar(
         title: const Text(strings.colorInfoScreenTitle),
         onAction: (action) => _onAppBarAction(context, action),
       ),
       body: ColorInfoList(
         randomColor: randomColor,
+        infos: infos,
         onCopyPressed: (key, value) => onItemCopyPressed(context, key, value),
       ),
     );
