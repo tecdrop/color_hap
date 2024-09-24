@@ -78,31 +78,51 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
         final String url = urls.onlineSearch + Uri.encodeComponent(widget.randomColor.title);
         utils.launchUrlExternal(context, url);
         break;
+
+      // Copies all the color information to the clipboard
+      case _AppBarActions.copyAll:
+        _copyAll();
+        break;
+
+      // Shares all the color information
+      case _AppBarActions.shareAll:
+        _shareAll();
+        break;
     }
   }
 
   /// Copies the value of the item in the list that the user wants to copy.
-  Future<void> _onItemCopyPressed(BuildContext context, String key, String value) async {
+  Future<void> _copyItem(BuildContext context, String key, String value) async {
     ScaffoldMessengerState messengerState = ScaffoldMessenger.of(context);
     await Clipboard.setData(ClipboardData(text: value));
     utils.showSnackBarForAsync(messengerState, strings.copiedSnack(value));
   }
 
   /// Share the value of the item in the list that the user wants to share.
-  void _onItemSharePressed(String key, String value) {
+  void _shareItem(String key, String value) {
     Share.share(value);
   }
 
   /// Copies all the color information to the clipboard.
-  Future<void> _onCopyAllPressed() async {
+  Future<void> _copyAll() async {
     ScaffoldMessengerState messengerState = ScaffoldMessenger.of(context);
     await Clipboard.setData(ClipboardData(text: _infosAsString));
     utils.showSnackBarForAsync(messengerState, strings.allInfoCopied);
   }
 
   /// Shares all the color information.
-  void _onShareAllPressed() {
+  void _shareAll() async {
     Share.share(_infosAsString);
+  }
+
+  /// Shares all the color information.
+  void _shareColorSwatch() async {
+    Uint8List pngBytes = await color_utils.buildColorSwatch(widget.randomColor.color, 512, 512);
+    // final XFile xFile = XFile.fromData(pngBytes, name: fileName, mimeType: 'image/png');
+    final XFile xFile = XFile.fromData(pngBytes, name: 'color_swatch.png', mimeType: 'image/png');
+
+    // Summon the platform's share sheet to share the image file
+    await Share.shareXFiles([xFile], text: strings.shareSwatchMessage(widget.randomColor.title));
   }
 
   @override
@@ -117,17 +137,23 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
       ),
 
       // The body of the screen with the color information list
-      body: ColorInfoList(
-        randomColor: widget.randomColor,
-        infos: _infos,
-        onCopyPressed: (key, value) => _onItemCopyPressed(context, key, value),
-        onSharePressed: (key, value) => _onItemSharePressed(key, value),
+      body: Padding(
+        // Add some bottom padding to the list to make space for the floating action button
+        padding: const EdgeInsets.only(bottom: 64.0),
+
+        child: ColorInfoList(
+          randomColor: widget.randomColor,
+          infos: _infos,
+          onCopyPressed: (key, value) => _copyItem(context, key, value),
+          onSharePressed: (key, value) => _shareItem(key, value),
+        ),
       ),
 
-      // The bottom app bar with the Copy All and Share All buttons
-      bottomNavigationBar: _BottomAppBar(
-        onCopyAllPressed: _onCopyAllPressed,
-        onShareAllPressed: _onShareAllPressed,
+      // The Share Swatch floating action button
+      floatingActionButton: FloatingActionButton.extended(
+        icon: const Icon(Icons.share_outlined),
+        label: const Text(strings.shareSwatchFAB),
+        onPressed: _shareColorSwatch,
       ),
     );
   }
@@ -137,13 +163,14 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
 enum _AppBarActions {
   colorPreview,
   colorWebSearch,
+  copyAll,
+  shareAll,
 }
 
 /// The app bar of the Color Info screen.
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   const _AppBar({
-    // ignore: unused_element
-    super.key,
+    super.key, // ignore: unused_element
     required this.title,
     required this.onAction,
   });
@@ -168,15 +195,28 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
           onPressed: () => onAction(_AppBarActions.colorPreview),
         ),
 
-        // The Color Web Search action
-        IconButton(
-          // icon: const Icon(custom_icons.search_web),
-          // icon: const Icon(Icons.language_outlined),
-          icon: const Icon(Icons.open_in_browser_outlined),
-          // icon: const Icon(Icons.web_outlined),
-          // icon: const Icon(Icons.tab_outlined),
-          tooltip: strings.colorWebSearchAction,
-          onPressed: () => onAction(_AppBarActions.colorWebSearch),
+        // Add the overflow menu
+        PopupMenuButton<_AppBarActions>(
+          onSelected: onAction,
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<_AppBarActions>>[
+            // Add the Copy All action to the overflow menu
+            const PopupMenuItem<_AppBarActions>(
+              value: _AppBarActions.copyAll,
+              child: Text(strings.copyAllAction),
+            ),
+
+            // Add the Share All action to the overflow menu
+            const PopupMenuItem<_AppBarActions>(
+              value: _AppBarActions.shareAll,
+              child: Text(strings.shareAllAction),
+            ),
+
+            // Add the Color Web Search action to the overflow menu
+            const PopupMenuItem<_AppBarActions>(
+              value: _AppBarActions.colorWebSearch,
+              child: Text(strings.colorWebSearchAction),
+            ),
+          ],
         ),
       ],
     );
@@ -184,45 +224,4 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-}
-
-/// The bottom app bar of the Color Info screen.
-class _BottomAppBar extends StatelessWidget {
-  const _BottomAppBar({
-    super.key, // ignore: unused_element
-    this.onCopyAllPressed,
-    this.onShareAllPressed,
-  });
-
-  /// The callback that is called when the Copy All button is pressed.
-  final void Function()? onCopyAllPressed;
-
-  /// The callback that is called when the Share All button is pressed.
-  final void Function()? onShareAllPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomAppBar(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          // Add the Copy All button to the bottom app bar
-          TextButton.icon(
-            icon: const Icon(Icons.copy_outlined),
-            label: const Text(strings.copyAllButton),
-            onPressed: onCopyAllPressed,
-          ),
-
-          const SizedBox(width: 16.0),
-
-          // Add the Share All button to the bottom app bar
-          FilledButton.icon(
-            icon: const Icon(Icons.share_outlined),
-            label: const Text(strings.shareAllButton),
-            onPressed: onShareAllPressed,
-          ),
-        ],
-      ),
-    );
-  }
 }

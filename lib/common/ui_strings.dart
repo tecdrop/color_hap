@@ -1,6 +1,7 @@
-// Copyright 2020-2024 Tecdrop (www.tecdrop.com)
-// Use of this source code is governed by an MIT-style license that can be
-// found in the LICENSE file.
+// Copyright 2020-2024 Tecdrop (https://www.tecdrop.com/)
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://www.tecdrop.com/colorhap/license/.
 
 import '../models/color_type.dart';
 
@@ -59,8 +60,13 @@ const String rateAppDrawer = 'Rate App';
 
 const String colorInfoScreenTitle = 'Color Information';
 const String colorPreviewAction = 'Preview color';
-// const String colorWebSearchAction = 'Search color on the web';
-const String colorWebSearchAction = 'Get color information from the web';
+const String copyAllAction = 'Copy all';
+const String shareAllAction = 'Share all';
+const String colorWebSearchAction = 'More on the web';
+
+const String shareSwatchFAB = 'Share swatch';
+String shareSwatchMessage(String colorTitle) =>
+    '$colorTitle, a random color generated just for you with ColorHap 🎨 https://colorhap.tecdrop.com/';
 
 const String colorNameInfo = 'Name';
 const String colorTitleInfo = 'Name & Code';
@@ -75,8 +81,6 @@ const String brightnessInfo = 'Brightness';
 
 const String itemCopyTooltip = 'Copy value';
 const String itemShareTooltip = 'Share value';
-const String copyAllButton = 'Copy all';
-const String shareAllButton = 'Share all';
 const String allInfoCopied = 'All color information copied to clipboard';
 
 // -----------------------------------------------------------------------------------------------

@@ -50,7 +50,7 @@ class ColorInfoList extends StatelessWidget {
         // Use padding to constrain the width of the list items so they look ok on large screens
         padding: EdgeInsets.symmetric(
           horizontal: max(0, (width - 800) / 2),
-          vertical: 16.0,
+          // vertical: 16.0,
         ),
 
         itemCount: infos.length,
@@ -102,7 +102,8 @@ class _ColorInfoItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       // Style the list item
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32.0),
+      // contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32.0),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
       textColor: textColor,
       iconColor: textColor.withOpacity(0.7),
 

@@ -1,12 +1,13 @@
-// Copyright 2020-2024 Tecdrop (www.tecdrop.com)
-// Use of this source code is governed by an MIT-style license that can be
-// found in the LICENSE file.
-
-// cSpell:ignore RRGGBB
+// Copyright 2020-2024 Tecdrop (https://www.tecdrop.com/)
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://www.tecdrop.com/colorhap/license/.
 
 /// A collection of utility functions for working with colors.
 library;
 
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
 import 'utils.dart' as utils;
@@ -102,4 +103,18 @@ Color? rgbHexToColor(String? hex) {
 
   // Return null if the hex string is invalid.
   return null;
+}
+
+/// Builds a color swatch image of the given [color] with the specified [width] and [height].
+Future<Uint8List> buildColorSwatch(Color color, int width, int height) async {
+  // Create the color swatch using a sequence of graphical operations
+  final ui.PictureRecorder recorder = ui.PictureRecorder();
+  final Canvas canvas = Canvas(recorder, Rect.fromLTWH(0, 0, width.toDouble(), height.toDouble()));
+  canvas.drawColor(color, BlendMode.src);
+  final ui.Picture picture = recorder.endRecording();
+
+  // Convert the picture to a PNG image and return its bytes
+  final ui.Image img = await picture.toImage(width, height);
+  final ByteData? pngBytes = await img.toByteData(format: ui.ImageByteFormat.png);
+  return pngBytes!.buffer.asUint8List();
 }
