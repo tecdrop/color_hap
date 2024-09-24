@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 
 import 'package:share_plus/share_plus.dart';
 
+import '../common/app_const.dart' as consts;
 import '../common/app_routes.dart';
 import '../common/app_urls.dart' as urls;
 import '../common/ui_strings.dart' as strings;
@@ -117,9 +118,13 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
 
   /// Shares all the color information.
   void _shareColorSwatch() async {
+    // Generate the color swatch image file name
+    final String hexCode = color_utils.toHexString(widget.randomColor.color, withHash: false);
+    final String fileName = consts.colorSwatchFileName(hexCode);
+
+    // Create the color swatch image file
     Uint8List pngBytes = await color_utils.buildColorSwatch(widget.randomColor.color, 512, 512);
-    // final XFile xFile = XFile.fromData(pngBytes, name: fileName, mimeType: 'image/png');
-    final XFile xFile = XFile.fromData(pngBytes, name: 'color_swatch.png', mimeType: 'image/png');
+    final XFile xFile = XFile.fromData(pngBytes, name: fileName, mimeType: 'image/png');
 
     // Summon the platform's share sheet to share the image file
     await Share.shareXFiles([xFile], text: strings.shareSwatchMessage(widget.randomColor.title));
@@ -137,16 +142,11 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
       ),
 
       // The body of the screen with the color information list
-      body: Padding(
-        // Add some bottom padding to the list to make space for the floating action button
-        padding: const EdgeInsets.only(bottom: 64.0),
-
-        child: ColorInfoList(
-          randomColor: widget.randomColor,
-          infos: _infos,
-          onCopyPressed: (key, value) => _copyItem(context, key, value),
-          onSharePressed: (key, value) => _shareItem(key, value),
-        ),
+      body: ColorInfoList(
+        randomColor: widget.randomColor,
+        infos: _infos,
+        onCopyPressed: (key, value) => _copyItem(context, key, value),
+        onSharePressed: (key, value) => _shareItem(key, value),
       ),
 
       // The Share Swatch floating action button

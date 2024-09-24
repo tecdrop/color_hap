@@ -48,10 +48,10 @@ class ColorInfoList extends StatelessWidget {
       ),
       child: ListView.separated(
         // Use padding to constrain the width of the list items so they look ok on large screens
+        // Also add some bottom padding to the list to make space for the floating action button
         padding: EdgeInsets.symmetric(
           horizontal: max(0, (width - 800) / 2),
-          // vertical: 16.0,
-        ),
+        ).copyWith(bottom: 64.0),
 
         itemCount: infos.length,
         itemBuilder: (BuildContext context, int index) {
