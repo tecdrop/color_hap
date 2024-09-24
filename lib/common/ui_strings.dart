@@ -73,6 +73,9 @@ const String decimalInfo = 'Decimal';
 const String luminanceInfo = 'Luminance';
 const String brightnessInfo = 'Brightness';
 
+const String copyAllButton = 'Copy all';
+const String shareAllButton = 'Share all';
+
 // -----------------------------------------------------------------------------------------------
 // Random Color Screen
 // -----------------------------------------------------------------------------------------------

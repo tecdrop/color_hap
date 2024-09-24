@@ -53,6 +53,8 @@ class ColorInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color color = randomColor.color;
+
+    // Prepare the list of color information to display
     final List<({String key, String value})> infos = [
       if (randomColor.name != null) ...[
         (key: strings.colorTitleInfo, value: randomColor.title),
@@ -78,6 +80,34 @@ class ColorInfoScreen extends StatelessWidget {
         randomColor: randomColor,
         infos: infos,
         onCopyPressed: (key, value) => onItemCopyPressed(context, key, value),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            // Add a Copy All button to the bottom app bar
+            TextButton.icon(
+              icon: const Icon(Icons.copy_outlined),
+              label: const Text(strings.copyAllButton),
+              onPressed: () {
+                // final String allInfo = infos.map((info) => '${info.key}: ${info.value}').join('\n');
+                // Clipboard.setData(ClipboardData(text: allInfo));
+                // utils.showSnackBarForAsync(ScaffoldMessenger.of(context), strings.copiedAllSnack);
+              },
+            ),
+
+            const SizedBox(width: 16.0),
+            // Add a Share All button to the bottom app bar
+            FilledButton.icon(
+              icon: const Icon(Icons.share_outlined),
+              label: const Text(strings.shareAllButton),
+              onPressed: () {
+                // final String allInfo = infos.map((info) => '${info.key}: ${info.value}').join('\n');
+                // utils.shareText(allInfo);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -121,7 +151,10 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
         // The Color Web Search action
         IconButton(
           // icon: const Icon(custom_icons.search_web),
-          icon: const Icon(Icons.language_outlined),
+          // icon: const Icon(Icons.language_outlined),
+          icon: const Icon(Icons.open_in_browser_outlined),
+          // icon: const Icon(Icons.web_outlined),
+          // icon: const Icon(Icons.tab_outlined),
           tooltip: strings.colorWebSearchAction,
           onPressed: () => onAction(_AppBarActions.colorWebSearch),
         ),

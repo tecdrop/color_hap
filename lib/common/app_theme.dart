@@ -11,12 +11,16 @@ ThemeData getAppTheme(Brightness brightness) {
 
   return ThemeData(
     brightness: brightness,
+    useMaterial3: true,
     drawerTheme: DrawerThemeData(
       backgroundColor: backgroundColor,
     ),
     appBarTheme: AppBarTheme(
       backgroundColor: backgroundColor,
       foregroundColor: foregroundColor,
+    ),
+    bottomAppBarTheme: BottomAppBarTheme(
+      color: backgroundColor,
     ),
     popupMenuTheme: PopupMenuThemeData(
       color: backgroundColor,
@@ -30,7 +34,13 @@ ThemeData getAppTheme(Brightness brightness) {
     ),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
-        foregroundColor: brightness == Brightness.dark ? Colors.white : Colors.black,
+        foregroundColor: foregroundColor,
+      ),
+    ),
+    filledButtonTheme: FilledButtonThemeData(
+      style: FilledButton.styleFrom(
+        backgroundColor: foregroundColor,
+        foregroundColor: backgroundColor,
       ),
     ),
   );
