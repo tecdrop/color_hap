@@ -36,6 +36,8 @@ const Map<ColorType, String> colorTypePlural = {
   ColorType.trueColor: 'True Colors',
 };
 
+String availableColors(ColorType value) => 'Available ${colorTypePlural[value]}';
+
 // -----------------------------------------------------------------------------------------------
 // Drawer items
 // -----------------------------------------------------------------------------------------------
@@ -147,4 +149,4 @@ const Map<ColorType, String> colorTypeReferenceTabs = {
 // Available Colors Screen
 // -----------------------------------------------------------------------------------------------
 
-const String availableColorsScreenTitlePrefix = 'Available ';
+

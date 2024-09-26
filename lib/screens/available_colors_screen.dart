@@ -35,9 +35,7 @@ class AvailableColorsScreen extends StatelessWidget {
       bucket: _storageBucket,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            '${strings.availableColorsScreenTitlePrefix} ${strings.colorTypePlural[colorType]}',
-          ),
+          title: Text(strings.availableColors(colorType)),
         ),
         body: switch (colorType) {
           ColorType.mixedColor => const SizedBox.shrink(), // TODO: Implement mixed colors?

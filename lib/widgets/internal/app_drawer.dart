@@ -3,7 +3,6 @@
 // license that can be found in the LICENSE file or at
 // https://www.tecdrop.com/colorhap/license/.
 
-import 'package:color_hap/screens/color_reference_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../common/app_routes.dart';
@@ -14,6 +13,7 @@ import '../../common/ui_strings.dart' as strings;
 import '../../models/color_type.dart';
 import '../../models/random_color_generator.dart';
 import '../../models/random_color.dart';
+import '../../screens/available_colors_screen.dart';
 import '../../utils/color_utils.dart' as color_utils;
 import '../../utils/utils.dart' as utils;
 
@@ -26,7 +26,7 @@ enum AppDrawerItems {
   randomNamedColor,
   randomAttractiveColor,
   randomTrueColor,
-  colorReference,
+  availableColors,
   colorInfo,
   colorPreview,
   colorFavorites,
@@ -107,9 +107,9 @@ class AppDrawer extends StatelessWidget {
         break;
 
       // Open the Color Reference screen
-      case AppDrawerItems.colorReference:
+      case AppDrawerItems.availableColors:
         Navigator.pop(context);
-        utils.navigateTo(Navigator.of(context), const ColorReferenceScreen());
+        utils.navigateTo(Navigator.of(context), AvailableColorsScreen(colorType: colorType));
         break;
 
       // Open the Color Info screen with the current random color
@@ -238,12 +238,12 @@ class AppDrawer extends StatelessWidget {
             item: AppDrawerItems.randomTrueColor,
           ),
 
-          // Color Reference drawer item
+          // Available Colors drawer item
           _buildItem(
             context,
-            icon: Icons.palette_outlined,
-            title: strings.colorReferenceDrawer,
-            item: AppDrawerItems.colorReference,
+            icon: Icons.list_alt_outlined,
+            title: strings.availableColors(colorType),
+            item: AppDrawerItems.availableColors,
           ),
 
           const Divider(),
