@@ -16,6 +16,7 @@ import '../utils/color_utils.dart' as color_utils;
 import '../utils/utils.dart' as utils;
 import '../widgets/internal/app_drawer.dart';
 import '../widgets/random_color_display.dart';
+import 'available_colors_screen.dart';
 
 /// The Random Color screen, that is the home screen of the app.
 ///
@@ -60,6 +61,13 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
       // Open the Color Information screen with the current color
       case _AppBarActions.colorInfo:
         gotoColorInfoRoute(context, _randomColor);
+        break;
+      // Open the Available Colors screen
+      case _AppBarActions.availableColors:
+        utils.navigateTo(
+          Navigator.of(context),
+          AvailableColorsScreen(colorType: settings.colorType),
+        );
         break;
     }
   }
@@ -134,6 +142,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 enum _AppBarActions {
   toggleFav,
   colorInfo,
+  availableColors,
 }
 
 /// The app bar of the Random Color screen.
@@ -171,6 +180,11 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
           icon: const Icon(Icons.info_outline),
           tooltip: strings.colorInfoTooltip,
           onPressed: () => onAction(_AppBarActions.colorInfo),
+        ),
+        IconButton(
+          icon: const Icon(Icons.list_alt_outlined),
+          tooltip: strings.availableColorsTooltip,
+          onPressed: () => onAction(_AppBarActions.availableColors),
         ),
       ],
     );

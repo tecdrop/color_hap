@@ -27,6 +27,15 @@ const Map<ColorType, String> colorType = {
   ColorType.trueColor: 'Random True Color',
 };
 
+const Map<ColorType, String> colorTypePlural = {
+  ColorType.mixedColor: 'Colors',
+  ColorType.basicColor: 'Basic Colors',
+  ColorType.webColor: 'Web Colors',
+  ColorType.namedColor: 'Named Colors',
+  ColorType.attractiveColor: 'Attractive Colors',
+  ColorType.trueColor: 'True Colors',
+};
+
 // -----------------------------------------------------------------------------------------------
 // Drawer items
 // -----------------------------------------------------------------------------------------------
@@ -88,9 +97,10 @@ const String allInfoCopied = 'All color information copied to clipboard';
 // Random Color Screen
 // -----------------------------------------------------------------------------------------------
 
-const String colorInfoTooltip = 'Color information';
 const String addFavTooltip = 'Add color to favorites';
 const String removeFavTooltip = 'Remove color from favorites';
+const String colorInfoTooltip = 'Color information';
+const String availableColorsTooltip = 'Available colors';
 const String shuffleTooltip = 'Get a new random color';
 
 // -----------------------------------------------------------------------------------------------
@@ -132,3 +142,9 @@ const Map<ColorType, String> colorTypeReferenceTabs = {
   ColorType.attractiveColor: 'Attractive Colors',
   ColorType.trueColor: 'True Colors',
 };
+
+// -----------------------------------------------------------------------------------------------
+// Available Colors Screen
+// -----------------------------------------------------------------------------------------------
+
+const String availableColorsScreenTitlePrefix = 'Available ';
