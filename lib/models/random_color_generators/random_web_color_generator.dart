@@ -16,8 +16,8 @@ import '../random_color.dart';
 ///
 /// The returned [RandomColor] has both a [Color] value and a name.
 RandomColor nextRandomColor(Random random) {
-  final int randomIndex = random.nextInt(_webColors.length);
-  final namedColor = _webColors.entries.elementAt(randomIndex);
+  final int randomIndex = random.nextInt(kWebColors.length);
+  final namedColor = kWebColors.entries.elementAt(randomIndex);
 
   return RandomColor(
     color: Color(namedColor.key),
@@ -27,10 +27,10 @@ RandomColor nextRandomColor(Random random) {
 }
 
 /// Returns the name of the given [Color], if the color is a valid web color.
-String? getColorName(Color color) => _webColors[color.value];
+String? getColorName(Color color) => kWebColors[color.value];
 
 /// The number of available web colors that can be used to generate the random color.
-int get possibilityCount => _webColors.length;
+int get possibilityCount => kWebColors.length;
 
 /// A map of integer [Color] value constants corresponding to the CSS named colors.
 ///
@@ -38,7 +38,7 @@ int get possibilityCount => _webColors.length;
 /// ```js
 /// copy($$('.named-color-table tbody tr').map(tr => tr.querySelector('td:nth-child(4)').innerText.replace('#', '0xFF') + ': \'' + tr.querySelector('dfn').innerText + '\',').join('\r\n'))
 /// ```
-const Map<int, String> _webColors = {
+const Map<int, String> kWebColors = {
   0xFFF0F8FF: 'aliceblue',
   0xFFFAEBD7: 'antiquewhite',
   0xFF00FFFF: 'aqua',

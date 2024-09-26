@@ -17,8 +17,8 @@ import '../random_color.dart';
 ///
 /// The returned [RandomColor] has both a [Color] value and a name.
 RandomColor nextRandomColor(Random random) {
-  final int randomIndex = random.nextInt(_namedColors.length);
-  final namedColor = _namedColors.entries.elementAt(randomIndex);
+  final int randomIndex = random.nextInt(kNamedColors.length);
+  final namedColor = kNamedColors.entries.elementAt(randomIndex);
 
   return RandomColor(
     color: Color(namedColor.key),
@@ -28,15 +28,15 @@ RandomColor nextRandomColor(Random random) {
 }
 
 /// Returns the name of the given [Color], if the color is a valid named color.
-String? getColorName(Color color) => _namedColors[color.value];
+String? getColorName(Color color) => kNamedColors[color.value];
 
 /// The number of available named colors that can be used to generate the random color.
-int get possibilityCount => _namedColors.length;
+int get possibilityCount => kNamedColors.length;
 
 /// A map of integer [Color] value constants corresponding to the `ntc js` named colors.
 ///
 /// Imported from the [Name that Color](https://chir.ag/projects/ntc/ntc.js) JavaScript library.
-const Map<int, String> _namedColors = {
+const Map<int, String> kNamedColors = {
   0xFF000000: 'Black',
   0xFF000080: 'Navy Blue',
   0xFF0000C8: 'Dark Blue',

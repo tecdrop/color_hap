@@ -114,3 +114,11 @@ const String clearFavoritesDialogMessage = 'This will remove all colors from you
 const String clearFavoritesDialogPositiveAction = 'Clear';
 const String exportFavoritesAsCsv = 'Export favorites as CSV';
 const String favoritesExported = 'Favorites exported to clipboard in CSV format';
+
+// -----------------------------------------------------------------------------------------------
+// Color Reference Screen
+// -----------------------------------------------------------------------------------------------
+
+const String colorReferenceScreenTitle = 'Color Reference';
+const String webColorsTab = 'Web Colors';
+const String namedColorsTab = 'Named Colors';
