@@ -21,6 +21,15 @@ String intToCommaSeparatedString(int value) {
   return _numberFormat.format(value);
 }
 
+/// Navigates to the specified [screen] and returns the result.
+Future<T?> navigateTo<T>(NavigatorState navigator, Widget screen) async {
+  return await navigator.push(
+    MaterialPageRoute<T>(
+      builder: (context) => screen,
+    ),
+  );
+}
+
 /// Shows a [SnackBar] with the specified [text] across all registered [Scaffold]s.
 void showSnackBar(BuildContext context, String text) {
   final SnackBar snackBar = SnackBar(content: Text(text));

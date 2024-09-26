@@ -42,6 +42,7 @@ const String randomAttractiveColorDrawer = 'Random Attractive Colors';
 const String randomAttractiveColorDrawerSubtitle = 'A few million possibilities';
 const String randomTrueColorDrawer = 'Random True Colors';
 String possibilitiesDrawerSubtitle(String length) => '$length possibilities';
+const String colorReferenceDrawer = 'Color Reference';
 
 const String colorInfoDrawer = 'Color Information';
 const String colorPreviewDrawer = 'Color Preview';
@@ -120,5 +121,14 @@ const String favoritesExported = 'Favorites exported to clipboard in CSV format'
 // -----------------------------------------------------------------------------------------------
 
 const String colorReferenceScreenTitle = 'Color Reference';
-const String webColorsTab = 'Web Colors';
-const String namedColorsTab = 'Named Colors';
+// const String webColorsTab = 'Web Colors';
+// const String namedColorsTab = 'Named Colors';
+
+const Map<ColorType, String> colorTypeReferenceTabs = {
+  ColorType.mixedColor: 'Random Colors',
+  ColorType.basicColor: 'Basic Colors',
+  ColorType.webColor: 'Web Colors',
+  ColorType.namedColor: 'Named Colors',
+  ColorType.attractiveColor: 'Attractive Colors',
+  ColorType.trueColor: 'True Colors',
+};

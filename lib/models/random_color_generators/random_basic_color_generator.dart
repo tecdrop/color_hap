@@ -16,8 +16,8 @@ import '../random_color.dart';
 ///
 /// The returned [RandomColor] has both a [Color] value and a name.
 RandomColor nextRandomColor(Random random) {
-  final int randomIndex = random.nextInt(_basicColors.length);
-  final namedColor = _basicColors.entries.elementAt(randomIndex);
+  final int randomIndex = random.nextInt(kBasicColors.length);
+  final namedColor = kBasicColors.entries.elementAt(randomIndex);
 
   return RandomColor(
     color: Color(namedColor.key),
@@ -27,15 +27,15 @@ RandomColor nextRandomColor(Random random) {
 }
 
 /// Returns the name of the given [Color], if the color is a valid basic color.
-String? getColorName(Color color) => _basicColors[color.value];
+String? getColorName(Color color) => kBasicColors[color.value];
 
 /// The number of available basic colors that can be used to generate the random color.
-int get possibilityCount => _basicColors.length;
+int get possibilityCount => kBasicColors.length;
 
 /// A map of integer [Color] value constants corresponding to basic named colors.
 ///
 /// Imported from the [the 12 RGB C O L O R S](https://www.1728.org/RGB.htm).
-const Map<int, String> _basicColors = {
+const Map<int, String> kBasicColors = {
   0XFF000000: 'black',
   0XFFFFFFFF: 'white',
   0XFFFF0000: 'red',

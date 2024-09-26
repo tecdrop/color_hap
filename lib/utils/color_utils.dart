@@ -12,6 +12,10 @@ import 'package:flutter/material.dart';
 
 import 'utils.dart' as utils;
 
+int withFullAlpha(int colorCode) {
+  return colorCode | 0xFF000000;
+}
+
 /// Returns the black or white contrast color of the given [Color].
 Color contrastColor(Color color) {
   switch (ThemeData.estimateBrightnessForColor(color)) {
@@ -37,6 +41,12 @@ Color contrastIconColor(Color color) {
 /// Returns the hexadecimal string representation of the given [Color].
 String toHexString(Color color, {bool withHash = true}) {
   final String hex = (color.value & 0xFFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase();
+  return withHash ? '#$hex' : hex;
+}
+
+/// Returns the hexadecimal string representation of the given [Color].
+String codeToHex(int colorCode, {bool withHash = true}) {
+  final String hex = (colorCode & 0xFFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase();
   return withHash ? '#$hex' : hex;
 }
 

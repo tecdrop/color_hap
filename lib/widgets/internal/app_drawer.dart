@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file or at
 // https://www.tecdrop.com/colorhap/license/.
 
+import 'package:color_hap/screens/color_reference_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../common/app_routes.dart';
@@ -25,6 +26,7 @@ enum AppDrawerItems {
   randomNamedColor,
   randomAttractiveColor,
   randomTrueColor,
+  colorReference,
   colorInfo,
   colorPreview,
   colorFavorites,
@@ -102,6 +104,12 @@ class AppDrawer extends StatelessWidget {
       case AppDrawerItems.randomTrueColor:
         Navigator.pop(context);
         onColorTypeChange?.call(ColorType.trueColor);
+        break;
+
+      // Open the Color Reference screen
+      case AppDrawerItems.colorReference:
+        Navigator.pop(context);
+        utils.navigateTo(Navigator.of(context), const ColorReferenceScreen());
         break;
 
       // Open the Color Info screen with the current random color
@@ -228,6 +236,14 @@ class AppDrawer extends StatelessWidget {
             title: strings.randomTrueColorDrawer,
             subtitle: possibilities(ColorType.trueColor),
             item: AppDrawerItems.randomTrueColor,
+          ),
+
+          // Color Reference drawer item
+          _buildItem(
+            context,
+            icon: Icons.palette_outlined,
+            title: strings.colorReferenceDrawer,
+            item: AppDrawerItems.colorReference,
           ),
 
           const Divider(),
