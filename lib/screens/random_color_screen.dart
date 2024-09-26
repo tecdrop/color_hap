@@ -49,7 +49,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
   }
 
   /// Performs the actions of the app bar.
-  void _onAction(_AppBarActions action) {
+  void _onAction(_AppBarActions action) async {
     switch (action) {
       case _AppBarActions.toggleFav:
         // Toggle the current color in the favorites list
@@ -64,10 +64,16 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         break;
       // Open the Available Colors screen
       case _AppBarActions.availableColors:
-        utils.navigateTo(
+        final RandomColor? randomColor = await utils.navigateTo<RandomColor>(
           Navigator.of(context),
           AvailableColorsScreen(colorType: settings.colorType),
         );
+        if (randomColor != null) {
+          setState(() {
+            _randomColor = randomColor;
+            _colorFavIndex = settings.colorFavoritesList.indexOf(_randomColor);
+          });
+        }
         break;
     }
   }
@@ -162,7 +168,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isFavorite;
 
   /// The callback that is called when an app bar action is pressed.
-  final Function(_AppBarActions action) onAction;
+  final void Function(_AppBarActions action) onAction;
 
   @override
   Widget build(BuildContext context) {

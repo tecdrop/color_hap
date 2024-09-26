@@ -129,23 +129,6 @@ const String exportFavoritesAsCsv = 'Export favorites as CSV';
 const String favoritesExported = 'Favorites exported to clipboard in CSV format';
 
 // -----------------------------------------------------------------------------------------------
-// Color Reference Screen
-// -----------------------------------------------------------------------------------------------
-
-const String colorReferenceScreenTitle = 'Color Reference';
-// const String webColorsTab = 'Web Colors';
-// const String namedColorsTab = 'Named Colors';
-
-const Map<ColorType, String> colorTypeReferenceTabs = {
-  ColorType.mixedColor: 'Random Colors',
-  ColorType.basicColor: 'Basic Colors',
-  ColorType.webColor: 'Web Colors',
-  ColorType.namedColor: 'Named Colors',
-  ColorType.attractiveColor: 'Attractive Colors',
-  ColorType.trueColor: 'True Colors',
-};
-
-// -----------------------------------------------------------------------------------------------
 // Available Colors Screen
 // -----------------------------------------------------------------------------------------------
 

@@ -13,7 +13,6 @@ import '../../common/ui_strings.dart' as strings;
 import '../../models/color_type.dart';
 import '../../models/random_color_generator.dart';
 import '../../models/random_color.dart';
-import '../../screens/available_colors_screen.dart';
 import '../../utils/color_utils.dart' as color_utils;
 import '../../utils/utils.dart' as utils;
 
@@ -26,7 +25,6 @@ enum AppDrawerItems {
   randomNamedColor,
   randomAttractiveColor,
   randomTrueColor,
-  availableColors,
   colorInfo,
   colorPreview,
   colorFavorites,
@@ -104,12 +102,6 @@ class AppDrawer extends StatelessWidget {
       case AppDrawerItems.randomTrueColor:
         Navigator.pop(context);
         onColorTypeChange?.call(ColorType.trueColor);
-        break;
-
-      // Open the Color Reference screen
-      case AppDrawerItems.availableColors:
-        Navigator.pop(context);
-        utils.navigateTo(Navigator.of(context), AvailableColorsScreen(colorType: colorType));
         break;
 
       // Open the Color Info screen with the current random color
@@ -236,14 +228,6 @@ class AppDrawer extends StatelessWidget {
             title: strings.randomTrueColorDrawer,
             subtitle: possibilities(ColorType.trueColor),
             item: AppDrawerItems.randomTrueColor,
-          ),
-
-          // Available Colors drawer item
-          _buildItem(
-            context,
-            icon: Icons.list_alt_outlined,
-            title: strings.availableColors(colorType),
-            item: AppDrawerItems.availableColors,
           ),
 
           const Divider(),

@@ -28,10 +28,10 @@ class ColorInfoList extends StatelessWidget {
   final List<({String key, String value})> infos;
 
   /// A callback function that is called when the copy button of an info item is pressed.
-  final Function(String key, String value)? onCopyPressed;
+  final void Function(String key, String value)? onCopyPressed;
 
   /// A callback function that is called when the share button of an info item is pressed.
-  final Function(String key, String value)? onSharePressed;
+  final void Function(String key, String value)? onSharePressed;
 
   @override
   Widget build(BuildContext context) {
@@ -93,10 +93,10 @@ class _ColorInfoItem extends StatelessWidget {
   final String infoValue;
 
   /// A callback function that is called when the copy button of the list item is pressed.
-  final Function()? onCopyPressed;
+  final void Function()? onCopyPressed;
 
   /// A callback function that is called when the share button of the list item is pressed.
-  final Function()? onSharePressed;
+  final void Function()? onSharePressed;
 
   @override
   Widget build(BuildContext context) {

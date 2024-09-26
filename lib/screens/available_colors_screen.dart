@@ -12,6 +12,7 @@ import '../models/random_color_generators/random_basic_color_generator.dart' as 
 import '../models/random_color_generators/random_named_color_generator.dart' as rncg;
 import '../models/random_color_generators/random_true_color_generator.dart' as rtcg;
 import '../models/random_color_generators/random_web_color_generator.dart' as rwcg;
+import '../models/random_color.dart';
 import '../utils/color_utils.dart' as color_utils;
 import '../widgets/available_colors_list_view.dart';
 
@@ -28,93 +29,71 @@ class AvailableColorsScreen extends StatelessWidget {
   /// The type of available colors to display.
   final ColorType colorType;
 
+  /// Returns the number of items in the list view based on the selected color type.
+  int _getItemCount() {
+    return switch (colorType) {
+      ColorType.mixedColor => 0, // TODO: Implement mixed colors?
+      ColorType.basicColor => rbcg.kBasicColors.length,
+      ColorType.webColor => rwcg.kWebColors.length,
+      ColorType.namedColor => rncg.kNamedColors.length,
+      ColorType.attractiveColor => racg.possibilityCount,
+      ColorType.trueColor => rtcg.possibilityCount,
+    };
+  }
+
+  /// Returns the data that should be used to build the item at the given [index] in the list view.
+  ({int colorCode, String? title}) _getItemData(int index) {
+    switch (colorType) {
+      case ColorType.mixedColor:
+        return (colorCode: 0, title: null); // TODO: Implement mixed colors?
+      case ColorType.basicColor:
+        final MapEntry<int, String> entry = rbcg.kBasicColors.entries.elementAt(index);
+        return (colorCode: entry.key, title: entry.value);
+      case ColorType.webColor:
+        final MapEntry<int, String> entry = rwcg.kWebColors.entries.elementAt(index);
+        return (colorCode: entry.key, title: entry.value);
+      case ColorType.namedColor:
+        final MapEntry<int, String> entry = rncg.kNamedColors.entries.elementAt(index);
+        return (colorCode: entry.key, title: entry.value);
+      case ColorType.attractiveColor:
+        return (colorCode: 0, title: null); // TODO: Implement attractive colors?
+      case ColorType.trueColor:
+        final int colorCode = color_utils.withFullAlpha(index);
+        return (colorCode: colorCode, title: null);
+    }
+  }
+
+  /// Pops the top-most route off the navigator and returns a random color object for the color at
+  /// the given [index].
+  void _popRandomColor(BuildContext context, int index) {
+    final itemData = _getItemData(index);
+    final RandomColor randomColor = RandomColor(
+      color: Color(itemData.colorCode),
+      type: colorType,
+      name: itemData.title,
+    );
+    Navigator.of(context).pop<RandomColor>(randomColor);
+  }
+
   @override
   Widget build(BuildContext context) {
     // Use PageStorage to store the scroll position of the list views while the app is running
     return PageStorage(
       bucket: _storageBucket,
       child: Scaffold(
+        // A simple app bar with the title based on the color type
         appBar: AppBar(
           title: Text(strings.availableColors(colorType)),
         ),
-        body: switch (colorType) {
-          ColorType.mixedColor => const SizedBox.shrink(), // TODO: Implement mixed colors?
-          ColorType.basicColor => const _BasicColorsListView(),
-          ColorType.webColor => const _WebColorsListView(),
-          ColorType.namedColor => const _NamedColorsListView(),
-          ColorType.attractiveColor =>
-            const SizedBox.shrink(), // TODO: Implement attractive colors?
-          ColorType.trueColor => const _TrueColorsListView(),
-        },
+
+        // The list view of available colors of the selected type
+        body: AvailableColorsListView(
+          key: PageStorageKey<ColorType>(colorType),
+          itemCount: _getItemCount,
+          itemData: _getItemData,
+          onItemTap: (int index) => _popRandomColor(context, index),
+        ),
       ),
-    );
-  }
-}
-
-/// A list view of all the available basic colors.
-class _BasicColorsListView extends StatelessWidget {
-  const _BasicColorsListView({super.key}); // ignore: unused_element
-
-  @override
-  Widget build(BuildContext context) {
-    return AvailableColorsListView(
-      key: const PageStorageKey<ColorType>(ColorType.basicColor),
-      itemCount: () => rbcg.kBasicColors.length,
-      itemData: (int index) {
-        final MapEntry<int, String> entry = rbcg.kBasicColors.entries.elementAt(index);
-        return (colorCode: entry.key, title: entry.value);
-      },
-    );
-  }
-}
-
-/// A list view of all the available web colors.
-class _WebColorsListView extends StatelessWidget {
-  const _WebColorsListView({super.key}); // ignore: unused_element
-
-  @override
-  Widget build(BuildContext context) {
-    return AvailableColorsListView(
-      key: const PageStorageKey<ColorType>(ColorType.webColor),
-      itemCount: () => rwcg.kWebColors.length,
-      itemData: (int index) {
-        final MapEntry<int, String> entry = rwcg.kWebColors.entries.elementAt(index);
-        return (colorCode: entry.key, title: entry.value);
-      },
-    );
-  }
-}
-
-/// A list view of all the available named colors.
-class _NamedColorsListView extends StatelessWidget {
-  const _NamedColorsListView({super.key}); // ignore: unused_element
-
-  @override
-  Widget build(BuildContext context) {
-    return AvailableColorsListView(
-      key: const PageStorageKey<ColorType>(ColorType.namedColor),
-      itemCount: () => rncg.kNamedColors.length,
-      itemData: (int index) {
-        final MapEntry<int, String> entry = rncg.kNamedColors.entries.elementAt(index);
-        return (colorCode: entry.key, title: entry.value);
-      },
-    );
-  }
-}
-
-/// A list view of all the available true colors.
-class _TrueColorsListView extends StatelessWidget {
-  const _TrueColorsListView({super.key}); // ignore: unused_element
-
-  @override
-  Widget build(BuildContext context) {
-    return AvailableColorsListView(
-      key: const PageStorageKey<ColorType>(ColorType.trueColor),
-      itemCount: () => rtcg.possibilityCount,
-      itemData: (int index) {
-        final int colorCode = color_utils.withFullAlpha(index);
-        return (colorCode: colorCode, title: null);
-      },
     );
   }
 }
