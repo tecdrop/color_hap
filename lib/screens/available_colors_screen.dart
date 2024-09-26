@@ -3,6 +3,8 @@
 // license that can be found in the LICENSE file or at
 // https://www.tecdrop.com/colorhap/license/.
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import '../common/ui_strings.dart' as strings;
@@ -20,7 +22,7 @@ import '../widgets/available_colors_list_view.dart';
 final PageStorageBucket _storageBucket = PageStorageBucket();
 
 /// A screen that displays all the available colors of a specific type in a list view.
-class AvailableColorsScreen extends StatelessWidget {
+class AvailableColorsScreen extends StatefulWidget {
   const AvailableColorsScreen({
     super.key,
     required this.colorType,
@@ -29,9 +31,17 @@ class AvailableColorsScreen extends StatelessWidget {
   /// The type of available colors to display.
   final ColorType colorType;
 
+  @override
+  State<AvailableColorsScreen> createState() => _AvailableColorsScreenState();
+}
+
+class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
+  final Random random = Random();
+  final ScrollController _scrollController = ScrollController();
+
   /// Returns the number of items in the list view based on the selected color type.
   int _getItemCount() {
-    return switch (colorType) {
+    return switch (widget.colorType) {
       ColorType.mixedColor => 0, // TODO: Implement mixed colors?
       ColorType.basicColor => rbcg.kBasicColors.length,
       ColorType.webColor => rwcg.kWebColors.length,
@@ -43,7 +53,7 @@ class AvailableColorsScreen extends StatelessWidget {
 
   /// Returns the data that should be used to build the item at the given [index] in the list view.
   ({int colorCode, String? title}) _getItemData(int index) {
-    switch (colorType) {
+    switch (widget.colorType) {
       case ColorType.mixedColor:
         return (colorCode: 0, title: null); // TODO: Implement mixed colors?
       case ColorType.basicColor:
@@ -69,10 +79,20 @@ class AvailableColorsScreen extends StatelessWidget {
     final itemData = _getItemData(index);
     final RandomColor randomColor = RandomColor(
       color: Color(itemData.colorCode),
-      type: colorType,
+      type: widget.colorType,
       name: itemData.title,
     );
     Navigator.of(context).pop<RandomColor>(randomColor);
+  }
+
+  void _gotoRandomColor() {
+    final int randomIndex = random.nextInt(_getItemCount());
+
+    _scrollController.animateTo(
+      randomIndex * 128.0,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
   }
 
   @override
@@ -83,15 +103,22 @@ class AvailableColorsScreen extends StatelessWidget {
       child: Scaffold(
         // A simple app bar with the title based on the color type
         appBar: AppBar(
-          title: Text(strings.availableColors(colorType)),
+          title: Text(strings.availableColors(widget.colorType)),
         ),
 
         // The list view of available colors of the selected type
         body: AvailableColorsListView(
-          key: PageStorageKey<ColorType>(colorType),
+          key: PageStorageKey<ColorType>(widget.colorType),
+          scrollController: _scrollController,
           itemCount: _getItemCount,
           itemData: _getItemData,
           onItemTap: (int index) => _popRandomColor(context, index),
+        ),
+
+        floatingActionButton: FloatingActionButton(
+          onPressed: _gotoRandomColor,
+          // tooltip: strings.close,
+          child: const Icon(Icons.shuffle_outlined),
         ),
       ),
     );

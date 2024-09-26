@@ -13,10 +13,14 @@ import '../utils/color_utils.dart' as color_utils;
 class AvailableColorsListView extends StatelessWidget {
   const AvailableColorsListView({
     super.key, // ignore: unused_element
+    this.scrollController,
     required this.itemCount,
     required this.itemData,
     this.onItemTap,
   });
+
+  /// An optional scroll controller for the list view.
+  final ScrollController? scrollController;
 
   /// A callback function that returns the number of items to display in the list.
   final int Function() itemCount;
@@ -32,6 +36,7 @@ class AvailableColorsListView extends StatelessWidget {
     final double width = MediaQuery.of(context).size.width;
 
     return ListView.builder(
+      controller: scrollController,
       itemCount: itemCount(),
       itemExtent: 128.0,
       itemBuilder: (BuildContext context, int index) {
