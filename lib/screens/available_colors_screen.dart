@@ -4,7 +4,6 @@
 // https://www.tecdrop.com/colorhap/license/.
 
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 import '../common/ui_strings.dart' as strings;
@@ -17,9 +16,6 @@ import '../models/random_color_generators/random_web_color_generator.dart' as rw
 import '../models/random_color.dart';
 import '../utils/color_utils.dart' as color_utils;
 import '../widgets/available_colors_list_view.dart';
-
-/// The storage bucket used to store the scroll position of the available colors list views.
-// final PageStorageBucket _storageBucket = PageStorageBucket();
 
 /// A screen that displays all the available colors of a specific type in a list view.
 class AvailableColorsScreen extends StatefulWidget {
@@ -41,18 +37,6 @@ class AvailableColorsScreen extends StatefulWidget {
 
 class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
   final Random random = Random();
-
-  // @override
-  // void didUpdateWidget(Widget old) {
-  //   super.didUpdateWidget(old);
-  //   widget.scrollController.jumpTo(initialOffset);
-  // }
-
-  // @override
-  // void didUpdateWidget(AvailableColorsScreen oldWidget) {
-  //   super.didUpdateWidget(oldWidget);
-  //   widget.scrollController?.jumpTo(1000);
-  // }
 
   /// Returns the number of items in the list view based on the selected color type.
   int _getItemCount() {
@@ -121,19 +105,8 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
     Navigator.of(context).pop<RandomColor>(_getItemData(index));
   }
 
-  // void _gotoRandomColor() {
-  //   final int randomIndex = random.nextInt(_getItemCount());
-
-  //   _scrollController.animateTo(
-  //     randomIndex * 128.0,
-  //     duration: const Duration(milliseconds: 5000),
-  //     curve: Curves.easeInOut,
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
-    // Use PageStorage to store the scroll position of the list views while the app is running
     return Scaffold(
       // A simple app bar with the title based on the color type
       appBar: AppBar(
@@ -142,18 +115,11 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
 
       // The list view of available colors of the selected type
       body: AvailableColorsListView(
-        // key: PageStorageKey<ColorType>(widget.colorType),
         scrollController: widget.scrollController,
         itemCount: _getItemCount,
         itemData: _getItemData,
         onItemTap: (int index) => _popRandomColor(context, index),
       ),
-
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _gotoRandomColor,
-      //   // tooltip: strings.close,
-      //   child: const Icon(Icons.shuffle_outlined),
-      // ),
     );
   }
 }

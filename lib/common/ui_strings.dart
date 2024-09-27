@@ -66,6 +66,16 @@ const String sourceCodeDrawerSubtitle = 'Yes, it\'s open source!';
 const String rateAppDrawer = 'Rate App';
 
 // -----------------------------------------------------------------------------------------------
+// Random Color Screen (Home Screen)
+// -----------------------------------------------------------------------------------------------
+
+const String addFavTooltip = 'Add color to favorites';
+const String removeFavTooltip = 'Remove color from favorites';
+const String colorInfoTooltip = 'Color information';
+const String colorPreviewMenuItem = 'Color Preview';
+const String shuffleTooltip = 'Get a new random color';
+
+// -----------------------------------------------------------------------------------------------
 // Color Info Screen
 // -----------------------------------------------------------------------------------------------
 
@@ -93,24 +103,6 @@ const String brightnessInfo = 'Brightness';
 const String itemCopyTooltip = 'Copy value';
 const String itemShareTooltip = 'Share value';
 const String allInfoCopied = 'All color information copied to clipboard';
-
-// -----------------------------------------------------------------------------------------------
-// Random Color Screen
-// -----------------------------------------------------------------------------------------------
-
-const String addFavTooltip = 'Add color to favorites';
-const String removeFavTooltip = 'Remove color from favorites';
-const String colorInfoTooltip = 'Color information';
-const String availableColorsTooltip = 'Available colors';
-const String shuffleTooltip = 'Get a new random color';
-
-// -----------------------------------------------------------------------------------------------
-// Invalid Color Screen
-// -----------------------------------------------------------------------------------------------
-
-String invalidColor(String? colorCode) => 'Invalid color code:\n$colorCode';
-String invalidPage(String? uri) => 'Can\'t find a page for:\n$uri';
-const String goHome = 'Go Home';
 
 // -----------------------------------------------------------------------------------------------
 // Favorite Colors Screen

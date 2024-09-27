@@ -110,14 +110,12 @@ class AppDrawer extends StatelessWidget {
       case AppDrawerItems.colorInfo:
         Navigator.pop(context);
         utils.navigateTo(context, ColorInfoScreen(randomColor: randomColor));
-        // gotoColorInfoRoute(context, randomColor);
         break;
 
       // Open the Color Preview screen with the current random color
       case AppDrawerItems.colorPreview:
         Navigator.pop(context);
         utils.navigateTo(context, ColorPreviewScreen(color: randomColor.color));
-        // gotoColorPreviewRoute(context, randomColor.color);
         break;
 
       // Open the Color Favorites screen
@@ -125,7 +123,6 @@ class AppDrawer extends StatelessWidget {
         (() async {
           Navigator.pop(context);
           await utils.navigateTo(context, const ColorFavoritesScreen());
-          // await gotoColorFavoritesRoute(context);
           onShouldUpdateState?.call();
         }());
         break;

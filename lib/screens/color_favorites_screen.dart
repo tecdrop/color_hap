@@ -104,7 +104,6 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
         return ColorFavoriteListItem(
           randomColor: randomColor,
           onTap: () => utils.navigateTo(context, ColorInfoScreen(randomColor: randomColor)),
-          // onTap: () => gotoColorInfoRoute(context, randomColor, fromFav: true),
           onDeletePressed: () => _deleteFavoriteColor(index),
         );
       },
@@ -139,8 +138,7 @@ enum _AppBarActions {
 /// The app bar of the Color Info screen.
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   const _AppBar({
-    // ignore: unused_element
-    super.key,
+    super.key, // ignore: unused_element
     required this.title,
     required this.onAction,
     this.haveFavorites = true,
@@ -172,7 +170,9 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
               enabled: haveFavorites,
               child: const Text(strings.exportFavoritesAsCsv),
             ),
+
             const PopupMenuDivider(),
+
             // The clear favorites action
             PopupMenuItem<_AppBarActions>(
               value: _AppBarActions.clearFavorites,

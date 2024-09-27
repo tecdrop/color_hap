@@ -48,48 +48,6 @@ List<ColorType> _initTypeWeights() {
   return typeWeights;
 }
 
-/// Returns a [RandomColor] from the given [Color].
-///
-/// The returned random color has a name if the color value matches the built-in maps of named
-/// colors.
-RandomColor _getNamedColor(Color color, ColorType defaultType) {
-  final String? basicColorName = rbcg.getColorName(color);
-  if (basicColorName != null) {
-    return RandomColor(
-      type: ColorType.basicColor,
-      color: color,
-      name: basicColorName,
-      listPosition: 0, // TODO: Implement list position for basic colors
-    );
-  }
-
-  final String? webColorName = rwcg.getColorName(color);
-  if (webColorName != null) {
-    return RandomColor(
-      type: ColorType.webColor,
-      color: color,
-      name: webColorName,
-      listPosition: 0, // TODO: Implement list position for web colors
-    );
-  }
-
-  final String? namedColorName = rncg.getColorName(color);
-  if (namedColorName != null) {
-    return RandomColor(
-      type: ColorType.namedColor,
-      color: color,
-      name: namedColorName,
-      listPosition: 0, // TODO: Implement list position for named colors
-    );
-  }
-
-  return RandomColor(
-    type: defaultType,
-    color: color,
-    listPosition: 0, // TODO: Implement list position for attractive and true colors
-  );
-}
-
 /// Generates a random color based on the given color type.
 ///
 /// The returned [RandomColor] has a name if it was generated from named colors, or if its color
@@ -105,7 +63,6 @@ RandomColor nextRandomColor(ColorType colorType) {
     case ColorType.namedColor:
       return rncg.nextRandomColor(_random);
     case ColorType.attractiveColor:
-      // return _getNamedColor(racg.nextRandomColor(_random), ColorType.attractiveColor);
       return racg.nextRandomColor(_random);
     case ColorType.trueColor:
       return rtcg.nextRandomColor(_random);
@@ -119,46 +76,13 @@ int _nextIdentityColorIndex = 0;
 /// These colors are used internally for app screenshots and branding.
 RandomColor nextIdentityColor() {
   const List<RandomColor> identityColors = [
-    RandomColor(
-      type: ColorType.basicColor,
-      color: Color(0XFF0088FF),
-      name: 'azure',
-      listPosition: 0, // TODO: Remove this?
-    ),
-    RandomColor(
-      type: ColorType.trueColor,
-      color: Color(0xFF8700FE),
-      listPosition: 0, // TODO: Remove this?
-    ),
-    RandomColor(
-      type: ColorType.namedColor,
-      color: Color(0xFFFFEC13),
-      name: 'Broom',
-      listPosition: 0, // TODO: Remove this?
-    ),
-    RandomColor(
-      type: ColorType.trueColor,
-      color: Color(0xFF00FF22),
-      listPosition: 0, // TODO: Remove this?
-    ),
-    RandomColor(
-      type: ColorType.basicColor,
-      color: Color(0XFFFF0000),
-      name: 'red',
-      listPosition: 0, // TODO: Remove this?
-    ),
-    RandomColor(
-      type: ColorType.basicColor,
-      color: Color(0XFFFF00FF),
-      name: 'magenta',
-      listPosition: 0, // TODO: Remove this?
-    ),
-    RandomColor(
-      type: ColorType.basicColor,
-      color: Color(0XFF8800FF),
-      name: 'violet',
-      listPosition: 0, // TODO: Remove this?
-    ),
+    RandomColor(type: ColorType.basicColor, color: Color(0XFF0088FF), name: 'azure'),
+    RandomColor(type: ColorType.trueColor, color: Color(0xFF8700FE)),
+    RandomColor(type: ColorType.namedColor, color: Color(0xFFFFEC13), name: 'Broom'),
+    RandomColor(type: ColorType.trueColor, color: Color(0xFF00FF22)),
+    RandomColor(type: ColorType.basicColor, color: Color(0XFFFF0000), name: 'red'),
+    RandomColor(type: ColorType.basicColor, color: Color(0XFFFF00FF), name: 'magenta'),
+    RandomColor(type: ColorType.basicColor, color: Color(0XFF8800FF), name: 'violet'),
   ];
 
   final RandomColor randomColor = identityColors[_nextIdentityColorIndex];

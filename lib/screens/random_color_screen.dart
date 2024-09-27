@@ -31,6 +31,9 @@ class RandomColorScreen extends StatefulWidget {
 }
 
 class _RandomColorScreenState extends State<RandomColorScreen> {
+  /// The type of colors to generate.
+  late ColorType _colorType;
+
   // The current random color.
   // Initialized with a default black true color value to avoid null checks.
   RandomColor _randomColor = const RandomColor(
@@ -42,34 +45,41 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
   // The index of the current color in the favorites list.
   int _colorFavIndex = -1;
 
-  /// Generates a new random color on state initialization.
   @override
   void initState() {
     super.initState();
 
+    // Restore the last selected color type
+    _colorType = settings.colorType;
+
+    // Generate the first random color
     _shuffleColor();
   }
 
   /// Performs the actions of the app bar.
   void _onAction(_AppBarActions action) async {
     switch (action) {
+      // Toggle the current color in the favorites list
       case _AppBarActions.toggleFav:
-        // Toggle the current color in the favorites list
         setState(() {
           _colorFavIndex = settings.colorFavoritesList.toggle(_randomColor, index: _colorFavIndex);
           settings.saveColorFavoritesList();
         });
         break;
+
       // Open the Color Information screen with the current color
       case _AppBarActions.colorInfo:
         utils.navigateTo(context, ColorInfoScreen(randomColor: _randomColor));
-        // gotoColorInfoRoute(context, _randomColor);
         break;
+
+      // Open the Color Preview screen with the current color
+      case _AppBarActions.colorPreview:
+        utils.navigateTo(context, ColorPreviewScreen(color: _randomColor.color));
+        break;
+
       // Open the Available Colors screen
       case _AppBarActions.availableColors:
         final double itemOffset = (_randomColor.listPosition ?? 0) * consts.colorListItemExtent;
-        print('----- listPosition: ${_randomColor.listPosition}');
-        print('itemOffset: $itemOffset');
         final ScrollController scrollController = ScrollController(
           initialScrollOffset: itemOffset,
           keepScrollOffset: false,
@@ -77,7 +87,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         final RandomColor? randomColor = await utils.navigateTo<RandomColor>(
           context,
           AvailableColorsScreen(
-            colorType: settings.colorType,
+            colorType: _colorType,
             scrollController: scrollController,
           ),
         );
@@ -94,7 +104,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
   /// Generates a new random color.
   void _shuffleColor() {
-    final RandomColor randomColor = nextRandomColor(settings.colorType);
+    final RandomColor randomColor = nextRandomColor(_colorType);
     _colorFavIndex = settings.colorFavoritesList.indexOf(randomColor);
     setState(() {
       _randomColor = randomColor;
@@ -103,9 +113,6 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
   /// Copies the current color hex code and name (if available) to the clipboard.
   Future<void> copyColor() async {
-    // final String hexCode = color_utils.toHexString(_randomColor.color);
-    // final String value = _randomColor.name != null ? '$hexCode ${_randomColor.name}' : hexCode;
-    // await utils.copyToClipboard(context, value);
     await utils.copyToClipboard(context, _randomColor.longTitle);
   }
 
@@ -114,7 +121,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
     return Scaffold(
       // The app bar
       appBar: _AppBar(
-        title: Text(strings.colorType[settings.colorType]!),
+        colorType: _colorType,
         isFavorite: _colorFavIndex >= 0,
         onAction: _onAction,
       ),
@@ -122,9 +129,9 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
       // The app drawer
       drawer: AppDrawer(
         randomColor: _randomColor,
-        colorType: settings.colorType,
+        colorType: _colorType,
         onColorTypeChange: (ColorType colorType) {
-          settings.colorType = colorType;
+          settings.colorType = _colorType = colorType;
           _shuffleColor();
         },
         onShouldUpdateState: () => setState(() {
@@ -143,7 +150,6 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         child: RandomColorDisplay(
           randomColor: _randomColor,
           // Navigate to the Color Preview screen when the user double-taps the color code/name
-          // onDoubleTap: () => gotoColorPreviewRoute(context, _randomColor.color),
           onDoubleTap: () => utils.navigateTo(
             context,
             ColorPreviewScreen(color: _randomColor.color),
@@ -167,21 +173,20 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 enum _AppBarActions {
   toggleFav,
   colorInfo,
+  colorPreview,
   availableColors,
 }
 
 /// The app bar of the Random Color screen.
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   const _AppBar({
-    // ignore: unused_element
-    super.key,
-    required this.title,
+    super.key, // ignore: unused_element
+    required this.colorType,
     required this.isFavorite,
     required this.onAction,
   });
 
-  /// The primary widget displayed in the app bar.
-  final Widget? title;
+  final ColorType colorType;
 
   /// Whether the current color is added to the favorites list.
   final bool isFavorite;
@@ -192,24 +197,42 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: title,
+      title: Text(strings.colorType[colorType]!),
 
       // The common operations displayed in this app bar
       actions: <Widget>[
+        // The Favorite toggle icon button
         IconButton(
           icon: isFavorite ? const Icon(Icons.favorite) : const Icon(Icons.favorite_border),
           tooltip: isFavorite ? strings.removeFavTooltip : strings.addFavTooltip,
           onPressed: () => onAction(_AppBarActions.toggleFav),
         ),
+
+        // The Color Information icon button
         IconButton(
           icon: const Icon(Icons.info_outline),
           tooltip: strings.colorInfoTooltip,
           onPressed: () => onAction(_AppBarActions.colorInfo),
         ),
-        IconButton(
-          icon: const Icon(Icons.list_alt_outlined),
-          tooltip: strings.availableColorsTooltip,
-          onPressed: () => onAction(_AppBarActions.availableColors),
+
+        // Add the Popup Menu items
+        PopupMenuButton<_AppBarActions>(
+          onSelected: onAction,
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<_AppBarActions>>[
+            // The Color Preview popup menu item
+            const PopupMenuItem<_AppBarActions>(
+              value: _AppBarActions.colorPreview,
+              child: Text(strings.colorPreviewMenuItem),
+            ),
+
+            const PopupMenuDivider(),
+
+            // The Available Colors popup menu item
+            PopupMenuItem<_AppBarActions>(
+              value: _AppBarActions.availableColors,
+              child: Text(strings.availableColors(colorType)),
+            ),
+          ],
         ),
       ],
     );

@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 
 import 'utils.dart' as utils;
 
+/// Returns the given [Color] with full alpha (0xFF).
 int withFullAlpha(int colorCode) {
   return colorCode | 0xFF000000;
 }

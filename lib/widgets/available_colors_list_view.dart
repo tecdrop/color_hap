@@ -38,6 +38,8 @@ class AvailableColorsListView extends StatelessWidget {
     final double width = MediaQuery.of(context).size.width;
 
     return Scrollbar(
+      controller: scrollController,
+      thumbVisibility: true,
       child: ListView.builder(
         controller: scrollController,
         itemCount: itemCount(),
