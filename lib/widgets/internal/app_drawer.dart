@@ -217,7 +217,7 @@ class AppDrawer extends StatelessWidget {
                 ? Icons.looks_5_rounded
                 : Icons.looks_5_outlined,
             title: strings.randomAttractiveColorDrawer,
-            subtitle: strings.randomAttractiveColorDrawerSubtitle,
+            subtitle: possibilities(ColorType.attractiveColor),
             item: AppDrawerItems.randomAttractiveColor,
           ),
 

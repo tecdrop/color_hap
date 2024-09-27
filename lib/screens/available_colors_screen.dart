@@ -66,7 +66,8 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
         final MapEntry<int, String> entry = rncg.kNamedColors.entries.elementAt(index);
         return (colorCode: entry.key, title: entry.value);
       case ColorType.attractiveColor:
-        return (colorCode: 0, title: null); // TODO: Implement attractive colors?
+        final int colorCode = racg.kAttractiveColors[index];
+        return (colorCode: colorCode, title: null);
       case ColorType.trueColor:
         final int colorCode = color_utils.withFullAlpha(index);
         return (colorCode: colorCode, title: null);
