@@ -42,7 +42,8 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
   /// Returns the number of items in the list view based on the selected color type.
   int _getItemCount() {
     return switch (widget.colorType) {
-      ColorType.mixedColor => 0, // TODO: Implement mixed colors?
+      ColorType.mixedColor =>
+        throw UnsupportedError('The available colors list does not support mixed colors.'),
       ColorType.basicColor => rbcg.kBasicColors.length,
       ColorType.webColor => rwcg.kWebColors.length,
       ColorType.namedColor => rncg.kNamedColors.length,
@@ -52,39 +53,70 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
   }
 
   /// Returns the data that should be used to build the item at the given [index] in the list view.
-  ({int colorCode, String? title}) _getItemData(int index) {
+  RandomColor _getItemData(int index) {
     switch (widget.colorType) {
       case ColorType.mixedColor:
-        return (colorCode: 0, title: null); // TODO: Implement mixed colors?
+        throw UnsupportedError('The available colors list does not support mixed colors.');
       case ColorType.basicColor:
         final MapEntry<int, String> entry = rbcg.kBasicColors.entries.elementAt(index);
-        return (colorCode: entry.key, title: entry.value);
+        // return (colorCode: entry.key, title: entry.value);
+        return RandomColor(
+          type: widget.colorType,
+          color: Color(entry.key),
+          name: entry.value,
+          listPosition: index,
+        );
       case ColorType.webColor:
         final MapEntry<int, String> entry = rwcg.kWebColors.entries.elementAt(index);
-        return (colorCode: entry.key, title: entry.value);
+        // return (colorCode: entry.key, title: entry.value);
+        return RandomColor(
+          type: widget.colorType,
+          color: Color(entry.key),
+          name: entry.value,
+          listPosition: index,
+        );
       case ColorType.namedColor:
         final MapEntry<int, String> entry = rncg.kNamedColors.entries.elementAt(index);
-        return (colorCode: entry.key, title: entry.value);
+        // return (colorCode: entry.key, title: entry.value);
+        return RandomColor(
+          type: widget.colorType,
+          color: Color(entry.key),
+          name: entry.value,
+          listPosition: index,
+        );
       case ColorType.attractiveColor:
         final int colorCode = racg.kAttractiveColors[index];
-        return (colorCode: colorCode, title: null);
+        // return (colorCode: colorCode, title: null);
+        return RandomColor(
+          type: widget.colorType,
+          color: Color(colorCode),
+          name: null,
+          listPosition: index,
+        );
       case ColorType.trueColor:
         final int colorCode = color_utils.withFullAlpha(index);
-        return (colorCode: colorCode, title: null);
+        // return (colorCode: colorCode, title: null);
+        return RandomColor(
+          type: widget.colorType,
+          color: Color(colorCode),
+          name: null,
+          listPosition: index,
+        );
     }
   }
 
   /// Pops the top-most route off the navigator and returns a random color object for the color at
   /// the given [index].
   void _popRandomColor(BuildContext context, int index) {
-    final itemData = _getItemData(index);
-    final RandomColor randomColor = RandomColor(
-      type: widget.colorType,
-      color: Color(itemData.colorCode),
-      name: itemData.title,
-      listPosition: index,
-    );
-    Navigator.of(context).pop<RandomColor>(randomColor);
+    // final itemData = _getItemData(index);
+    // final RandomColor randomColor = RandomColor(
+    //   type: widget.colorType,
+    //   color: Color(itemData.colorCode),
+    //   name: itemData.title,
+    //   listPosition: index,
+    // );
+    // Navigator.of(context).pop<RandomColor>(randomColor);
+    Navigator.of(context).pop<RandomColor>(_getItemData(index));
   }
 
   // void _gotoRandomColor() {

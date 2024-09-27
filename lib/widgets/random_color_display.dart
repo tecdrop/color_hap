@@ -53,7 +53,7 @@ class RandomColorDisplay extends StatelessWidget {
           children: <Widget>[
             // Display the color hex code
             Text(
-              color_utils.toHexString(randomColor.color),
+              randomColor.hexString,
               style: hexTestStyle?.copyWith(color: contrastColor),
               textAlign: TextAlign.center,
             ),

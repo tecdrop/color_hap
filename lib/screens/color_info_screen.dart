@@ -49,7 +49,7 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
     final Color color = widget.randomColor.color;
     _infos = [
       if (widget.randomColor.name != null) ...[
-        (key: strings.colorTitleInfo, value: widget.randomColor.title),
+        (key: strings.colorTitleInfo, value: widget.randomColor.longTitle),
         (key: strings.colorNameInfo, value: widget.randomColor.name!)
       ],
       (key: strings.hexInfo, value: color_utils.toHexString(color)),
@@ -77,7 +77,7 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
 
       // Opens the web browser to search for the current color
       case _AppBarActions.colorWebSearch:
-        final String url = urls.onlineSearch + Uri.encodeComponent(widget.randomColor.title);
+        final String url = urls.onlineSearch + Uri.encodeComponent(widget.randomColor.longTitle);
         utils.launchUrlExternal(context, url);
         break;
 
@@ -128,7 +128,8 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
     final XFile xFile = XFile.fromData(pngBytes, name: fileName, mimeType: 'image/png');
 
     // Summon the platform's share sheet to share the image file
-    await Share.shareXFiles([xFile], text: strings.shareSwatchMessage(widget.randomColor.title));
+    await Share.shareXFiles([xFile],
+        text: strings.shareSwatchMessage(widget.randomColor.longTitle));
   }
 
   @override

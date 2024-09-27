@@ -7,6 +7,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../models/random_color.dart';
 import '../utils/color_utils.dart' as color_utils;
 
 /// A list view that displays a list of available colors.
@@ -26,7 +27,7 @@ class AvailableColorsListView extends StatelessWidget {
   final int Function() itemCount;
 
   /// A callback function that returns the color code and title for each item in the list.
-  final ({int colorCode, String? title}) Function(int index) itemData;
+  final RandomColor Function(int index) itemData;
 
   /// A callback function that is called when an item in the list is tapped.
   final void Function(int index)? onItemTap;
@@ -40,11 +41,9 @@ class AvailableColorsListView extends StatelessWidget {
       itemCount: itemCount(),
       itemExtent: 128.0,
       itemBuilder: (BuildContext context, int index) {
-        final item = itemData(index);
-        final Color itemColor = Color(item.colorCode);
+        final RandomColor item = itemData(index);
+        final Color itemColor = item.color;
         final Color contrastColor = color_utils.contrastColor(itemColor);
-        final String hexCode = color_utils.toHexString(itemColor);
-        final String title = item.title ?? hexCode;
 
         return InkWell(
           onTap: () => onItemTap?.call(index),
@@ -60,12 +59,12 @@ class AvailableColorsListView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  title,
+                  item.title,
                   style: Theme.of(context).textTheme.titleMedium!.copyWith(color: contrastColor),
                 ),
-                if (item.title != null)
+                if (item.name != null)
                   Text(
-                    hexCode,
+                    item.hexString,
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: contrastColor),
                   ),
               ],

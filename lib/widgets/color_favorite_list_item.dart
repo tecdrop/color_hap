@@ -44,7 +44,7 @@ class ColorFavoriteListItem extends StatelessWidget {
       textColor: color_utils.contrastColor(randomColor.color),
 
       // Random color title and type
-      title: Text(randomColor.title, style: const TextStyle(fontSize: 20.0)),
+      title: Text(randomColor.longTitle, style: const TextStyle(fontSize: 20.0)),
       subtitle: Text(strings.colorType[randomColor.type]!),
 
       // The trailing widget is used to display the Delete button

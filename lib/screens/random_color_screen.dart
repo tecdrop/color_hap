@@ -92,9 +92,10 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
   /// Copies the current color hex code and name (if available) to the clipboard.
   Future<void> copyColor() async {
-    final String hexCode = color_utils.toHexString(_randomColor.color);
-    final String value = _randomColor.name != null ? '$hexCode ${_randomColor.name}' : hexCode;
-    await utils.copyToClipboard(context, value);
+    // final String hexCode = color_utils.toHexString(_randomColor.color);
+    // final String value = _randomColor.name != null ? '$hexCode ${_randomColor.name}' : hexCode;
+    // await utils.copyToClipboard(context, value);
+    await utils.copyToClipboard(context, _randomColor.longTitle);
   }
 
   @override

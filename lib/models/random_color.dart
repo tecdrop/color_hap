@@ -29,13 +29,24 @@ class RandomColor {
   /// The position of this [RandomColor] in the source list.
   final int? listPosition;
 
-  /// The "title" of the this [RandomColor].
+  /// The "long title" of the this [RandomColor].
   ///
   /// Returns the color name and hex code, or only the hex code if the color doesn't have a name.
-  String get title {
+  String get longTitle {
     final String hexString = color_utils.toHexString(color);
     return name != null ? '$name $hexString' : hexString;
   }
+
+  /// The title of this [RandomColor].
+  ///
+  /// Returns the color name if it exists, or the hex code otherwise.
+  String get title {
+    final String hexString = color_utils.toHexString(color);
+    return name != null ? name! : hexString;
+  }
+
+  /// The hex string of this [RandomColor].
+  String get hexString => color_utils.toHexString(color);
 
   /// Overrides the equality operator to compare two [RandomColor] objects.
   /// Two [RandomColor]s are equal if they have the same color type, color, name, and list position.
@@ -77,7 +88,7 @@ class RandomColor {
   String toCsvString() {
     return [
       type.toShortString(),
-      color_utils.toHexString(color),
+      hexString,
       name ?? '',
       listPosition.toString(),
     ].join(',');
