@@ -9,13 +9,13 @@ import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../common/app_const.dart' as consts;
-import '../common/app_routes.dart';
 import '../common/app_urls.dart' as urls;
 import '../common/ui_strings.dart' as strings;
 import '../models/random_color.dart';
 import '../utils/color_utils.dart' as color_utils;
 import '../utils/utils.dart' as utils;
 import '../widgets/color_info_list.dart';
+import 'color_preview_screen.dart';
 
 /// The Color Info screen.
 ///
@@ -71,7 +71,8 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
     switch (action) {
       // Navigates to the Color Preview screen
       case _AppBarActions.colorPreview:
-        gotoColorPreviewRoute(context, widget.randomColor.color);
+        // gotoColorPreviewRoute(context, widget.randomColor.color);
+        utils.navigateTo(context, ColorPreviewScreen(color: widget.randomColor.color));
         break;
 
       // Opens the web browser to search for the current color

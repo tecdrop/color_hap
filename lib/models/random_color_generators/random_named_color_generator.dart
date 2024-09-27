@@ -21,9 +21,10 @@ RandomColor nextRandomColor(Random random) {
   final namedColor = kNamedColors.entries.elementAt(randomIndex);
 
   return RandomColor(
+    type: ColorType.namedColor,
     color: Color(namedColor.key),
     name: namedColor.value,
-    type: ColorType.namedColor,
+    listPosition: randomIndex,
   );
 }
 

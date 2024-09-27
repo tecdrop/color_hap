@@ -5,13 +5,13 @@
 
 import 'package:flutter/material.dart';
 
-import '../common/app_routes.dart';
 import '../common/app_settings.dart' as settings;
 import '../common/ui_strings.dart' as strings;
 import '../models/random_color.dart';
 import '../utils/utils.dart' as utils;
 import '../widgets/color_favorite_list_item.dart';
 import '../widgets/confirmation_dialog_box.dart';
+import 'color_info_screen.dart';
 
 /// The storage bucket used to store the scroll position of the list of favorite colors.
 final PageStorageBucket colorReferenceBucket = PageStorageBucket();
@@ -103,7 +103,8 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
         RandomColor randomColor = settings.colorFavoritesList.elementAt(index);
         return ColorFavoriteListItem(
           randomColor: randomColor,
-          onTap: () => gotoColorInfoRoute(context, randomColor, fromFav: true),
+          onTap: () => utils.navigateTo(context, ColorInfoScreen(randomColor: randomColor)),
+          // onTap: () => gotoColorInfoRoute(context, randomColor, fromFav: true),
           onDeletePressed: () => _deleteFavoriteColor(index),
         );
       },

@@ -5,12 +5,10 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:go_router/go_router.dart';
-
-import 'common/app_routes.dart';
 import 'common/app_settings.dart' as settings;
 import 'common/app_theme.dart';
 import 'common/ui_strings.dart' as strings;
+import 'screens/random_color_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,9 +18,6 @@ Future<void> main() async {
     settings.loadSettings(),
     Future.delayed(const Duration(seconds: 5)),
   ]);
-
-  // Make imperative APIs (e.g. push) reflect in the browser URL
-  GoRouter.optionURLReflectsImperativeAPIs = true;
 
   // Then run the app
   runApp(const ColorHapApp());
@@ -34,18 +29,17 @@ class ColorHapApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return MaterialApp(
       title: strings.appName,
       debugShowCheckedModeBanner: false,
-
-      // The app routes configuration
-      routerConfig: appRouter,
 
       // A black on white theme to go with the color intensive interface of the app
       theme: getAppTheme(Brightness.light),
 
       // On dark mode, use a white on black theme
       darkTheme: getAppTheme(Brightness.dark),
+
+      home: const RandomColorScreen(),
     );
   }
 }

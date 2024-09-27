@@ -11,10 +11,14 @@ import 'color_type.dart';
 /// A random color with a [Color] value, possibly a color name, and a color type.
 class RandomColor {
   const RandomColor({
-    required this.color,
     required this.type,
+    required this.color,
     this.name,
+    this.listPosition,
   });
+
+  /// The type of this random color.
+  final ColorType type;
 
   /// The color value.
   final Color color;
@@ -22,8 +26,8 @@ class RandomColor {
   /// The color name. Can be null if the color is not a named color.
   final String? name;
 
-  /// The type of this random color.
-  final ColorType type;
+  /// The position of this [RandomColor] in the source list.
+  final int? listPosition;
 
   /// The "title" of the this [RandomColor].
   ///
@@ -34,44 +38,48 @@ class RandomColor {
   }
 
   /// Overrides the equality operator to compare two [RandomColor] objects.
-  /// Two [RandomColor] objects are equal if they have the same color value, name, and type.
+  /// Two [RandomColor]s are equal if they have the same color type, color, name, and list position.
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         other is RandomColor &&
             runtimeType == other.runtimeType &&
+            type == other.type &&
             color == other.color &&
             name == other.name &&
-            type == other.type;
+            listPosition == other.listPosition;
   }
 
   /// Overrides the hash code getter to return the hash code of this [RandomColor].
   @override
   int get hashCode {
-    return color.hashCode ^ name.hashCode ^ type.hashCode;
+    return type.hashCode ^ color.hashCode ^ name.hashCode ^ listPosition.hashCode;
   }
 
   /// Creates a [RandomColor] from a JSON object.
   RandomColor.fromJson(Map<String, dynamic> json)
-      : color = Color(json['color']),
+      : type = ColorType.values[json['type']],
+        color = Color(json['color']),
         name = json['name'],
-        type = ColorType.values[json['type']];
+        listPosition = json['listPosition'];
 
   /// Converts this [RandomColor] to a JSON object.
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
+      'type': type.index,
       'color': color.value,
       'name': name,
-      'type': type.index,
+      'listPosition': listPosition,
     };
   }
 
   /// Converts this [RandomColor] to a CSV string.
   String toCsvString() {
     return [
+      type.toShortString(),
       color_utils.toHexString(color),
       name ?? '',
-      type.toShortString(),
+      listPosition.toString(),
     ].join(',');
   }
 }

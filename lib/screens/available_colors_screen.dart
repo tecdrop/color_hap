@@ -79,22 +79,23 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
   void _popRandomColor(BuildContext context, int index) {
     final itemData = _getItemData(index);
     final RandomColor randomColor = RandomColor(
-      color: Color(itemData.colorCode),
       type: widget.colorType,
+      color: Color(itemData.colorCode),
       name: itemData.title,
+      listPosition: index,
     );
     Navigator.of(context).pop<RandomColor>(randomColor);
   }
 
-  void _gotoRandomColor() {
-    final int randomIndex = random.nextInt(_getItemCount());
+  // void _gotoRandomColor() {
+  //   final int randomIndex = random.nextInt(_getItemCount());
 
-    _scrollController.animateTo(
-      randomIndex * 128.0,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
-    );
-  }
+  //   _scrollController.animateTo(
+  //     randomIndex * 128.0,
+  //     duration: const Duration(milliseconds: 5000),
+  //     curve: Curves.easeInOut,
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -116,11 +117,11 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
           onItemTap: (int index) => _popRandomColor(context, index),
         ),
 
-        floatingActionButton: FloatingActionButton(
-          onPressed: _gotoRandomColor,
-          // tooltip: strings.close,
-          child: const Icon(Icons.shuffle_outlined),
-        ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: _gotoRandomColor,
+        //   // tooltip: strings.close,
+        //   child: const Icon(Icons.shuffle_outlined),
+        // ),
       ),
     );
   }

@@ -55,20 +55,39 @@ List<ColorType> _initTypeWeights() {
 RandomColor _getNamedColor(Color color, ColorType defaultType) {
   final String? basicColorName = rbcg.getColorName(color);
   if (basicColorName != null) {
-    return RandomColor(color: color, name: basicColorName, type: ColorType.basicColor);
+    return RandomColor(
+      type: ColorType.basicColor,
+      color: color,
+      name: basicColorName,
+      listPosition: 0, // TODO: Implement list position for basic colors
+    );
   }
 
   final String? webColorName = rwcg.getColorName(color);
   if (webColorName != null) {
-    return RandomColor(color: color, name: webColorName, type: ColorType.webColor);
+    return RandomColor(
+      type: ColorType.webColor,
+      color: color,
+      name: webColorName,
+      listPosition: 0, // TODO: Implement list position for web colors
+    );
   }
 
   final String? namedColorName = rncg.getColorName(color);
   if (namedColorName != null) {
-    return RandomColor(color: color, name: namedColorName, type: ColorType.namedColor);
+    return RandomColor(
+      type: ColorType.namedColor,
+      color: color,
+      name: namedColorName,
+      listPosition: 0, // TODO: Implement list position for named colors
+    );
   }
 
-  return RandomColor(color: color, type: defaultType);
+  return RandomColor(
+    type: defaultType,
+    color: color,
+    listPosition: 0, // TODO: Implement list position for attractive and true colors
+  );
 }
 
 /// Generates a random color based on the given color type.
@@ -100,13 +119,46 @@ int _nextIdentityColorIndex = 0;
 /// These colors are used internally for app screenshots and branding.
 RandomColor nextIdentityColor() {
   const List<RandomColor> identityColors = [
-    RandomColor(color: Color(0XFF0088FF), name: 'azure', type: ColorType.basicColor),
-    RandomColor(color: Color(0xFF8700FE), type: ColorType.trueColor),
-    RandomColor(color: Color(0xFFFFEC13), name: 'Broom', type: ColorType.namedColor),
-    RandomColor(color: Color(0xFF00FF22), type: ColorType.trueColor),
-    RandomColor(color: Color(0XFFFF0000), name: 'red', type: ColorType.basicColor),
-    RandomColor(color: Color(0XFFFF00FF), name: 'magenta', type: ColorType.basicColor),
-    RandomColor(color: Color(0XFF8800FF), name: 'violet', type: ColorType.basicColor),
+    RandomColor(
+      type: ColorType.basicColor,
+      color: Color(0XFF0088FF),
+      name: 'azure',
+      listPosition: 0, // TODO: Remove this?
+    ),
+    RandomColor(
+      type: ColorType.trueColor,
+      color: Color(0xFF8700FE),
+      listPosition: 0, // TODO: Remove this?
+    ),
+    RandomColor(
+      type: ColorType.namedColor,
+      color: Color(0xFFFFEC13),
+      name: 'Broom',
+      listPosition: 0, // TODO: Remove this?
+    ),
+    RandomColor(
+      type: ColorType.trueColor,
+      color: Color(0xFF00FF22),
+      listPosition: 0, // TODO: Remove this?
+    ),
+    RandomColor(
+      type: ColorType.basicColor,
+      color: Color(0XFFFF0000),
+      name: 'red',
+      listPosition: 0, // TODO: Remove this?
+    ),
+    RandomColor(
+      type: ColorType.basicColor,
+      color: Color(0XFFFF00FF),
+      name: 'magenta',
+      listPosition: 0, // TODO: Remove this?
+    ),
+    RandomColor(
+      type: ColorType.basicColor,
+      color: Color(0XFF8800FF),
+      name: 'violet',
+      listPosition: 0, // TODO: Remove this?
+    ),
   ];
 
   final RandomColor randomColor = identityColors[_nextIdentityColorIndex];

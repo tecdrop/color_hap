@@ -20,9 +20,10 @@ RandomColor nextRandomColor(Random random) {
   final int colorCode = kAttractiveColors[randomIndex];
 
   return RandomColor(
+    type: ColorType.attractiveColor,
     color: Color(colorCode),
     name: null,
-    type: ColorType.attractiveColor,
+    listPosition: randomIndex,
   );
 }
 

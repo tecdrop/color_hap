@@ -5,7 +5,6 @@
 
 import 'package:flutter/material.dart';
 
-import '../../common/app_routes.dart';
 import '../../common/app_settings.dart' as settings;
 import '../../common/app_urls.dart' as urls;
 import '../../common/custom_icons.dart' as custom_icons;
@@ -13,6 +12,9 @@ import '../../common/ui_strings.dart' as strings;
 import '../../models/color_type.dart';
 import '../../models/random_color_generator.dart';
 import '../../models/random_color.dart';
+import '../../screens/color_favorites_screen.dart';
+import '../../screens/color_info_screen.dart';
+import '../../screens/color_preview_screen.dart';
 import '../../utils/color_utils.dart' as color_utils;
 import '../../utils/utils.dart' as utils;
 
@@ -107,20 +109,23 @@ class AppDrawer extends StatelessWidget {
       // Open the Color Info screen with the current random color
       case AppDrawerItems.colorInfo:
         Navigator.pop(context);
-        gotoColorInfoRoute(context, randomColor);
+        utils.navigateTo(context, ColorInfoScreen(randomColor: randomColor));
+        // gotoColorInfoRoute(context, randomColor);
         break;
 
       // Open the Color Preview screen with the current random color
       case AppDrawerItems.colorPreview:
         Navigator.pop(context);
-        gotoColorPreviewRoute(context, randomColor.color);
+        utils.navigateTo(context, ColorPreviewScreen(color: randomColor.color));
+        // gotoColorPreviewRoute(context, randomColor.color);
         break;
 
       // Open the Color Favorites screen
       case AppDrawerItems.colorFavorites:
         (() async {
           Navigator.pop(context);
-          await gotoColorFavoritesRoute(context);
+          await utils.navigateTo(context, const ColorFavoritesScreen());
+          // await gotoColorFavoritesRoute(context);
           onShouldUpdateState?.call();
         }());
         break;

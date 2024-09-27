@@ -50,7 +50,6 @@ const String randomBasicColorDrawer = 'Random Basic Colors';
 const String randomWebColorDrawer = 'Random Web Colors';
 const String randomNamedColorDrawer = 'Random Named Colors';
 const String randomAttractiveColorDrawer = 'Random Attractive Colors';
-// const String randomAttractiveColorDrawerSubtitle = 'A few million possibilities';
 const String randomTrueColorDrawer = 'Random True Colors';
 String possibilitiesDrawerSubtitle(String length) => '$length possibilities';
 const String colorReferenceDrawer = 'Color Reference';

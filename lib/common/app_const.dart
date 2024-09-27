@@ -6,11 +6,6 @@
 /// Application-wide constants.
 library;
 
-import 'package:flutter/material.dart';
-
-/// The default "random" color when the app starts and no real random color has been generated yet.
-const Color defaultColor = Colors.black;
-
 /// The parameter name for colors with no name.
 const String noNameColorParam = 'noname';
 

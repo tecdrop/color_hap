@@ -20,9 +20,10 @@ RandomColor nextRandomColor(Random random) {
   final namedColor = kBasicColors.entries.elementAt(randomIndex);
 
   return RandomColor(
+    type: ColorType.basicColor,
     color: Color(namedColor.key),
     name: namedColor.value,
-    type: ColorType.basicColor,
+    listPosition: randomIndex,
   );
 }
 
