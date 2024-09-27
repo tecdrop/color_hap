@@ -7,6 +7,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../common/app_const.dart' as consts;
 import '../models/random_color.dart';
 import '../utils/color_utils.dart' as color_utils;
 
@@ -36,42 +37,44 @@ class AvailableColorsListView extends StatelessWidget {
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
 
-    return ListView.builder(
-      controller: scrollController,
-      itemCount: itemCount(),
-      itemExtent: 128.0,
-      itemBuilder: (BuildContext context, int index) {
-        final RandomColor item = itemData(index);
-        final Color itemColor = item.color;
-        final Color contrastColor = color_utils.contrastColor(itemColor);
+    return Scrollbar(
+      child: ListView.builder(
+        controller: scrollController,
+        itemCount: itemCount(),
+        itemExtent: consts.colorListItemExtent,
+        itemBuilder: (BuildContext context, int index) {
+          final RandomColor item = itemData(index);
+          final Color itemColor = item.color;
+          final Color contrastColor = color_utils.contrastColor(itemColor);
 
-        return InkWell(
-          onTap: () => onItemTap?.call(index),
-          child: Ink(
-            color: itemColor,
-            // Use padding to constrain the width of the list items so they look ok on large screens
-            padding: EdgeInsets.symmetric(
-              horizontal: max(16.0, (width - 1024) / 2),
-            ),
+          return InkWell(
+            onTap: () => onItemTap?.call(index),
+            child: Ink(
+              color: itemColor,
+              // Use padding to constrain the width of the list items so they look ok on large screens
+              padding: EdgeInsets.symmetric(
+                horizontal: max(16.0, (width - 1024) / 2),
+              ),
 
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  item.title,
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(color: contrastColor),
-                ),
-                if (item.name != null)
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
                   Text(
-                    item.hexString,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: contrastColor),
+                    item.title,
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(color: contrastColor),
                   ),
-              ],
+                  if (item.name != null)
+                    Text(
+                      item.hexString,
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: contrastColor),
+                    ),
+                ],
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

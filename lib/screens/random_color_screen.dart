@@ -5,12 +5,12 @@
 
 import 'package:flutter/material.dart';
 
+import '../common/app_const.dart' as consts;
 import '../common/app_settings.dart' as settings;
 import '../common/ui_strings.dart' as strings;
 import '../models/color_type.dart';
 import '../models/random_color_generator.dart';
 import '../models/random_color.dart';
-import '../utils/color_utils.dart' as color_utils;
 import '../utils/utils.dart' as utils;
 import '../widgets/internal/app_drawer.dart';
 import '../widgets/random_color_display.dart';
@@ -67,10 +67,21 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         break;
       // Open the Available Colors screen
       case _AppBarActions.availableColors:
+        final double itemOffset = (_randomColor.listPosition ?? 0) * consts.colorListItemExtent;
+        print('----- listPosition: ${_randomColor.listPosition}');
+        print('itemOffset: $itemOffset');
+        final ScrollController scrollController = ScrollController(
+          initialScrollOffset: itemOffset,
+          keepScrollOffset: false,
+        );
         final RandomColor? randomColor = await utils.navigateTo<RandomColor>(
           context,
-          AvailableColorsScreen(colorType: settings.colorType),
+          AvailableColorsScreen(
+            colorType: settings.colorType,
+            scrollController: scrollController,
+          ),
         );
+        scrollController.dispose();
         if (randomColor != null) {
           setState(() {
             _randomColor = randomColor;

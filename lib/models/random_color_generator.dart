@@ -108,7 +108,7 @@ RandomColor nextRandomColor(ColorType colorType) {
       // return _getNamedColor(racg.nextRandomColor(_random), ColorType.attractiveColor);
       return racg.nextRandomColor(_random);
     case ColorType.trueColor:
-      return _getNamedColor(rtcg.nextRandomColor(_random), ColorType.trueColor);
+      return rtcg.nextRandomColor(_random);
   }
 }
 

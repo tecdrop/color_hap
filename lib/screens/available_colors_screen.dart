@@ -19,17 +19,21 @@ import '../utils/color_utils.dart' as color_utils;
 import '../widgets/available_colors_list_view.dart';
 
 /// The storage bucket used to store the scroll position of the available colors list views.
-final PageStorageBucket _storageBucket = PageStorageBucket();
+// final PageStorageBucket _storageBucket = PageStorageBucket();
 
 /// A screen that displays all the available colors of a specific type in a list view.
 class AvailableColorsScreen extends StatefulWidget {
   const AvailableColorsScreen({
     super.key,
     required this.colorType,
+    this.scrollController,
   });
 
   /// The type of available colors to display.
   final ColorType colorType;
+
+  /// An optional scroll controller for the list view, used to set the initial scroll position.
+  final ScrollController? scrollController;
 
   @override
   State<AvailableColorsScreen> createState() => _AvailableColorsScreenState();
@@ -37,7 +41,18 @@ class AvailableColorsScreen extends StatefulWidget {
 
 class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
   final Random random = Random();
-  final ScrollController _scrollController = ScrollController();
+
+  // @override
+  // void didUpdateWidget(Widget old) {
+  //   super.didUpdateWidget(old);
+  //   widget.scrollController.jumpTo(initialOffset);
+  // }
+
+  // @override
+  // void didUpdateWidget(AvailableColorsScreen oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+  //   widget.scrollController?.jumpTo(1000);
+  // }
 
   /// Returns the number of items in the list view based on the selected color type.
   int _getItemCount() {
@@ -59,7 +74,6 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
         throw UnsupportedError('The available colors list does not support mixed colors.');
       case ColorType.basicColor:
         final MapEntry<int, String> entry = rbcg.kBasicColors.entries.elementAt(index);
-        // return (colorCode: entry.key, title: entry.value);
         return RandomColor(
           type: widget.colorType,
           color: Color(entry.key),
@@ -68,7 +82,6 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
         );
       case ColorType.webColor:
         final MapEntry<int, String> entry = rwcg.kWebColors.entries.elementAt(index);
-        // return (colorCode: entry.key, title: entry.value);
         return RandomColor(
           type: widget.colorType,
           color: Color(entry.key),
@@ -77,7 +90,6 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
         );
       case ColorType.namedColor:
         final MapEntry<int, String> entry = rncg.kNamedColors.entries.elementAt(index);
-        // return (colorCode: entry.key, title: entry.value);
         return RandomColor(
           type: widget.colorType,
           color: Color(entry.key),
@@ -86,7 +98,6 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
         );
       case ColorType.attractiveColor:
         final int colorCode = racg.kAttractiveColors[index];
-        // return (colorCode: colorCode, title: null);
         return RandomColor(
           type: widget.colorType,
           color: Color(colorCode),
@@ -95,7 +106,6 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
         );
       case ColorType.trueColor:
         final int colorCode = color_utils.withFullAlpha(index);
-        // return (colorCode: colorCode, title: null);
         return RandomColor(
           type: widget.colorType,
           color: Color(colorCode),
@@ -108,14 +118,6 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
   /// Pops the top-most route off the navigator and returns a random color object for the color at
   /// the given [index].
   void _popRandomColor(BuildContext context, int index) {
-    // final itemData = _getItemData(index);
-    // final RandomColor randomColor = RandomColor(
-    //   type: widget.colorType,
-    //   color: Color(itemData.colorCode),
-    //   name: itemData.title,
-    //   listPosition: index,
-    // );
-    // Navigator.of(context).pop<RandomColor>(randomColor);
     Navigator.of(context).pop<RandomColor>(_getItemData(index));
   }
 
@@ -132,29 +134,26 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
   @override
   Widget build(BuildContext context) {
     // Use PageStorage to store the scroll position of the list views while the app is running
-    return PageStorage(
-      bucket: _storageBucket,
-      child: Scaffold(
-        // A simple app bar with the title based on the color type
-        appBar: AppBar(
-          title: Text(strings.availableColors(widget.colorType)),
-        ),
-
-        // The list view of available colors of the selected type
-        body: AvailableColorsListView(
-          key: PageStorageKey<ColorType>(widget.colorType),
-          scrollController: _scrollController,
-          itemCount: _getItemCount,
-          itemData: _getItemData,
-          onItemTap: (int index) => _popRandomColor(context, index),
-        ),
-
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: _gotoRandomColor,
-        //   // tooltip: strings.close,
-        //   child: const Icon(Icons.shuffle_outlined),
-        // ),
+    return Scaffold(
+      // A simple app bar with the title based on the color type
+      appBar: AppBar(
+        title: Text(strings.availableColors(widget.colorType)),
       ),
+
+      // The list view of available colors of the selected type
+      body: AvailableColorsListView(
+        // key: PageStorageKey<ColorType>(widget.colorType),
+        scrollController: widget.scrollController,
+        itemCount: _getItemCount,
+        itemData: _getItemData,
+        onItemTap: (int index) => _popRandomColor(context, index),
+      ),
+
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: _gotoRandomColor,
+      //   // tooltip: strings.close,
+      //   child: const Icon(Icons.shuffle_outlined),
+      // ),
     );
   }
 }

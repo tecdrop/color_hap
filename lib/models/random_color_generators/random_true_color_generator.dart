@@ -9,9 +9,21 @@ library;
 import 'dart:math';
 import 'package:flutter/material.dart';
 
+import '../../utils/color_utils.dart' as color_utils;
+import '../color_type.dart';
+import '../random_color.dart';
+
 /// Generates a random true color.
-Color nextRandomColor(Random random) {
-  return Color.fromRGBO(random.nextInt(256), random.nextInt(256), random.nextInt(256), 1.0);
+RandomColor nextRandomColor(Random random) {
+  // Generate a random 24-bit color code, which is a number between 0x000000 and 0xFFFFFF
+  final int randomColorCode = random.nextInt(0xFFFFFF + 1);
+
+  return RandomColor(
+    type: ColorType.trueColor,
+    color: Color(color_utils.withFullAlpha(randomColorCode)),
+    name: null,
+    listPosition: randomColorCode,
+  );
 }
 
 /// The number of available true colors that can be used to generate the random color.
