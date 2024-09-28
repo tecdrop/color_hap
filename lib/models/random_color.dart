@@ -87,10 +87,9 @@ class RandomColor {
   /// Converts this [RandomColor] to a CSV string.
   String toCsvString() {
     return [
-      type.toShortString(),
       hexString,
       name ?? '',
-      listPosition.toString(),
+      type.toShortString(),
     ].join(',');
   }
 }

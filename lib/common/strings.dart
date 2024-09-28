@@ -21,14 +21,18 @@ const String appName = 'ColorHap';
 String copiedSnack(String value) => '$value copied to clipboard';
 String copiedErrorSnack(String value) => 'Copy to clipboard failed: $value';
 
-const Map<ColorType, String> colorType = {
-  ColorType.mixedColor: 'Random Color',
-  ColorType.basicColor: 'Random Basic Color',
-  ColorType.webColor: 'Random Web Color',
-  ColorType.namedColor: 'Random Named Color',
-  ColorType.attractiveColor: 'Random Attractive Color',
-  ColorType.trueColor: 'Random True Color',
+const String randomPrefix = 'Random';
+
+const Map<ColorType, String> colorTypeSingular = {
+  ColorType.mixedColor: 'Color',
+  ColorType.basicColor: 'Basic Color',
+  ColorType.webColor: 'Web Color',
+  ColorType.namedColor: 'Named Color',
+  ColorType.attractiveColor: 'Attractive Color',
+  ColorType.trueColor: 'True Color',
 };
+
+String randomColorType(ColorType value) => 'Random ${colorTypeSingular[value]}';
 
 const Map<ColorType, String> colorTypePlural = {
   ColorType.mixedColor: 'Colors',

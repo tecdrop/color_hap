@@ -97,7 +97,7 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
     return (
       color: randomColor.color,
       title: randomColor.longTitle,
-      subtitle: strings.colorType[randomColor.type]!,
+      subtitle: strings.randomColorType(randomColor.type),
     );
   }
 

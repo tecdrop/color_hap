@@ -12,6 +12,7 @@ import '../models/random_color_generator.dart';
 import '../models/random_color.dart';
 import '../utils/utils.dart' as utils;
 import '../widgets/internal/app_drawer.dart';
+import '../widgets/long_app_bar_title.dart';
 import '../widgets/random_color_display.dart';
 import 'available_colors_screen.dart';
 import 'color_favorites_screen.dart';
@@ -133,7 +134,6 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
     return Scaffold(
       // The app bar
       appBar: _AppBar(
-        screenColorType: _colorType,
         actualColorType: _randomColor.type,
         isFavorite: _colorFavIndex >= 0,
         onAction: _onAction,
@@ -187,14 +187,10 @@ enum _AppBarActions {
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   const _AppBar({
     super.key, // ignore: unused_element
-    required this.screenColorType,
     required this.actualColorType,
     required this.isFavorite,
     required this.onAction,
   });
-
-  /// The type of colors to generate.
-  final ColorType screenColorType;
 
   /// The actual type of the current color.
   final ColorType actualColorType;
@@ -208,7 +204,10 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(strings.colorType[screenColorType]!),
+      title: LongAppBarTitle(
+        row1: strings.randomPrefix,
+        row2: strings.colorTypeSingular[actualColorType]!,
+      ),
 
       // The common operations displayed in this app bar
       actions: <Widget>[

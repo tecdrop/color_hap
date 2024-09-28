@@ -53,7 +53,7 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
         (key: strings.colorNameInfo, value: widget.randomColor.name!)
       ],
       (key: strings.hexInfo, value: color_utils.toHexString(color)),
-      (key: strings.colorTypeInfo, value: strings.colorType[widget.randomColor.type]!),
+      (key: strings.colorTypeInfo, value: strings.randomColorType(widget.randomColor.type)),
       (key: strings.rgbInfo, value: color_utils.toRGBString(color)),
       (key: strings.hsvInfo, value: color_utils.toHSVString(color)),
       (key: strings.hslInfo, value: color_utils.toHSLString(color)),
