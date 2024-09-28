@@ -9,9 +9,8 @@ import '../common/app_settings.dart' as settings;
 import '../common/ui_strings.dart' as strings;
 import '../models/random_color.dart';
 import '../utils/utils.dart' as utils;
-import '../widgets/color_favorite_list_item.dart';
+import '../widgets/color_list_view.dart';
 import '../widgets/confirmation_dialog_box.dart';
-import 'color_info_screen.dart';
 
 /// The storage bucket used to store the scroll position of the list of favorite colors.
 final PageStorageBucket colorReferenceBucket = PageStorageBucket();
@@ -93,20 +92,42 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
     );
   }
 
+  ColorListItemData _getItemData(int index) {
+    final RandomColor randomColor = settings.colorFavoritesList.elementAt(index);
+    return (
+      color: randomColor.color,
+      title: randomColor.longTitle,
+      subtitle: strings.colorType[randomColor.type]!,
+    );
+  }
+
   /// Builds the list of favorite colors.
   Widget _buildFavoritesListView() {
-    return ListView.builder(
+    // return ListView.builder(
+    //   key: const PageStorageKey<String>('favoritesListView'),
+    //   itemCount: settings.colorFavoritesList.length,
+    //   itemBuilder: (BuildContext context, int index) {
+    //     // Build a list item for each favorite color
+    //     RandomColor randomColor = settings.colorFavoritesList.elementAt(index);
+    //     return ColorFavoriteListItem(
+    //       randomColor: randomColor,
+    //       onTap: () => utils.navigateTo(context, ColorInfoScreen(randomColor: randomColor)),
+    //       onDeletePressed: () => _deleteFavoriteColor(index),
+    //     );
+    //   },
+    // );
+
+    return ColorListView(
       key: const PageStorageKey<String>('favoritesListView'),
-      itemCount: settings.colorFavoritesList.length,
-      itemBuilder: (BuildContext context, int index) {
-        // Build a list item for each favorite color
-        RandomColor randomColor = settings.colorFavoritesList.elementAt(index);
-        return ColorFavoriteListItem(
-          randomColor: randomColor,
-          onTap: () => utils.navigateTo(context, ColorInfoScreen(randomColor: randomColor)),
-          onDeletePressed: () => _deleteFavoriteColor(index),
-        );
-      },
+      itemCount: () => settings.colorFavoritesList.length,
+      itemData: _getItemData,
+      actionButton: (int index) => IconButton(
+        icon: const Icon(Icons.delete),
+        onPressed: () => _deleteFavoriteColor(index),
+      ),
+      onItemTap: (int index) => Navigator.of(context).pop<RandomColor>(
+        settings.colorFavoritesList.elementAt(index),
+      ),
     );
   }
 

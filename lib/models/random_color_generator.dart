@@ -6,7 +6,9 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
+import '../utils/color_utils.dart' as color_utils;
 import 'color_type.dart';
+import 'more.dart';
 import 'random_color_generators/random_attractive_color_generator.dart' as racg;
 import 'random_color_generators/random_basic_color_generator.dart' as rbcg;
 import 'random_color_generators/random_named_color_generator.dart' as rncg;
@@ -105,5 +107,53 @@ int possibilityCount(ColorType colorType) {
       return racg.possibilityCount;
     case ColorType.trueColor:
       return rtcg.possibilityCount;
+  }
+}
+
+RandomColor getRandomColor(ColorType colorType, int index) {
+  switch (colorType) {
+    case ColorType.mixedColor:
+      throw UnsupportedError('getRandomColor does not support mixed colors.');
+    case ColorType.basicColor:
+      final ColorWithName item = rbcg.kBasicColors.elementAt(index);
+      return RandomColor(
+        type: colorType,
+        color: Color(item.code),
+        name: item.name,
+        listPosition: index,
+      );
+
+    case ColorType.webColor:
+      final ColorWithName item = rwcg.kWebColors.elementAt(index);
+      return RandomColor(
+        type: colorType,
+        color: Color(item.code),
+        name: item.name,
+        listPosition: index,
+      );
+    case ColorType.namedColor:
+      final ColorWithName item = rncg.kNamedColors.elementAt(index);
+      return RandomColor(
+        type: colorType,
+        color: Color(item.code),
+        name: item.name,
+        listPosition: index,
+      );
+    case ColorType.attractiveColor:
+      final int colorCode = racg.kAttractiveColors[index];
+      return RandomColor(
+        type: colorType,
+        color: Color(colorCode),
+        name: null,
+        listPosition: index,
+      );
+    case ColorType.trueColor:
+      final int colorCode = color_utils.withFullAlpha(index);
+      return RandomColor(
+        type: colorType,
+        color: Color(colorCode),
+        name: null,
+        listPosition: index,
+      );
   }
 }
