@@ -16,6 +16,11 @@ typedef ColorListItemData = ({
   String? subtitle,
 });
 
+typedef ItemButtonData = ({
+  IconData icon,
+  String tooltip,
+});
+
 /// A list view that displays a list of available colors.
 class ColorListView extends StatelessWidget {
   const ColorListView({
@@ -23,8 +28,9 @@ class ColorListView extends StatelessWidget {
     this.scrollController,
     required this.itemCount,
     required this.itemData,
-    this.actionButton,
+    this.itemButton,
     this.onItemTap,
+    this.onItemButtonPressed,
   });
 
   /// An optional scroll controller for the list view.
@@ -36,11 +42,14 @@ class ColorListView extends StatelessWidget {
   /// A callback function that returns the title, subtitle, and color for each item in the list.
   final ColorListItemData Function(int index) itemData;
 
-  /// A callback function that returns an optional action button for each item in the list.
-  final Widget Function(int index)? actionButton;
+  /// A callback function that returns an optional button for each item in the list.
+  final ItemButtonData Function(int index)? itemButton;
 
   /// A callback function that is called when an item in the list is tapped.
   final void Function(int index)? onItemTap;
+
+  /// A callback function that is called when the button of a list item is pressed.
+  final void Function(int index)? onItemButtonPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +66,9 @@ class ColorListView extends StatelessWidget {
             color: item.color,
             title: item.title,
             subtitle: item.subtitle,
-            actionButton: actionButton?.call(index),
+            itemButton: itemButton?.call(index),
             onTap: () => onItemTap?.call(index),
+            onButtonPressed: () => onItemButtonPressed?.call(index),
           );
         },
       ),
@@ -72,8 +82,9 @@ class _ColorListItem extends StatelessWidget {
     required this.color,
     required this.title,
     this.subtitle,
-    this.actionButton,
+    this.itemButton,
     this.onTap,
+    this.onButtonPressed,
   });
 
   final Color color;
@@ -82,10 +93,13 @@ class _ColorListItem extends StatelessWidget {
 
   final String? subtitle;
 
-  final Widget? actionButton;
+  final ItemButtonData? itemButton;
 
   /// The function to call when the list item is tapped.
   final void Function()? onTap;
+
+  /// A callback function that is called when the button of this list item is pressed.
+  final void Function()? onButtonPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -102,20 +116,30 @@ class _ColorListItem extends StatelessWidget {
           horizontal: max(16.0, (width - 1024) / 2),
         ),
 
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text(
-              title,
-              style: Theme.of(context).textTheme.titleMedium!.copyWith(color: contrastColor),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(color: contrastColor),
+                ),
+                if (subtitle != null)
+                  Text(
+                    subtitle!,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: contrastColor),
+                  ),
+              ],
             ),
-            if (subtitle != null)
-              Text(
-                subtitle!,
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: contrastColor),
-              ),
-            if (actionButton != null) actionButton!,
+            if (itemButton != null)
+              IconButton(
+                icon: Icon(itemButton!.icon, color: color_utils.contrastIconColor(color)),
+                tooltip: itemButton!.tooltip,
+                onPressed: onButtonPressed,
+              )
           ],
         ),
       ),
