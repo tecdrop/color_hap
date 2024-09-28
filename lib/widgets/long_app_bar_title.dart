@@ -27,14 +27,14 @@ class LongAppBarTitle extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
+        // The first row with a smaller font size
         Text(
           row1,
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(height: 1.0),
         ),
-        Text(
-          row2,
-          style: Theme.of(context).appBarTheme.titleTextStyle,
-        ),
+
+        // The second row inherits the standard app bar title style
+        Text(row2),
       ],
     );
   }
