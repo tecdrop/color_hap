@@ -27,6 +27,7 @@ void checkForDuplicateAttractiveColors() {
         webColorCodes.contains(colorCode) ||
         namedColorCodes.contains(colorCode)) {
       final String hexString = color_utils.toHexString(Color(colorCode), withHash: false);
+      // ignore: avoid_print
       print(
         'WARNING: The attractive color 0XFF$hexString is also in one of the basic, web, or named colors lists.',
       );

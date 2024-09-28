@@ -138,7 +138,6 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
 
       // The list view of available colors of the selected type
       body: AvailableColorsListView(
-        // scrollController: widget.scrollController,
         scrollController: _scrollController,
         itemCount: _getItemCount,
         itemData: _getItemData,
