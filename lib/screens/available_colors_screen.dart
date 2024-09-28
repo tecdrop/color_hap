@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import '../common/ui_strings.dart' as strings;
 import '../models/color_type.dart';
+import '../models/more.dart';
 import '../models/random_color_generators/random_attractive_color_generator.dart' as racg;
 import '../models/random_color_generators/random_basic_color_generator.dart' as rbcg;
 import '../models/random_color_generators/random_named_color_generator.dart' as rncg;
@@ -57,11 +58,12 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
       case ColorType.mixedColor:
         throw UnsupportedError('The available colors list does not support mixed colors.');
       case ColorType.basicColor:
-        final MapEntry<int, String> entry = rbcg.kBasicColors.entries.elementAt(index);
+        // final MapEntry<int, String> entry = rbcg.kBasicColors.entries.elementAt(index);
+        final ColorWithName item = rbcg.kBasicColors.elementAt(index);
         return RandomColor(
           type: widget.colorType,
-          color: Color(entry.key),
-          name: entry.value,
+          color: Color(item.code),
+          name: item.name,
           listPosition: index,
         );
       case ColorType.webColor:
