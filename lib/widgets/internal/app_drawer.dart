@@ -12,7 +12,6 @@ import '../../common/ui_strings.dart' as strings;
 import '../../models/color_type.dart';
 import '../../models/random_color_generator.dart';
 import '../../models/random_color.dart';
-import '../../screens/color_favorites_screen.dart';
 import '../../screens/color_info_screen.dart';
 import '../../screens/color_preview_screen.dart';
 import '../../utils/color_utils.dart' as color_utils;
@@ -42,7 +41,7 @@ class AppDrawer extends StatelessWidget {
     required this.randomColor,
     required this.colorType,
     this.onColorTypeChange,
-    this.onShouldUpdateState,
+    this.onColorFavoritesTap,
     this.onNextIdentityColor,
   });
 
@@ -55,93 +54,79 @@ class AppDrawer extends StatelessWidget {
   /// A callback function that is called when the color type changes.
   final void Function(ColorType)? onColorTypeChange;
 
-  /// A callback function that is called when the the screen that opened the drawer should update.
-  final void Function()? onShouldUpdateState;
+  /// A callback function that is called when the user taps the color favorites item.
+  final void Function()? onColorFavoritesTap;
 
   /// A callback function that is called to go to the next app identity color.
   final void Function()? onNextIdentityColor;
 
   /// Starts a specific functionality of the app when the user taps a drawer [item].
   void _onItemTap(BuildContext context, AppDrawerItems item) {
+    Navigator.pop(context); // First, close the drawer
+
     switch (item) {
       // Launch the external RGB Color Wallpaper Pro url
       case AppDrawerItems.setWallpaper:
-        Navigator.pop(context);
         utils.launchUrlExternal(context, urls.setWallpaper);
         break;
 
       // Reopen the Random Color screen for generating random colors (of any type)
       case AppDrawerItems.randomMixedColor:
-        Navigator.pop(context);
         onColorTypeChange?.call(ColorType.mixedColor);
         break;
 
       // Reopen the Random Color screen for generating random basic colors
       case AppDrawerItems.randomBasicColor:
-        Navigator.pop(context);
         onColorTypeChange?.call(ColorType.basicColor);
         break;
 
       // Reopen the Random Color screen for generating random web colors
       case AppDrawerItems.randomWebColor:
-        Navigator.pop(context);
         onColorTypeChange?.call(ColorType.webColor);
         break;
 
       // Reopen the Random Color screen for generating random named colors
       case AppDrawerItems.randomNamedColor:
-        Navigator.pop(context);
         onColorTypeChange?.call(ColorType.namedColor);
         break;
 
       // Reopen the Random Color screen for generating random attractive colors
       case AppDrawerItems.randomAttractiveColor:
-        Navigator.pop(context);
         onColorTypeChange?.call(ColorType.attractiveColor);
         break;
 
       // Reopen the Random Color screen for generating random true colors
       case AppDrawerItems.randomTrueColor:
-        Navigator.pop(context);
         onColorTypeChange?.call(ColorType.trueColor);
         break;
 
       // Open the Color Info screen with the current random color
       case AppDrawerItems.colorInfo:
-        Navigator.pop(context);
         utils.navigateTo(context, ColorInfoScreen(randomColor: randomColor));
         break;
 
       // Open the Color Preview screen with the current random color
       case AppDrawerItems.colorPreview:
-        Navigator.pop(context);
         utils.navigateTo(context, ColorPreviewScreen(color: randomColor.color));
         break;
 
       // Open the Color Favorites screen
       case AppDrawerItems.colorFavorites:
-        (() async {
-          Navigator.pop(context);
-          await utils.navigateTo(context, const ColorFavoritesScreen());
-          onShouldUpdateState?.call();
-        }());
+        onColorFavoritesTap?.call();
         break;
 
       // Launch the external Online Help url
       case AppDrawerItems.help:
-        Navigator.pop(context);
         utils.launchUrlExternal(context, urls.help);
         break;
 
       // Launch the external View Source url
       case AppDrawerItems.viewSource:
-        Navigator.pop(context);
         utils.launchUrlExternal(context, urls.viewSource);
         break;
 
       // Launch the external Rate App url
       case AppDrawerItems.rateApp:
-        Navigator.pop(context);
         utils.launchUrlExternal(context, urls.getRateUrl());
         break;
     }

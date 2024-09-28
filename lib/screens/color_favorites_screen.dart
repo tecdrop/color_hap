@@ -103,20 +103,6 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
 
   /// Builds the list of favorite colors.
   Widget _buildFavoritesListView() {
-    // return ListView.builder(
-    //   key: const PageStorageKey<String>('favoritesListView'),
-    //   itemCount: settings.colorFavoritesList.length,
-    //   itemBuilder: (BuildContext context, int index) {
-    //     // Build a list item for each favorite color
-    //     RandomColor randomColor = settings.colorFavoritesList.elementAt(index);
-    //     return ColorFavoriteListItem(
-    //       randomColor: randomColor,
-    //       onTap: () => utils.navigateTo(context, ColorInfoScreen(randomColor: randomColor)),
-    //       onDeletePressed: () => _deleteFavoriteColor(index),
-    //     );
-    //   },
-    // );
-
     return ColorListView(
       key: const PageStorageKey<String>('favoritesListView'),
       itemCount: () => settings.colorFavoritesList.length,

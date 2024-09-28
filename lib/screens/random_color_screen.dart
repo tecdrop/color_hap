@@ -14,6 +14,7 @@ import '../utils/utils.dart' as utils;
 import '../widgets/internal/app_drawer.dart';
 import '../widgets/random_color_display.dart';
 import 'available_colors_screen.dart';
+import 'color_favorites_screen.dart';
 import 'color_info_screen.dart';
 import 'color_preview_screen.dart';
 
@@ -55,6 +56,13 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
     _shuffleColor();
   }
 
+  void _updateState(RandomColor? randomColor) {
+    setState(() {
+      if (randomColor != null) _randomColor = randomColor;
+      _colorFavIndex = settings.colorFavoritesList.indexOf(_randomColor);
+    });
+  }
+
   /// Navigates to the Available Colors screen for the selected color type.
   void _gotoAvailableColorsScreen() async {
     final RandomColor? randomColor = await utils.navigateTo<RandomColor>(
@@ -63,12 +71,22 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
     );
 
     // Update the current random color if a new color was selected
-    if (randomColor != null) {
-      setState(() {
-        _randomColor = randomColor;
-        _colorFavIndex = settings.colorFavoritesList.indexOf(_randomColor);
-      });
-    }
+    _updateState(randomColor);
+  }
+
+  /// Navigates to the Available Colors screen for the selected color type.
+  void _gotoColorFavoritesScreen() async {
+    final RandomColor? randomColor = await utils.navigateTo<RandomColor>(
+      context,
+      const ColorFavoritesScreen(),
+    );
+
+    // Update the current color type of the screen to match the type of the selected favorite color
+    if (randomColor != null) _colorType = randomColor.type;
+
+    // Update the current random color if a new color was selected; otherwise, update the state to
+    // refresh the favorite icon, maybe the current color was removed from the favorites list
+    _updateState(randomColor);
   }
 
   /// Performs the actions of the app bar.
@@ -101,11 +119,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
   /// Generates a new random color.
   void _shuffleColor() {
-    final RandomColor randomColor = nextRandomColor(_colorType);
-    _colorFavIndex = settings.colorFavoritesList.indexOf(randomColor);
-    setState(() {
-      _randomColor = randomColor;
-    });
+    _updateState(nextRandomColor(_colorType));
   }
 
   /// Copies the current color hex code and name (if available) to the clipboard.
@@ -132,15 +146,8 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
           settings.colorType = _colorType = colorType;
           _shuffleColor();
         },
-        onShouldUpdateState: () => setState(() {
-          _colorFavIndex = settings.colorFavoritesList.indexOf(_randomColor);
-        }),
-        onNextIdentityColor: () {
-          setState(() {
-            _randomColor = nextIdentityColor();
-            _colorFavIndex = settings.colorFavoritesList.indexOf(_randomColor);
-          });
-        },
+        onColorFavoritesTap: _gotoColorFavoritesScreen,
+        onNextIdentityColor: () => _updateState(nextIdentityColor()),
       ),
 
       // A simple body with the centered color display

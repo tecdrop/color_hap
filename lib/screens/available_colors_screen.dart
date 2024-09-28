@@ -110,54 +110,6 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
     }
   }
 
-  // /// Returns the data that should be used to build the item at the given [index] in the list view.
-  // RandomColor _getItemData(int index) {
-  //   switch (widget.colorType) {
-  //     case ColorType.mixedColor:
-  //       throw UnsupportedError('The available colors list does not support mixed colors.');
-  //     case ColorType.basicColor:
-  //       final ColorWithName item = rbcg.kBasicColors.elementAt(index);
-  //       return RandomColor(
-  //         type: widget.colorType,
-  //         color: Color(item.code),
-  //         name: item.name,
-  //         listPosition: index,
-  //       );
-  //     case ColorType.webColor:
-  //       final ColorWithName item = rwcg.kWebColors.elementAt(index);
-  //       return RandomColor(
-  //         type: widget.colorType,
-  //         color: Color(item.code),
-  //         name: item.name,
-  //         listPosition: index,
-  //       );
-  //     case ColorType.namedColor:
-  //       final ColorWithName item = rncg.kNamedColors.elementAt(index);
-  //       return RandomColor(
-  //         type: widget.colorType,
-  //         color: Color(item.code),
-  //         name: item.name,
-  //         listPosition: index,
-  //       );
-  //     case ColorType.attractiveColor:
-  //       final int colorCode = racg.kAttractiveColors[index];
-  //       return RandomColor(
-  //         type: widget.colorType,
-  //         color: Color(colorCode),
-  //         name: null,
-  //         listPosition: index,
-  //       );
-  //     case ColorType.trueColor:
-  //       final int colorCode = color_utils.withFullAlpha(index);
-  //       return RandomColor(
-  //         type: widget.colorType,
-  //         color: Color(colorCode),
-  //         name: null,
-  //         listPosition: index,
-  //       );
-  //   }
-  // }
-
   /// Pops the top-most route off the navigator and returns a random color object for the color at
   /// the given [index].
   void _popRandomColor(BuildContext context, int index) {
@@ -172,13 +124,6 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
         title: Text(strings.availableColors(widget.colorType)),
       ),
 
-      // The list view of available colors of the selected type
-      // body: AvailableColorsListView(
-      //   scrollController: _scrollController,
-      //   itemCount: _getItemCount,
-      //   itemData: _getItemData,
-      //   onItemTap: (int index) => _popRandomColor(context, index),
-      // ),
       body: ColorListView(
         scrollController: _scrollController,
         itemCount: _getItemCount,
