@@ -3,6 +3,9 @@
 // license that can be found in the LICENSE file or at
 // https://www.tecdrop.com/colorhap/license/.
 
+/// User interface strings for the ColorHap app.
+library;
+
 import '../models/color_type.dart';
 
 // -----------------------------------------------------------------------------------------------
@@ -35,8 +38,6 @@ const Map<ColorType, String> colorTypePlural = {
   ColorType.attractiveColor: 'Attractive Colors',
   ColorType.trueColor: 'True Colors',
 };
-
-String availableColors(ColorType value) => 'Available ${colorTypePlural[value]}';
 
 // -----------------------------------------------------------------------------------------------
 // Drawer items
@@ -123,3 +124,4 @@ const String favoritesExported = 'Favorites exported to clipboard in CSV format'
 // Available Colors Screen
 // -----------------------------------------------------------------------------------------------
 
+String availableColors(ColorType value) => 'Available ${colorTypePlural[value]}';

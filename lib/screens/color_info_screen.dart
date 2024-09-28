@@ -8,9 +8,9 @@ import 'package:flutter/services.dart';
 
 import 'package:share_plus/share_plus.dart';
 
-import '../common/app_const.dart' as consts;
-import '../common/app_urls.dart' as urls;
-import '../common/ui_strings.dart' as strings;
+import '../common/consts.dart' as consts;
+import '../common/strings.dart' as strings;
+import '../common/urls.dart' as urls;
 import '../models/random_color.dart';
 import '../utils/color_utils.dart' as color_utils;
 import '../utils/utils.dart' as utils;

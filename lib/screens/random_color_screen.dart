@@ -5,8 +5,8 @@
 
 import 'package:flutter/material.dart';
 
-import '../common/app_settings.dart' as settings;
-import '../common/ui_strings.dart' as strings;
+import '../common/preferences.dart' as preferences;
+import '../common/strings.dart' as strings;
 import '../models/color_type.dart';
 import '../models/random_color_generator.dart';
 import '../models/random_color.dart';
@@ -50,7 +50,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
     super.initState();
 
     // Restore the last selected color type
-    _colorType = settings.colorType;
+    _colorType = preferences.colorType;
 
     // Generate the first random color
     _shuffleColor();
@@ -59,7 +59,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
   void _updateState(RandomColor? randomColor) {
     setState(() {
       if (randomColor != null) _randomColor = randomColor;
-      _colorFavIndex = settings.colorFavoritesList.indexOf(_randomColor);
+      _colorFavIndex = preferences.colorFavoritesList.indexOf(_randomColor);
     });
   }
 
@@ -95,8 +95,9 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
       // Toggle the current color in the favorites list
       case _AppBarActions.toggleFav:
         setState(() {
-          _colorFavIndex = settings.colorFavoritesList.toggle(_randomColor, index: _colorFavIndex);
-          settings.saveColorFavoritesList();
+          _colorFavIndex =
+              preferences.colorFavoritesList.toggle(_randomColor, index: _colorFavIndex);
+          preferences.saveColorFavoritesList();
         });
         break;
 
@@ -143,7 +144,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         randomColor: _randomColor,
         colorType: _colorType,
         onColorTypeChange: (ColorType colorType) {
-          settings.colorType = _colorType = colorType;
+          preferences.colorType = _colorType = colorType;
           _shuffleColor();
         },
         onColorFavoritesTap: _gotoColorFavoritesScreen,

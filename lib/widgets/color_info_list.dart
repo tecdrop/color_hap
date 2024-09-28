@@ -6,7 +6,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-import '../common/ui_strings.dart' as strings;
+import '../common/strings.dart' as strings;
 import '../models/random_color.dart';
 import '../utils/color_utils.dart' as color_utils;
 

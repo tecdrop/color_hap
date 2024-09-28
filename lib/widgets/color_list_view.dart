@@ -7,7 +7,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import '../common/app_const.dart' as consts;
+import '../common/consts.dart' as consts;
 import '../utils/color_utils.dart' as color_utils;
 
 typedef ColorListItemData = ({

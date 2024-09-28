@@ -6,8 +6,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-import '../common/app_const.dart' as consts;
-import '../common/ui_strings.dart' as strings;
+import '../common/consts.dart' as consts;
+import '../common/strings.dart' as strings;
 import '../models/color_type.dart';
 import '../models/more.dart';
 import '../models/random_color_generator.dart';

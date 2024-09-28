@@ -5,8 +5,8 @@
 
 import 'package:flutter/material.dart';
 
-import '../common/app_settings.dart' as settings;
-import '../common/ui_strings.dart' as strings;
+import '../common/preferences.dart' as preferences;
+import '../common/strings.dart' as strings;
 import '../models/random_color.dart';
 import '../utils/utils.dart' as utils;
 import '../widgets/color_list_view.dart';
@@ -33,7 +33,7 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
       // Exports the favorite colors as a CSV file
       case _AppBarActions.exportFavoritesAsCsv:
         ScaffoldMessengerState messengerState = ScaffoldMessenger.of(context);
-        await utils.copyToClipboard(context, settings.colorFavoritesList.toCsvString());
+        await utils.copyToClipboard(context, preferences.colorFavoritesList.toCsvString());
         utils.showSnackBarForAsync(messengerState, strings.favoritesExported);
         break;
       // Clears all the favorite colors
@@ -45,7 +45,7 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
           positiveActionText: strings.clearFavoritesDialogPositiveAction,
         );
         if (showConfirmation == true) {
-          setState(() => settings.colorFavoritesList.clear());
+          setState(() => preferences.colorFavoritesList.clear());
         }
         break;
     }
@@ -57,14 +57,14 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
   void _deleteFavoriteColor(int index) {
     // First remove the color from the list
     late final RandomColor randomColor;
-    setState(() => randomColor = settings.colorFavoritesList.removeAt(index));
+    setState(() => randomColor = preferences.colorFavoritesList.removeAt(index));
 
     // Then display a snackbar with an undo action
     final snackBar = SnackBar(
       content: const Text(strings.removedFromFavorites),
       action: SnackBarAction(
         label: strings.undoRemoveFromFavorites,
-        onPressed: () => setState(() => settings.colorFavoritesList.insert(index, randomColor)),
+        onPressed: () => setState(() => preferences.colorFavoritesList.insert(index, randomColor)),
       ),
     );
     ScaffoldMessenger.of(context)
@@ -82,10 +82,10 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
       child: Scaffold(
         appBar: _AppBar(
           title: const Text(strings.favoriteColorsScreenTitle),
-          haveFavorites: settings.colorFavoritesList.length > 0,
+          haveFavorites: preferences.colorFavoritesList.length > 0,
           onAction: _onAppBarAction,
         ),
-        body: settings.colorFavoritesList.length > 0
+        body: preferences.colorFavoritesList.length > 0
             ? _buildFavoritesListView()
             : _buildNoFavoritesMessage(),
       ),
@@ -93,7 +93,7 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
   }
 
   ColorListItemData _getItemData(int index) {
-    final RandomColor randomColor = settings.colorFavoritesList.elementAt(index);
+    final RandomColor randomColor = preferences.colorFavoritesList.elementAt(index);
     return (
       color: randomColor.color,
       title: randomColor.longTitle,
@@ -105,11 +105,11 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
   Widget _buildFavoritesListView() {
     return ColorListView(
       key: const PageStorageKey<String>('favoritesListView'),
-      itemCount: () => settings.colorFavoritesList.length,
+      itemCount: () => preferences.colorFavoritesList.length,
       itemData: _getItemData,
       itemButton: (_) => (icon: Icons.delete, tooltip: strings.removeFavTooltip),
       onItemTap: (int index) => Navigator.of(context).pop<RandomColor>(
-        settings.colorFavoritesList.elementAt(index),
+        preferences.colorFavoritesList.elementAt(index),
       ),
       onItemButtonPressed: _deleteFavoriteColor,
     );

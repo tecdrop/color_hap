@@ -12,7 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../common/ui_strings.dart' as strings;
+import '../common/strings.dart' as strings;
 
 final NumberFormat _numberFormat = NumberFormat.decimalPattern();
 

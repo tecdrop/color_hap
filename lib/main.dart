@@ -5,9 +5,9 @@
 
 import 'package:flutter/material.dart';
 
-import 'common/app_settings.dart' as settings;
-import 'common/app_theme.dart';
-import 'common/ui_strings.dart' as strings;
+import 'common/preferences.dart' as preferences;
+import 'common/strings.dart' as strings;
+import 'common/theme.dart';
 import 'screens/random_color_screen.dart';
 
 Future<void> main() async {
@@ -20,7 +20,7 @@ Future<void> main() async {
 
   // First try to load the app settings from Shared Preferences
   await Future.any([
-    settings.loadSettings(),
+    preferences.loadSettings(),
     Future.delayed(const Duration(seconds: 5)),
   ]);
 

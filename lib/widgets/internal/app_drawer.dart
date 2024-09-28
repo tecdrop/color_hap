@@ -5,10 +5,10 @@
 
 import 'package:flutter/material.dart';
 
-import '../../common/app_settings.dart' as settings;
-import '../../common/app_urls.dart' as urls;
 import '../../common/custom_icons.dart' as custom_icons;
-import '../../common/ui_strings.dart' as strings;
+import '../../common/preferences.dart' as preferences;
+import '../../common/strings.dart' as strings;
+import '../../common/urls.dart' as urls;
 import '../../models/color_type.dart';
 import '../../models/random_color_generator.dart';
 import '../../models/random_color.dart';
@@ -238,11 +238,12 @@ class AppDrawer extends StatelessWidget {
           // Color Favorites drawer item
           _buildItem(
             context,
-            icon: settings.colorFavoritesList.length > 0 ? Icons.favorite : Icons.favorite_border,
+            icon:
+                preferences.colorFavoritesList.length > 0 ? Icons.favorite : Icons.favorite_border,
             title: strings.colorFavoritesDrawer,
             subtitle: strings.colorFavoritesSubtitle(
-              utils.intToCommaSeparatedString(settings.colorFavoritesList.length),
-              isPlural: settings.colorFavoritesList.length != 1,
+              utils.intToCommaSeparatedString(preferences.colorFavoritesList.length),
+              isPlural: preferences.colorFavoritesList.length != 1,
             ),
             item: AppDrawerItems.colorFavorites,
           ),
