@@ -14,7 +14,6 @@ import '../utils/utils.dart' as utils;
 import '../widgets/internal/app_drawer.dart';
 import '../widgets/random_color_display.dart';
 import 'available_colors_screen.dart';
-import 'available_mixed_colors_screen.dart';
 import 'color_info_screen.dart';
 import 'color_preview_screen.dart';
 
@@ -58,15 +57,10 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
   /// Navigates to the Available Colors screen for the selected color type.
   void _gotoAvailableColorsScreen() async {
-    final NavigatorState navigator = Navigator.of(context);
-
-    // Navigate to the Available Colors screen for the selected color type
-    final RandomColor? randomColor = _colorType == ColorType.mixedColor
-        ? await utils.navigatorTo<RandomColor>(navigator, const AvailableMixedColorsScreen())
-        : await utils.navigatorTo<RandomColor>(
-            navigator,
-            AvailableColorsScreen(colorType: _colorType, initialRandomColor: _randomColor),
-          );
+    final RandomColor? randomColor = await utils.navigateTo<RandomColor>(
+      context,
+      AvailableColorsScreen(colorType: _randomColor.type, initialRandomColor: _randomColor),
+    );
 
     // Update the current random color if a new color was selected
     if (randomColor != null) {
@@ -124,7 +118,8 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
     return Scaffold(
       // The app bar
       appBar: _AppBar(
-        colorType: _colorType,
+        screenColorType: _colorType,
+        actualColorType: _randomColor.type,
         isFavorite: _colorFavIndex >= 0,
         onAction: _onAction,
       ),
@@ -184,12 +179,17 @@ enum _AppBarActions {
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   const _AppBar({
     super.key, // ignore: unused_element
-    required this.colorType,
+    required this.screenColorType,
+    required this.actualColorType,
     required this.isFavorite,
     required this.onAction,
   });
 
-  final ColorType colorType;
+  /// The type of colors to generate.
+  final ColorType screenColorType;
+
+  /// The actual type of the current color.
+  final ColorType actualColorType;
 
   /// Whether the current color is added to the favorites list.
   final bool isFavorite;
@@ -200,7 +200,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(strings.colorType[colorType]!),
+      title: Text(strings.colorType[screenColorType]!),
 
       // The common operations displayed in this app bar
       actions: <Widget>[
@@ -233,7 +233,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
             // The Available Colors popup menu item
             PopupMenuItem<_AppBarActions>(
               value: _AppBarActions.availableColors,
-              child: Text(strings.availableColors(colorType)),
+              child: Text(strings.availableColors(actualColorType)),
             ),
           ],
         ),

@@ -123,8 +123,3 @@ const String favoritesExported = 'Favorites exported to clipboard in CSV format'
 // Available Colors Screen
 // -----------------------------------------------------------------------------------------------
 
-// -----------------------------------------------------------------------------------------------
-// Available Mixed Colors Screen
-// -----------------------------------------------------------------------------------------------
-
-const String availableMixedColorScreenTitle = 'Available Colors';
