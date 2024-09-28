@@ -253,7 +253,7 @@ class AppDrawer extends StatelessWidget {
           // Color Favorites drawer item
           _buildItem(
             context,
-            icon: Icons.favorite_outline_outlined,
+            icon: settings.colorFavoritesList.length > 0 ? Icons.favorite : Icons.favorite_border,
             title: strings.colorFavoritesDrawer,
             subtitle: strings.colorFavoritesSubtitle(
               utils.intToCommaSeparatedString(settings.colorFavoritesList.length),

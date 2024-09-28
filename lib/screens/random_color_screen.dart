@@ -5,7 +5,6 @@
 
 import 'package:flutter/material.dart';
 
-import '../common/app_const.dart' as consts;
 import '../common/app_settings.dart' as settings;
 import '../common/ui_strings.dart' as strings;
 import '../models/color_type.dart';
@@ -15,6 +14,7 @@ import '../utils/utils.dart' as utils;
 import '../widgets/internal/app_drawer.dart';
 import '../widgets/random_color_display.dart';
 import 'available_colors_screen.dart';
+import 'available_mixed_colors_screen.dart';
 import 'color_info_screen.dart';
 import 'color_preview_screen.dart';
 
@@ -56,6 +56,27 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
     _shuffleColor();
   }
 
+  /// Navigates to the Available Colors screen for the selected color type.
+  void _gotoAvailableColorsScreen() async {
+    final NavigatorState navigator = Navigator.of(context);
+
+    // Navigate to the Available Colors screen for the selected color type
+    final RandomColor? randomColor = _colorType == ColorType.mixedColor
+        ? await utils.navigatorTo<RandomColor>(navigator, const AvailableMixedColorsScreen())
+        : await utils.navigatorTo<RandomColor>(
+            navigator,
+            AvailableColorsScreen(colorType: _colorType, initialRandomColor: _randomColor),
+          );
+
+    // Update the current random color if a new color was selected
+    if (randomColor != null) {
+      setState(() {
+        _randomColor = randomColor;
+        _colorFavIndex = settings.colorFavoritesList.indexOf(_randomColor);
+      });
+    }
+  }
+
   /// Performs the actions of the app bar.
   void _onAction(_AppBarActions action) async {
     switch (action) {
@@ -79,25 +100,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
       // Open the Available Colors screen
       case _AppBarActions.availableColors:
-        final double itemOffset = (_randomColor.listPosition ?? 0) * consts.colorListItemExtent;
-        final ScrollController scrollController = ScrollController(
-          initialScrollOffset: itemOffset,
-          keepScrollOffset: false,
-        );
-        final RandomColor? randomColor = await utils.navigateTo<RandomColor>(
-          context,
-          AvailableColorsScreen(
-            colorType: _colorType,
-            scrollController: scrollController,
-          ),
-        );
-        scrollController.dispose();
-        if (randomColor != null) {
-          setState(() {
-            _randomColor = randomColor;
-            _colorFavIndex = settings.colorFavoritesList.indexOf(_randomColor);
-          });
-        }
+        _gotoAvailableColorsScreen();
         break;
     }
   }

@@ -6,6 +6,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
+import '../common/app_const.dart' as consts;
 import '../common/ui_strings.dart' as strings;
 import '../models/color_type.dart';
 import '../models/more.dart';
@@ -23,21 +24,42 @@ class AvailableColorsScreen extends StatefulWidget {
   const AvailableColorsScreen({
     super.key,
     required this.colorType,
-    this.scrollController,
+    this.initialRandomColor,
   });
 
   /// The type of available colors to display.
   final ColorType colorType;
 
-  /// An optional scroll controller for the list view, used to set the initial scroll position.
-  final ScrollController? scrollController;
+  /// The initial random color to select in the list view.
+  final RandomColor? initialRandomColor;
 
   @override
   State<AvailableColorsScreen> createState() => _AvailableColorsScreenState();
 }
 
 class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
+  late final ScrollController _scrollController;
   final Random random = Random();
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Scroll to the initial random color if provided
+    final double itemOffset = widget.initialRandomColor != null
+        ? (widget.initialRandomColor!.listPosition ?? 0) * consts.colorListItemExtent
+        : 0.0;
+    _scrollController = ScrollController(
+      initialScrollOffset: itemOffset,
+      keepScrollOffset: false,
+    );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   /// Returns the number of items in the list view based on the selected color type.
   int _getItemCount() {
@@ -116,7 +138,8 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
 
       // The list view of available colors of the selected type
       body: AvailableColorsListView(
-        scrollController: widget.scrollController,
+        // scrollController: widget.scrollController,
+        scrollController: _scrollController,
         itemCount: _getItemCount,
         itemData: _getItemData,
         onItemTap: (int index) => _popRandomColor(context, index),

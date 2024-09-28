@@ -13,6 +13,7 @@ ThemeData getAppTheme(Brightness brightness) {
   return ThemeData(
     brightness: brightness,
     useMaterial3: true,
+    scaffoldBackgroundColor: backgroundColor,
     drawerTheme: DrawerThemeData(
       backgroundColor: backgroundColor,
     ),
