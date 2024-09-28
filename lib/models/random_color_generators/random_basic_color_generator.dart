@@ -18,25 +18,20 @@ import '../random_color.dart';
 /// The returned [RandomColor] has both a [Color] value and a name.
 RandomColor nextRandomColor(Random random) {
   final int randomIndex = random.nextInt(kBasicColors.length);
-  // final namedColor = kBasicColors.entries.elementAt(randomIndex);
-  final ColorWithName namedColor = kBasicColors.elementAt(randomIndex);
+  final ColorWithName basicColor = kBasicColors.elementAt(randomIndex);
 
   return RandomColor(
     type: ColorType.basicColor,
-    color: Color(namedColor.code),
-    name: namedColor.name,
+    color: Color(basicColor.code),
+    name: basicColor.name,
     listPosition: randomIndex,
   );
 }
 
-/// Returns the name of the given [Color], if the color is a valid basic color.
-// String? getColorName(Color color) => kBasicColors[color.value];
-// String? getColorName(Color color) => kBasicColors[color.value];
-
 /// The number of available basic colors that can be used to generate the random color.
 int get possibilityCount => kBasicColors.length;
 
-/// A map of integer [Color] value constants corresponding to basic named colors.
+/// A list of the 12 basic colors with their RGB values and names.
 ///
 /// Imported from the [the 12 RGB C O L O R S](https://www.1728.org/RGB.htm).
 const List<ColorWithName> kBasicColors = [
@@ -55,20 +50,3 @@ const List<ColorWithName> kBasicColors = [
   (code: 0XFF00FF88, name: 'spring green'),
   (code: 0XFF0088FF, name: 'azure'),
 ];
-
-// const Map<int, String> kBasicColors = {
-//   0XFF000000: 'black',
-//   0XFFFFFFFF: 'white',
-//   0XFFFF0000: 'red',
-//   0XFF00FF00: 'green',
-//   0XFF0000FF: 'blue',
-//   0XFFFFFF00: 'yellow',
-//   0XFFFF00FF: 'magenta',
-//   0XFF00FFFF: 'cyan',
-//   0XFFFF8800: 'orange',
-//   0XFFFF0080: 'rose',
-//   0XFF88FF00: 'chartreuse',
-//   0XFF8800FF: 'violet',
-//   0XFF00FF88: 'spring green',
-//   0XFF0088FF: 'azure',
-// };

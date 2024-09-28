@@ -58,7 +58,6 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
       case ColorType.mixedColor:
         throw UnsupportedError('The available colors list does not support mixed colors.');
       case ColorType.basicColor:
-        // final MapEntry<int, String> entry = rbcg.kBasicColors.entries.elementAt(index);
         final ColorWithName item = rbcg.kBasicColors.elementAt(index);
         return RandomColor(
           type: widget.colorType,
@@ -67,19 +66,19 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
           listPosition: index,
         );
       case ColorType.webColor:
-        final MapEntry<int, String> entry = rwcg.kWebColors.entries.elementAt(index);
+        final ColorWithName item = rwcg.kWebColors.elementAt(index);
         return RandomColor(
           type: widget.colorType,
-          color: Color(entry.key),
-          name: entry.value,
+          color: Color(item.code),
+          name: item.name,
           listPosition: index,
         );
       case ColorType.namedColor:
-        final MapEntry<int, String> entry = rncg.kNamedColors.entries.elementAt(index);
+        final ColorWithName item = rncg.kNamedColors.elementAt(index);
         return RandomColor(
           type: widget.colorType,
-          color: Color(entry.key),
-          name: entry.value,
+          color: Color(item.code),
+          name: item.name,
           listPosition: index,
         );
       case ColorType.attractiveColor:
