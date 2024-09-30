@@ -4,7 +4,6 @@
 // https://www.tecdrop.com/colorhap/license/.
 
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 import '../common/consts.dart' as consts;

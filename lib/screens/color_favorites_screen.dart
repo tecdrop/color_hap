@@ -3,12 +3,15 @@
 // license that can be found in the LICENSE file or at
 // https://www.tecdrop.com/colorhap/license/.
 
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
+
+import '../common/consts.dart' as consts;
 import '../common/preferences.dart' as preferences;
 import '../common/strings.dart' as strings;
 import '../models/random_color.dart';
-import '../utils/utils.dart' as utils;
 import '../widgets/color_list_view.dart';
 import '../widgets/confirmation_dialog_box.dart';
 
@@ -27,26 +30,36 @@ class ColorFavoritesScreen extends StatefulWidget {
 }
 
 class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
+  /// Exports the favorite colors as a CSV file and uses the platform's share sheet to share it.
+  void _exportFavorites() {
+    final String favoritesCsv = preferences.colorFavoritesList.toCsvString();
+    Share.shareXFiles(
+      [XFile.fromData(utf8.encode(favoritesCsv), mimeType: 'text/plain')],
+      fileNameOverrides: [consts.favoritesCSVFileName],
+    );
+  }
+
+  /// Clears all the favorite colors.
+  void _clearFavorites() async {
+    bool? showConfirmation = await showConfirmationDialogBox(
+      context,
+      title: strings.clearFavoritesDialogTitle,
+      content: strings.clearFavoritesDialogMessage,
+      positiveActionText: strings.clearFavoritesDialogPositiveAction,
+    );
+    if (showConfirmation == true) {
+      setState(() => preferences.colorFavoritesList.clear());
+    }
+  }
+
   /// Performs the specified action on the app bar.
   Future<void> _onAppBarAction(_AppBarActions action) async {
     switch (action) {
-      // Exports the favorite colors as a CSV file
       case _AppBarActions.exportFavoritesAsCsv:
-        ScaffoldMessengerState messengerState = ScaffoldMessenger.of(context);
-        await utils.copyToClipboard(context, preferences.colorFavoritesList.toCsvString());
-        utils.showSnackBarForAsync(messengerState, strings.favoritesExported);
+        _exportFavorites();
         break;
-      // Clears all the favorite colors
       case _AppBarActions.clearFavorites:
-        bool? showConfirmation = await showConfirmationDialogBox(
-          context,
-          title: strings.clearFavoritesDialogTitle,
-          content: strings.clearFavoritesDialogMessage,
-          positiveActionText: strings.clearFavoritesDialogPositiveAction,
-        );
-        if (showConfirmation == true) {
-          setState(() => preferences.colorFavoritesList.clear());
-        }
+        _clearFavorites();
         break;
     }
   }

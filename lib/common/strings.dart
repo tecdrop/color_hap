@@ -121,7 +121,6 @@ const String clearFavoritesDialogTitle = 'Clear favorites?';
 const String clearFavoritesDialogMessage = 'This will remove all colors from your favorites list.';
 const String clearFavoritesDialogPositiveAction = 'Clear';
 const String exportFavoritesAsCsv = 'Export favorites as CSV';
-const String favoritesExported = 'Favorites exported to clipboard in CSV format';
 
 // -----------------------------------------------------------------------------------------------
 // Available Colors Screen

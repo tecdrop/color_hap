@@ -6,6 +6,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
+import '../../common/urls.dart' as urls;
+import '../../utils/utils.dart' as utils;
 import '../common/consts.dart' as consts;
 import '../common/strings.dart' as strings;
 import '../models/color_type.dart';
@@ -19,8 +21,6 @@ import '../models/random_color_generators/random_web_color_generator.dart' as rw
 import '../models/random_color.dart';
 import '../utils/color_utils.dart' as color_utils;
 import '../widgets/color_list_view.dart';
-import '../../utils/utils.dart' as utils;
-import '../../common/urls.dart' as urls;
 
 /// A screen that displays all the available colors of a specific type in a list view.
 class AvailableColorsScreen extends StatefulWidget {
