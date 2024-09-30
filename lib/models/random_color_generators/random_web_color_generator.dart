@@ -31,6 +31,17 @@ RandomColor nextRandomColor(Random random) {
 /// The number of available web colors that can be used to generate the random color.
 int get possibilityCount => kWebColors.length;
 
+/// Returns information about the web color with the given color code.
+///
+/// Returns `null` if the color code is not found.
+ColorWithNameEx? colorByCode(int colorCode) {
+  final int index = kWebColors.indexWhere((element) => element.code == colorCode);
+  if (index < 0) return null;
+
+  final ColorWithName color = kWebColors.elementAt(index);
+  return ColorWithNameEx(code: color.code, name: color.name, position: index);
+}
+
 /// A list of the web colors with their RGB values and names.
 ///
 /// Scraped from [CSS Color Module Level 4](https://www.w3.org/TR/css-color-4/) using
