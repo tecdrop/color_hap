@@ -107,11 +107,6 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         utils.navigateTo(context, ColorInfoScreen(randomColor: _randomColor));
         break;
 
-      // Open the Color Preview screen with the current color
-      case _AppBarActions.colorPreview:
-        utils.navigateTo(context, ColorPreviewScreen(color: _randomColor.color));
-        break;
-
       // Open the Available Colors screen
       case _AppBarActions.availableColors:
         _gotoAvailableColorsScreen();
@@ -179,7 +174,6 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 enum _AppBarActions {
   toggleFav,
   colorInfo,
-  colorPreview,
   availableColors,
 }
 
@@ -225,24 +219,11 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
           onPressed: () => onAction(_AppBarActions.colorInfo),
         ),
 
-        // Add the Popup Menu items
-        PopupMenuButton<_AppBarActions>(
-          onSelected: onAction,
-          itemBuilder: (BuildContext context) => <PopupMenuEntry<_AppBarActions>>[
-            // The Color Preview popup menu item
-            const PopupMenuItem<_AppBarActions>(
-              value: _AppBarActions.colorPreview,
-              child: Text(strings.colorPreviewMenuItem),
-            ),
-
-            const PopupMenuDivider(),
-
-            // The Available Colors popup menu item
-            PopupMenuItem<_AppBarActions>(
-              value: _AppBarActions.availableColors,
-              child: Text(strings.availableColors(actualColorType)),
-            ),
-          ],
+        // The Color Information icon button
+        IconButton(
+          icon: const Icon(Icons.unfold_more),
+          tooltip: strings.availableColors(actualColorType),
+          onPressed: () => onAction(_AppBarActions.availableColors),
         ),
       ],
     );
