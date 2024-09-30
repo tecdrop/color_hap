@@ -9,16 +9,17 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../common/strings.dart' as strings;
 
-final NumberFormat _numberFormat = NumberFormat.decimalPattern();
-
 /// Formats the given integer value to a string with thousands separators.
+///
+/// The separators are spaces, as per the ISU standard.
 String intToCommaSeparatedString(int value) {
-  return _numberFormat.format(value);
+  return value
+      .toString()
+      .replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ');
 }
 
 /// Navigates to the specified [screen] and returns the result.
