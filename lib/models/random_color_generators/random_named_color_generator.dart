@@ -32,17 +32,6 @@ RandomColor nextRandomColor(Random random) {
 /// The number of available named colors that can be used to generate the random color.
 int get possibilityCount => kNamedColors.length;
 
-/// Returns information about the named color with the given color code.
-///
-/// Returns `null` if the color code is not found.
-ColorWithNameEx? colorByCode(int colorCode) {
-  final int index = kNamedColors.indexWhere((element) => element.code == colorCode);
-  if (index < 0) return null;
-
-  final ColorWithName color = kNamedColors.elementAt(index);
-  return ColorWithNameEx(code: color.code, name: color.name, position: index);
-}
-
 /// A map of integer [Color] value constants corresponding to the `ntc js` named colors.
 ///
 /// Imported from the [Name that Color](https://chir.ag/projects/ntc/ntc.js) JavaScript library.

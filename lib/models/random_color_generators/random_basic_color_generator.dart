@@ -31,17 +31,6 @@ RandomColor nextRandomColor(Random random) {
 /// The number of available basic colors that can be used to generate the random color.
 int get possibilityCount => kBasicColors.length;
 
-/// Returns information about the basic color with the given color code.
-///
-/// Returns `null` if the color code is not found.
-ColorWithNameEx? colorByCode(int colorCode) {
-  final int index = kBasicColors.indexWhere((element) => element.code == colorCode);
-  if (index < 0) return null;
-
-  final ColorWithName color = kBasicColors.elementAt(index);
-  return ColorWithNameEx(code: color.code, name: color.name, position: index);
-}
-
 /// A list of the 12 basic colors with their RGB values and names.
 ///
 /// Imported from the [the 12 RGB C O L O R S](https://www.1728.org/RGB.htm).

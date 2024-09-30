@@ -50,21 +50,6 @@ List<ColorType> _initTypeWeights() {
   return typeWeights;
 }
 
-RandomColor _mapToKnownColor(RandomColor trueColor) {
-  final ColorWithNameEx? basicColorEx = rbcg.colorByCode(trueColor.color.value);
-  if (basicColorEx != null) return basicColorEx.toRandomColor(ColorType.basicColor);
-
-  final ColorWithNameEx? webColorEx = rwcg.colorByCode(trueColor.color.value);
-  if (webColorEx != null) return webColorEx.toRandomColor(ColorType.webColor);
-
-  final ColorWithNameEx? namedColorEx = rncg.colorByCode(trueColor.color.value);
-  if (namedColorEx != null) return namedColorEx.toRandomColor(ColorType.namedColor);
-
-  // print('ColorHap: Plain true color: ${trueColor.hexString}');
-
-  return trueColor;
-}
-
 /// Generates a random color based on the given color type.
 ///
 /// The returned [RandomColor] has a name if it was generated from named colors, or if its color
@@ -82,8 +67,7 @@ RandomColor nextRandomColor(ColorType colorType) {
     case ColorType.attractiveColor:
       return racg.nextRandomColor(_random);
     case ColorType.trueColor:
-      // return rtcg.nextRandomColor(_random);
-      return _mapToKnownColor(rtcg.nextRandomColor(_random));
+      return rtcg.nextRandomColor(_random);
   }
 }
 
