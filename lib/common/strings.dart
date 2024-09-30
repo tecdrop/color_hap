@@ -77,7 +77,6 @@ const String rateAppDrawer = 'Rate App';
 const String addFavTooltip = 'Add color to favorites';
 const String removeFavTooltip = 'Remove color from favorites';
 const String colorInfoTooltip = 'Color information';
-const String colorPreviewMenuItem = 'Color Preview';
 const String shuffleTooltip = 'Get a new random color';
 
 // -----------------------------------------------------------------------------------------------
@@ -129,3 +128,4 @@ const String favoritesExported = 'Favorites exported to clipboard in CSV format'
 // -----------------------------------------------------------------------------------------------
 
 String availableColors(ColorType value) => 'Available ${colorTypePlural[value]}';
+const String aboutTheseColorsTooltip = 'About these colors';

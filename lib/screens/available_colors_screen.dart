@@ -19,6 +19,8 @@ import '../models/random_color_generators/random_web_color_generator.dart' as rw
 import '../models/random_color.dart';
 import '../utils/color_utils.dart' as color_utils;
 import '../widgets/color_list_view.dart';
+import '../../utils/utils.dart' as utils;
+import '../../common/urls.dart' as urls;
 
 /// A screen that displays all the available colors of a specific type in a list view.
 class AvailableColorsScreen extends StatefulWidget {
@@ -116,12 +118,24 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
     Navigator.of(context).pop<RandomColor>(getRandomColor(widget.colorType, index));
   }
 
+  /// Opens the "About These Colors" help page in the default web browser.
+  void _openAboutTheseColors() {
+    utils.launchUrlExternal(context, urls.aboutTheseColors(widget.colorType.toShortString()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // A simple app bar with the title based on the color type
       appBar: AppBar(
         title: Text(strings.availableColors(widget.colorType)),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.help_outline),
+            tooltip: strings.aboutTheseColorsTooltip,
+            onPressed: _openAboutTheseColors,
+          ),
+        ],
       ),
 
       body: ColorListView(

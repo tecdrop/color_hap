@@ -9,17 +9,13 @@ library;
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-/// The app ID and edition ID used in the URLs.
-const String _appId = 'colorhap';
-const String _editionId = 'aa';
-
 /// The URL for the "Set Wallpaper" drawer item.
 const String setWallpaper =
-    'https://play.google.com/store/apps/details?id=com.tecdrop.rgbcolorwallpaperpro&referrer=utm_source%3D$_appId%26utm_medium%3Dapp%26utm_campaign%3D${_appId}_${_editionId}_drawer';
+    'https://play.google.com/store/apps/details?id=com.tecdrop.rgbcolorwallpaperpro&referrer=utm_source%3Dcolorhap%26utm_medium%3Dapp%26utm_campaign%3Dcolorhap_app_drawer';
 
 /// The URL for the app's help page.
 const String help =
-    'https://www.tecdrop.com/$_appId/?utm_source=$_appId&utm_medium=app&utm_campaign=${_appId}_${_editionId}_drawer';
+    'https://www.tecdrop.com/colorhap/help/?utm_source=colorhap&utm_medium=app&utm_campaign=colorhap_app_drawer';
 
 /// The URL for the app's source code.
 const String viewSource = 'https://github.com/tecdrop/color_hap';
@@ -27,12 +23,16 @@ const String viewSource = 'https://github.com/tecdrop/color_hap';
 /// The URL to search for a color on the web (currently Google).
 const String onlineSearch = 'https://www.google.com/search?q=';
 
+/// The URL to search for a color on the web (currently Google).
+String aboutTheseColors(String listId) =>
+    'https://www.tecdrop.com/colorhap/help/colors/$listId/?utm_source=colorhap&utm_medium=app&utm_campaign=colorhap_app_about_these_colors';
+
 /// The URL that allows the user to rate the ColorHap web app.
 const String _webRateUrl = 'https://go.tecdrop.com/colorhap/app/rate/web/';
 
 /// The URL that allows the user to rate the ColorHap Android app (Google Play Store).
 const String _androidRateUrl =
-    'https://play.google.com/store/apps/details?id=com.tecdrop.colorhap&referrer=utm_source%3D$_appId%26utm_medium%3Dapp%26utm_campaign%3D${_appId}_${_editionId}_drawer';
+    'https://play.google.com/store/apps/details?id=com.tecdrop.colorhap&referrer=utm_source%3Dcolorhap%26utm_medium%3Dapp%26utm_campaign%3Dcolorhap_app_drawer';
 
 /// Get the URL that allows the user to rate the app based on the platform.
 String getRateUrl() {
