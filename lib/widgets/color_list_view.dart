@@ -10,12 +10,14 @@ import 'package:flutter/material.dart';
 import '../common/consts.dart' as consts;
 import '../utils/color_utils.dart' as color_utils;
 
+/// Data for an item in the color list view.
 typedef ColorListItemData = ({
   Color color,
   String title,
   String? subtitle,
 });
 
+/// Data for an optional button that can be displayed for each item in the list.
 typedef ItemButtonData = ({
   IconData icon,
   String tooltip,
@@ -56,6 +58,9 @@ class ColorListView extends StatefulWidget {
 }
 
 class _ColorListViewState extends State<ColorListView> {
+  /// The index of the currently focused item in the list.
+  ///
+  /// We keep track of this to highlight the focused item using a border.
   int focusedIndex = -1;
 
   @override
@@ -64,6 +69,7 @@ class _ColorListViewState extends State<ColorListView> {
       controller: widget.scrollController,
       thumbVisibility: true,
       child: ListView.builder(
+        primary: widget.scrollController == null,
         controller: widget.scrollController,
         itemCount: widget.itemCount(),
         itemExtent: consts.colorListItemExtent,
@@ -77,11 +83,9 @@ class _ColorListViewState extends State<ColorListView> {
             focused: index == focusedIndex,
             onTap: () => widget.onItemTap?.call(index),
             onButtonPressed: () => widget.onItemButtonPressed?.call(index),
-            onFocusChange: (bool hasFocus) {
-              setState(() {
-                focusedIndex = hasFocus ? index : -1;
-              });
-            },
+            onFocusChange: (bool hasFocus) => setState(() {
+              focusedIndex = hasFocus ? index : -1;
+            }),
           );
         },
       ),
@@ -115,6 +119,7 @@ class _ColorListItem extends StatelessWidget {
   /// Data for the optional button of the list item.
   final ItemButtonData? itemButton;
 
+  /// Whether the list item is currently focused.
   final bool focused;
 
   /// The function to call when the list item is tapped.
@@ -123,6 +128,7 @@ class _ColorListItem extends StatelessWidget {
   /// A callback function that is called when the button of this list item is pressed.
   final void Function()? onButtonPressed;
 
+  /// A callback function that is called when the focus state of this list item changes.
   final void Function(bool)? onFocusChange;
 
   @override
@@ -132,32 +138,14 @@ class _ColorListItem extends StatelessWidget {
     final Color contrastColor = color_utils.contrastColor(color);
 
     return InkWell(
-      // focusColor: color.withOpacity(0.75),
-      // focusColor: color,
       onFocusChange: onFocusChange,
-
-      // borderRadius: BorderRadius.circular(8.0),
-      // focusColor: contrastColor.withOpacity(0.5),
-
       onTap: onTap,
       child: Ink(
-        // color: color,
-
         decoration: BoxDecoration(
           color: color,
-          // borderRadius: BorderRadius.circular(8.0),
-          // border: Border(
-          //   left: BorderSide(
-          //     color: focused ? Colors.grey[700]! : color,
-          //     width: 8.0,
-          //   ),
-          // ),
           border: Border.all(
-            // color: focused ? Colors.black : color,
-            // color: focused ? Colors.black : color,
             color: focused ? Colors.grey[700]! : color,
-            // color: focused ? contrastColor : color,
-            width: 8.0,
+            width: 6.0,
           ),
         ),
 
@@ -175,19 +163,12 @@ class _ColorListItem extends StatelessWidget {
               children: <Widget>[
                 Text(
                   title,
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        color: contrastColor,
-                        // fontSize: focused ? 22.0 : null,
-                        // fontWeight: focused ? FontWeight.w900 : null,
-                      ),
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(color: contrastColor),
                 ),
                 if (subtitle != null)
                   Text(
                     subtitle!,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: contrastColor,
-                          // fontWeight: focused ? FontWeight.w900 : null,
-                        ),
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: contrastColor),
                   ),
               ],
             ),
