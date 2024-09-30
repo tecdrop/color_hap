@@ -5,9 +5,7 @@
 
 import 'package:flutter/material.dart';
 
-/// A very simple widget that displays a long app bar title in two rows.
-///
-/// Can be used to display a longer app bar title in two rows.
+/// A very simple widget that displays a long app bar title in two rows on small screens.
 class LongAppBarTitle extends StatelessWidget {
   const LongAppBarTitle({
     super.key,
@@ -23,7 +21,10 @@ class LongAppBarTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    final bool isSmallScreen = MediaQuery.of(context).size.width < 600;
+
+    // The layout for small screens
+    final Widget smallScreenLayout = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -37,5 +38,7 @@ class LongAppBarTitle extends StatelessWidget {
         Text(row2),
       ],
     );
+
+    return isSmallScreen ? smallScreenLayout : Text('$row1 $row2');
   }
 }
