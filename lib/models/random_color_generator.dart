@@ -23,6 +23,10 @@ final Random _random = _createRandom();
 /// mixed random colors.
 final List<ColorType> _typeWeights = _initTypeWeights();
 
+/// A blacklist of all the codes of the basic, web & named colors, used to avoid generating true
+/// colors that are already in these lists.
+final Set<int> _colorsWithNameBlacklist = _initColorsWithNameBlacklist();
+
 /// Creates a secure or insecure random number generator depending on the given [secure] parameter.
 Random _createRandom({bool secure = true}) {
   Random random;
@@ -50,6 +54,24 @@ List<ColorType> _initTypeWeights() {
   return typeWeights;
 }
 
+/// Creates the blacklist of all the codes of the basic, web & named colors.
+///
+/// This is used to avoid generating true colors that are already in these lists.
+Set<int> _initColorsWithNameBlacklist() {
+  final Set<int> colorCodes = <int>{};
+  for (final ColorWithName color in rbcg.kBasicColors) {
+    colorCodes.add(color.code);
+  }
+  for (final ColorWithName color in rwcg.kWebColors) {
+    colorCodes.add(color.code);
+  }
+  for (final ColorWithName color in rncg.kNamedColors) {
+    colorCodes.add(color.code);
+  }
+  print('colorCodes length: ${colorCodes.length}');
+  return colorCodes;
+}
+
 /// Generates a random color based on the given color type.
 ///
 /// The returned [RandomColor] has a name if it was generated from named colors, or if its color
@@ -67,7 +89,7 @@ RandomColor nextRandomColor(ColorType colorType) {
     case ColorType.attractiveColor:
       return racg.nextRandomColor(_random);
     case ColorType.trueColor:
-      return rtcg.nextRandomColor(_random);
+      return rtcg.nextRandomColor(_random, blacklist: _colorsWithNameBlacklist);
   }
 }
 
