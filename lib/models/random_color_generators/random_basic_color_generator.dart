@@ -18,7 +18,7 @@ import '../random_color.dart';
 /// The returned [RandomColor] has both a [Color] value and a name.
 RandomColor nextRandomColor(Random random) {
   final int randomIndex = random.nextInt(kBasicColors.length);
-  final ColorWithName basicColor = kBasicColors.elementAt(randomIndex);
+  final KnownColor basicColor = kBasicColors.elementAt(randomIndex);
 
   return RandomColor(
     type: ColorType.basicColor,
@@ -34,7 +34,7 @@ int get possibilityCount => kBasicColors.length;
 /// A list of the 12 basic colors with their RGB values and names.
 ///
 /// Imported from the [the 12 RGB C O L O R S](https://www.1728.org/RGB.htm).
-const List<ColorWithName> kBasicColors = [
+const List<KnownColor> kBasicColors = [
   (code: 0XFF000000, name: 'black'),
   (code: 0XFFFFFFFF, name: 'white'),
   (code: 0XFFFF0000, name: 'red'),

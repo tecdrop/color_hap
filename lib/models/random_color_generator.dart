@@ -25,7 +25,7 @@ final List<ColorType> _typeWeights = _initTypeWeights();
 
 /// A blacklist of all the codes of the basic, web & named colors, used to avoid generating true
 /// colors that are already in these lists.
-final Set<int> _colorsWithNameBlacklist = _initColorsWithNameBlacklist();
+final Set<int> _knownColorsBlacklist = _initKnownColorsBlacklist();
 
 /// Creates a secure or insecure random number generator depending on the given [secure] parameter.
 Random _createRandom({bool secure = true}) {
@@ -57,15 +57,15 @@ List<ColorType> _initTypeWeights() {
 /// Creates the blacklist of all the codes of the basic, web & named colors.
 ///
 /// This is used to avoid generating true colors that are already in these lists.
-Set<int> _initColorsWithNameBlacklist() {
+Set<int> _initKnownColorsBlacklist() {
   final Set<int> colorCodes = <int>{};
-  for (final ColorWithName color in rbcg.kBasicColors) {
+  for (final KnownColor color in rbcg.kBasicColors) {
     colorCodes.add(color.code);
   }
-  for (final ColorWithName color in rwcg.kWebColors) {
+  for (final KnownColor color in rwcg.kWebColors) {
     colorCodes.add(color.code);
   }
-  for (final ColorWithName color in rncg.kNamedColors) {
+  for (final KnownColor color in rncg.kNamedColors) {
     colorCodes.add(color.code);
   }
   print('colorCodes length: ${colorCodes.length}');
@@ -89,7 +89,7 @@ RandomColor nextRandomColor(ColorType colorType) {
     case ColorType.attractiveColor:
       return racg.nextRandomColor(_random);
     case ColorType.trueColor:
-      return rtcg.nextRandomColor(_random, blacklist: _colorsWithNameBlacklist);
+      return rtcg.nextRandomColor(_random, blacklist: _knownColorsBlacklist);
   }
 }
 
@@ -137,7 +137,7 @@ RandomColor getRandomColor(ColorType colorType, int index) {
     case ColorType.mixedColor:
       throw UnsupportedError('getRandomColor does not support mixed colors.');
     case ColorType.basicColor:
-      final ColorWithName item = rbcg.kBasicColors.elementAt(index);
+      final KnownColor item = rbcg.kBasicColors.elementAt(index);
       return RandomColor(
         type: colorType,
         color: Color(item.code),
@@ -146,7 +146,7 @@ RandomColor getRandomColor(ColorType colorType, int index) {
       );
 
     case ColorType.webColor:
-      final ColorWithName item = rwcg.kWebColors.elementAt(index);
+      final KnownColor item = rwcg.kWebColors.elementAt(index);
       return RandomColor(
         type: colorType,
         color: Color(item.code),
@@ -154,7 +154,7 @@ RandomColor getRandomColor(ColorType colorType, int index) {
         listPosition: index,
       );
     case ColorType.namedColor:
-      final ColorWithName item = rncg.kNamedColors.elementAt(index);
+      final KnownColor item = rncg.kNamedColors.elementAt(index);
       return RandomColor(
         type: colorType,
         color: Color(item.code),

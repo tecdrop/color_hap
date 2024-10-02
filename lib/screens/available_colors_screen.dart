@@ -80,7 +80,7 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
   /// Returns the data that should be used to build the item at the given [index] in the list view.
   ColorListItemData _getItemData(int index) {
     // Returns the data for a named color list item.
-    ColorListItemData namedColorListItemData(ColorWithName item) => (
+    ColorListItemData namedColorListItemData(KnownColor item) => (
           color: Color(item.code),
           title: item.name,
           subtitle: color_utils.toHexString(Color(item.code)),

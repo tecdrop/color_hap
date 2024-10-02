@@ -18,9 +18,9 @@ import 'color_utils.dart' as color_utils;
 void checkForDuplicateAttractiveColors() {
   if (!kDebugMode) return;
 
-  final Set<int> basicColorCodes = rbcg.kBasicColors.map((ColorWithName item) => item.code).toSet();
-  final Set<int> webColorCodes = rwcg.kWebColors.map((ColorWithName item) => item.code).toSet();
-  final Set<int> namedColorCodes = rncg.kNamedColors.map((ColorWithName item) => item.code).toSet();
+  final Set<int> basicColorCodes = rbcg.kBasicColors.map((KnownColor item) => item.code).toSet();
+  final Set<int> webColorCodes = rwcg.kWebColors.map((KnownColor item) => item.code).toSet();
+  final Set<int> namedColorCodes = rncg.kNamedColors.map((KnownColor item) => item.code).toSet();
 
   for (final int colorCode in racg.kAttractiveColors) {
     if (basicColorCodes.contains(colorCode) ||

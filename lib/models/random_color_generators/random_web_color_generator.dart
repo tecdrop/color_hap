@@ -18,7 +18,7 @@ import '../random_color.dart';
 /// The returned [RandomColor] has both a [Color] value and a name.
 RandomColor nextRandomColor(Random random) {
   final int randomIndex = random.nextInt(kWebColors.length);
-  final ColorWithName webColor = kWebColors.elementAt(randomIndex);
+  final KnownColor webColor = kWebColors.elementAt(randomIndex);
 
   return RandomColor(
     type: ColorType.webColor,
@@ -37,7 +37,7 @@ int get possibilityCount => kWebColors.length;
 /// ```js
 /// copy($$('.named-color-table tbody tr').map(tr => tr.querySelector('td:nth-child(4)').innerText.replace('#', '0xFF') + ': \'' + tr.querySelector('dfn').innerText + '\',').join('\r\n'))
 /// ```
-const List<ColorWithName> kWebColors = [
+const List<KnownColor> kWebColors = [
   (code: 0XFFF0F8FF, name: 'aliceblue'),
   (code: 0XFFFAEBD7, name: 'antiquewhite'),
   (code: 0XFF00FFFF, name: 'aqua'),

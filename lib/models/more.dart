@@ -3,5 +3,5 @@
 // license that can be found in the LICENSE file or at
 // https://www.tecdrop.com/colorhap/license/.
 
-/// A color with a code and a name.
-typedef ColorWithName = ({int code, String name});
+/// A known color with a code and a name.
+typedef KnownColor = ({int code, String name});

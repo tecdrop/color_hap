@@ -13,9 +13,14 @@ import '../../utils/color_utils.dart' as color_utils;
 import '../color_type.dart';
 import '../random_color.dart';
 
+int _trueColorCount = 0;
+
 /// Generates a random true color.
 RandomColor nextRandomColor(Random random, {required Set<int> blacklist}) {
   late int randomColorCode;
+
+  _trueColorCount++;
+  print(_trueColorCount);
 
   // Generate a random true color that is not in the black list (the basic, web & named colors)
   // To avoid infinite loop, let's try 1000 times, it should be more than enough because the black
