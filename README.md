@@ -1,8 +1,11 @@
 # ColorHap
 
-[![Static Badge](https://img.shields.io/badge/-installable-5A0FC8?logo=pwa)](https://colorhap.tecdrop.com/)
-[![GitHub License](https://img.shields.io/github/license/tecdrop/color_hap)](LICENSE)
-[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/tecdrop/color_hap)](https://github.com/tecdrop/color_hap)
+[![Version badge](https://img.shields.io/github/v/tag/tecdrop/color_hap?color=forestgreen&label=version)](https://github.com/tecdrop/color_hap/releases)
+[![PWA Installable badge](https://img.shields.io/badge/-installable-5A0FC8?logo=pwa)](https://colorhap.tecdrop.com/)
+[![MIT License badge](https://img.shields.io/github/license/tecdrop/color_hap?color=9c0000)](LICENSE)
+[![GitHub Code Size badge](https://img.shields.io/github/languages/code-size/tecdrop/color_hap)](https://github.com/tecdrop/color_hap)
+[![Style badge](https://img.shields.io/badge/style-flutter__lints-4BC0F5.svg)](https://pub.dev/packages/flutter_lints)
+[![Contributions Welcome badge](https://img.shields.io/badge/contributions-welcome-cornflowerblue)](#Contributing)
 
 ColorHap is a random color generator for developers and creatives. It allows you to generate a vast array of colors, including basic, web, named, attractive, and true random colors. Stuck on a design decision? Spark your inspiration with unexpected color combinations.
 
@@ -49,9 +52,9 @@ ColorHap is free, and we love creating and sharing projects like this with the c
 
 | Our Pro Apps | [Pitch Black Wallpaper Pro](https://www.tecdrop.com/pitchblackwallpaperpro/) | [RGB Color Wallpaper Pro](https://www.tecdrop.com/rgbcolorwallpaperpro/) |
 | ------------ | ------------------------- | --- |
-| <img width="200" src="/repo-assets/tecdrop-pro-apps.png" alt="Tecdrop Pro Apps" /> | <li>Pitch black & dark wallpapers</li><li>AI-generated wallpapers</li><li>Enhances battery life</li><li>Reduces eyestrain</li> | <li>Set ColorHap colors as wallpaper</li><li>Endless color options, built-in & custom</li><li>Reduce visual clutter</li><li>Enhanced device aesthetics</li> |
+| <a href="https://www.tecdrop.com/apps/pro/"><img width="200" src="/repo-assets/tecdrop-pro-apps.png" alt="Tecdrop Pro Apps" /></a> | <li>Pitch black & dark wallpapers</li><li>AI-generated wallpapers</li><li>Enhances battery life</li><li>Reduces eyestrain</li> | <li>Set ColorHap colors as wallpaper</li><li>Endless color options, built-in & custom</li><li>Reduce visual clutter</li><li>Enhanced device aesthetics</li> |
 
-**Your support helps us keep creating free apps!**
+**Your support helps us keep creating [free apps](https://www.tecdrop.com/apps/free/)!**
 
 ## License
 
