@@ -17,6 +17,28 @@ Available as a native Android app and a Progressive Web App (PWA), ColorHap runs
 * **On any platform:** [Run the web app](https://colorhap.tecdrop.com/) and/or install it from your browser on Android, ChromeOS, iOS, Linux, macOS, Windows, etc.
 * **On Android:** [Get it on Google Play](https://play.google.com/store/apps/details?id=com.tecdrop.colorhap&referrer=utm_source%3Dgithub%26utm_medium%3Dbutton%26utm_content%3Dgithub-repo-readme) or from [GitHub Releases](https://github.com/tecdrop/color_hap/releases).
 
+### Development
+
+1. Clone the repo from GitHub
+
+```bash
+git clone https://github.com/tecdrop/color_hap
+```
+
+2. Install [Flutter](https://docs.flutter.dev/get-started/install)
+
+3. Restore the dependencies
+
+```bash
+flutter pub get
+```
+
+4. Start the app:
+
+```bash
+flutter run
+```
+
 ## Contributions
 
 Contributions are welcome: code, text, documentation, design, graphics, suggestions. Please fork this repository and contribute back using [pull requests](https://github.com/tecdrop/color_hap/pulls), [submit an issue](https://github.com/tecdrop/color_hap/issues), or [send an email](https://www.tecdrop.com/support/).
