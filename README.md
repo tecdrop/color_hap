@@ -23,7 +23,7 @@ Contributions are welcome: code, text, documentation, design, graphics, suggesti
 
 ## Support Us
 
-ColorHap is free, and we love creating and sharing projects like this with the community. If you find ColorHap useful and want to support Tecdrop, consider purchasing our [Pitch Black Wallpaper Pro](https://www.tecdrop.com/pitchblackwallpaperpro/) and/or [RGB Color Wallpaper Pro](https://www.tecdrop.com/rgbcolorwallpaperpro/) apps. Both apps revolve around the simplicity and elegance of solid colors, making them a natural choice for ColorHap users.
+ColorHap is free, and we love creating and sharing projects like this with the community. If you find ColorHap useful and want to support Tecdrop, consider purchasing [our pro apps](https://www.tecdrop.com/apps/pro/) - they revolve around the simplicity and elegance of solid colors, making them a natural choice for ColorHap users.
 
 
 | Our Pro Apps | Pitch Black Wallpaper Pro | RGB Color Wallpaper Pro |
