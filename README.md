@@ -14,8 +14,8 @@ Available as a native Android app and a Progressive Web App (PWA), ColorHap runs
 
 ## Try ColorHap
 
-* On any platform: [Run the web app](https://colorhap.tecdrop.com/)
-* On Android: [Get it on Google Play](https://play.google.com/store/apps/details?id=com.tecdrop.colorhap&referrer=utm_source%3Dgithub%26utm_medium%3Dbutton%26utm_content%3Dgithub-repo-readme)
+* **On any platform:** [Run the web app](https://colorhap.tecdrop.com/) and/or install it from your browser on Android, ChromeOS, iOS, Linux, macOS, Windows, etc.
+* **On Android:** [Get it on Google Play](https://play.google.com/store/apps/details?id=com.tecdrop.colorhap&referrer=utm_source%3Dgithub%26utm_medium%3Dbutton%26utm_content%3Dgithub-repo-readme) or from [GitHub Releases](https://github.com/tecdrop/color_hap/releases).
 
 ## Contributions
 
@@ -23,11 +23,13 @@ Contributions are welcome: code, text, documentation, design, graphics, suggesti
 
 ## Support Us
 
-ColorHap is free, and we love creating and sharing projects like this with the community. If you find ColorHap useful and want to support Tecdrop, consider purchasing our pro apps - they revolve around the simplicity and elegance of solid colors, making them a natural choice for ColorHap users.
+ColorHap is free, and we love creating and sharing projects like this with the community. If you find ColorHap useful and want to support Tecdrop, explore our pro apps - they revolve around the simplicity and elegance of solid colors, making them a natural choice for ColorHap users.
 
 | Our Pro Apps | [Pitch Black Wallpaper Pro](https://www.tecdrop.com/pitchblackwallpaperpro/) | [RGB Color Wallpaper Pro](https://www.tecdrop.com/rgbcolorwallpaperpro/) |
 | ------------ | ------------------------- | --- |
 | <img width="200" src="/repo-assets/tecdrop-pro-apps.png" alt="Tecdrop Pro Apps" /> | <li>Pitch black & dark wallpapers</li><li>AI-generated wallpapers</li><li>Enhances battery life</li><li>Reduces eyestrain</li> | <li>Set ColorHap colors as wallpaper</li><li>Endless color options, built-in & custom</li><li>Reduce visual clutter</li><li>Enhanced device aesthetics</li> |
+
+**Your support helps us keep creating free apps!**
 
 ## License
 
