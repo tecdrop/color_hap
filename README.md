@@ -25,9 +25,9 @@ Contributions are welcome: code, text, documentation, design, graphics, suggesti
 
 ColorHap is free, and we love creating and sharing projects like this with the community. If you find ColorHap useful and want to support Tecdrop, consider purchasing [our pro apps](https://www.tecdrop.com/apps/pro/) - they revolve around the simplicity and elegance of solid colors, making them a natural choice for ColorHap users.
 
-| Our Pro Apps | Pitch Black Wallpaper Pro | RGB Color Wallpaper Pro |
-| ------------ | ------------------------- | ----------------------- |
-| ![Tecdrop Pro Apps](/repo-assets/tecdrop-pro-apps.png) |  <li>Offers hundreds of pitch black, dark, and AI-generated wallpapers.</li><li>Enhances battery life on OLED screens.</li><li>Reduces eyestrain with soothing dark backgrounds.</li><br>[Check it out here](https://www.tecdrop.com/pitchblackwallpaperpro/) | <li>Set ColorHap colors as wallpaper</li><li>Endless color options, built-in & custom</li><li>Reduce visual clutter</li><li>Enhanced device aesthetics</li><br>[Check it out here](https://www.tecdrop.com/rgbcolorwallpaperpro/) |
+| Our Pro Apps | [Pitch Black Wallpaper Pro](https://www.tecdrop.com/pitchblackwallpaperpro/) | [RGB Color Wallpaper Pro](https://www.tecdrop.com/rgbcolorwallpaperpro/) |
+| ------------ | ------------------------- | --- |
+| <img width="200" src="/repo-assets/tecdrop-pro-apps.png" alt="Tecdrop Pro Apps" /> | <li>Pitch black & dark wallpapers</li><li>Enhances battery life</li><li>Reduces eyestrain</li> | <li>Set ColorHap colors as wallpaper</li><li>Endless color options, built-in & custom</li><li>Reduce visual clutter</li><li>Enhanced device aesthetics</li> |
 
 ## License
 
