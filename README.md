@@ -12,7 +12,6 @@ Available as a native Android app and a Progressive Web App (PWA), ColorHap runs
 
 ![ColorHap running on various platforms](/repo-assets/colorhap-screenshots-on-various-platforms.png)
 
-
 ## Try ColorHap
 
 * On any platform: [Run the web app](https://colorhap.tecdrop.com/)
@@ -21,6 +20,18 @@ Available as a native Android app and a Progressive Web App (PWA), ColorHap runs
 ## Contributions
 
 Contributions are welcome: code, text, documentation, design, graphics, suggestions. Please fork this repository and contribute back using [pull requests](https://github.com/tecdrop/color_hap/pulls), [submit an issue](https://github.com/tecdrop/color_hap/issues), or [send an email](https://www.tecdrop.com/support/).
+
+## Support Us
+
+ColorHap is free, and we love creating and sharing projects like this with the community. If you find ColorHap useful and want to support Tecdrop, consider purchasing our [Pitch Black Wallpaper Pro](https://www.tecdrop.com/pitchblackwallpaperpro/) and/or [RGB Color Wallpaper Pro](https://www.tecdrop.com/rgbcolorwallpaperpro/) apps. Both apps revolve around the simplicity and elegance of solid colors, making them a natural choice for ColorHap users.
+
+**Pitch Black Wallpaper Pro:**
+
+- Offers hundreds of pitch black, dark, and AI-generated wallpapers.
+- Enhances battery life on OLED screens.
+- Reduces eyestrain with soothing dark backgrounds.
+
+Check it out here: [Pitch Black Wallpaper Pro](https://www.tecdrop.com/pitchblackwallpaperpro/).
 
 ## License
 
