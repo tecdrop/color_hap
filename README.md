@@ -1,31 +1,16 @@
 # ColorHap
 
-ColorHap is a versatile random color generator designed to spark creativity with millions of colors, including basic, web, named, attractive, and random true colors. It’s perfect for artists, designers, developers, and anyone working with colors, offering an easy way to shuffle, copy, reuse, and share colors.
+[![Static Badge](https://img.shields.io/badge/-installable-5A0FC8?logo=pwa)](https://colorhap.tecdrop.com/)
+[![GitHub License](https://img.shields.io/github/license/tecdrop/color_hap)](LICENSE)
+[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/tecdrop/color_hap)](https://github.com/tecdrop/color_hap)
 
-The latest update introduces a Full-Screen Color Preview for an immersive color experience and a redesigned Color Info Screen for a cleaner layout. Quick actions like long-press to copy codes and double-tap to preview colors improve usability. Enhanced layout for large screens ensures a better visual experience.
+ColorHap is a random color generator for developers and creatives. It allows you to generate a vast array of colors, including basic, web, named, attractive, and true random colors. Stuck on a design decision? Spark your inspiration with unexpected color combinations.
 
-Available as a native Android app and a Progressive Web App (PWA), ColorHap runs on multiple platforms without ads or internet access. It's a free and essential tool for exploring endless color possibilities and finding inspiration for any project.
+Beyond randomization, ColorHap lets you browse and select specific colors with ease, get precise color information (including hex codes, RGB, HSV, HSL, and more), or save your favorite generated colors for later use. Share color codes and visual swatches directly with collaborators, or simply send yourself colors you discover and like!
 
-### The native Android app
+Available as a native Android app and a Progressive Web App (PWA), ColorHap runs on multiple platforms without ads or internet access. It's a free and open-source project built with Flutter for exploring endless color possibilities and finding inspiration for any project.
 
-<p>
-  <img src="/repo-assets/colorhap-android-screenshot-phone-random-mixed-color.png" alt="Random mixed color Android screenshot" width="24%">
-  <img src="/repo-assets/colorhap-android-screenshot-phone-creativity.png" alt="Creativity Android screenshot" width="24%">
-  <img src="/repo-assets/colorhap-android-screenshot-phone-random-named-color.png" alt="Random named color Android screenshot" width="24%">
-  <img src="/repo-assets/colorhap-android-screenshot-phone-random-true-color.png" alt="Random true color Android screenshot" width="24%">
-  <img src="/repo-assets/colorhap-android-screenshot-phone-color-information.png" alt="Color information Android screenshot" width="24%">
-  <img src="/repo-assets/colorhap-android-screenshot-phone-web-search.png" alt="Web search Android screenshot" width="24%">
-  <img src="/repo-assets/colorhap-android-screenshot-phone-add-to-favorites.png" alt="Add to favorites Android screenshot" width="24%">
-  <img src="/repo-assets/colorhap-android-screenshot-phone-favorite-colors.png" alt="Favorite colors Android screenshot" width="24%">
-</p>
-
-
-### The PWA (Progressive Web App)
-
-| ColorHap running on macOS | 
-| :---: |
-| ![The ColorHap PWA on macOS](/repo-assets/colorhap-pwa-screenshot-macos.png) |
-
+![ColorHap running on various platforms](/repo-assets/colorhap-screenshots-on-various-platforms.png)
 
 
 ## Try ColorHap
