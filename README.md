@@ -20,6 +20,10 @@ Available as a native Android app and a Progressive Web App (PWA), ColorHap runs
 * **On any platform:** [Run the web app](https://colorhap.tecdrop.com/) and/or install it from your browser on Android, ChromeOS, iOS, Linux, macOS, Windows, etc.
 * **On Android:** [Get it on Google Play](https://play.google.com/store/apps/details?id=com.tecdrop.colorhap&referrer=utm_source%3Dgithub%26utm_medium%3Dbutton%26utm_content%3Dgithub-repo-readme) or from [GitHub Releases](https://github.com/tecdrop/color_hap/releases).
 
+## Learn More
+
+*  **Blog Post:** [The random color generator: More useful than you think](https://www.tecdrop.com/blog/the-random-color-generator-more-useful-than-you-think/) - Discover a wide range of use cases and surprising applications for a random color generator like ColorHap.
+
 ### Development
 
 1. Clone the repo from GitHub
