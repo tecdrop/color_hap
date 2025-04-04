@@ -2,6 +2,9 @@
 // Use of this source code is governed by an MIT-style license that can be found
 // in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
+import 'dart:io' show Platform;
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../common/custom_icons.dart' as custom_icons;
@@ -146,15 +149,16 @@ class AppDrawer extends StatelessWidget {
           const SizedBox(height: 16.0),
 
           // The Set Color Wallpaper drawer item
-          ListTile(
-            leading: const Icon(Icons.wallpaper_rounded),
-            title: const Text(strings.setWallpaperDrawer),
-            subtitle: const Text(strings.setWallpaperDrawerSubtitle),
-            isThreeLine: true,
-            onTap: () => _onItemTap(context, AppDrawerItems.setWallpaper),
-          ),
-
-          const Divider(),
+          if (Platform.isAndroid || kIsWeb) ...[
+            ListTile(
+              leading: const Icon(Icons.wallpaper_rounded),
+              title: const Text(strings.setWallpaperDrawer),
+              subtitle: const Text(strings.setWallpaperDrawerSubtitle),
+              isThreeLine: true,
+              onTap: () => _onItemTap(context, AppDrawerItems.setWallpaper),
+            ),
+            const Divider(),
+          ],
 
           // All Random Colors drawer item
           _buildItem(

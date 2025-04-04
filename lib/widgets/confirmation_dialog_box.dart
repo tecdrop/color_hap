@@ -17,7 +17,7 @@ Future<bool?> showConfirmationDialogBox(
   return await showDialog<bool>(
     context: context,
     builder:
-        (context) => AlertDialog(
+        (context) => AlertDialog.adaptive(
           title: title != null ? Text(title) : null,
           content: content != null ? Text(content) : null,
           actions: <Widget>[
