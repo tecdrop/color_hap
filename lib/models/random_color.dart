@@ -72,7 +72,7 @@ class RandomColor {
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'type': type.index,
-      'color': color.value,
+      'color': color.toARGB32(),
       'name': name,
       'listPosition': listPosition,
     };

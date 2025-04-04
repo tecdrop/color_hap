@@ -173,7 +173,7 @@ enum _AppBarActions { toggleFav, colorInfo, availableColors }
 /// The app bar of the Random Color screen.
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   const _AppBar({
-    super.key, // ignore: unused_element
+    super.key, // ignore: unused_element_parameter
     required this.actualColorType,
     required this.isFavorite,
     required this.onAction,

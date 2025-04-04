@@ -40,7 +40,7 @@ Color contrastIconColor(Color color) {
 
 /// Returns the hexadecimal string representation of the given [Color].
 String toHexString(Color color, {bool withHash = true}) {
-  final String hex = (color.value & 0xFFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase();
+  final String hex = (color.toARGB32() & 0xFFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase();
   return withHash ? '#$hex' : hex;
 }
 
@@ -52,7 +52,7 @@ String codeToHex(int colorCode, {bool withHash = true}) {
 
 /// Returns the RGB string representation of the given [Color].
 String toRGBString(Color color) {
-  return 'rgb(${color.red}, ${color.green}, ${color.blue})';
+  return 'rgb(${(color.r * 255).round()}, ${(color.g * 255).round()}, ${(color.b * 255).round()})';
 }
 
 /// Returns the HSV string representation of the given [Color].
@@ -69,7 +69,7 @@ String toHSLString(Color color) {
 
 /// Returns the decimal string representation of the given [Color] value.
 String toDecimalString(Color color) {
-  return utils.intToCommaSeparatedString(color.withAlpha(0).value);
+  return utils.intToCommaSeparatedString(color.withAlpha(0).toARGB32());
 }
 
 /// Returns the string representation of the relative luminance of the given [Color].

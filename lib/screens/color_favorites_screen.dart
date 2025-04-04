@@ -154,7 +154,7 @@ enum _AppBarActions { clearFavorites, exportFavoritesAsCsv }
 /// The app bar of the Color Info screen.
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   const _AppBar({
-    super.key, // ignore: unused_element
+    super.key, // ignore: unused_element_parameter
     required this.title,
     required this.onAction,
     this.haveFavorites = true,

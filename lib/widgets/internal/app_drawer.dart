@@ -311,8 +311,7 @@ class AppDrawer extends StatelessWidget {
 /// It is filled with a background color, and displays the app name.
 class _AppDrawerHeader extends StatelessWidget {
   const _AppDrawerHeader({
-    // ignore: unused_element
-    super.key,
+    super.key, // ignore: unused_element_parameter
     required this.color,
   });
 

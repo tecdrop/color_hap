@@ -88,7 +88,7 @@ class _ColorListViewState extends State<ColorListView> {
 /// A list item that displays a color with a title and an optional subtitle and button.
 class _ColorListItem extends StatelessWidget {
   const _ColorListItem({
-    super.key, // ignore: unused_element
+    super.key, // ignore: unused_element_parameter
     required this.color,
     required this.title,
     this.subtitle,
@@ -164,7 +164,7 @@ class _ColorListItem extends StatelessWidget {
                 icon: Icon(itemButton!.icon, color: color_utils.contrastIconColor(color)),
                 tooltip: itemButton!.tooltip,
                 onPressed: onButtonPressed,
-                focusColor: contrastColor.withOpacity(0.25),
+                focusColor: contrastColor.withValues(alpha: 0.25),
               ),
           ],
         ),
