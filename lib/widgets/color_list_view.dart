@@ -1,7 +1,6 @@
-// Copyright 2020-2024 Tecdrop (https://www.tecdrop.com/)
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://www.tecdrop.com/colorhap/license/.
+// Copyright 2020-2025 Tecdrop SRL. All rights reserved.
+// Use of this source code is governed by an MIT-style license that can be found
+// in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
 import 'dart:math';
 import 'package:flutter/material.dart';
@@ -10,17 +9,10 @@ import '../common/consts.dart' as consts;
 import '../utils/color_utils.dart' as color_utils;
 
 /// Data for an item in the color list view.
-typedef ColorListItemData = ({
-  Color color,
-  String title,
-  String? subtitle,
-});
+typedef ColorListItemData = ({Color color, String title, String? subtitle});
 
 /// Data for an optional button that can be displayed for each item in the list.
-typedef ItemButtonData = ({
-  IconData icon,
-  String tooltip,
-});
+typedef ItemButtonData = ({IconData icon, String tooltip});
 
 /// A list view that displays a list of available colors.
 class ColorListView extends StatefulWidget {
@@ -82,9 +74,10 @@ class _ColorListViewState extends State<ColorListView> {
             focused: index == focusedIndex,
             onTap: () => widget.onItemTap?.call(index),
             onButtonPressed: () => widget.onItemButtonPressed?.call(index),
-            onFocusChange: (bool hasFocus) => setState(() {
-              focusedIndex = hasFocus ? index : -1;
-            }),
+            onFocusChange:
+                (bool hasFocus) => setState(() {
+                  focusedIndex = hasFocus ? index : -1;
+                }),
           );
         },
       ),
@@ -142,16 +135,11 @@ class _ColorListItem extends StatelessWidget {
       child: Ink(
         decoration: BoxDecoration(
           color: color,
-          border: Border.all(
-            color: focused ? Colors.grey[700]! : color,
-            width: 6.0,
-          ),
+          border: Border.all(color: focused ? Colors.grey[700]! : color, width: 6.0),
         ),
 
         // Use padding to constrain the width of the list items so they look ok on large screens
-        padding: EdgeInsets.symmetric(
-          horizontal: max(16.0, (width - 1024) / 2),
-        ),
+        padding: EdgeInsets.symmetric(horizontal: max(16.0, (width - 1024) / 2)),
 
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -177,7 +165,7 @@ class _ColorListItem extends StatelessWidget {
                 tooltip: itemButton!.tooltip,
                 onPressed: onButtonPressed,
                 focusColor: contrastColor.withOpacity(0.25),
-              )
+              ),
           ],
         ),
       ),

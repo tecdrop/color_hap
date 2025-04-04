@@ -1,7 +1,6 @@
-// Copyright 2020-2024 Tecdrop (https://www.tecdrop.com/)
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://www.tecdrop.com/colorhap/license/.
+// Copyright 2020-2025 Tecdrop SRL. All rights reserved.
+// Use of this source code is governed by an MIT-style license that can be found
+// in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
 import 'dart:math';
 import 'package:flutter/material.dart';
@@ -141,19 +140,9 @@ RandomColor getRandomColor(ColorType colorType, int index) {
       );
     case ColorType.attractiveColor:
       final int colorCode = racg.kAttractiveColors[index];
-      return RandomColor(
-        type: colorType,
-        color: Color(colorCode),
-        name: null,
-        listPosition: index,
-      );
+      return RandomColor(type: colorType, color: Color(colorCode), name: null, listPosition: index);
     case ColorType.trueColor:
       final int colorCode = color_utils.withFullAlpha(index);
-      return RandomColor(
-        type: colorType,
-        color: Color(colorCode),
-        name: null,
-        listPosition: index,
-      );
+      return RandomColor(type: colorType, color: Color(colorCode), name: null, listPosition: index);
   }
 }

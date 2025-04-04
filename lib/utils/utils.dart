@@ -1,7 +1,6 @@
-// Copyright 2020-2024 Tecdrop (https://www.tecdrop.com/)
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://www.tecdrop.com/colorhap/license/.
+// Copyright 2020-2025 Tecdrop SRL. All rights reserved.
+// Use of this source code is governed by an MIT-style license that can be found
+// in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
 /// Various utility functions.
 library;
@@ -17,9 +16,10 @@ import '../common/strings.dart' as strings;
 ///
 /// The separators are spaces, as per the ISU standard.
 String intToCommaSeparatedString(int value) {
-  return value
-      .toString()
-      .replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ');
+  return value.toString().replaceAllMapped(
+    RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+    (Match m) => '${m[1]} ',
+  );
 }
 
 /// Navigates to the specified [screen] and returns the result.
@@ -29,11 +29,7 @@ Future<T?> navigateTo<T>(BuildContext context, Widget screen) async {
 
 /// Navigates to the specified [screen] and returns the result.
 Future<T?> navigatorTo<T>(NavigatorState navigator, Widget screen) async {
-  return await navigator.push(
-    MaterialPageRoute<T>(
-      builder: (context) => screen,
-    ),
-  );
+  return await navigator.push(MaterialPageRoute<T>(builder: (context) => screen));
 }
 
 /// Shows a [SnackBar] with the specified [text] across all registered [Scaffold]s.

@@ -1,7 +1,6 @@
-// Copyright 2020-2024 Tecdrop (https://www.tecdrop.com/)
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://www.tecdrop.com/colorhap/license/.
+// Copyright 2020-2025 Tecdrop SRL. All rights reserved.
+// Use of this source code is governed by an MIT-style license that can be found
+// in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
 import 'package:flutter/material.dart';
 
@@ -135,8 +134,9 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Simply a convenience function that returns a string with the number of possibilities.
-    String possibilities(ColorType colorType) => strings
-        .possibilitiesDrawerSubtitle(utils.intToCommaSeparatedString(possibilityCount(colorType)));
+    String possibilities(ColorType colorType) => strings.possibilitiesDrawerSubtitle(
+      utils.intToCommaSeparatedString(possibilityCount(colorType)),
+    );
 
     return Drawer(
       child: ListView(
@@ -159,9 +159,10 @@ class AppDrawer extends StatelessWidget {
           // All Random Colors drawer item
           _buildItem(
             context,
-            icon: colorType == ColorType.mixedColor
-                ? Icons.looks_one_rounded
-                : Icons.looks_one_outlined,
+            icon:
+                colorType == ColorType.mixedColor
+                    ? Icons.looks_one_rounded
+                    : Icons.looks_one_outlined,
             title: strings.randomMixedColorDrawer,
             subtitle: possibilities(ColorType.mixedColor),
             item: AppDrawerItems.randomMixedColor,
@@ -170,9 +171,10 @@ class AppDrawer extends StatelessWidget {
           // Random Basic Color drawer item
           _buildItem(
             context,
-            icon: colorType == ColorType.basicColor
-                ? Icons.looks_two_rounded
-                : Icons.looks_two_outlined,
+            icon:
+                colorType == ColorType.basicColor
+                    ? Icons.looks_two_rounded
+                    : Icons.looks_two_outlined,
             title: strings.randomBasicColorDrawer,
             subtitle: possibilities(ColorType.basicColor),
             item: AppDrawerItems.randomBasicColor,
@@ -200,9 +202,10 @@ class AppDrawer extends StatelessWidget {
           // Random Attractive Color drawer item
           _buildItem(
             context,
-            icon: colorType == ColorType.attractiveColor
-                ? Icons.looks_5_rounded
-                : Icons.looks_5_outlined,
+            icon:
+                colorType == ColorType.attractiveColor
+                    ? Icons.looks_5_rounded
+                    : Icons.looks_5_outlined,
             title: strings.randomAttractiveColorDrawer,
             subtitle: possibilities(ColorType.attractiveColor),
             item: AppDrawerItems.randomAttractiveColor,
@@ -325,9 +328,9 @@ class _AppDrawerHeader extends StatelessWidget {
       child: Center(
         child: Text(
           strings.appName,
-          style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                color: color_utils.contrastColor(color),
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.headlineMedium!.copyWith(color: color_utils.contrastColor(color)),
         ),
       ),
     );

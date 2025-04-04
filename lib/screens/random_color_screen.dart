@@ -1,7 +1,6 @@
-// Copyright 2020-2024 Tecdrop (https://www.tecdrop.com/)
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://www.tecdrop.com/colorhap/license/.
+// Copyright 2020-2025 Tecdrop SRL. All rights reserved.
+// Use of this source code is governed by an MIT-style license that can be found
+// in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
 import 'package:flutter/material.dart';
 
@@ -23,9 +22,7 @@ import 'color_preview_screen.dart';
 ///
 /// It displays the current random color, and lets the user to generate new random colors.
 class RandomColorScreen extends StatefulWidget {
-  const RandomColorScreen({
-    super.key,
-  });
+  const RandomColorScreen({super.key});
 
   @override
   State<RandomColorScreen> createState() => _RandomColorScreenState();
@@ -96,8 +93,10 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
       // Toggle the current color in the favorites list
       case _AppBarActions.toggleFav:
         setState(() {
-          _colorFavIndex =
-              preferences.colorFavoritesList.toggle(_randomColor, index: _colorFavIndex);
+          _colorFavIndex = preferences.colorFavoritesList.toggle(
+            _randomColor,
+            index: _colorFavIndex,
+          );
           preferences.saveColorFavoritesList();
         });
         break;
@@ -151,10 +150,8 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         child: RandomColorDisplay(
           randomColor: _randomColor,
           // Navigate to the Color Preview screen when the user double-taps the color code/name
-          onDoubleTap: () => utils.navigateTo(
-            context,
-            ColorPreviewScreen(color: _randomColor.color),
-          ),
+          onDoubleTap:
+              () => utils.navigateTo(context, ColorPreviewScreen(color: _randomColor.color)),
           // Copy the color hex code/name to the clipboard when the user long-presses it
           onLongPress: copyColor,
         ),
@@ -171,11 +168,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 }
 
 /// Enum that defines the actions of the app bar.
-enum _AppBarActions {
-  toggleFav,
-  colorInfo,
-  availableColors,
-}
+enum _AppBarActions { toggleFav, colorInfo, availableColors }
 
 /// The app bar of the Random Color screen.
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {

@@ -1,7 +1,6 @@
-// Copyright 2020-2024 Tecdrop (https://www.tecdrop.com/)
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://www.tecdrop.com/colorhap/license/.
+// Copyright 2020-2025 Tecdrop SRL. All rights reserved.
+// Use of this source code is governed by an MIT-style license that can be found
+// in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
 import 'package:flutter/material.dart';
 
@@ -14,30 +13,17 @@ ThemeData getAppTheme(Brightness brightness) {
     brightness: brightness,
     useMaterial3: true,
     scaffoldBackgroundColor: backgroundColor,
-    drawerTheme: DrawerThemeData(
-      backgroundColor: backgroundColor,
-    ),
-    appBarTheme: AppBarTheme(
-      backgroundColor: backgroundColor,
-      foregroundColor: foregroundColor,
-    ),
-    bottomAppBarTheme: BottomAppBarTheme(
-      color: backgroundColor,
-    ),
-    popupMenuTheme: PopupMenuThemeData(
-      color: backgroundColor,
-    ),
+    drawerTheme: DrawerThemeData(backgroundColor: backgroundColor),
+    appBarTheme: AppBarTheme(backgroundColor: backgroundColor, foregroundColor: foregroundColor),
+    bottomAppBarTheme: BottomAppBarTheme(color: backgroundColor),
+    popupMenuTheme: PopupMenuThemeData(color: backgroundColor),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: backgroundColor,
       foregroundColor: foregroundColor,
     ),
-    dialogTheme: DialogTheme(
-      backgroundColor: backgroundColor,
-    ),
+    dialogTheme: DialogTheme(backgroundColor: backgroundColor),
     textButtonTheme: TextButtonThemeData(
-      style: TextButton.styleFrom(
-        foregroundColor: foregroundColor,
-      ),
+      style: TextButton.styleFrom(foregroundColor: foregroundColor),
     ),
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(

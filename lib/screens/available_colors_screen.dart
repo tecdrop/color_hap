@@ -1,7 +1,6 @@
-// Copyright 2020-2024 Tecdrop (https://www.tecdrop.com/)
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://www.tecdrop.com/colorhap/license/.
+// Copyright 2020-2025 Tecdrop SRL. All rights reserved.
+// Use of this source code is governed by an MIT-style license that can be found
+// in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
 import 'dart:math';
 import 'package:flutter/material.dart';
@@ -24,11 +23,7 @@ import '../widgets/color_list_view.dart';
 
 /// A screen that displays all the available colors of a specific type in a list view.
 class AvailableColorsScreen extends StatefulWidget {
-  const AvailableColorsScreen({
-    super.key,
-    required this.colorType,
-    this.initialRandomColor,
-  });
+  const AvailableColorsScreen({super.key, required this.colorType, this.initialRandomColor});
 
   /// The type of available colors to display.
   final ColorType colorType;
@@ -49,13 +44,11 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
     super.initState();
 
     // Scroll to the initial random color if provided
-    final double itemOffset = widget.initialRandomColor != null
-        ? (widget.initialRandomColor!.listPosition ?? 0) * consts.colorListItemExtent
-        : 0.0;
-    _scrollController = ScrollController(
-      initialScrollOffset: itemOffset,
-      keepScrollOffset: false,
-    );
+    final double itemOffset =
+        widget.initialRandomColor != null
+            ? (widget.initialRandomColor!.listPosition ?? 0) * consts.colorListItemExtent
+            : 0.0;
+    _scrollController = ScrollController(initialScrollOffset: itemOffset, keepScrollOffset: false);
   }
 
   @override
@@ -81,10 +74,10 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
   ColorListItemData _getItemData(int index) {
     // Returns the data for a named color list item.
     ColorListItemData namedColorListItemData(KnownColor item) => (
-          color: Color(item.code),
-          title: item.name,
-          subtitle: color_utils.toHexString(Color(item.code)),
-        );
+      color: Color(item.code),
+      title: item.name,
+      subtitle: color_utils.toHexString(Color(item.code)),
+    );
 
     switch (widget.colorType) {
       case ColorType.mixedColor:

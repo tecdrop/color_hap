@@ -1,7 +1,6 @@
-// Copyright 2020-2024 Tecdrop (https://www.tecdrop.com/)
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://www.tecdrop.com/colorhap/license/.
+// Copyright 2020-2025 Tecdrop SRL. All rights reserved.
+// Use of this source code is governed by an MIT-style license that can be found
+// in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
 import 'dart:convert';
 
@@ -98,9 +97,10 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
           haveFavorites: preferences.colorFavoritesList.length > 0,
           onAction: _onAppBarAction,
         ),
-        body: preferences.colorFavoritesList.length > 0
-            ? _buildFavoritesListView()
-            : _buildNoFavoritesMessage(),
+        body:
+            preferences.colorFavoritesList.length > 0
+                ? _buildFavoritesListView()
+                : _buildNoFavoritesMessage(),
       ),
     );
   }
@@ -121,9 +121,10 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
       itemCount: () => preferences.colorFavoritesList.length,
       itemData: _getItemData,
       itemButton: (_) => (icon: Icons.delete, tooltip: strings.removeFavTooltip),
-      onItemTap: (int index) => Navigator.of(context).pop<RandomColor>(
-        preferences.colorFavoritesList.elementAt(index),
-      ),
+      onItemTap:
+          (int index) => Navigator.of(
+            context,
+          ).pop<RandomColor>(preferences.colorFavoritesList.elementAt(index)),
       onItemButtonPressed: _deleteFavoriteColor,
     );
   }
@@ -148,10 +149,7 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
 }
 
 /// Enum that defines the actions of the app bar.
-enum _AppBarActions {
-  clearFavorites,
-  exportFavoritesAsCsv,
-}
+enum _AppBarActions { clearFavorites, exportFavoritesAsCsv }
 
 /// The app bar of the Color Info screen.
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -181,23 +179,24 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
         // Add the Popup Menu items
         PopupMenuButton<_AppBarActions>(
           onSelected: onAction,
-          itemBuilder: (BuildContext context) => <PopupMenuEntry<_AppBarActions>>[
-            // The export as CSV action
-            PopupMenuItem<_AppBarActions>(
-              value: _AppBarActions.exportFavoritesAsCsv,
-              enabled: haveFavorites,
-              child: const Text(strings.exportFavoritesAsCsv),
-            ),
+          itemBuilder:
+              (BuildContext context) => <PopupMenuEntry<_AppBarActions>>[
+                // The export as CSV action
+                PopupMenuItem<_AppBarActions>(
+                  value: _AppBarActions.exportFavoritesAsCsv,
+                  enabled: haveFavorites,
+                  child: const Text(strings.exportFavoritesAsCsv),
+                ),
 
-            const PopupMenuDivider(),
+                const PopupMenuDivider(),
 
-            // The clear favorites action
-            PopupMenuItem<_AppBarActions>(
-              value: _AppBarActions.clearFavorites,
-              enabled: haveFavorites,
-              child: const Text(strings.clearFavorites),
-            ),
-          ],
+                // The clear favorites action
+                PopupMenuItem<_AppBarActions>(
+                  value: _AppBarActions.clearFavorites,
+                  enabled: haveFavorites,
+                  child: const Text(strings.clearFavorites),
+                ),
+              ],
         ),
       ],
     );

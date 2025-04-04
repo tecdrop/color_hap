@@ -1,7 +1,6 @@
-// Copyright 2020-2024 Tecdrop (https://www.tecdrop.com/)
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://www.tecdrop.com/colorhap/license/.
+// Copyright 2020-2025 Tecdrop SRL. All rights reserved.
+// Use of this source code is governed by an MIT-style license that can be found
+// in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
 import 'dart:math';
 import 'package:flutter/material.dart';
@@ -41,17 +40,11 @@ class ColorInfoList extends StatelessWidget {
 
     return DividerTheme(
       // Use a hairline divider between the list items
-      data: DividerThemeData(
-        color: contrastColor,
-        thickness: 0.0,
-        space: 0.0,
-      ),
+      data: DividerThemeData(color: contrastColor, thickness: 0.0, space: 0.0),
       child: ListView.separated(
         // Use padding to constrain the width of the list items so they look ok on large screens
         // Also add some bottom padding to the list to make space for the floating action button
-        padding: EdgeInsets.symmetric(
-          horizontal: max(0, (width - 800) / 2),
-        ).copyWith(bottom: 64.0),
+        padding: EdgeInsets.symmetric(horizontal: max(0, (width - 800) / 2)).copyWith(bottom: 64.0),
 
         itemCount: infos.length,
         itemBuilder: (BuildContext context, int index) {

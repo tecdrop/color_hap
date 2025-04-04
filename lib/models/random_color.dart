@@ -1,7 +1,6 @@
-// Copyright 2020-2024 Tecdrop (https://www.tecdrop.com/)
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://www.tecdrop.com/colorhap/license/.
+// Copyright 2020-2025 Tecdrop SRL. All rights reserved.
+// Use of this source code is governed by an MIT-style license that can be found
+// in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
 import 'package:flutter/material.dart';
 
@@ -10,12 +9,7 @@ import 'color_type.dart';
 
 /// A random color with a [Color] value, possibly a color name, and a color type.
 class RandomColor {
-  const RandomColor({
-    required this.type,
-    required this.color,
-    this.name,
-    this.listPosition,
-  });
+  const RandomColor({required this.type, required this.color, this.name, this.listPosition});
 
   /// The type of this random color.
   final ColorType type;
@@ -69,10 +63,10 @@ class RandomColor {
 
   /// Creates a [RandomColor] from a JSON object.
   RandomColor.fromJson(Map<String, dynamic> json)
-      : type = ColorType.values[json['type']],
-        color = Color(json['color']),
-        name = json['name'],
-        listPosition = json['listPosition'];
+    : type = ColorType.values[json['type']],
+      color = Color(json['color']),
+      name = json['name'],
+      listPosition = json['listPosition'];
 
   /// Converts this [RandomColor] to a JSON object.
   Map<String, dynamic> toJson() {
@@ -86,10 +80,6 @@ class RandomColor {
 
   /// Converts this [RandomColor] to a CSV string.
   String toCsvString() {
-    return [
-      hexString,
-      name ?? '',
-      type.toShortString(),
-    ].join(',');
+    return [hexString, name ?? '', type.toShortString()].join(',');
   }
 }

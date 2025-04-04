@@ -1,7 +1,6 @@
-// Copyright 2020-2024 Tecdrop (https://www.tecdrop.com/)
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://www.tecdrop.com/colorhap/license/.
+// Copyright 2020-2025 Tecdrop SRL. All rights reserved.
+// Use of this source code is governed by an MIT-style license that can be found
+// in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,10 +21,7 @@ import 'color_preview_screen.dart';
 /// Displays the given [RandomColor] in different formats, and other color information, and allows
 /// the user to copy or share the information.
 class ColorInfoScreen extends StatefulWidget {
-  const ColorInfoScreen({
-    super.key,
-    required this.randomColor,
-  });
+  const ColorInfoScreen({super.key, required this.randomColor});
 
   /// The random color to display in the Color Info screen.
   final RandomColor randomColor;
@@ -50,7 +46,7 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
     _infos = [
       if (widget.randomColor.name != null) ...[
         (key: strings.colorTitleInfo, value: widget.randomColor.longTitle),
-        (key: strings.colorNameInfo, value: widget.randomColor.name!)
+        (key: strings.colorNameInfo, value: widget.randomColor.name!),
       ],
       (key: strings.hexInfo, value: color_utils.toHexString(color)),
       (key: strings.colorTypeInfo, value: strings.randomColorType(widget.randomColor.type)),
@@ -128,8 +124,9 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
     final XFile xFile = XFile.fromData(pngBytes, name: fileName, mimeType: 'image/png');
 
     // Summon the platform's share sheet to share the image file
-    await Share.shareXFiles([xFile],
-        text: strings.shareSwatchMessage(widget.randomColor.longTitle));
+    await Share.shareXFiles([
+      xFile,
+    ], text: strings.shareSwatchMessage(widget.randomColor.longTitle));
   }
 
   @override
@@ -162,12 +159,7 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
 }
 
 /// Enum that defines the actions of the app bar.
-enum _AppBarActions {
-  colorPreview,
-  colorWebSearch,
-  copyAll,
-  shareAll,
-}
+enum _AppBarActions { colorPreview, colorWebSearch, copyAll, shareAll }
 
 /// The app bar of the Color Info screen.
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -200,25 +192,26 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
         // Add the overflow menu
         PopupMenuButton<_AppBarActions>(
           onSelected: onAction,
-          itemBuilder: (BuildContext context) => <PopupMenuEntry<_AppBarActions>>[
-            // Add the Copy All action to the overflow menu
-            const PopupMenuItem<_AppBarActions>(
-              value: _AppBarActions.copyAll,
-              child: Text(strings.copyAllAction),
-            ),
+          itemBuilder:
+              (BuildContext context) => <PopupMenuEntry<_AppBarActions>>[
+                // Add the Copy All action to the overflow menu
+                const PopupMenuItem<_AppBarActions>(
+                  value: _AppBarActions.copyAll,
+                  child: Text(strings.copyAllAction),
+                ),
 
-            // Add the Share All action to the overflow menu
-            const PopupMenuItem<_AppBarActions>(
-              value: _AppBarActions.shareAll,
-              child: Text(strings.shareAllAction),
-            ),
+                // Add the Share All action to the overflow menu
+                const PopupMenuItem<_AppBarActions>(
+                  value: _AppBarActions.shareAll,
+                  child: Text(strings.shareAllAction),
+                ),
 
-            // Add the Color Web Search action to the overflow menu
-            const PopupMenuItem<_AppBarActions>(
-              value: _AppBarActions.colorWebSearch,
-              child: Text(strings.colorWebSearchAction),
-            ),
-          ],
+                // Add the Color Web Search action to the overflow menu
+                const PopupMenuItem<_AppBarActions>(
+                  value: _AppBarActions.colorWebSearch,
+                  child: Text(strings.colorWebSearchAction),
+                ),
+              ],
         ),
       ],
     );

@@ -1,7 +1,6 @@
-// Copyright 2020-2024 Tecdrop (https://www.tecdrop.com/)
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file or at
-// https://www.tecdrop.com/colorhap/license/.
+// Copyright 2020-2025 Tecdrop SRL. All rights reserved.
+// Use of this source code is governed by an MIT-style license that can be found
+// in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
 import 'package:flutter/material.dart';
 
@@ -19,10 +18,7 @@ Future<void> main() async {
   // }
 
   // First try to load the app settings from Shared Preferences
-  await Future.any([
-    preferences.loadSettings(),
-    Future.delayed(const Duration(seconds: 5)),
-  ]);
+  await Future.any([preferences.loadSettings(), Future.delayed(const Duration(seconds: 5))]);
 
   // Then run the app
   runApp(const ColorHapApp());
