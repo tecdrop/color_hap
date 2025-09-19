@@ -15,13 +15,13 @@ ThemeData getAppTheme(Brightness brightness) {
     scaffoldBackgroundColor: backgroundColor,
     drawerTheme: DrawerThemeData(backgroundColor: backgroundColor),
     appBarTheme: AppBarTheme(backgroundColor: backgroundColor, foregroundColor: foregroundColor),
-    bottomAppBarTheme: BottomAppBarTheme(color: backgroundColor),
+    bottomAppBarTheme: BottomAppBarThemeData(color: backgroundColor),
     popupMenuTheme: PopupMenuThemeData(color: backgroundColor),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: backgroundColor,
       foregroundColor: foregroundColor,
     ),
-    dialogTheme: DialogTheme(backgroundColor: backgroundColor),
+    dialogTheme: DialogThemeData(backgroundColor: backgroundColor),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(foregroundColor: foregroundColor),
     ),

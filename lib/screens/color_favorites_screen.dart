@@ -3,8 +3,8 @@
 // in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
+
 import 'package:share_plus/share_plus.dart';
 
 import '../common/consts.dart' as consts;
@@ -32,9 +32,11 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
   /// Exports the favorite colors as a CSV file and uses the platform's share sheet to share it.
   void _exportFavorites() {
     final String favoritesCsv = preferences.colorFavoritesList.toCsvString();
-    Share.shareXFiles(
-      [XFile.fromData(utf8.encode(favoritesCsv), mimeType: 'text/plain')],
-      fileNameOverrides: [consts.favoritesCSVFileName],
+    SharePlus.instance.share(
+      ShareParams(
+        fileNameOverrides: [consts.favoritesCSVFileName],
+        files: [XFile.fromData(utf8.encode(favoritesCsv), mimeType: 'text/plain')],
+      ),
     );
   }
 
@@ -97,10 +99,9 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
           haveFavorites: preferences.colorFavoritesList.length > 0,
           onAction: _onAppBarAction,
         ),
-        body:
-            preferences.colorFavoritesList.length > 0
-                ? _buildFavoritesListView()
-                : _buildNoFavoritesMessage(),
+        body: preferences.colorFavoritesList.length > 0
+            ? _buildFavoritesListView()
+            : _buildNoFavoritesMessage(),
       ),
     );
   }
@@ -121,10 +122,9 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
       itemCount: () => preferences.colorFavoritesList.length,
       itemData: _getItemData,
       itemButton: (_) => (icon: Icons.delete, tooltip: strings.removeFavTooltip),
-      onItemTap:
-          (int index) => Navigator.of(
-            context,
-          ).pop<RandomColor>(preferences.colorFavoritesList.elementAt(index)),
+      onItemTap: (int index) => Navigator.of(
+        context,
+      ).pop<RandomColor>(preferences.colorFavoritesList.elementAt(index)),
       onItemButtonPressed: _deleteFavoriteColor,
     );
   }
@@ -179,24 +179,23 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
         // Add the Popup Menu items
         PopupMenuButton<_AppBarActions>(
           onSelected: onAction,
-          itemBuilder:
-              (BuildContext context) => <PopupMenuEntry<_AppBarActions>>[
-                // The export as CSV action
-                PopupMenuItem<_AppBarActions>(
-                  value: _AppBarActions.exportFavoritesAsCsv,
-                  enabled: haveFavorites,
-                  child: const Text(strings.exportFavoritesAsCsv),
-                ),
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<_AppBarActions>>[
+            // The export as CSV action
+            PopupMenuItem<_AppBarActions>(
+              value: _AppBarActions.exportFavoritesAsCsv,
+              enabled: haveFavorites,
+              child: const Text(strings.exportFavoritesAsCsv),
+            ),
 
-                const PopupMenuDivider(),
+            const PopupMenuDivider(),
 
-                // The clear favorites action
-                PopupMenuItem<_AppBarActions>(
-                  value: _AppBarActions.clearFavorites,
-                  enabled: haveFavorites,
-                  child: const Text(strings.clearFavorites),
-                ),
-              ],
+            // The clear favorites action
+            PopupMenuItem<_AppBarActions>(
+              value: _AppBarActions.clearFavorites,
+              enabled: haveFavorites,
+              child: const Text(strings.clearFavorites),
+            ),
+          ],
         ),
       ],
     );

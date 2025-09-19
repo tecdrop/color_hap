@@ -98,7 +98,7 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
 
   /// Share the value of the item in the list that the user wants to share.
   void _shareItem(String key, String value) {
-    Share.share(value);
+    SharePlus.instance.share(ShareParams(text: value));
   }
 
   /// Copies all the color information to the clipboard.
@@ -110,7 +110,7 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
 
   /// Shares all the color information.
   void _shareAll() async {
-    Share.share(_infosAsString);
+    SharePlus.instance.share(ShareParams(text: _infosAsString));
   }
 
   /// Shares all the color information.
@@ -124,9 +124,12 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
     final XFile xFile = XFile.fromData(pngBytes, name: fileName, mimeType: 'image/png');
 
     // Summon the platform's share sheet to share the image file
-    await Share.shareXFiles([
-      xFile,
-    ], text: strings.shareSwatchMessage(widget.randomColor.longTitle));
+    await SharePlus.instance.share(
+      ShareParams(
+        text: strings.shareSwatchMessage(widget.randomColor.longTitle),
+        files: [xFile],
+      ),
+    );
   }
 
   @override
@@ -192,26 +195,25 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
         // Add the overflow menu
         PopupMenuButton<_AppBarActions>(
           onSelected: onAction,
-          itemBuilder:
-              (BuildContext context) => <PopupMenuEntry<_AppBarActions>>[
-                // Add the Copy All action to the overflow menu
-                const PopupMenuItem<_AppBarActions>(
-                  value: _AppBarActions.copyAll,
-                  child: Text(strings.copyAllAction),
-                ),
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<_AppBarActions>>[
+            // Add the Copy All action to the overflow menu
+            const PopupMenuItem<_AppBarActions>(
+              value: _AppBarActions.copyAll,
+              child: Text(strings.copyAllAction),
+            ),
 
-                // Add the Share All action to the overflow menu
-                const PopupMenuItem<_AppBarActions>(
-                  value: _AppBarActions.shareAll,
-                  child: Text(strings.shareAllAction),
-                ),
+            // Add the Share All action to the overflow menu
+            const PopupMenuItem<_AppBarActions>(
+              value: _AppBarActions.shareAll,
+              child: Text(strings.shareAllAction),
+            ),
 
-                // Add the Color Web Search action to the overflow menu
-                const PopupMenuItem<_AppBarActions>(
-                  value: _AppBarActions.colorWebSearch,
-                  child: Text(strings.colorWebSearchAction),
-                ),
-              ],
+            // Add the Color Web Search action to the overflow menu
+            const PopupMenuItem<_AppBarActions>(
+              value: _AppBarActions.colorWebSearch,
+              child: Text(strings.colorWebSearchAction),
+            ),
+          ],
         ),
       ],
     );
