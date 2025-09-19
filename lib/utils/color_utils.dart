@@ -16,6 +16,11 @@ int withFullAlpha(int colorCode) {
   return colorCode | 0xFF000000;
 }
 
+/// Returns the given [Color] without the alpha channel (0x00).
+int toRGB24(Color color) {
+  return color.toARGB32() & 0x00FFFFFF;
+}
+
 /// Returns the black or white contrast color of the given [Color].
 Color contrastColor(Color color) {
   switch (ThemeData.estimateBrightnessForColor(color)) {
@@ -127,4 +132,18 @@ Future<Uint8List> buildColorSwatch(Color color, int width, int height) async {
   final ui.Image img = await picture.toImage(width, height);
   final ByteData? pngBytes = await img.toByteData(format: ui.ImageByteFormat.png);
   return pngBytes!.buffer.asUint8List();
+}
+
+List<Color> generateShades(Color baseColor, {int count = 10}) {
+  // Default to 10, but allow customization
+  List<Color> shades = [];
+  HSLColor hsl = HSLColor.fromColor(baseColor);
+
+  for (int i = count - 1; i >= 0; i--) {
+    double lightness = (i + 0.5) / count;
+    HSLColor newHsl = hsl.withLightness(lightness);
+    shades.add(newHsl.toColor());
+  }
+
+  return shades;
 }

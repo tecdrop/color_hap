@@ -20,6 +20,7 @@ import 'available_colors_screen.dart';
 import 'color_favorites_screen.dart';
 import 'color_info_screen.dart';
 import 'color_preview_screen.dart';
+import 'color_shades_screen.dart';
 import 'error_screen.dart';
 import 'loading_screen.dart';
 
@@ -138,6 +139,17 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
     _updateState(randomColor);
   }
 
+  /// Navigates to the Color Shades screen for the current color.
+  void _gotoColorShadesScreen() async {
+    final ColorItem? shadeColor = await utils.navigateTo<ColorItem>(
+      context,
+      ColorShadesScreen(color: _randomColor.color),
+    );
+
+    // Update the current random color if a new shade color was selected
+    if (shadeColor != null) _updateState(shadeColor);
+  }
+
   /// Navigates to the Available Colors screen for the selected color type.
   void _gotoColorFavoritesScreen() async {
     final ColorItem? randomColor = await utils.navigateTo<ColorItem>(
@@ -157,7 +169,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
   void _onAction(_AppBarActions action) async {
     switch (action) {
       // Toggle the current color in the favorites list
-      case _AppBarActions.toggleFav:
+      case _AppBarActions.toggleFavorite:
         setState(() {
           _colorFavIndex = preferences.colorFavoritesList.toggle(
             _randomColor,
@@ -172,9 +184,19 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         utils.navigateTo(context, ColorInfoScreen(colorItem: _randomColor));
         break;
 
+      // Open the Color Shades screen for the current color
+      case _AppBarActions.colorShades:
+        _gotoColorShadesScreen();
+        break;
+
       // Open the Available Colors screen
       case _AppBarActions.availableColors:
         _gotoAvailableColorsScreen();
+        break;
+
+      // Open the Color Favorites screen
+      case _AppBarActions.favoriteColors:
+        _gotoColorFavoritesScreen();
         break;
     }
   }
@@ -248,7 +270,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 }
 
 /// Enum that defines the actions of the app bar.
-enum _AppBarActions { toggleFav, colorInfo, availableColors }
+enum _AppBarActions { toggleFavorite, colorInfo, colorShades, availableColors, favoriteColors }
 
 /// The app bar of the Random Color screen.
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -282,7 +304,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
           icon: isFavorite ? const Icon(Icons.favorite) : const Icon(Icons.favorite_border),
           tooltip: isFavorite ? strings.removeFavTooltip : strings.addFavTooltip,
-          onPressed: () => onAction(_AppBarActions.toggleFav),
+          onPressed: () => onAction(_AppBarActions.toggleFavorite),
         ),
 
         // The Color Information icon button
@@ -292,11 +314,28 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
           onPressed: () => onAction(_AppBarActions.colorInfo),
         ),
 
-        // The Color Information icon button
-        IconButton(
-          icon: const Icon(Icons.unfold_more),
-          tooltip: strings.availableColors(actualColorType),
-          onPressed: () => onAction(_AppBarActions.availableColors),
+        // Add the overflow menu
+        PopupMenuButton<_AppBarActions>(
+          onSelected: onAction,
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<_AppBarActions>>[
+            // Add the Color Shades action to the overflow menu
+            const PopupMenuItem<_AppBarActions>(
+              value: _AppBarActions.colorShades,
+              child: Text(strings.colorShadesAction),
+            ),
+
+            // Add the Available Colors action to the overflow menu
+            PopupMenuItem<_AppBarActions>(
+              value: _AppBarActions.availableColors,
+              child: Text(strings.availableColors(actualColorType)),
+            ),
+
+            // Add the Favorites action to the overflow menu
+            const PopupMenuItem<_AppBarActions>(
+              value: _AppBarActions.favoriteColors,
+              child: Text(strings.favoriteColorsAction),
+            ),
+          ],
         ),
       ],
     );
