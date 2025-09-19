@@ -4,7 +4,6 @@
 
 import 'package:flutter/material.dart';
 
-import '../../common/custom_icons.dart' as custom_icons;
 import '../../common/preferences.dart' as preferences;
 import '../../common/strings.dart' as strings;
 import '../../common/urls.dart' as urls;
@@ -159,10 +158,9 @@ class AppDrawer extends StatelessWidget {
           // All Random Colors drawer item
           _buildItem(
             context,
-            icon:
-                colorType == ColorType.mixedColor
-                    ? Icons.looks_one_rounded
-                    : Icons.looks_one_outlined,
+            icon: colorType == ColorType.mixedColor
+                ? Icons.looks_one_rounded
+                : Icons.looks_one_outlined,
             title: strings.randomMixedColorDrawer,
             subtitle: possibilities(ColorType.mixedColor),
             item: AppDrawerItems.randomMixedColor,
@@ -171,10 +169,9 @@ class AppDrawer extends StatelessWidget {
           // Random Basic Color drawer item
           _buildItem(
             context,
-            icon:
-                colorType == ColorType.basicColor
-                    ? Icons.looks_two_rounded
-                    : Icons.looks_two_outlined,
+            icon: colorType == ColorType.basicColor
+                ? Icons.looks_two_rounded
+                : Icons.looks_two_outlined,
             title: strings.randomBasicColorDrawer,
             subtitle: possibilities(ColorType.basicColor),
             item: AppDrawerItems.randomBasicColor,
@@ -192,8 +189,9 @@ class AppDrawer extends StatelessWidget {
           // Random Named Color drawer item
           _buildItem(
             context,
-            icon:
-                colorType == ColorType.namedColor ? Icons.looks_4_rounded : Icons.looks_4_outlined,
+            icon: colorType == ColorType.namedColor
+                ? Icons.looks_4_rounded
+                : Icons.looks_4_outlined,
             title: strings.randomNamedColorDrawer,
             subtitle: possibilities(ColorType.namedColor),
             item: AppDrawerItems.randomNamedColor,
@@ -202,10 +200,9 @@ class AppDrawer extends StatelessWidget {
           // Random Attractive Color drawer item
           _buildItem(
             context,
-            icon:
-                colorType == ColorType.attractiveColor
-                    ? Icons.looks_5_rounded
-                    : Icons.looks_5_outlined,
+            icon: colorType == ColorType.attractiveColor
+                ? Icons.looks_5_rounded
+                : Icons.looks_5_outlined,
             title: strings.randomAttractiveColorDrawer,
             subtitle: possibilities(ColorType.attractiveColor),
             item: AppDrawerItems.randomAttractiveColor,
@@ -241,8 +238,9 @@ class AppDrawer extends StatelessWidget {
           // Color Favorites drawer item
           _buildItem(
             context,
-            icon:
-                preferences.colorFavoritesList.length > 0 ? Icons.favorite : Icons.favorite_border,
+            icon: preferences.colorFavoritesList.length > 0
+                ? Icons.favorite
+                : Icons.favorite_border,
             title: strings.colorFavoritesDrawer,
             subtitle: strings.colorFavoritesSubtitle(
               utils.intToCommaSeparatedString(preferences.colorFavoritesList.length),
@@ -265,10 +263,10 @@ class AppDrawer extends StatelessWidget {
             item: AppDrawerItems.help,
           ),
 
-          // View Source drawer item
+          // Source code (Star on GitHub) drawer item
           _buildItem(
             context,
-            icon: custom_icons.github,
+            icon: Icons.star,
             title: strings.sourceCodeDrawer,
             subtitle: strings.sourceCodeDrawerSubtitle,
             item: AppDrawerItems.viewSource,
@@ -277,8 +275,7 @@ class AppDrawer extends StatelessWidget {
           // Rate App drawer item
           _buildItem(
             context,
-            // icon: Icons.thumb_up_alt_outlined,
-            icon: Icons.star_rate,
+            icon: Icons.thumb_up,
             title: strings.rateAppDrawer,
             item: AppDrawerItems.rateApp,
           ),
