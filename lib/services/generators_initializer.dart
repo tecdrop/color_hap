@@ -39,9 +39,7 @@ Future<Map<ColorType, RandomColorGenerator>> initAllGenerators() async {
     ColorType.attractiveColor: RandomAttractiveColorGenerator(
       colorLists[ColorType.attractiveColor] ?? [],
     ),
-
     ColorType.trueColor: RandomTrueColorGenerator(),
-    ColorType.mixedColor: RandomTrueColorGenerator(),
   };
   generators[ColorType.mixedColor] = RandomMixedColorGenerator(generators);
   return generators;

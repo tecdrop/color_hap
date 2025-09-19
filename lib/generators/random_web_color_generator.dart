@@ -5,6 +5,7 @@
 import '../models/color_type.dart';
 import '../models/random_list_based_color_generator.dart';
 
+/// A random color generator that selects colors from a predefined list of web colors.
 class RandomWebColorGenerator extends RandomListBasedColorGenerator {
   RandomWebColorGenerator(super.colors);
 

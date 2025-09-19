@@ -58,7 +58,7 @@ class ColorItem {
   /// Overrides the hash code getter to return the hash code of this [ColorItem].
   @override
   int get hashCode {
-    return type.hashCode ^ color.hashCode ^ name.hashCode ^ listPosition.hashCode;
+    return type.hashCode ^ color.hashCode ^ (name?.hashCode ?? 0) ^ (listPosition?.hashCode ?? 0);
   }
 
   /// Creates a [ColorItem] from a JSON object.

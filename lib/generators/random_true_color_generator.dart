@@ -6,10 +6,11 @@ import 'dart:math';
 import 'dart:ui';
 
 import '../../utils/color_utils.dart' as color_utils;
+import '../models/color_item.dart';
 import '../models/color_type.dart';
 import '../models/random_color_generator.dart';
-import '../models/color_item.dart';
 
+/// A random color generator that generates random true colors (24-bit colors).
 class RandomTrueColorGenerator implements RandomColorGenerator {
   @override
   ColorType get colorType => ColorType.trueColor;
@@ -45,12 +46,5 @@ class RandomTrueColorGenerator implements RandomColorGenerator {
       name: null,
       listPosition: index,
     );
-  }
-
-  /// Checks if the given random color is a true color.
-  @override
-  bool contains(ColorItem color) {
-    // Any random color is a true color because ColorHap Pro uses 24-bit color depth
-    return true;
   }
 }
