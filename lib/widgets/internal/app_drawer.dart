@@ -7,9 +7,8 @@ import 'package:flutter/material.dart';
 import '../../common/preferences.dart' as preferences;
 import '../../common/strings.dart' as strings;
 import '../../common/urls.dart' as urls;
+import '../../models/color_item.dart';
 import '../../models/color_type.dart';
-import '../../models/random_color_generator.dart';
-import '../../models/random_color.dart';
 import '../../screens/color_info_screen.dart';
 import '../../screens/color_preview_screen.dart';
 import '../../utils/color_utils.dart' as color_utils;
@@ -36,7 +35,7 @@ enum AppDrawerItems {
 class AppDrawer extends StatelessWidget {
   const AppDrawer({
     super.key,
-    required this.randomColor,
+    required this.colorItem,
     required this.colorType,
     this.onColorTypeChange,
     this.onColorFavoritesTap,
@@ -44,7 +43,7 @@ class AppDrawer extends StatelessWidget {
   });
 
   /// The current random color.
-  final RandomColor randomColor;
+  final ColorItem colorItem;
 
   /// The current type of random colors generated in the Random Color screen.
   final ColorType colorType;
@@ -100,12 +99,12 @@ class AppDrawer extends StatelessWidget {
 
       // Open the Color Info screen with the current random color
       case AppDrawerItems.colorInfo:
-        utils.navigateTo(context, ColorInfoScreen(randomColor: randomColor));
+        utils.navigateTo(context, ColorInfoScreen(colorItem: colorItem));
         break;
 
       // Open the Color Preview screen with the current random color
       case AppDrawerItems.colorPreview:
-        utils.navigateTo(context, ColorPreviewScreen(color: randomColor.color));
+        utils.navigateTo(context, ColorPreviewScreen(color: colorItem.color));
         break;
 
       // Open the Color Favorites screen
@@ -141,7 +140,7 @@ class AppDrawer extends StatelessWidget {
       child: ListView(
         children: <Widget>[
           // The app drawer header with a bottom margin
-          _AppDrawerHeader(color: randomColor.color),
+          _AppDrawerHeader(color: colorItem.color),
           const SizedBox(height: 16.0),
 
           // The Set Color Wallpaper drawer item

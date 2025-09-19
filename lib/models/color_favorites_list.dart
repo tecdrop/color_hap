@@ -4,54 +4,54 @@
 
 import 'dart:convert';
 
-import 'random_color.dart';
+import 'color_item.dart';
 
 /// A list of favorite random colors.
 class ColorFavoritesList {
-  /// The list of [RandomColor] objects in the favorites list.
-  final List<RandomColor> _list = <RandomColor>[];
+  /// The list of [ColorItem] objects in the favorites list.
+  final List<ColorItem> _list = <ColorItem>[];
 
   /// The number of colors in the favorites list.
   int get length => _list.length;
 
-  /// Returns the index of the given [randomColor] in the favorites list, or -1 if it is not there.
-  int indexOf(RandomColor randomColor) {
-    return _list.indexOf(randomColor);
+  /// Returns the index of the given [colorItem] in the favorites list, or -1 if it is not there.
+  int indexOf(ColorItem colorItem) {
+    return _list.indexOf(colorItem);
   }
 
   /// Returns the color at the given [index] in the favorites list.
-  RandomColor elementAt(int index) => _list.elementAt(index);
+  ColorItem elementAt(int index) => _list.elementAt(index);
 
-  /// Inserts the given [randomColor] at the given [index] in the favorites list.
-  void insert(int index, RandomColor randomColor) {
-    _list.insert(index, randomColor);
+  /// Inserts the given [ColorItem] at the given [index] in the favorites list.
+  void insert(int index, ColorItem colorItem) {
+    _list.insert(index, colorItem);
   }
 
   /// Removes the color at the given [index] from the favorites list.
-  RandomColor removeAt(int index) => _list.removeAt(index);
+  ColorItem removeAt(int index) => _list.removeAt(index);
 
   /// Clears the favorites list.
   void clear() => _list.clear();
 
-  /// Removes the given [randomColor] from the favorites list if it is already there, or adds it to
+  /// Removes the given [colorItem] from the favorites list if it is already there, or adds it to
   /// the list if it is not.
   ///
   /// Returns the index of the color in the favorites list if it was added, or -1 if it was removed.
   /// The optional [index] parameter can be used to specify the color index in the favorites list.
-  int toggle(RandomColor randomColor, {int? index}) {
-    index ??= indexOf(randomColor);
+  int toggle(ColorItem colorItem, {int? index}) {
+    index ??= indexOf(colorItem);
     if (index >= 0 && index < _list.length) {
       _list.removeAt(index);
       return -1;
     } else {
-      _list.add(randomColor);
+      _list.add(colorItem);
       return _list.length - 1;
     }
   }
 
   /// Returns a list of JSON string representations of the colors in this [ColorFavoritesList].
   List<String> toJsonStringList() {
-    return _list.map((RandomColor color) => jsonEncode(color.toJson())).toList();
+    return _list.map((ColorItem color) => jsonEncode(color.toJson())).toList();
   }
 
   /// Loads the colors in this [ColorFavoritesList] from the given list of JSON string
@@ -61,7 +61,7 @@ class ColorFavoritesList {
 
     _list.clear();
     _list.addAll(
-      jsonStringList.map((String jsonString) => RandomColor.fromJson(jsonDecode(jsonString))),
+      jsonStringList.map((String jsonString) => ColorItem.fromJson(jsonDecode(jsonString))),
     );
   }
 
@@ -73,7 +73,7 @@ class ColorFavoritesList {
     csvBuffer.writeln('color,name,type');
 
     // Write the favorite colors
-    for (final RandomColor color in _list) {
+    for (final ColorItem color in _list) {
       csvBuffer.writeln(color.toCsvString());
     }
 

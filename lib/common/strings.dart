@@ -73,6 +73,8 @@ const String rateAppDrawer = 'Rate App';
 // Random Color Screen (Home Screen)
 // -----------------------------------------------------------------------------------------------
 
+const String initGeneratorsError = 'Error initializing color generators.';
+
 const String addFavTooltip = 'Add color to favorites';
 const String removeFavTooltip = 'Remove color from favorites';
 const String colorInfoTooltip = 'Color information';
@@ -127,3 +129,17 @@ const String exportFavoritesAsCsv = 'Export favorites as CSV';
 
 String availableColors(ColorType value) => 'Available ${colorTypePlural[value]}';
 const String aboutTheseColorsTooltip = 'About these colors';
+
+// -----------------------------------------------------------------------------
+// Loading Screen
+// -----------------------------------------------------------------------------
+
+const String loadingColorsMessage = 'Loading colors...';
+
+// -----------------------------------------------------------------------------
+// Error Screen
+// -----------------------------------------------------------------------------
+
+const String errorScreenTitle = 'Error';
+// const String errorLoadingColorsMessage = 'Failed to load colors';
+const String retryButton = 'Retry';

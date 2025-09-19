@@ -10,7 +10,7 @@ import 'package:share_plus/share_plus.dart';
 import '../common/consts.dart' as consts;
 import '../common/strings.dart' as strings;
 import '../common/urls.dart' as urls;
-import '../models/random_color.dart';
+import '../models/color_item.dart';
 import '../utils/color_utils.dart' as color_utils;
 import '../utils/utils.dart' as utils;
 import '../widgets/color_info_list.dart';
@@ -21,10 +21,10 @@ import 'color_preview_screen.dart';
 /// Displays the given [RandomColor] in different formats, and other color information, and allows
 /// the user to copy or share the information.
 class ColorInfoScreen extends StatefulWidget {
-  const ColorInfoScreen({super.key, required this.randomColor});
+  const ColorInfoScreen({super.key, required this.colorItem});
 
   /// The random color to display in the Color Info screen.
-  final RandomColor randomColor;
+  final ColorItem colorItem;
 
   @override
   State<ColorInfoScreen> createState() => _ColorInfoScreenState();
@@ -42,14 +42,14 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
     super.initState();
 
     // Prepare the list of color information to display
-    final Color color = widget.randomColor.color;
+    final Color color = widget.colorItem.color;
     _infos = [
-      if (widget.randomColor.name != null) ...[
-        (key: strings.colorTitleInfo, value: widget.randomColor.longTitle),
-        (key: strings.colorNameInfo, value: widget.randomColor.name!),
+      if (widget.colorItem.name != null) ...[
+        (key: strings.colorTitleInfo, value: widget.colorItem.longTitle),
+        (key: strings.colorNameInfo, value: widget.colorItem.name!),
       ],
       (key: strings.hexInfo, value: color_utils.toHexString(color)),
-      (key: strings.colorTypeInfo, value: strings.randomColorType(widget.randomColor.type)),
+      (key: strings.colorTypeInfo, value: strings.randomColorType(widget.colorItem.type)),
       (key: strings.rgbInfo, value: color_utils.toRGBString(color)),
       (key: strings.hsvInfo, value: color_utils.toHSVString(color)),
       (key: strings.hslInfo, value: color_utils.toHSLString(color)),
@@ -68,12 +68,12 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
       // Navigates to the Color Preview screen
       case _AppBarActions.colorPreview:
         // gotoColorPreviewRoute(context, widget.randomColor.color);
-        utils.navigateTo(context, ColorPreviewScreen(color: widget.randomColor.color));
+        utils.navigateTo(context, ColorPreviewScreen(color: widget.colorItem.color));
         break;
 
       // Opens the web browser to search for the current color
       case _AppBarActions.colorWebSearch:
-        final String url = urls.onlineSearch + Uri.encodeComponent(widget.randomColor.longTitle);
+        final String url = urls.onlineSearch + Uri.encodeComponent(widget.colorItem.longTitle);
         utils.launchUrlExternal(context, url);
         break;
 
@@ -116,17 +116,17 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
   /// Shares all the color information.
   void _shareColorSwatch() async {
     // Generate the color swatch image file name
-    final String hexCode = color_utils.toHexString(widget.randomColor.color, withHash: false);
+    final String hexCode = color_utils.toHexString(widget.colorItem.color, withHash: false);
     final String fileName = consts.colorSwatchFileName(hexCode);
 
     // Create the color swatch image file
-    Uint8List pngBytes = await color_utils.buildColorSwatch(widget.randomColor.color, 512, 512);
+    Uint8List pngBytes = await color_utils.buildColorSwatch(widget.colorItem.color, 512, 512);
     final XFile xFile = XFile.fromData(pngBytes, name: fileName, mimeType: 'image/png');
 
     // Summon the platform's share sheet to share the image file
     await SharePlus.instance.share(
       ShareParams(
-        text: strings.shareSwatchMessage(widget.randomColor.longTitle),
+        text: strings.shareSwatchMessage(widget.colorItem.longTitle),
         files: [xFile],
       ),
     );
@@ -135,7 +135,7 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: widget.randomColor.color,
+      backgroundColor: widget.colorItem.color,
 
       // The app bar with the title and Color Preview and Color Web Search actions
       appBar: _AppBar(
@@ -145,7 +145,7 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
 
       // The body of the screen with the color information list
       body: ColorInfoList(
-        randomColor: widget.randomColor,
+        color: widget.colorItem.color,
         infos: _infos,
         onCopyPressed: (key, value) => _copyItem(context, key, value),
         onSharePressed: (key, value) => _shareItem(key, value),

@@ -6,10 +6,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import '../common/consts.dart' as consts;
+import '../models/color_item.dart';
 import '../utils/color_utils.dart' as color_utils;
-
-/// Data for an item in the color list view.
-typedef ColorListItemData = ({Color color, String title, String? subtitle});
 
 /// Data for an optional button that can be displayed for each item in the list.
 typedef ItemButtonData = ({IconData icon, String tooltip});
@@ -21,6 +19,7 @@ class ColorListView extends StatefulWidget {
     this.scrollController,
     required this.itemCount,
     required this.itemData,
+    this.showColorType = true,
     this.itemButton,
     this.onItemTap,
     this.onItemButtonPressed,
@@ -30,10 +29,13 @@ class ColorListView extends StatefulWidget {
   final ScrollController? scrollController;
 
   /// A callback function that returns the number of items to display in the list.
-  final int Function() itemCount;
+  final int itemCount;
 
   /// A callback function that returns the title, subtitle, and color for each item in the list.
-  final ColorListItemData Function(int index) itemData;
+  final ColorItem Function(int index) itemData;
+
+  /// Whether to show the color type as a subtitle for each item in the list.
+  final bool showColorType;
 
   /// A callback function that returns an optional button for each item in the list.
   final ItemButtonData Function(int index)? itemButton;
@@ -62,22 +64,19 @@ class _ColorListViewState extends State<ColorListView> {
       child: ListView.builder(
         primary: widget.scrollController == null,
         controller: widget.scrollController,
-        itemCount: widget.itemCount(),
+        itemCount: widget.itemCount,
         itemExtent: consts.colorListItemExtent,
         itemBuilder: (BuildContext context, int index) {
-          final ColorListItemData item = widget.itemData(index);
           return _ColorListItem(
-            color: item.color,
-            title: item.title,
-            subtitle: item.subtitle,
+            colorItem: widget.itemData(index),
+            showColorType: widget.showColorType,
             itemButton: widget.itemButton?.call(index),
             focused: index == focusedIndex,
             onTap: () => widget.onItemTap?.call(index),
             onButtonPressed: () => widget.onItemButtonPressed?.call(index),
-            onFocusChange:
-                (bool hasFocus) => setState(() {
-                  focusedIndex = hasFocus ? index : -1;
-                }),
+            onFocusChange: (bool hasFocus) => setState(() {
+              focusedIndex = hasFocus ? index : -1;
+            }),
           );
         },
       ),
@@ -89,9 +88,8 @@ class _ColorListViewState extends State<ColorListView> {
 class _ColorListItem extends StatelessWidget {
   const _ColorListItem({
     super.key, // ignore: unused_element_parameter
-    required this.color,
-    required this.title,
-    this.subtitle,
+    required this.colorItem,
+    this.showColorType = true,
     this.itemButton,
     this.focused = false,
     this.onTap,
@@ -99,14 +97,11 @@ class _ColorListItem extends StatelessWidget {
     this.onFocusChange,
   });
 
-  /// The color of the list item.
-  final Color color;
+  /// The color item to display.
+  final ColorItem colorItem;
 
-  /// The title of the list item.
-  final String title;
-
-  /// The optional subtitle of the list item.
-  final String? subtitle;
+  /// Whether to show the color type as a subtitle.
+  final bool showColorType;
 
   /// Data for the optional button of the list item.
   final ItemButtonData? itemButton;
@@ -125,8 +120,8 @@ class _ColorListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width;
-
+    final double width = MediaQuery.sizeOf(context).width;
+    final Color color = colorItem.color;
     final Color contrastColor = color_utils.contrastColor(color);
 
     return InkWell(
@@ -147,16 +142,24 @@ class _ColorListItem extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 2.0,
               children: <Widget>[
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(color: contrastColor),
-                ),
-                if (subtitle != null)
+                if (showColorType)
                   Text(
-                    subtitle!,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: contrastColor),
+                    colorItem.type.name.toUpperCase(),
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(color: contrastColor),
                   ),
+
+                if (colorItem.name != null)
+                  Text(
+                    colorItem.name!,
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(color: contrastColor),
+                  ),
+
+                Text(
+                  colorItem.hexString,
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: contrastColor),
+                ),
               ],
             ),
             if (itemButton != null)

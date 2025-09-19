@@ -6,7 +6,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import '../common/strings.dart' as strings;
-import '../models/random_color.dart';
 import '../utils/color_utils.dart' as color_utils;
 
 /// A list view of color information items.
@@ -14,14 +13,14 @@ class ColorInfoList extends StatelessWidget {
   /// Creates a new [ColorInfoList] instance.
   const ColorInfoList({
     super.key,
-    required this.randomColor,
+    required this.color,
     required this.infos,
     this.onCopyPressed,
     this.onSharePressed,
   });
 
   /// The random color whose information is displayed in the list.
-  final RandomColor randomColor;
+  final Color color;
 
   /// The list of color information items to display.
   final List<({String key, String value})> infos;
@@ -34,7 +33,6 @@ class ColorInfoList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color color = randomColor.color;
     final Color contrastColor = color_utils.contrastColor(color);
     final double width = MediaQuery.of(context).size.width;
 

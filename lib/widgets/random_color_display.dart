@@ -4,7 +4,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../models/random_color.dart';
+import '../models/color_item.dart';
 import '../utils/color_utils.dart' as color_utils;
 
 /// A widget that displays a random color.
@@ -14,13 +14,13 @@ import '../utils/color_utils.dart' as color_utils;
 class RandomColorDisplay extends StatelessWidget {
   const RandomColorDisplay({
     super.key,
-    required this.randomColor,
+    required this.colorItem,
     this.onDoubleTap,
     this.onLongPress,
   });
 
   /// The random color to display.
-  final RandomColor randomColor;
+  final ColorItem colorItem;
 
   /// The function to call when the user double-taps the color hex code and name.
   final void Function()? onDoubleTap;
@@ -30,15 +30,16 @@ class RandomColorDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color contrastColor = color_utils.contrastColor(randomColor.color);
+    final Color contrastColor = color_utils.contrastColor(colorItem.color);
     final TextTheme textTheme = Theme.of(context).textTheme;
-    final TextStyle? hexTestStyle =
-        randomColor.name != null ? textTheme.titleMedium : textTheme.headlineMedium;
+    final TextStyle? hexTestStyle = colorItem.name != null
+        ? textTheme.titleMedium
+        : textTheme.headlineMedium;
 
     // Use an animated container to animate the color change
     return AnimatedContainer(
       duration: const Duration(seconds: 1),
-      color: randomColor.color,
+      color: colorItem.color,
       width: double.infinity,
       height: double.infinity,
       alignment: Alignment.center,
@@ -52,14 +53,14 @@ class RandomColorDisplay extends StatelessWidget {
           children: <Widget>[
             // Display the color hex code
             Text(
-              randomColor.hexString,
+              colorItem.hexString,
               style: hexTestStyle?.copyWith(color: contrastColor),
               textAlign: TextAlign.center,
             ),
             // Display the color name if it is not null
-            if (randomColor.name != null)
+            if (colorItem.name != null)
               Text(
-                randomColor.name!,
+                colorItem.name!,
                 style: textTheme.headlineMedium?.copyWith(color: contrastColor),
                 textAlign: TextAlign.center,
               ),

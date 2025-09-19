@@ -10,7 +10,7 @@ import 'package:share_plus/share_plus.dart';
 import '../common/consts.dart' as consts;
 import '../common/preferences.dart' as preferences;
 import '../common/strings.dart' as strings;
-import '../models/random_color.dart';
+import '../models/color_item.dart';
 import '../widgets/color_list_view.dart';
 import '../widgets/confirmation_dialog_box.dart';
 
@@ -70,7 +70,7 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
   /// Also displays a snackbar with an undo action.
   void _deleteFavoriteColor(int index) {
     // First remove the color from the list
-    late final RandomColor randomColor;
+    late final ColorItem randomColor;
     setState(() => randomColor = preferences.colorFavoritesList.removeAt(index));
 
     // Then display a snackbar with an undo action
@@ -106,25 +106,16 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
     );
   }
 
-  ColorListItemData _getItemData(int index) {
-    final RandomColor randomColor = preferences.colorFavoritesList.elementAt(index);
-    return (
-      color: randomColor.color,
-      title: randomColor.longTitle,
-      subtitle: strings.randomColorType(randomColor.type),
-    );
-  }
-
   /// Builds the list of favorite colors.
   Widget _buildFavoritesListView() {
     return ColorListView(
       key: const PageStorageKey<String>('favoritesListView'),
-      itemCount: () => preferences.colorFavoritesList.length,
-      itemData: _getItemData,
+      itemCount: preferences.colorFavoritesList.length,
+      itemData: (index) => preferences.colorFavoritesList.elementAt(index),
       itemButton: (_) => (icon: Icons.delete, tooltip: strings.removeFavTooltip),
       onItemTap: (int index) => Navigator.of(
         context,
-      ).pop<RandomColor>(preferences.colorFavoritesList.elementAt(index)),
+      ).pop<ColorItem>(preferences.colorFavoritesList.elementAt(index)),
       onItemButtonPressed: _deleteFavoriteColor,
     );
   }

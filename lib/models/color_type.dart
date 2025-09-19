@@ -4,37 +4,16 @@
 
 /// An enhanced enum to specify the different kinds of random colors.
 enum ColorType {
-  mixedColor,
-  basicColor,
-  webColor,
-  namedColor,
-  attractiveColor,
-  trueColor;
+  mixedColor(id: 'mixed', name: 'Mixed Color'),
+  basicColor(id: 'basic', name: 'Basic Color'),
+  webColor(id: 'web', name: 'Web Color'),
+  namedColor(id: 'named', name: 'Named Color'),
+  attractiveColor(id: 'attractive', name: 'Attractive Color'),
+  trueColor(id: 'true', name: 'True Color');
 
-  const ColorType();
+  const ColorType({required this.id, required this.name});
 
-  /// Creates a [ColorType] from a short string representation.
-  factory ColorType.fromShortString(String? value) {
-    return _shortStrings.entries
-        .firstWhere(
-          (MapEntry<ColorType, String> entry) => entry.value == value,
-          orElse: () => _shortStrings.entries.first,
-        )
-        .key;
-  }
+  final String id;
 
-  /// Returns a short string representation of this [ColorType].
-  String toShortString() {
-    return _shortStrings[this] ?? (throw ArgumentError('No short string representation for $this'));
-  }
-
-  /// A map of [ColorType] values to their short string representation.
-  static const Map<ColorType, String> _shortStrings = <ColorType, String>{
-    ColorType.mixedColor: 'mixed',
-    ColorType.basicColor: 'basic',
-    ColorType.webColor: 'web',
-    ColorType.namedColor: 'named',
-    ColorType.attractiveColor: 'attractive',
-    ColorType.trueColor: 'true',
-  };
+  final String name;
 }

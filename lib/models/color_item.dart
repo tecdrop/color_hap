@@ -8,8 +8,8 @@ import '../utils/color_utils.dart' as color_utils;
 import 'color_type.dart';
 
 /// A random color with a [Color] value, possibly a color name, and a color type.
-class RandomColor {
-  const RandomColor({required this.type, required this.color, this.name, this.listPosition});
+class ColorItem {
+  const ColorItem({required this.type, required this.color, this.name, this.listPosition});
 
   /// The type of this random color.
   final ColorType type;
@@ -20,10 +20,10 @@ class RandomColor {
   /// The color name. Can be null if the color is not a named color.
   final String? name;
 
-  /// The position of this [RandomColor] in the source list.
+  /// The position of this [ColorItem] in the source list.
   final int? listPosition;
 
-  /// The "long title" of the this [RandomColor].
+  /// The "long title" of the this [ColorItem].
   ///
   /// Returns the color name and hex code, or only the hex code if the color doesn't have a name.
   String get longTitle {
@@ -31,7 +31,7 @@ class RandomColor {
     return name != null ? '$name $hexString' : hexString;
   }
 
-  /// The title of this [RandomColor].
+  /// The title of this [ColorItem].
   ///
   /// Returns the color name if it exists, or the hex code otherwise.
   String get title {
@@ -39,15 +39,15 @@ class RandomColor {
     return name != null ? name! : hexString;
   }
 
-  /// The hex string of this [RandomColor].
+  /// The hex string of this [ColorItem].
   String get hexString => color_utils.toHexString(color);
 
-  /// Overrides the equality operator to compare two [RandomColor] objects.
-  /// Two [RandomColor]s are equal if they have the same color type, color, name, and list position.
+  /// Overrides the equality operator to compare two [ColorItem] objects.
+  /// Two [ColorItem]s are equal if they have the same color type, color, name, and list position.
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        other is RandomColor &&
+        other is ColorItem &&
             runtimeType == other.runtimeType &&
             type == other.type &&
             color == other.color &&
@@ -55,20 +55,20 @@ class RandomColor {
             listPosition == other.listPosition;
   }
 
-  /// Overrides the hash code getter to return the hash code of this [RandomColor].
+  /// Overrides the hash code getter to return the hash code of this [ColorItem].
   @override
   int get hashCode {
     return type.hashCode ^ color.hashCode ^ name.hashCode ^ listPosition.hashCode;
   }
 
-  /// Creates a [RandomColor] from a JSON object.
-  RandomColor.fromJson(Map<String, dynamic> json)
+  /// Creates a [ColorItem] from a JSON object.
+  ColorItem.fromJson(Map<String, dynamic> json)
     : type = ColorType.values[json['type']],
       color = Color(json['color']),
       name = json['name'],
       listPosition = json['listPosition'];
 
-  /// Converts this [RandomColor] to a JSON object.
+  /// Converts this [ColorItem] to a JSON object.
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'type': type.index,
@@ -78,8 +78,8 @@ class RandomColor {
     };
   }
 
-  /// Converts this [RandomColor] to a CSV string.
+  /// Converts this [ColorItem] to a CSV string.
   String toCsvString() {
-    return [hexString, name ?? '', type.toShortString()].join(',');
+    return [hexString, name ?? '', type.name].join(',');
   }
 }

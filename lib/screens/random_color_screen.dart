@@ -2,13 +2,16 @@
 // Use of this source code is governed by an MIT-style license that can be found
 // in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import '../common/preferences.dart' as preferences;
 import '../common/strings.dart' as strings;
+import '../models/color_item.dart';
 import '../models/color_type.dart';
 import '../models/random_color_generator.dart';
-import '../models/random_color.dart';
+import '../services/generators_initializer.dart';
 import '../utils/utils.dart' as utils;
 import '../widgets/internal/app_drawer.dart';
 import '../widgets/long_app_bar_title.dart';
@@ -17,6 +20,8 @@ import 'available_colors_screen.dart';
 import 'color_favorites_screen.dart';
 import 'color_info_screen.dart';
 import 'color_preview_screen.dart';
+import 'error_screen.dart';
+import 'loading_screen.dart';
 
 /// The Random Color screen, that is the home screen of the app.
 ///
@@ -29,12 +34,19 @@ class RandomColorScreen extends StatefulWidget {
 }
 
 class _RandomColorScreenState extends State<RandomColorScreen> {
+  bool _isLoading = true;
+  String? _loadingError;
+
+  late Map<ColorType, RandomColorGenerator> _generators;
+
+  final Random _random = Random();
+
   /// The type of colors to generate.
   late ColorType _colorType;
 
   // The current random color.
   // Initialized with a default black true color value to avoid null checks.
-  RandomColor _randomColor = const RandomColor(
+  ColorItem _randomColor = const ColorItem(
     type: ColorType.trueColor,
     color: Colors.black,
     listPosition: 0,
@@ -43,18 +55,58 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
   // The index of the current color in the favorites list.
   int _colorFavIndex = -1;
 
+  /// Loads all color lists from assets and initializes singleton generators
+  Future<void> _initAllGenerators() async {
+    try {
+      _generators = await initAllGenerators();
+
+      // Await a short delay to show the loading screen
+      // await Future<void>.delayed(const Duration(milliseconds: 1000));
+
+      // throw some exception for testing
+      // throw Exception(
+      //   'Test exception with a long message to see how it is displayed in the error screen.',
+      // );
+
+      // Done loading
+      _isLoading = false;
+
+      // Generate the first random color - this also updates state
+      _shuffleColor();
+    } catch (e) {
+      // Handle loading errors
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+          _loadingError = '${strings.initGeneratorsError} ${e.toString()}';
+        });
+      }
+    }
+  }
+
+  /// Retries loading color lists and generators
+  Future<void> _retryLoading() async {
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+        _loadingError = null;
+      });
+    }
+    await _initAllGenerators();
+  }
+
   @override
   void initState() {
     super.initState();
 
+    // Start color list loading (cached for subsequent uses)
+    _initAllGenerators();
+
     // Restore the last selected color type
     _colorType = preferences.colorType;
-
-    // Generate the first random color
-    _shuffleColor();
   }
 
-  void _updateState(RandomColor? randomColor) {
+  void _updateState(ColorItem? randomColor) {
     setState(() {
       if (randomColor != null) _randomColor = randomColor;
       _colorFavIndex = preferences.colorFavoritesList.indexOf(_randomColor);
@@ -63,9 +115,9 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
   /// Navigates to the Available Colors screen for the selected color type.
   void _gotoAvailableColorsScreen() async {
-    final RandomColor? randomColor = await utils.navigateTo<RandomColor>(
+    final ColorItem? randomColor = await utils.navigateTo<ColorItem>(
       context,
-      AvailableColorsScreen(colorType: _randomColor.type, initialRandomColor: _randomColor),
+      AvailableColorsScreen(generator: _generators[_colorType]!, initialColor: _randomColor),
     );
 
     // Update the current random color if a new color was selected
@@ -74,7 +126,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
   /// Navigates to the Available Colors screen for the selected color type.
   void _gotoColorFavoritesScreen() async {
-    final RandomColor? randomColor = await utils.navigateTo<RandomColor>(
+    final ColorItem? randomColor = await utils.navigateTo<ColorItem>(
       context,
       const ColorFavoritesScreen(),
     );
@@ -103,7 +155,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
       // Open the Color Information screen with the current color
       case _AppBarActions.colorInfo:
-        utils.navigateTo(context, ColorInfoScreen(randomColor: _randomColor));
+        utils.navigateTo(context, ColorInfoScreen(colorItem: _randomColor));
         break;
 
       // Open the Available Colors screen
@@ -115,7 +167,8 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
   /// Generates a new random color.
   void _shuffleColor() {
-    _updateState(nextRandomColor(_colorType));
+    final ColorItem randomColor = _generators[_colorType]!.next(_random);
+    _updateState(randomColor);
   }
 
   /// Copies the current color hex code and name (if available) to the clipboard.
@@ -125,6 +178,17 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const LoadingScreen(message: strings.loadingColorsMessage);
+    }
+
+    if (_loadingError != null) {
+      return ErrorScreen(
+        message: _loadingError!,
+        onRetry: _retryLoading,
+      );
+    }
+
     return Scaffold(
       // The app bar
       appBar: _AppBar(
@@ -135,23 +199,24 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
       // The app drawer
       drawer: AppDrawer(
-        randomColor: _randomColor,
+        colorItem: _randomColor,
         colorType: _colorType,
         onColorTypeChange: (ColorType colorType) {
           preferences.colorType = _colorType = colorType;
           _shuffleColor();
         },
         onColorFavoritesTap: _gotoColorFavoritesScreen,
-        onNextIdentityColor: () => _updateState(nextIdentityColor()),
+        // TODO: Reimplement the identity colors internal feature
+        // onNextIdentityColor: () => _updateState(nextIdentityColor()),
       ),
 
       // A simple body with the centered color display
       body: Center(
         child: RandomColorDisplay(
-          randomColor: _randomColor,
+          colorItem: _randomColor,
           // Navigate to the Color Preview screen when the user double-taps the color code/name
-          onDoubleTap:
-              () => utils.navigateTo(context, ColorPreviewScreen(color: _randomColor.color)),
+          onDoubleTap: () =>
+              utils.navigateTo(context, ColorPreviewScreen(color: _randomColor.color)),
           // Copy the color hex code/name to the clipboard when the user long-presses it
           onLongPress: copyColor,
         ),
