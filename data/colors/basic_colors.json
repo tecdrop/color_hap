@@ -1,0 +1,16 @@
+[
+  { "code": "#000000", "name": "black" },
+  { "code": "#FFFFFF", "name": "white" },
+  { "code": "#FF0000", "name": "red" },
+  { "code": "#00FF00", "name": "green" },
+  { "code": "#0000FF", "name": "blue" },
+  { "code": "#FFFF00", "name": "yellow" },
+  { "code": "#FF00FF", "name": "magenta" },
+  { "code": "#00FFFF", "name": "cyan" },
+  { "code": "#FF8800", "name": "orange" },
+  { "code": "#FF0080", "name": "rose" },
+  { "code": "#88FF00", "name": "chartreuse" },
+  { "code": "#8800FF", "name": "violet" },
+  { "code": "#00FF88", "name": "spring green" },
+  { "code": "#0088FF", "name": "azure" }
+]
