@@ -55,6 +55,9 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
   // The index of the current color in the favorites list.
   int _colorFavIndex = -1;
 
+  /// A map with the number of possible random colors for each color type.
+  late Map<ColorType, int> _possibilityCount;
+
   /// Loads all color lists from assets and initializes singleton generators
   Future<void> _initAllGenerators() async {
     try {
@@ -67,6 +70,12 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
       // throw Exception(
       //   'Test exception with a long message to see how it is displayed in the error screen.',
       // );
+
+      // Compute the number of possible random colors for each color type
+      _possibilityCount = _generators.map(
+        (ColorType type, RandomColorGenerator generator) =>
+            MapEntry<ColorType, int>(type, generator.length),
+      );
 
       // Done loading
       _isLoading = false;
@@ -201,6 +210,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
       drawer: AppDrawer(
         colorItem: _randomColor,
         colorType: _colorType,
+        possibilityCount: _possibilityCount,
         onColorTypeChange: (ColorType colorType) {
           preferences.colorType = _colorType = colorType;
           _shuffleColor();

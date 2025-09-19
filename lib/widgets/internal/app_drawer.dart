@@ -37,6 +37,7 @@ class AppDrawer extends StatelessWidget {
     super.key,
     required this.colorItem,
     required this.colorType,
+    required this.possibilityCount,
     this.onColorTypeChange,
     this.onColorFavoritesTap,
     this.onNextIdentityColor,
@@ -47,6 +48,9 @@ class AppDrawer extends StatelessWidget {
 
   /// The current type of random colors generated in the Random Color screen.
   final ColorType colorType;
+
+  /// A map with the number of possible random colors for each color type.
+  final Map<ColorType, int> possibilityCount;
 
   /// A callback function that is called when the color type changes.
   final void Function(ColorType)? onColorTypeChange;
@@ -129,13 +133,16 @@ class AppDrawer extends StatelessWidget {
     }
   }
 
+  /// A convenience function that returns a string with the number of possibilities.
+  String? _possibilities(ColorType colorType) {
+    int? count = possibilityCount[colorType];
+    return count != null
+        ? strings.possibilitiesDrawerSubtitle(utils.intToCommaSeparatedString(count))
+        : null;
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Simply a convenience function that returns a string with the number of possibilities.
-    String possibilities(ColorType colorType) => strings.possibilitiesDrawerSubtitle(
-      utils.intToCommaSeparatedString(possibilityCount(colorType)),
-    );
-
     return Drawer(
       child: ListView(
         children: <Widget>[
@@ -161,7 +168,7 @@ class AppDrawer extends StatelessWidget {
                 ? Icons.looks_one_rounded
                 : Icons.looks_one_outlined,
             title: strings.randomMixedColorDrawer,
-            subtitle: possibilities(ColorType.mixedColor),
+            subtitle: _possibilities(ColorType.mixedColor),
             item: AppDrawerItems.randomMixedColor,
           ),
 
@@ -172,7 +179,7 @@ class AppDrawer extends StatelessWidget {
                 ? Icons.looks_two_rounded
                 : Icons.looks_two_outlined,
             title: strings.randomBasicColorDrawer,
-            subtitle: possibilities(ColorType.basicColor),
+            subtitle: _possibilities(ColorType.basicColor),
             item: AppDrawerItems.randomBasicColor,
           ),
 
@@ -181,7 +188,7 @@ class AppDrawer extends StatelessWidget {
             context,
             icon: colorType == ColorType.webColor ? Icons.looks_3_rounded : Icons.looks_3_outlined,
             title: strings.randomWebColorDrawer,
-            subtitle: possibilities(ColorType.webColor),
+            subtitle: _possibilities(ColorType.webColor),
             item: AppDrawerItems.randomWebColor,
           ),
 
@@ -192,7 +199,7 @@ class AppDrawer extends StatelessWidget {
                 ? Icons.looks_4_rounded
                 : Icons.looks_4_outlined,
             title: strings.randomNamedColorDrawer,
-            subtitle: possibilities(ColorType.namedColor),
+            subtitle: _possibilities(ColorType.namedColor),
             item: AppDrawerItems.randomNamedColor,
           ),
 
@@ -203,7 +210,7 @@ class AppDrawer extends StatelessWidget {
                 ? Icons.looks_5_rounded
                 : Icons.looks_5_outlined,
             title: strings.randomAttractiveColorDrawer,
-            subtitle: possibilities(ColorType.attractiveColor),
+            subtitle: _possibilities(ColorType.attractiveColor),
             item: AppDrawerItems.randomAttractiveColor,
           ),
 
@@ -212,7 +219,7 @@ class AppDrawer extends StatelessWidget {
             context,
             icon: colorType == ColorType.trueColor ? Icons.looks_6_rounded : Icons.looks_6_outlined,
             title: strings.randomTrueColorDrawer,
-            subtitle: possibilities(ColorType.trueColor),
+            subtitle: _possibilities(ColorType.trueColor),
             item: AppDrawerItems.randomTrueColor,
           ),
 
