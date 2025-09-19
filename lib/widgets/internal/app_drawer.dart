@@ -6,11 +6,8 @@ import 'package:flutter/material.dart';
 
 import '../../common/preferences.dart' as preferences;
 import '../../common/strings.dart' as strings;
-import '../../common/urls.dart' as urls;
 import '../../models/color_item.dart';
 import '../../models/color_type.dart';
-import '../../screens/color_info_screen.dart';
-import '../../screens/color_preview_screen.dart';
 import '../../utils/color_utils.dart' as color_utils;
 import '../../utils/utils.dart' as utils;
 
@@ -25,7 +22,9 @@ enum AppDrawerItems {
   randomTrueColor,
   colorInfo,
   colorPreview,
-  colorFavorites,
+  colorShades,
+  availableColors,
+  favoriteColors,
   help,
   viewSource,
   rateApp,
@@ -38,8 +37,7 @@ class AppDrawer extends StatelessWidget {
     required this.colorItem,
     required this.colorType,
     required this.possibilityCount,
-    this.onColorTypeChange,
-    this.onColorFavoritesTap,
+    this.onItemTap,
     this.onNextIdentityColor,
   });
 
@@ -52,86 +50,11 @@ class AppDrawer extends StatelessWidget {
   /// A map with the number of possible random colors for each color type.
   final Map<ColorType, int> possibilityCount;
 
-  /// A callback function that is called when the color type changes.
-  final void Function(ColorType)? onColorTypeChange;
-
-  /// A callback function that is called when the user taps the color favorites item.
-  final void Function()? onColorFavoritesTap;
+  /// A callback function that is called when the user taps an app drawer item.
+  final void Function(AppDrawerItems)? onItemTap;
 
   /// A callback function that is called to go to the next app identity color.
   final void Function()? onNextIdentityColor;
-
-  /// Starts a specific functionality of the app when the user taps a drawer [item].
-  void _onItemTap(BuildContext context, AppDrawerItems item) {
-    Navigator.pop(context); // First, close the drawer
-
-    switch (item) {
-      // Launch the external RGB Color Wallpaper Pro url
-      case AppDrawerItems.setWallpaper:
-        utils.launchUrlExternal(context, urls.setWallpaper);
-        break;
-
-      // Reopen the Random Color screen for generating random colors (of any type)
-      case AppDrawerItems.randomMixedColor:
-        onColorTypeChange?.call(ColorType.mixedColor);
-        break;
-
-      // Reopen the Random Color screen for generating random basic colors
-      case AppDrawerItems.randomBasicColor:
-        onColorTypeChange?.call(ColorType.basicColor);
-        break;
-
-      // Reopen the Random Color screen for generating random web colors
-      case AppDrawerItems.randomWebColor:
-        onColorTypeChange?.call(ColorType.webColor);
-        break;
-
-      // Reopen the Random Color screen for generating random named colors
-      case AppDrawerItems.randomNamedColor:
-        onColorTypeChange?.call(ColorType.namedColor);
-        break;
-
-      // Reopen the Random Color screen for generating random attractive colors
-      case AppDrawerItems.randomAttractiveColor:
-        onColorTypeChange?.call(ColorType.attractiveColor);
-        break;
-
-      // Reopen the Random Color screen for generating random true colors
-      case AppDrawerItems.randomTrueColor:
-        onColorTypeChange?.call(ColorType.trueColor);
-        break;
-
-      // Open the Color Info screen with the current random color
-      case AppDrawerItems.colorInfo:
-        utils.navigateTo(context, ColorInfoScreen(colorItem: colorItem));
-        break;
-
-      // Open the Color Preview screen with the current random color
-      case AppDrawerItems.colorPreview:
-        utils.navigateTo(context, ColorPreviewScreen(color: colorItem.color));
-        break;
-
-      // Open the Color Favorites screen
-      case AppDrawerItems.colorFavorites:
-        onColorFavoritesTap?.call();
-        break;
-
-      // Launch the external Online Help url
-      case AppDrawerItems.help:
-        utils.launchUrlExternal(context, urls.help);
-        break;
-
-      // Launch the external View Source url
-      case AppDrawerItems.viewSource:
-        utils.launchUrlExternal(context, urls.viewSource);
-        break;
-
-      // Launch the external Rate App url
-      case AppDrawerItems.rateApp:
-        utils.launchUrlExternal(context, urls.getRateUrl());
-        break;
-    }
-  }
 
   /// A convenience function that returns a string with the number of possibilities.
   String? _possibilities(ColorType colorType) {
@@ -156,7 +79,7 @@ class AppDrawer extends StatelessWidget {
             title: const Text(strings.setWallpaperDrawer),
             subtitle: const Text(strings.setWallpaperDrawerSubtitle),
             isThreeLine: true,
-            onTap: () => _onItemTap(context, AppDrawerItems.setWallpaper),
+            onTap: () => onItemTap?.call(AppDrawerItems.setWallpaper),
           ),
 
           const Divider(),
@@ -241,6 +164,24 @@ class AppDrawer extends StatelessWidget {
             item: AppDrawerItems.colorPreview,
           ),
 
+          // Color Shades drawer item
+          _buildItem(
+            context,
+            // icon: Icons.gradient_outlined,
+            icon: Icons.tonality_outlined,
+            title: strings.colorShadesDrawer,
+            item: AppDrawerItems.colorShades,
+          ),
+
+          // Available Colors drawer item
+          _buildItem(
+            context,
+            // icon: Icons.palette_outlined,
+            icon: Icons.list_alt_outlined,
+            title: strings.availableColorsDrawer,
+            item: AppDrawerItems.availableColors,
+          ),
+
           // Color Favorites drawer item
           _buildItem(
             context,
@@ -252,7 +193,7 @@ class AppDrawer extends StatelessWidget {
               utils.intToCommaSeparatedString(preferences.colorFavoritesList.length),
               isPlural: preferences.colorFavoritesList.length != 1,
             ),
-            item: AppDrawerItems.colorFavorites,
+            item: AppDrawerItems.favoriteColors,
           ),
 
           GestureDetector(
@@ -303,7 +244,7 @@ class AppDrawer extends StatelessWidget {
       leading: icon != null ? Icon(icon) : null,
       title: Text(title),
       subtitle: subtitle != null ? Text(subtitle) : null,
-      onTap: () => _onItemTap(context, item),
+      onTap: () => onItemTap?.call(item),
       selected: selected,
     );
   }

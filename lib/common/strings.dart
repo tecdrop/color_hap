@@ -60,6 +60,8 @@ const String colorReferenceDrawer = 'Color Reference';
 
 const String colorInfoDrawer = 'Color Information';
 const String colorPreviewDrawer = 'Color Preview';
+const String colorShadesDrawer = 'Color Shades';
+const String availableColorsDrawer = 'Available Colors';
 const String colorFavoritesDrawer = 'Favorite Colors';
 String colorFavoritesSubtitle(String length, {bool isPlural = true}) =>
     '$length color${isPlural ? 's' : ''}';

@@ -22,6 +22,7 @@ import 'color_info_screen.dart';
 import 'color_preview_screen.dart';
 import 'color_shades_screen.dart';
 import 'error_screen.dart';
+import '../../common/urls.dart' as urls;
 import 'loading_screen.dart';
 
 /// The Random Color screen, that is the home screen of the app.
@@ -123,6 +124,16 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
     });
   }
 
+  /// Navigates to the Color Info screen with the current color.
+  void _gotoColorInfoScreen() {
+    utils.navigateTo(context, ColorInfoScreen(colorItem: _randomColor));
+  }
+
+  /// Navigates to the Color Preview screen with the current color.
+  void _gotoColorPreviewScreen() {
+    utils.navigateTo(context, ColorPreviewScreen(color: _randomColor.color));
+  }
+
   /// Navigates to the Available Colors screen for the selected color type.
   void _gotoAvailableColorsScreen() async {
     // Get the generator for the type of the current random color
@@ -181,7 +192,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
       // Open the Color Information screen with the current color
       case _AppBarActions.colorInfo:
-        utils.navigateTo(context, ColorInfoScreen(colorItem: _randomColor));
+        _gotoColorInfoScreen();
         break;
 
       // Open the Color Shades screen for the current color
@@ -212,6 +223,93 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
     await utils.copyToClipboard(context, _randomColor.longTitle);
   }
 
+  void changeColorType(ColorType colorType) {
+    preferences.colorType = _colorType = colorType;
+    _shuffleColor();
+  }
+
+  /// Starts a specific functionality of the app when the user taps a drawer [item].
+  void _onDrawerItemTap(AppDrawerItems item) {
+    Navigator.pop(context); // First, close the drawer
+
+    switch (item) {
+      // Launch the external RGB Color Wallpaper Pro url
+      case AppDrawerItems.setWallpaper:
+        utils.launchUrlExternal(context, urls.setWallpaper);
+        break;
+
+      // Reopen the Random Color screen for generating random colors (of any type)
+      case AppDrawerItems.randomMixedColor:
+        changeColorType(ColorType.mixedColor);
+        break;
+
+      // Reopen the Random Color screen for generating random basic colors
+      case AppDrawerItems.randomBasicColor:
+        changeColorType(ColorType.basicColor);
+        break;
+
+      // Reopen the Random Color screen for generating random web colors
+      case AppDrawerItems.randomWebColor:
+        changeColorType(ColorType.webColor);
+        break;
+
+      // Reopen the Random Color screen for generating random named colors
+      case AppDrawerItems.randomNamedColor:
+        changeColorType(ColorType.namedColor);
+        break;
+
+      // Reopen the Random Color screen for generating random attractive colors
+      case AppDrawerItems.randomAttractiveColor:
+        changeColorType(ColorType.attractiveColor);
+        break;
+
+      // Reopen the Random Color screen for generating random true colors
+      case AppDrawerItems.randomTrueColor:
+        changeColorType(ColorType.trueColor);
+        break;
+
+      // Open the Color Info screen with the current random color
+      case AppDrawerItems.colorInfo:
+        _gotoColorInfoScreen();
+        break;
+
+      // Open the Color Preview screen with the current random color
+      case AppDrawerItems.colorPreview:
+        _gotoColorPreviewScreen();
+        break;
+
+      // Open the Color Shades screen for the current color
+      case AppDrawerItems.colorShades:
+        _gotoColorShadesScreen();
+        break;
+
+      // Open the Available Colors screen
+      case AppDrawerItems.availableColors:
+        _gotoAvailableColorsScreen();
+        break;
+
+      // Open the Color Favorites screen
+      case AppDrawerItems.favoriteColors:
+        _gotoColorFavoritesScreen();
+        break;
+
+      // Launch the external Online Help url
+      case AppDrawerItems.help:
+        utils.launchUrlExternal(context, urls.help);
+        break;
+
+      // Launch the external View Source url
+      case AppDrawerItems.viewSource:
+        utils.launchUrlExternal(context, urls.viewSource);
+        break;
+
+      // Launch the external Rate App url
+      case AppDrawerItems.rateApp:
+        utils.launchUrlExternal(context, urls.getRateUrl());
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
@@ -238,11 +336,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         colorItem: _randomColor,
         colorType: _colorType,
         possibilityCount: _possibilityCount,
-        onColorTypeChange: (ColorType colorType) {
-          preferences.colorType = _colorType = colorType;
-          _shuffleColor();
-        },
-        onColorFavoritesTap: _gotoColorFavoritesScreen,
+        onItemTap: _onDrawerItemTap,
         // TODO: Reimplement the identity colors internal feature
         // onNextIdentityColor: () => _updateState(nextIdentityColor()),
       ),
@@ -252,8 +346,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         child: RandomColorDisplay(
           colorItem: _randomColor,
           // Navigate to the Color Preview screen when the user double-taps the color code/name
-          onDoubleTap: () =>
-              utils.navigateTo(context, ColorPreviewScreen(color: _randomColor.color)),
+          onDoubleTap: () => _gotoColorPreviewScreen(),
           // Copy the color hex code/name to the clipboard when the user long-presses it
           onLongPress: copyColor,
         ),
