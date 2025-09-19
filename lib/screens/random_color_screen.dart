@@ -124,9 +124,14 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
   /// Navigates to the Available Colors screen for the selected color type.
   void _gotoAvailableColorsScreen() async {
+    // Get the generator for the type of the current random color
+    final RandomColorGenerator curColorGenerator = _generators[_randomColor.type]!;
+
+    // Navigate to the Available Colors screen for the current color type, passing the current
+    // random color as the initial selected color
     final ColorItem? randomColor = await utils.navigateTo<ColorItem>(
       context,
-      AvailableColorsScreen(generator: _generators[_colorType]!, initialColor: _randomColor),
+      AvailableColorsScreen(generator: curColorGenerator, initialColor: _randomColor),
     );
 
     // Update the current random color if a new color was selected

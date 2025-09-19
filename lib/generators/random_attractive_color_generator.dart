@@ -5,10 +5,9 @@
 import '../models/color_type.dart';
 import '../models/random_list_based_color_generator.dart';
 
-// TODO: Implement the attractive color generator
 class RandomAttractiveColorGenerator extends RandomListBasedColorGenerator {
   RandomAttractiveColorGenerator(super.colors);
 
   @override
-  ColorType get colorType => ColorType.basicColor;
+  ColorType get colorType => ColorType.attractiveColor;
 }

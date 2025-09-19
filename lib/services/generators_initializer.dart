@@ -27,6 +27,7 @@ Future<Map<ColorType, RandomColorGenerator>> initAllGenerators() async {
     ColorType.basicColor: 'data/colors/basic_colors.json',
     ColorType.webColor: 'data/colors/web_colors.json',
     ColorType.namedColor: 'data/colors/named_colors.json',
+    ColorType.attractiveColor: 'data/colors/attractive_colors.json',
   };
 
   final Map<ColorType, List<ColorItem>> colorLists = await _loadAllColorLists(catalogPaths);
@@ -35,8 +36,6 @@ Future<Map<ColorType, RandomColorGenerator>> initAllGenerators() async {
     ColorType.basicColor: RandomBasicColorGenerator(colorLists[ColorType.basicColor] ?? []),
     ColorType.webColor: RandomWebColorGenerator(colorLists[ColorType.webColor] ?? []),
     ColorType.namedColor: RandomNamedColorGenerator(colorLists[ColorType.namedColor] ?? []),
-
-    // TODO: Update the generator constructor invocation after implementing the generator
     ColorType.attractiveColor: RandomAttractiveColorGenerator(
       colorLists[ColorType.attractiveColor] ?? [],
     ),
@@ -82,7 +81,8 @@ Map<ColorType, List<ColorItem>> _parseAllColorLists(Map<ColorType, String> jsonD
         if (item is! Map) continue; // skip invalid entries
         final String? rawCode = (item['code'] as String?)?.trim();
         final String? name = (item['name'] as String?)?.trim();
-        if (rawCode == null || rawCode.isEmpty || name == null || name.isEmpty) {
+        // if (rawCode == null || rawCode.isEmpty || name == null || name.isEmpty) {
+        if (rawCode == null || rawCode.isEmpty) {
           continue; // skip invalid entries
         }
 
