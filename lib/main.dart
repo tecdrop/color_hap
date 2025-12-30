@@ -12,11 +12,6 @@ import 'screens/random_color_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // if (kDebugMode) {
-  //   // Check for duplicate attractive colors in the basic, web, and named colors lists
-  //   checkForDuplicateAttractiveColors();
-  // }
-
   // First try to load the app settings from Shared Preferences
   await Future.any([preferences.loadSettings(), Future.delayed(const Duration(seconds: 5))]);
 
