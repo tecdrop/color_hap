@@ -38,7 +38,6 @@ class AppDrawer extends StatelessWidget {
     required this.colorType,
     required this.possibilityCount,
     this.onItemTap,
-    this.onNextIdentityColor,
   });
 
   /// The current random color.
@@ -52,9 +51,6 @@ class AppDrawer extends StatelessWidget {
 
   /// A callback function that is called when the user taps an app drawer item.
   final void Function(AppDrawerItems)? onItemTap;
-
-  /// A callback function that is called to go to the next app identity color.
-  final void Function()? onNextIdentityColor;
 
   /// A convenience function that returns a string with the number of possibilities.
   String? _possibilities(ColorType colorType) {
@@ -196,11 +192,7 @@ class AppDrawer extends StatelessWidget {
             item: AppDrawerItems.favoriteColors,
           ),
 
-          GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onLongPress: onNextIdentityColor,
-            child: const Divider(),
-          ),
+          const Divider(),
 
           // Help & Support drawer item
           _buildItem(

@@ -339,8 +339,6 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         colorType: _colorType,
         possibilityCount: _possibilityCount,
         onItemTap: _onDrawerItemTap,
-        // TODO: Reimplement the identity colors internal feature
-        // onNextIdentityColor: () => _updateState(nextIdentityColor()),
       ),
 
       // A simple body with the centered color display
