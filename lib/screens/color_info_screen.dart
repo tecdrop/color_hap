@@ -2,6 +2,7 @@
 // Use of this source code is governed by an MIT-style license that can be found
 // in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -132,7 +133,10 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
           files: [xFile],
         ),
       );
-    } catch (e) {
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        debugPrint('Failed to share color swatch: $e');
+      }
       utils.showSnackBarForAsync(messengerState, strings.shareSwatchError);
     }
   }
