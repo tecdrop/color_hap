@@ -97,10 +97,8 @@ Map<ColorType, List<ColorItem>> _parseAllColorLists(Map<ColorType, String> jsonD
       // Add the successfully parsed color list to the result
       result[colorType] = colors;
     } on Exception catch (e) {
-      // Skip failed catalogs, log if needed
-      if (kDebugMode) {
-        debugPrint('Failed to parse catalog for $colorType: $e');
-      }
+      // Skip failed catalogs, just log in debug mode
+      if (kDebugMode) debugPrint('Failed to parse catalog for $colorType: $e');
     }
   }
 

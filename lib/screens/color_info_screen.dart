@@ -103,9 +103,7 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
     try {
       await SharePlus.instance.share(ShareParams(text: value));
     } on Exception catch (e) {
-      if (kDebugMode) {
-        debugPrint('Failed to share item: $e');
-      }
+      if (kDebugMode) debugPrint('Failed to share item: $e');
       utils.showSnackBarForAsync(messengerState, strings.shareItemError);
     }
   }
@@ -123,9 +121,7 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
     try {
       await SharePlus.instance.share(ShareParams(text: _infosAsString));
     } on Exception catch (e) {
-      if (kDebugMode) {
-        debugPrint('Failed to share all info: $e');
-      }
+      if (kDebugMode) debugPrint('Failed to share all info: $e');
       utils.showSnackBarForAsync(messengerState, strings.shareAllError);
     }
   }
@@ -150,9 +146,7 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
         ),
       );
     } on Exception catch (e) {
-      if (kDebugMode) {
-        debugPrint('Failed to share color swatch: $e');
-      }
+      if (kDebugMode) debugPrint('Failed to share color swatch: $e');
       utils.showSnackBarForAsync(messengerState, strings.shareSwatchError);
     }
   }

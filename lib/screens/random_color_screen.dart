@@ -87,9 +87,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
       _shuffleColor();
     } on Exception catch (e) {
       // Handle loading errors
-      if (kDebugMode) {
-        debugPrint('Failed to initialize color generators: $e');
-      }
+      if (kDebugMode) debugPrint('Failed to initialize color generators: $e');
       if (mounted) {
         setState(() {
           _isLoading = false;

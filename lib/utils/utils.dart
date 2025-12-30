@@ -56,9 +56,7 @@ Future<void> copyToClipboard(BuildContext context, String value) async {
     await Clipboard.setData(ClipboardData(text: value));
     showSnackBarForAsync(messengerState, strings.copiedSnack(value));
   } on Exception catch (e) {
-    if (kDebugMode) {
-      debugPrint('Failed to copy to clipboard: $e');
-    }
+    if (kDebugMode) debugPrint('Failed to copy to clipboard: $e');
     showSnackBarForAsync(messengerState, strings.copiedErrorSnack(value));
   }
 }
