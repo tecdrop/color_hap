@@ -9,11 +9,15 @@ enum ColorType {
   webColor(id: 'web', name: 'Web Color'),
   namedColor(id: 'named', name: 'Named Color'),
   attractiveColor(id: 'attractive', name: 'Attractive Color'),
-  trueColor(id: 'true', name: 'True Color');
+  trueColor(id: 'true', name: 'True Color')
+  ;
 
+  /// Creates a new instance of [ColorType].
   const ColorType({required this.id, required this.name});
 
+  /// The unique identifier of the color type.
   final String id;
 
+  /// The name of the color type.
   final String name;
 }

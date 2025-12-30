@@ -3,10 +3,10 @@
 // in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
 import 'dart:math';
-
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 
+import '../../common/urls.dart' as urls;
 import '../common/preferences.dart' as preferences;
 import '../common/strings.dart' as strings;
 import '../models/color_item.dart';
@@ -23,7 +23,6 @@ import 'color_info_screen.dart';
 import 'color_preview_screen.dart';
 import 'color_shades_screen.dart';
 import 'error_screen.dart';
-import '../../common/urls.dart' as urls;
 import 'loading_screen.dart';
 
 /// The Random Color screen, that is the home screen of the app.

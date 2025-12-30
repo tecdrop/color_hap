@@ -156,5 +156,4 @@ const String loadingColorsMessage = 'Loading colors...';
 // -----------------------------------------------------------------------------
 
 const String errorScreenTitle = 'Error';
-// const String errorLoadingColorsMessage = 'Failed to load colors';
 const String retryButton = 'Retry';

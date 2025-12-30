@@ -6,7 +6,6 @@
 library;
 
 import 'dart:convert' as convert;
-
 import 'package:flutter/foundation.dart' show compute, kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -17,9 +16,9 @@ import '../generators/random_mixed_color_generator.dart';
 import '../generators/random_named_color_generator.dart';
 import '../generators/random_true_color_generator.dart';
 import '../generators/random_web_color_generator.dart';
+import '../models/color_item.dart';
 import '../models/color_type.dart';
 import '../models/random_color_generator.dart';
-import '../models/color_item.dart';
 import '../utils/color_utils.dart' as color_utils;
 
 Future<Map<ColorType, RandomColorGenerator>> initAllGenerators() async {

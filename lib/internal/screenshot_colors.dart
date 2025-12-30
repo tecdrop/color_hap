@@ -2,7 +2,7 @@
 // Use of this source code is governed by an MIT-style license that can be found
 // in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
-/// Identity colors used for generating marketing screenshots.
+/// Branding colors used for generating marketing screenshots.
 ///
 /// These are dev-only colors that can be loaded via the Favorites screen menu to facilitate
 /// consistent screenshot generation across different screens of the app.
@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import '../models/color_item.dart';
 import '../models/color_type.dart';
 
-/// The predefined list of identity colors for screenshot generation.
+/// The predefined list of branding colors for screenshot generation.
 const List<ColorItem> screenshotColors = [
   ColorItem(
     type: ColorType.basicColor,
