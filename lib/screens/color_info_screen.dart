@@ -98,8 +98,16 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
   }
 
   /// Share the value of the item in the list that the user wants to share.
-  void _shareItem(String key, String value) {
-    SharePlus.instance.share(ShareParams(text: value));
+  Future<void> _shareItem(BuildContext context, String key, String value) async {
+    ScaffoldMessengerState messengerState = ScaffoldMessenger.of(context);
+    try {
+      await SharePlus.instance.share(ShareParams(text: value));
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        debugPrint('Failed to share item: $e');
+      }
+      utils.showSnackBarForAsync(messengerState, strings.shareItemError);
+    }
   }
 
   /// Copies all the color information to the clipboard.
@@ -110,8 +118,16 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
   }
 
   /// Shares all the color information.
-  void _shareAll() async {
-    SharePlus.instance.share(ShareParams(text: _infosAsString));
+  Future<void> _shareAll() async {
+    ScaffoldMessengerState messengerState = ScaffoldMessenger.of(context);
+    try {
+      await SharePlus.instance.share(ShareParams(text: _infosAsString));
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        debugPrint('Failed to share all info: $e');
+      }
+      utils.showSnackBarForAsync(messengerState, strings.shareAllError);
+    }
   }
 
   /// Shares the color swatch image.
@@ -157,7 +173,7 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
         color: widget.colorItem.color,
         infos: _infos,
         onCopyPressed: (key, value) => _copyItem(context, key, value),
-        onSharePressed: (key, value) => _shareItem(key, value),
+        onSharePressed: (key, value) => _shareItem(context, key, value),
       ),
 
       // The Share Swatch floating action button

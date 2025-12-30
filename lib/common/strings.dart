@@ -114,6 +114,8 @@ const String brightnessInfo = 'Brightness';
 const String itemCopyTooltip = 'Copy value';
 const String itemShareTooltip = 'Share value';
 const String allInfoCopied = 'All color information copied to clipboard';
+const String shareItemError = 'Failed to share';
+const String shareAllError = 'Failed to share color information';
 
 // -----------------------------------------------------------------------------------------------
 // Favorite Colors Screen
