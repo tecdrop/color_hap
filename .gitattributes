@@ -1,2 +1,2 @@
-# Disable automatic line ending conversion for all file types
-* -text
+# Set default behavior to automatically normalize line endings and use LF everywhere
+* text=auto eol=lf
