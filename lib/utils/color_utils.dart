@@ -131,7 +131,10 @@ Future<Uint8List> buildColorSwatch(Color color, int width, int height) async {
   // Convert the picture to a PNG image and return its bytes
   final ui.Image img = await picture.toImage(width, height);
   final ByteData? pngBytes = await img.toByteData(format: ui.ImageByteFormat.png);
-  return pngBytes!.buffer.asUint8List();
+  if (pngBytes == null) {
+    throw Exception('Failed to encode color swatch to PNG');
+  }
+  return pngBytes.buffer.asUint8List();
 }
 
 List<Color> generateShades(Color baseColor, {int count = 10}) {

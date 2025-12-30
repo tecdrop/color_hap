@@ -98,6 +98,7 @@ const String colorWebSearchAction = 'More on the web';
 const String shareSwatchFAB = 'Share swatch';
 String shareSwatchMessage(String colorTitle) =>
     '$colorTitle, a random color generated just for you with ColorHap 🎨 https://colorhap.tecdrop.com/';
+const String shareSwatchError = 'Failed to share color swatch';
 
 const String colorNameInfo = 'Name';
 const String colorTitleInfo = 'Name & Code';

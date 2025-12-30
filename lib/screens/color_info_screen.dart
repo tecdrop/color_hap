@@ -113,23 +113,28 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
     SharePlus.instance.share(ShareParams(text: _infosAsString));
   }
 
-  /// Shares all the color information.
-  void _shareColorSwatch() async {
-    // Generate the color swatch image file name
-    final String hexCode = color_utils.toHexString(widget.colorItem.color, withHash: false);
-    final String fileName = consts.colorSwatchFileName(hexCode);
+  /// Shares the color swatch image.
+  Future<void> _shareColorSwatch() async {
+    ScaffoldMessengerState messengerState = ScaffoldMessenger.of(context);
+    try {
+      // Generate the color swatch image file name
+      final String hexCode = color_utils.toHexString(widget.colorItem.color, withHash: false);
+      final String fileName = consts.colorSwatchFileName(hexCode);
 
-    // Create the color swatch image file
-    Uint8List pngBytes = await color_utils.buildColorSwatch(widget.colorItem.color, 512, 512);
-    final XFile xFile = XFile.fromData(pngBytes, name: fileName, mimeType: 'image/png');
+      // Create the color swatch image file
+      Uint8List pngBytes = await color_utils.buildColorSwatch(widget.colorItem.color, 512, 512);
+      final XFile xFile = XFile.fromData(pngBytes, name: fileName, mimeType: 'image/png');
 
-    // Summon the platform's share sheet to share the image file
-    await SharePlus.instance.share(
-      ShareParams(
-        text: strings.shareSwatchMessage(widget.colorItem.longTitle),
-        files: [xFile],
-      ),
-    );
+      // Summon the platform's share sheet to share the image file
+      await SharePlus.instance.share(
+        ShareParams(
+          text: strings.shareSwatchMessage(widget.colorItem.longTitle),
+          files: [xFile],
+        ),
+      );
+    } catch (e) {
+      utils.showSnackBarForAsync(messengerState, strings.shareSwatchError);
+    }
   }
 
   @override
