@@ -16,20 +16,19 @@ Future<bool?> showConfirmationDialogBox(
 }) async {
   return await showDialog<bool>(
     context: context,
-    builder:
-        (context) => AlertDialog(
-          title: title != null ? Text(title) : null,
-          content: content != null ? Text(content) : null,
-          actions: <Widget>[
-            TextButton(
-              child: Text(negativeActionText),
-              onPressed: () => Navigator.of(context).pop(false),
-            ),
-            TextButton(
-              child: Text(positiveActionText),
-              onPressed: () => Navigator.of(context).pop(true),
-            ),
-          ],
+    builder: (context) => AlertDialog(
+      title: title != null ? Text(title) : null,
+      content: content != null ? Text(content) : null,
+      actions: <Widget>[
+        TextButton(
+          child: Text(negativeActionText),
+          onPressed: () => Navigator.of(context).pop(false),
         ),
+        TextButton(
+          child: Text(positiveActionText),
+          onPressed: () => Navigator.of(context).pop(true),
+        ),
+      ],
+    ),
   );
 }
