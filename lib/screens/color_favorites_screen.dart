@@ -3,6 +3,7 @@
 // in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
 import 'dart:convert';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 
 import 'package:share_plus/share_plus.dart';
@@ -10,6 +11,7 @@ import 'package:share_plus/share_plus.dart';
 import '../common/consts.dart' as consts;
 import '../common/preferences.dart' as preferences;
 import '../common/strings.dart' as strings;
+import '../internal/screenshot_colors.dart';
 import '../models/color_item.dart';
 import '../widgets/color_list_view.dart';
 import '../widgets/confirmation_dialog_box.dart';
@@ -40,6 +42,16 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
     );
   }
 
+  /// Loads the predefined screenshot colors into the favorites list.
+  void _loadScreenshotColors() {
+    setState(() {
+      preferences.colorFavoritesList.clear();
+      for (final color in screenshotColors) {
+        preferences.colorFavoritesList.toggle(color);
+      }
+    });
+  }
+
   /// Clears all the favorite colors.
   void _clearFavorites() async {
     bool? showConfirmation = await showConfirmationDialogBox(
@@ -56,6 +68,9 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
   /// Performs the specified action on the app bar.
   Future<void> _onAppBarAction(_AppBarActions action) async {
     switch (action) {
+      case _AppBarActions.loadScreenshotColors:
+        _loadScreenshotColors();
+        break;
       case _AppBarActions.exportFavoritesAsCsv:
         _exportFavorites();
         break;
@@ -140,7 +155,7 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
 }
 
 /// Enum that defines the actions of the app bar.
-enum _AppBarActions { clearFavorites, exportFavoritesAsCsv }
+enum _AppBarActions { loadScreenshotColors, clearFavorites, exportFavoritesAsCsv }
 
 /// The app bar of the Color Info screen.
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -171,6 +186,15 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
         PopupMenuButton<_AppBarActions>(
           onSelected: onAction,
           itemBuilder: (BuildContext context) => <PopupMenuEntry<_AppBarActions>>[
+            // Dev-only: Load screenshot colors action
+            if (kDebugMode)
+              const PopupMenuItem<_AppBarActions>(
+                value: _AppBarActions.loadScreenshotColors,
+                child: Text(strings.loadScreenshotColors),
+              ),
+
+            if (kDebugMode) const PopupMenuDivider(),
+
             // The export as CSV action
             PopupMenuItem<_AppBarActions>(
               value: _AppBarActions.exportFavoritesAsCsv,
