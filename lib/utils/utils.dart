@@ -5,6 +5,7 @@
 /// Various utility functions.
 library;
 
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -54,7 +55,10 @@ Future<void> copyToClipboard(BuildContext context, String value) async {
   try {
     await Clipboard.setData(ClipboardData(text: value));
     showSnackBarForAsync(messengerState, strings.copiedSnack(value));
-  } catch (error) {
+  } on Exception catch (e) {
+    if (kDebugMode) {
+      debugPrint('Failed to copy to clipboard: $e');
+    }
     showSnackBarForAsync(messengerState, strings.copiedErrorSnack(value));
   }
 }

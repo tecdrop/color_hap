@@ -4,6 +4,7 @@
 
 import 'dart:math';
 
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 
 import '../common/preferences.dart' as preferences;
@@ -84,8 +85,11 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
       // Generate the first random color - this also updates state
       _shuffleColor();
-    } catch (e) {
+    } on Exception catch (e) {
       // Handle loading errors
+      if (kDebugMode) {
+        debugPrint('Failed to initialize color generators: $e');
+      }
       if (mounted) {
         setState(() {
           _isLoading = false;

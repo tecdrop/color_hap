@@ -7,7 +7,7 @@ library;
 
 import 'dart:convert' as convert;
 
-import 'package:flutter/foundation.dart' show compute;
+import 'package:flutter/foundation.dart' show compute, kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
@@ -96,9 +96,11 @@ Map<ColorType, List<ColorItem>> _parseAllColorLists(Map<ColorType, String> jsonD
 
       // Add the successfully parsed color list to the result
       result[colorType] = colors;
-    } catch (e) {
+    } on Exception catch (e) {
       // Skip failed catalogs, log if needed
-      debugPrint('Failed to parse catalog for $colorType: $e');
+      if (kDebugMode) {
+        debugPrint('Failed to parse catalog for $colorType: $e');
+      }
     }
   }
 
