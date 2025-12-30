@@ -13,7 +13,10 @@ enum ColorType {
   ;
 
   /// Creates a new instance of [ColorType].
-  const ColorType({required this.id, required this.name});
+  const ColorType({
+    required this.id,
+    required this.name,
+  });
 
   /// The unique identifier of the color type.
   final String id;

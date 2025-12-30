@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 
 import '../common/strings.dart' as strings;
 import '../models/color_item.dart';
-import '../models/color_type.dart';
 import '../utils/color_utils.dart' as color_utils;
 import '../widgets/color_list_view.dart';
 
@@ -39,7 +38,7 @@ class _ColorShadesScreenState extends State<ColorShadesScreen> {
     _shadeColorItems = shades
         .map(
           (color) => ColorItem(
-            type: ColorType.trueColor,
+            type: .trueColor,
             color: color,
             listPosition: color_utils.toRGB24(color),
           ),

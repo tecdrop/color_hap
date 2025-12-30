@@ -30,39 +30,37 @@ class RandomColorDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color contrastColor = color_utils.contrastColor(colorItem.color);
-    final TextTheme textTheme = Theme.of(context).textTheme;
-    final TextStyle? hexTestStyle = colorItem.name != null
-        ? textTheme.titleMedium
-        : textTheme.headlineMedium;
+    final contrastColor = color_utils.contrastColor(colorItem.color);
+    final textTheme = Theme.of(context).textTheme;
+    final hexTestStyle = colorItem.name != null ? textTheme.titleMedium : textTheme.headlineMedium;
 
     // Use an animated container to animate the color change
     return AnimatedContainer(
       duration: const Duration(seconds: 1),
       color: colorItem.color,
-      width: double.infinity,
-      height: double.infinity,
-      alignment: Alignment.center,
-      padding: const EdgeInsets.all(16.0),
+      width: .infinity,
+      height: .infinity,
+      alignment: .center,
+      padding: const .all(16.0),
       child: GestureDetector(
         onDoubleTap: onDoubleTap,
         onLongPress: onLongPress,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: .center,
+          mainAxisAlignment: .center,
           children: <Widget>[
             // Display the color hex code
             Text(
               colorItem.hexString,
               style: hexTestStyle?.copyWith(color: contrastColor),
-              textAlign: TextAlign.center,
+              textAlign: .center,
             ),
             // Display the color name if it is not null
             if (colorItem.name != null)
               Text(
                 colorItem.name!,
                 style: textTheme.headlineMedium?.copyWith(color: contrastColor),
-                textAlign: TextAlign.center,
+                textAlign: .center,
               ),
           ],
         ),

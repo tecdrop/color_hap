@@ -23,35 +23,31 @@ int toRGB24(Color color) {
 
 /// Returns the black or white contrast color of the given [Color].
 Color contrastColor(Color color) {
-  switch (ThemeData.estimateBrightnessForColor(color)) {
-    case Brightness.light:
-      return Colors.black;
-    case Brightness.dark:
-      return Colors.white;
-  }
+  return switch (ThemeData.estimateBrightnessForColor(color)) {
+    .light => Colors.black,
+    .dark => Colors.white,
+  };
 }
 
 /// Returns a contrast color for the given [Color] that is suitable for use as an icon color.
 ///
 /// Based on https://github.com/flutter/flutter/blob/master/packages/flutter/lib/src/material/expand_icon.dart#L155
 Color contrastIconColor(Color color) {
-  switch (ThemeData.estimateBrightnessForColor(color)) {
-    case Brightness.light:
-      return Colors.black54;
-    case Brightness.dark:
-      return Colors.white60;
-  }
+  return switch (ThemeData.estimateBrightnessForColor(color)) {
+    .light => Colors.black54,
+    .dark => Colors.white60,
+  };
 }
 
 /// Returns the hexadecimal string representation of the given [Color].
 String toHexString(Color color, {bool withHash = true}) {
-  final String hex = (color.toARGB32() & 0xFFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase();
+  final hex = (color.toARGB32() & 0xFFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase();
   return withHash ? '#$hex' : hex;
 }
 
 /// Returns the hexadecimal string representation of the given [Color].
 String codeToHex(int colorCode, {bool withHash = true}) {
-  final String hex = (colorCode & 0xFFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase();
+  final hex = (colorCode & 0xFFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase();
   return withHash ? '#$hex' : hex;
 }
 
@@ -62,13 +58,13 @@ String toRGBString(Color color) {
 
 /// Returns the HSV string representation of the given [Color].
 String toHSVString(Color color) {
-  HSVColor hsvColor = HSVColor.fromColor(color);
+  final hsvColor = HSVColor.fromColor(color);
   return 'hsv(${hsvColor.hue.toStringAsFixed(0)}, ${(hsvColor.saturation * 100).toStringAsFixed(0)}%, ${(hsvColor.value * 100).toStringAsFixed(0)}%)';
 }
 
 /// Returns the HSL string representation of the given [Color].
 String toHSLString(Color color) {
-  HSLColor hslColor = HSLColor.fromColor(color);
+  final hslColor = HSLColor.fromColor(color);
   return 'hsl(${hslColor.hue.toStringAsFixed(0)}, ${(hslColor.saturation * 100).toStringAsFixed(0)}%, ${(hslColor.lightness * 100).toStringAsFixed(0)}%)';
 }
 
@@ -97,20 +93,22 @@ Color? rgbHexToColor(String? hex) {
     return null;
   }
 
+  var hexString = hex;
+
   // Remove the leading '#' if it exists.
-  if (hex.startsWith('#')) {
-    hex = hex.substring(1);
+  if (hexString.startsWith('#')) {
+    hexString = hexString.substring(1);
   }
 
   // Handle 3 digit hex codes (e.g. #FFF) by duplicating each digit.
-  if (hex.length == 3) {
-    hex = hex.split('').map((String c) => c + c).join();
+  if (hexString.length == 3) {
+    hexString = hexString.split('').map((String c) => c + c).join();
   }
 
   // Convert the hex string to a fully opaque Color.
-  if (hex.length == 6) {
+  if (hexString.length == 6) {
     // return Color(int.parse(hex, radix: 16) + 0xFF000000);
-    int? parsed = int.tryParse(hex, radix: 16);
+    final parsed = int.tryParse(hexString, radix: 16);
     if (parsed != null) {
       return Color(parsed + 0xFF000000);
     }
@@ -127,14 +125,14 @@ Color? rgbHexToColor(String? hex) {
 /// significantly (4K+) or profiling shows measurable jank.
 Future<Uint8List> buildColorSwatch(Color color, int width, int height) async {
   // Create the color swatch using a sequence of graphical operations
-  final ui.PictureRecorder recorder = ui.PictureRecorder();
-  final Canvas canvas = Canvas(recorder, Rect.fromLTWH(0, 0, width.toDouble(), height.toDouble()));
-  canvas.drawColor(color, BlendMode.src);
-  final ui.Picture picture = recorder.endRecording();
+  final recorder = ui.PictureRecorder();
+  final canvas = Canvas(recorder, .fromLTWH(0, 0, width.toDouble(), height.toDouble()));
+  canvas.drawColor(color, .src);
+  final picture = recorder.endRecording();
 
   // Convert the picture to a PNG image and return its bytes
-  final ui.Image img = await picture.toImage(width, height);
-  final ByteData? pngBytes = await img.toByteData(format: ui.ImageByteFormat.png);
+  final img = await picture.toImage(width, height);
+  final pngBytes = await img.toByteData(format: .png);
   if (pngBytes == null) {
     throw Exception('Failed to encode color swatch to PNG');
   }
@@ -143,12 +141,12 @@ Future<Uint8List> buildColorSwatch(Color color, int width, int height) async {
 
 List<Color> generateShades(Color baseColor, {int count = 10}) {
   // Default to 10, but allow customization
-  List<Color> shades = [];
-  HSLColor hsl = HSLColor.fromColor(baseColor);
+  final shades = <Color>[];
+  final hsl = HSLColor.fromColor(baseColor);
 
-  for (int i = count - 1; i >= 0; i--) {
-    double lightness = (i + 0.5) / count;
-    HSLColor newHsl = hsl.withLightness(lightness);
+  for (var i = count - 1; i >= 0; i--) {
+    final lightness = (i + 0.5) / count;
+    final newHsl = hsl.withLightness(lightness);
     shades.add(newHsl.toColor());
   }
 

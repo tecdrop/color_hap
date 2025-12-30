@@ -10,5 +10,5 @@ class RandomAttractiveColorGenerator extends RandomListBasedColorGenerator {
   RandomAttractiveColorGenerator(super.colors);
 
   @override
-  ColorType get colorType => ColorType.attractiveColor;
+  ColorType get colorType => .attractiveColor;
 }

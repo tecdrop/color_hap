@@ -33,8 +33,8 @@ class ColorInfoList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color contrastColor = color_utils.contrastColor(color);
-    final double width = MediaQuery.of(context).size.width;
+    final contrastColor = color_utils.contrastColor(color);
+    final width = MediaQuery.of(context).size.width;
 
     return DividerTheme(
       // Use a hairline divider between the list items
@@ -93,8 +93,7 @@ class _ColorInfoItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       // Style the list item
-      // contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32.0),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+      contentPadding: const .symmetric(horizontal: 16.0, vertical: 24.0),
       textColor: textColor,
       iconColor: textColor.withValues(alpha: 0.7),
 
@@ -104,7 +103,7 @@ class _ColorInfoItem extends StatelessWidget {
 
       // Add the Copy and Share buttons to the trailing widget
       trailing: Row(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: .min,
         children: <Widget>[
           IconButton(
             icon: const Icon(Icons.content_copy_outlined),

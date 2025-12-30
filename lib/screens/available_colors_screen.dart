@@ -36,7 +36,7 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
     super.initState();
 
     // Scroll to the initial random color if provided
-    final double itemOffset = widget.initialColor != null
+    final itemOffset = widget.initialColor != null
         ? (widget.initialColor!.listPosition ?? 0) * consts.colorListItemExtent
         : 0.0;
     _scrollController = ScrollController(initialScrollOffset: itemOffset, keepScrollOffset: false);

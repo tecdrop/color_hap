@@ -13,7 +13,10 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // First try to load the app settings from Shared Preferences
-  await Future.any([preferences.loadSettings(), Future.delayed(const Duration(seconds: 5))]);
+  await Future.any([
+    preferences.loadSettings(),
+    Future.delayed(const Duration(seconds: 5)),
+  ]);
 
   // Then run the app
   runApp(const ColorHapApp());
@@ -30,10 +33,10 @@ class ColorHapApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
 
       // A black on white theme to go with the color intensive interface of the app
-      theme: getAppTheme(Brightness.light),
+      theme: getAppTheme(.light),
 
       // On dark mode, use a white on black theme
-      darkTheme: getAppTheme(Brightness.dark),
+      darkTheme: getAppTheme(.dark),
 
       home: const RandomColorScreen(),
     );

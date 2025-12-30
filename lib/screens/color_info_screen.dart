@@ -43,7 +43,7 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
     super.initState();
 
     // Prepare the list of color information to display
-    final Color color = widget.colorItem.color;
+    final color = widget.colorItem.color;
     _infos = [
       if (widget.colorItem.name != null) ...[
         (key: strings.colorTitleInfo, value: widget.colorItem.longTitle),
@@ -67,24 +67,24 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
   void _onAppBarAction(BuildContext context, _AppBarActions action) {
     switch (action) {
       // Navigates to the Color Preview screen
-      case _AppBarActions.colorPreview:
+      case .colorPreview:
         // gotoColorPreviewRoute(context, widget.randomColor.color);
         utils.navigateTo(context, ColorPreviewScreen(color: widget.colorItem.color));
         break;
 
       // Opens the web browser to search for the current color
-      case _AppBarActions.colorWebSearch:
-        final String url = urls.onlineSearch + Uri.encodeComponent(widget.colorItem.longTitle);
+      case .colorWebSearch:
+        final url = urls.onlineSearch + Uri.encodeComponent(widget.colorItem.longTitle);
         utils.launchUrlExternal(context, url);
         break;
 
       // Copies all the color information to the clipboard
-      case _AppBarActions.copyAll:
+      case .copyAll:
         _copyAll();
         break;
 
       // Shares all the color information
-      case _AppBarActions.shareAll:
+      case .shareAll:
         _shareAll();
         break;
     }
@@ -92,14 +92,14 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
 
   /// Copies the value of the item in the list that the user wants to copy.
   Future<void> _copyItem(BuildContext context, String key, String value) async {
-    ScaffoldMessengerState messengerState = ScaffoldMessenger.of(context);
+    final messengerState = ScaffoldMessenger.of(context);
     await Clipboard.setData(ClipboardData(text: value));
     utils.showSnackBarForAsync(messengerState, strings.copiedSnack(value));
   }
 
   /// Share the value of the item in the list that the user wants to share.
   Future<void> _shareItem(BuildContext context, String key, String value) async {
-    ScaffoldMessengerState messengerState = ScaffoldMessenger.of(context);
+    final messengerState = ScaffoldMessenger.of(context);
     try {
       await SharePlus.instance.share(ShareParams(text: value));
     } on Exception catch (e) {
@@ -110,14 +110,14 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
 
   /// Copies all the color information to the clipboard.
   Future<void> _copyAll() async {
-    ScaffoldMessengerState messengerState = ScaffoldMessenger.of(context);
+    final messengerState = ScaffoldMessenger.of(context);
     await Clipboard.setData(ClipboardData(text: _infosAsString));
     utils.showSnackBarForAsync(messengerState, strings.allInfoCopied);
   }
 
   /// Shares all the color information.
   Future<void> _shareAll() async {
-    ScaffoldMessengerState messengerState = ScaffoldMessenger.of(context);
+    final messengerState = ScaffoldMessenger.of(context);
     try {
       await SharePlus.instance.share(ShareParams(text: _infosAsString));
     } on Exception catch (e) {
@@ -128,15 +128,15 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
 
   /// Shares the color swatch image.
   Future<void> _shareColorSwatch() async {
-    ScaffoldMessengerState messengerState = ScaffoldMessenger.of(context);
+    final messengerState = ScaffoldMessenger.of(context);
     try {
       // Generate the color swatch image file name
-      final String hexCode = color_utils.toHexString(widget.colorItem.color, withHash: false);
-      final String fileName = consts.colorSwatchFileName(hexCode);
+      final hexCode = color_utils.toHexString(widget.colorItem.color, withHash: false);
+      final fileName = consts.colorSwatchFileName(hexCode);
 
       // Create the color swatch image file
-      Uint8List pngBytes = await color_utils.buildColorSwatch(widget.colorItem.color, 512, 512);
-      final XFile xFile = XFile.fromData(pngBytes, name: fileName, mimeType: 'image/png');
+      final pngBytes = await color_utils.buildColorSwatch(widget.colorItem.color, 512, 512);
+      final xFile = XFile.fromData(pngBytes, name: fileName, mimeType: 'image/png');
 
       // Summon the platform's share sheet to share the image file
       await SharePlus.instance.share(
@@ -208,7 +208,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
           icon: const Icon(Icons.remove_red_eye_outlined),
           tooltip: strings.colorPreviewAction,
-          onPressed: () => onAction(_AppBarActions.colorPreview),
+          onPressed: () => onAction(.colorPreview),
         ),
 
         // Add the overflow menu
@@ -217,19 +217,19 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
           itemBuilder: (BuildContext context) => <PopupMenuEntry<_AppBarActions>>[
             // Add the Copy All action to the overflow menu
             const PopupMenuItem<_AppBarActions>(
-              value: _AppBarActions.copyAll,
+              value: .copyAll,
               child: Text(strings.copyAllAction),
             ),
 
             // Add the Share All action to the overflow menu
             const PopupMenuItem<_AppBarActions>(
-              value: _AppBarActions.shareAll,
+              value: .shareAll,
               child: Text(strings.shareAllAction),
             ),
 
             // Add the Color Web Search action to the overflow menu
             const PopupMenuItem<_AppBarActions>(
-              value: _AppBarActions.colorWebSearch,
+              value: .colorWebSearch,
               child: Text(strings.colorWebSearchAction),
             ),
           ],

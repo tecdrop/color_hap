@@ -10,5 +10,5 @@ class RandomBasicColorGenerator extends RandomListBasedColorGenerator {
   RandomBasicColorGenerator(super.colors);
 
   @override
-  ColorType get colorType => ColorType.basicColor;
+  ColorType get colorType => .basicColor;
 }

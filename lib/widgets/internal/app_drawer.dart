@@ -54,7 +54,7 @@ class AppDrawer extends StatelessWidget {
 
   /// A convenience function that returns a string with the number of possibilities.
   String? _possibilities(ColorType colorType) {
-    int? count = possibilityCount[colorType];
+    final count = possibilityCount[colorType];
     return count != null
         ? strings.possibilitiesDrawerSubtitle(utils.intToCommaSeparatedString(count))
         : null;
@@ -75,7 +75,7 @@ class AppDrawer extends StatelessWidget {
             title: const Text(strings.setWallpaperDrawer),
             subtitle: const Text(strings.setWallpaperDrawerSubtitle),
             isThreeLine: true,
-            onTap: () => onItemTap?.call(AppDrawerItems.setWallpaper),
+            onTap: () => onItemTap?.call(.setWallpaper),
           ),
 
           const Divider(),
@@ -83,63 +83,55 @@ class AppDrawer extends StatelessWidget {
           // All Random Colors drawer item
           _buildItem(
             context,
-            icon: colorType == ColorType.mixedColor
-                ? Icons.looks_one_rounded
-                : Icons.looks_one_outlined,
+            icon: colorType == .mixedColor ? Icons.looks_one_rounded : Icons.looks_one_outlined,
             title: strings.randomMixedColorDrawer,
-            subtitle: _possibilities(ColorType.mixedColor),
-            item: AppDrawerItems.randomMixedColor,
+            subtitle: _possibilities(.mixedColor),
+            item: .randomMixedColor,
           ),
 
           // Random Basic Color drawer item
           _buildItem(
             context,
-            icon: colorType == ColorType.basicColor
-                ? Icons.looks_two_rounded
-                : Icons.looks_two_outlined,
+            icon: colorType == .basicColor ? Icons.looks_two_rounded : Icons.looks_two_outlined,
             title: strings.randomBasicColorDrawer,
-            subtitle: _possibilities(ColorType.basicColor),
-            item: AppDrawerItems.randomBasicColor,
+            subtitle: _possibilities(.basicColor),
+            item: .randomBasicColor,
           ),
 
           // Random Web Color drawer item
           _buildItem(
             context,
-            icon: colorType == ColorType.webColor ? Icons.looks_3_rounded : Icons.looks_3_outlined,
+            icon: colorType == .webColor ? Icons.looks_3_rounded : Icons.looks_3_outlined,
             title: strings.randomWebColorDrawer,
-            subtitle: _possibilities(ColorType.webColor),
-            item: AppDrawerItems.randomWebColor,
+            subtitle: _possibilities(.webColor),
+            item: .randomWebColor,
           ),
 
           // Random Named Color drawer item
           _buildItem(
             context,
-            icon: colorType == ColorType.namedColor
-                ? Icons.looks_4_rounded
-                : Icons.looks_4_outlined,
+            icon: colorType == .namedColor ? Icons.looks_4_rounded : Icons.looks_4_outlined,
             title: strings.randomNamedColorDrawer,
-            subtitle: _possibilities(ColorType.namedColor),
-            item: AppDrawerItems.randomNamedColor,
+            subtitle: _possibilities(.namedColor),
+            item: .randomNamedColor,
           ),
 
           // Random Attractive Color drawer item
           _buildItem(
             context,
-            icon: colorType == ColorType.attractiveColor
-                ? Icons.looks_5_rounded
-                : Icons.looks_5_outlined,
+            icon: colorType == .attractiveColor ? Icons.looks_5_rounded : Icons.looks_5_outlined,
             title: strings.randomAttractiveColorDrawer,
-            subtitle: _possibilities(ColorType.attractiveColor),
-            item: AppDrawerItems.randomAttractiveColor,
+            subtitle: _possibilities(.attractiveColor),
+            item: .randomAttractiveColor,
           ),
 
           // Random True Color drawer item
           _buildItem(
             context,
-            icon: colorType == ColorType.trueColor ? Icons.looks_6_rounded : Icons.looks_6_outlined,
+            icon: colorType == .trueColor ? Icons.looks_6_rounded : Icons.looks_6_outlined,
             title: strings.randomTrueColorDrawer,
-            subtitle: _possibilities(ColorType.trueColor),
-            item: AppDrawerItems.randomTrueColor,
+            subtitle: _possibilities(.trueColor),
+            item: .randomTrueColor,
           ),
 
           const Divider(),
@@ -149,7 +141,7 @@ class AppDrawer extends StatelessWidget {
             context,
             icon: Icons.info_outline,
             title: strings.colorInfoDrawer,
-            item: AppDrawerItems.colorInfo,
+            item: .colorInfo,
           ),
 
           // Color Preview drawer item
@@ -157,25 +149,23 @@ class AppDrawer extends StatelessWidget {
             context,
             icon: Icons.remove_red_eye_outlined,
             title: strings.colorPreviewDrawer,
-            item: AppDrawerItems.colorPreview,
+            item: .colorPreview,
           ),
 
           // Color Shades drawer item
           _buildItem(
             context,
-            // icon: Icons.gradient_outlined,
             icon: Icons.tonality_outlined,
             title: strings.colorShadesDrawer,
-            item: AppDrawerItems.colorShades,
+            item: .colorShades,
           ),
 
           // Available Colors drawer item
           _buildItem(
             context,
-            // icon: Icons.palette_outlined,
             icon: Icons.list_alt_outlined,
             title: strings.availableColorsDrawer,
-            item: AppDrawerItems.availableColors,
+            item: .availableColors,
           ),
 
           // Color Favorites drawer item
@@ -189,7 +179,7 @@ class AppDrawer extends StatelessWidget {
               utils.intToCommaSeparatedString(preferences.colorFavoritesList.length),
               isPlural: preferences.colorFavoritesList.length != 1,
             ),
-            item: AppDrawerItems.favoriteColors,
+            item: .favoriteColors,
           ),
 
           const Divider(),
@@ -199,7 +189,7 @@ class AppDrawer extends StatelessWidget {
             context,
             icon: Icons.support_outlined,
             title: strings.helpDrawer,
-            item: AppDrawerItems.help,
+            item: .help,
           ),
 
           // Source code (Star on GitHub) drawer item
@@ -208,7 +198,7 @@ class AppDrawer extends StatelessWidget {
             icon: Icons.star,
             title: strings.sourceCodeDrawer,
             subtitle: strings.sourceCodeDrawerSubtitle,
-            item: AppDrawerItems.viewSource,
+            item: .viewSource,
           ),
 
           // Rate App drawer item
@@ -216,7 +206,7 @@ class AppDrawer extends StatelessWidget {
             context,
             icon: Icons.thumb_up,
             title: strings.rateAppDrawer,
-            item: AppDrawerItems.rateApp,
+            item: .rateApp,
           ),
         ],
       ),
@@ -257,8 +247,8 @@ class _AppDrawerHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DrawerHeader(
-      padding: EdgeInsets.zero,
-      margin: EdgeInsets.zero,
+      padding: .zero,
+      margin: .zero,
       decoration: BoxDecoration(color: color),
       child: Center(
         child: Text(

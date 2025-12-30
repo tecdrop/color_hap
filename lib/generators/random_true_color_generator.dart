@@ -13,16 +13,16 @@ import '../models/random_color_generator.dart';
 /// A random color generator that generates random true colors (24-bit colors).
 class RandomTrueColorGenerator implements RandomColorGenerator {
   @override
-  ColorType get colorType => ColorType.trueColor;
+  ColorType get colorType => .trueColor;
 
   /// Generates a random true color.
   @override
   ColorItem next(Random random) {
     // Generate a random 24-bit color code, which is a number between 0x000000 and 0xFFFFFF
-    final int randomColorCode = random.nextInt(0xFFFFFF + 1);
+    final randomColorCode = random.nextInt(0xFFFFFF + 1);
 
     return ColorItem(
-      type: ColorType.trueColor,
+      type: .trueColor,
       color: Color(color_utils.withFullAlpha(randomColorCode)),
       name: null,
       listPosition: randomColorCode,
@@ -41,7 +41,7 @@ class RandomTrueColorGenerator implements RandomColorGenerator {
     }
 
     return ColorItem(
-      type: ColorType.trueColor,
+      type: .trueColor,
       color: Color(color_utils.withFullAlpha(index)),
       name: null,
       listPosition: index,

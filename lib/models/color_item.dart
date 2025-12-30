@@ -9,7 +9,12 @@ import 'color_type.dart';
 
 /// A random color with a [Color] value, possibly a color name, and a color type.
 class ColorItem {
-  const ColorItem({required this.type, required this.color, this.name, this.listPosition});
+  const ColorItem({
+    required this.type,
+    required this.color,
+    this.name,
+    this.listPosition,
+  });
 
   /// The type of this random color.
   final ColorType type;
@@ -27,7 +32,7 @@ class ColorItem {
   ///
   /// Returns the color name and hex code, or only the hex code if the color doesn't have a name.
   String get longTitle {
-    final String hexString = color_utils.toHexString(color);
+    final hexString = color_utils.toHexString(color);
     return name != null ? '$name $hexString' : hexString;
   }
 
@@ -35,7 +40,7 @@ class ColorItem {
   ///
   /// Returns the color name if it exists, or the hex code otherwise.
   String get title {
-    final String hexString = color_utils.toHexString(color);
+    final hexString = color_utils.toHexString(color);
     return name != null ? name! : hexString;
   }
 
@@ -63,7 +68,7 @@ class ColorItem {
 
   /// Creates a [ColorItem] from a JSON object.
   ColorItem.fromJson(Map<String, dynamic> json)
-    : type = ColorType.values[json['type']],
+    : type = .values[json['type']],
       color = Color(json['color']),
       name = json['name'],
       listPosition = json['listPosition'];

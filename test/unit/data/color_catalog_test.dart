@@ -3,6 +3,7 @@
 // in the LICENSE file or at https://www.tecdrop.com/colorhap/license.
 
 import 'package:flutter_test/flutter_test.dart';
+
 import 'package:color_hap/models/color_item.dart';
 import 'package:color_hap/models/color_type.dart';
 import 'package:color_hap/services/generators_initializer.dart';
@@ -19,16 +20,16 @@ void main() {
 
       // Extract color lists from generators (excluding mixedColor and trueColor)
       colorCatalogs = {
-        ColorType.basicColor: generators[ColorType.basicColor]!.toList(),
-        ColorType.webColor: generators[ColorType.webColor]!.toList(),
-        ColorType.namedColor: generators[ColorType.namedColor]!.toList(),
-        ColorType.attractiveColor: generators[ColorType.attractiveColor]!.toList(),
+        .basicColor: generators[ColorType.basicColor]!.toList(),
+        .webColor: generators[ColorType.webColor]!.toList(),
+        .namedColor: generators[ColorType.namedColor]!.toList(),
+        .attractiveColor: generators[ColorType.attractiveColor]!.toList(),
       };
     });
 
     test('attractive colors should not duplicate basic/web/named colors', () {
       // Create a set of all known color codes (basic, web, named)
-      final Set<int> knownColorCodes = {
+      final knownColorCodes = <int>{
         ...colorCatalogs[ColorType.basicColor]!.map((c) => c.color.toARGB32()),
         ...colorCatalogs[ColorType.webColor]!.map((c) => c.color.toARGB32()),
         ...colorCatalogs[ColorType.namedColor]!.map((c) => c.color.toARGB32()),
@@ -38,7 +39,7 @@ void main() {
       final duplicates = <String>[];
       for (final colorItem in colorCatalogs[ColorType.attractiveColor]!) {
         if (knownColorCodes.contains(colorItem.color.toARGB32())) {
-          final String hex = colorItem.color.toARGB32().toRadixString(16).padLeft(8, '0').toUpperCase();
+          final hex = colorItem.color.toARGB32().toRadixString(16).padLeft(8, '0').toUpperCase();
           duplicates.add('0x$hex');
         }
       }
@@ -47,7 +48,8 @@ void main() {
       expect(
         duplicates,
         isEmpty,
-        reason: 'Found ${duplicates.length} attractive colors that duplicate basic/web/named colors: '
+        reason:
+            'Found ${duplicates.length} attractive colors that duplicate basic/web/named colors: '
             '${duplicates.take(10).join(', ')}${duplicates.length > 10 ? '...' : ''}',
       );
     });
@@ -58,7 +60,7 @@ void main() {
         final colors = entry.value;
 
         for (final colorItem in colors) {
-          final int colorValue = colorItem.color.toARGB32() & 0x00FFFFFF; // Remove alpha channel
+          final colorValue = colorItem.color.toARGB32() & 0x00FFFFFF; // Remove alpha channel
 
           expect(
             colorValue,
@@ -85,13 +87,15 @@ void main() {
           expect(
             colorItem.name,
             isNotNull,
-            reason: 'Color in ${colorType.name} has null name at position ${colorItem.listPosition}',
+            reason:
+                'Color in ${colorType.name} has null name at position ${colorItem.listPosition}',
           );
 
           expect(
             colorItem.name!.trim(),
             isNotEmpty,
-            reason: 'Color in ${colorType.name} has empty name at position ${colorItem.listPosition}',
+            reason:
+                'Color in ${colorType.name} has empty name at position ${colorItem.listPosition}',
           );
         }
       }
@@ -110,26 +114,50 @@ void main() {
     });
 
     test('all catalogs should have positive color counts', () {
-      expect(colorCatalogs[ColorType.basicColor]!.length, greaterThan(0),
-          reason: 'Basic colors catalog is empty');
-      expect(colorCatalogs[ColorType.webColor]!.length, greaterThan(0),
-          reason: 'Web colors catalog is empty');
-      expect(colorCatalogs[ColorType.namedColor]!.length, greaterThan(0),
-          reason: 'Named colors catalog is empty');
-      expect(colorCatalogs[ColorType.attractiveColor]!.length, greaterThan(0),
-          reason: 'Attractive colors catalog is empty');
+      expect(
+        colorCatalogs[ColorType.basicColor]!.length,
+        greaterThan(0),
+        reason: 'Basic colors catalog is empty',
+      );
+      expect(
+        colorCatalogs[ColorType.webColor]!.length,
+        greaterThan(0),
+        reason: 'Web colors catalog is empty',
+      );
+      expect(
+        colorCatalogs[ColorType.namedColor]!.length,
+        greaterThan(0),
+        reason: 'Named colors catalog is empty',
+      );
+      expect(
+        colorCatalogs[ColorType.attractiveColor]!.length,
+        greaterThan(0),
+        reason: 'Attractive colors catalog is empty',
+      );
     });
 
     test('color catalogs should have expected minimum counts', () {
       // Based on current data files
-      expect(colorCatalogs[ColorType.basicColor]!.length, greaterThanOrEqualTo(10),
-          reason: 'Basic colors should have at least 10 colors');
-      expect(colorCatalogs[ColorType.webColor]!.length, greaterThanOrEqualTo(100),
-          reason: 'Web colors should have at least 100 colors');
-      expect(colorCatalogs[ColorType.namedColor]!.length, greaterThanOrEqualTo(1000),
-          reason: 'Named colors should have at least 1000 colors');
-      expect(colorCatalogs[ColorType.attractiveColor]!.length, greaterThanOrEqualTo(5000),
-          reason: 'Attractive colors should have at least 5000 colors');
+      expect(
+        colorCatalogs[ColorType.basicColor]!.length,
+        greaterThanOrEqualTo(10),
+        reason: 'Basic colors should have at least 10 colors',
+      );
+      expect(
+        colorCatalogs[ColorType.webColor]!.length,
+        greaterThanOrEqualTo(100),
+        reason: 'Web colors should have at least 100 colors',
+      );
+      expect(
+        colorCatalogs[ColorType.namedColor]!.length,
+        greaterThanOrEqualTo(1000),
+        reason: 'Named colors should have at least 1000 colors',
+      );
+      expect(
+        colorCatalogs[ColorType.attractiveColor]!.length,
+        greaterThanOrEqualTo(5000),
+        reason: 'Attractive colors should have at least 5000 colors',
+      );
     });
 
     test('list positions should be sequential and zero-indexed', () {
@@ -137,7 +165,7 @@ void main() {
         final colorType = entry.key;
         final colors = entry.value;
 
-        for (int i = 0; i < colors.length; i++) {
+        for (var i = 0; i < colors.length; i++) {
           expect(
             colors[i].listPosition,
             equals(i),
@@ -156,7 +184,8 @@ void main() {
           expect(
             colorItem.type,
             equals(expectedType),
-            reason: 'Color at position ${colorItem.listPosition} has wrong type: '
+            reason:
+                'Color at position ${colorItem.listPosition} has wrong type: '
                 '${colorItem.type.name} (expected ${expectedType.name})',
           );
         }
@@ -168,9 +197,9 @@ void main() {
 // Extension to convert generator to list for testing
 extension on dynamic {
   List<ColorItem> toList() {
-    final List<ColorItem> items = [];
-    final int count = this.length as int;
-    for (int i = 0; i < count; i++) {
+    final items = <ColorItem>[];
+    final count = this.length as int;
+    for (var i = 0; i < count; i++) {
       items.add(this.elementAt(i));
     }
     return items;

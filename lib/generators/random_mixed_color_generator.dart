@@ -15,11 +15,11 @@ import '../models/random_color_generator.dart';
 class RandomMixedColorGenerator implements RandomColorGenerator {
   RandomMixedColorGenerator(this.generators) {
     // Define the weights for each color type to influence their selection probability (2-4-5-6-3)
-    _typeWeights.addAll(List.filled(2, ColorType.basicColor)); // 10%
-    _typeWeights.addAll(List.filled(4, ColorType.webColor)); // 20%
-    _typeWeights.addAll(List.filled(5, ColorType.namedColor)); // 25%
-    _typeWeights.addAll(List.filled(6, ColorType.attractiveColor)); // 30%
-    _typeWeights.addAll(List.filled(3, ColorType.trueColor)); // 15%
+    _typeWeights.addAll(List.filled(2, .basicColor)); // 10%
+    _typeWeights.addAll(List.filled(4, .webColor)); // 20%
+    _typeWeights.addAll(List.filled(5, .namedColor)); // 25%
+    _typeWeights.addAll(List.filled(6, .attractiveColor)); // 30%
+    _typeWeights.addAll(List.filled(3, .trueColor)); // 15%
   }
 
   /// The map of color generators to mix.
@@ -29,14 +29,14 @@ class RandomMixedColorGenerator implements RandomColorGenerator {
   final List<ColorType> _typeWeights = [];
 
   @override
-  ColorType get colorType => ColorType.mixedColor;
+  ColorType get colorType => .mixedColor;
 
   /// Generates a random color by selecting one of the mixed generators at random.
   ///
   /// The selection is weighted to try to balance the frequency of different color types.
   @override
   ColorItem next(Random random) {
-    final ColorType selectedType = _typeWeights[random.nextInt(_typeWeights.length)];
+    final selectedType = _typeWeights[random.nextInt(_typeWeights.length)];
     return generators[selectedType]!.next(random);
   }
 

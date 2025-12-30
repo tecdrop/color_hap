@@ -23,23 +23,23 @@ String copiedErrorSnack(String value) => 'Copy to clipboard failed: $value';
 const String randomPrefix = 'Random';
 
 const Map<ColorType, String> colorTypeSingular = {
-  ColorType.mixedColor: 'Color',
-  ColorType.basicColor: 'Basic Color',
-  ColorType.webColor: 'Web Color',
-  ColorType.namedColor: 'Named Color',
-  ColorType.attractiveColor: 'Attractive Color',
-  ColorType.trueColor: 'True Color',
+  .mixedColor: 'Color',
+  .basicColor: 'Basic Color',
+  .webColor: 'Web Color',
+  .namedColor: 'Named Color',
+  .attractiveColor: 'Attractive Color',
+  .trueColor: 'True Color',
 };
 
 String randomColorType(ColorType value) => 'Random ${colorTypeSingular[value]}';
 
 const Map<ColorType, String> colorTypePlural = {
-  ColorType.mixedColor: 'Colors',
-  ColorType.basicColor: 'Basic Colors',
-  ColorType.webColor: 'Web Colors',
-  ColorType.namedColor: 'Named Colors',
-  ColorType.attractiveColor: 'Attractive Colors',
-  ColorType.trueColor: 'True Colors',
+  .mixedColor: 'Colors',
+  .basicColor: 'Basic Colors',
+  .webColor: 'Web Colors',
+  .namedColor: 'Named Colors',
+  .attractiveColor: 'Attractive Colors',
+  .trueColor: 'True Colors',
 };
 
 // -----------------------------------------------------------------------------------------------

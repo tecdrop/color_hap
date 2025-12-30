@@ -29,9 +29,9 @@ class ErrorScreen extends StatelessWidget {
       appBar: AppBar(title: const Text(strings.errorScreenTitle)),
 
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const .all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: .center,
 
           children: <Widget>[
             // The error icon and message
@@ -42,7 +42,7 @@ class ErrorScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: Theme.of(context).colorScheme.onErrorContainer,
               ),
-              textAlign: TextAlign.center,
+              textAlign: .center,
             ),
 
             // Retry button if a retry callback is provided

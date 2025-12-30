@@ -6,15 +6,18 @@ import 'package:flutter/material.dart';
 
 /// Returns the light or dark theme for the app.
 ThemeData getAppTheme(Brightness brightness) {
-  final Color backgroundColor = brightness == Brightness.dark ? Colors.black : Colors.white;
-  final Color foregroundColor = brightness == Brightness.dark ? Colors.white : Colors.black;
+  final backgroundColor = brightness == .dark ? Colors.black : Colors.white;
+  final foregroundColor = brightness == .dark ? Colors.white : Colors.black;
 
   return ThemeData(
     brightness: brightness,
     useMaterial3: true,
     scaffoldBackgroundColor: backgroundColor,
     drawerTheme: DrawerThemeData(backgroundColor: backgroundColor),
-    appBarTheme: AppBarTheme(backgroundColor: backgroundColor, foregroundColor: foregroundColor),
+    appBarTheme: AppBarTheme(
+      backgroundColor: backgroundColor,
+      foregroundColor: foregroundColor,
+    ),
     bottomAppBarTheme: BottomAppBarThemeData(color: backgroundColor),
     popupMenuTheme: PopupMenuThemeData(color: backgroundColor),
     floatingActionButtonTheme: FloatingActionButtonThemeData(

@@ -49,7 +49,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
   // The current random color.
   // Initialized with a default black true color value to avoid null checks.
   ColorItem _randomColor = const ColorItem(
-    type: ColorType.trueColor,
+    type: .trueColor,
     color: Colors.black,
     listPosition: 0,
   );
@@ -138,11 +138,11 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
   /// Navigates to the Available Colors screen for the selected color type.
   void _gotoAvailableColorsScreen() async {
     // Get the generator for the type of the current random color
-    final RandomColorGenerator curColorGenerator = _generators[_randomColor.type]!;
+    final curColorGenerator = _generators[_randomColor.type]!;
 
     // Navigate to the Available Colors screen for the current color type, passing the current
     // random color as the initial selected color
-    final ColorItem? randomColor = await utils.navigateTo<ColorItem>(
+    final randomColor = await utils.navigateTo<ColorItem>(
       context,
       AvailableColorsScreen(generator: curColorGenerator, initialColor: _randomColor),
     );
@@ -153,7 +153,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
   /// Navigates to the Color Shades screen for the current color.
   void _gotoColorShadesScreen() async {
-    final ColorItem? shadeColor = await utils.navigateTo<ColorItem>(
+    final shadeColor = await utils.navigateTo<ColorItem>(
       context,
       ColorShadesScreen(color: _randomColor.color),
     );
@@ -164,7 +164,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
   /// Navigates to the Available Colors screen for the selected color type.
   void _gotoColorFavoritesScreen() async {
-    final ColorItem? randomColor = await utils.navigateTo<ColorItem>(
+    final randomColor = await utils.navigateTo<ColorItem>(
       context,
       const ColorFavoritesScreen(),
     );
@@ -181,7 +181,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
   void _onAction(_AppBarActions action) async {
     switch (action) {
       // Toggle the current color in the favorites list
-      case _AppBarActions.toggleFavorite:
+      case .toggleFavorite:
         setState(() {
           _colorFavIndex = preferences.colorFavoritesList.toggle(
             _randomColor,
@@ -192,22 +192,22 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         break;
 
       // Open the Color Information screen with the current color
-      case _AppBarActions.colorInfo:
+      case .colorInfo:
         _gotoColorInfoScreen();
         break;
 
       // Open the Color Shades screen for the current color
-      case _AppBarActions.colorShades:
+      case .colorShades:
         _gotoColorShadesScreen();
         break;
 
       // Open the Available Colors screen
-      case _AppBarActions.availableColors:
+      case .availableColors:
         _gotoAvailableColorsScreen();
         break;
 
       // Open the Color Favorites screen
-      case _AppBarActions.favoriteColors:
+      case .favoriteColors:
         _gotoColorFavoritesScreen();
         break;
     }
@@ -215,7 +215,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
   /// Generates a new random color.
   void _shuffleColor() {
-    final ColorItem randomColor = _generators[_colorType]!.next(_random);
+    final randomColor = _generators[_colorType]!.next(_random);
     _updateState(randomColor);
   }
 
@@ -235,77 +235,77 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
     switch (item) {
       // Launch the external RGB Color Wallpaper Pro url
-      case AppDrawerItems.setWallpaper:
+      case .setWallpaper:
         utils.launchUrlExternal(context, urls.setWallpaper);
         break;
 
       // Reopen the Random Color screen for generating random colors (of any type)
-      case AppDrawerItems.randomMixedColor:
-        changeColorType(ColorType.mixedColor);
+      case .randomMixedColor:
+        changeColorType(.mixedColor);
         break;
 
       // Reopen the Random Color screen for generating random basic colors
-      case AppDrawerItems.randomBasicColor:
-        changeColorType(ColorType.basicColor);
+      case .randomBasicColor:
+        changeColorType(.basicColor);
         break;
 
       // Reopen the Random Color screen for generating random web colors
-      case AppDrawerItems.randomWebColor:
-        changeColorType(ColorType.webColor);
+      case .randomWebColor:
+        changeColorType(.webColor);
         break;
 
       // Reopen the Random Color screen for generating random named colors
-      case AppDrawerItems.randomNamedColor:
-        changeColorType(ColorType.namedColor);
+      case .randomNamedColor:
+        changeColorType(.namedColor);
         break;
 
       // Reopen the Random Color screen for generating random attractive colors
-      case AppDrawerItems.randomAttractiveColor:
-        changeColorType(ColorType.attractiveColor);
+      case .randomAttractiveColor:
+        changeColorType(.attractiveColor);
         break;
 
       // Reopen the Random Color screen for generating random true colors
-      case AppDrawerItems.randomTrueColor:
-        changeColorType(ColorType.trueColor);
+      case .randomTrueColor:
+        changeColorType(.trueColor);
         break;
 
       // Open the Color Info screen with the current random color
-      case AppDrawerItems.colorInfo:
+      case .colorInfo:
         _gotoColorInfoScreen();
         break;
 
       // Open the Color Preview screen with the current random color
-      case AppDrawerItems.colorPreview:
+      case .colorPreview:
         _gotoColorPreviewScreen();
         break;
 
       // Open the Color Shades screen for the current color
-      case AppDrawerItems.colorShades:
+      case .colorShades:
         _gotoColorShadesScreen();
         break;
 
       // Open the Available Colors screen
-      case AppDrawerItems.availableColors:
+      case .availableColors:
         _gotoAvailableColorsScreen();
         break;
 
       // Open the Color Favorites screen
-      case AppDrawerItems.favoriteColors:
+      case .favoriteColors:
         _gotoColorFavoritesScreen();
         break;
 
       // Launch the external Online Help url
-      case AppDrawerItems.help:
+      case .help:
         utils.launchUrlExternal(context, urls.help);
         break;
 
       // Launch the external View Source url
-      case AppDrawerItems.viewSource:
+      case .viewSource:
         utils.launchUrlExternal(context, urls.viewSource);
         break;
 
       // Launch the external Rate App url
-      case AppDrawerItems.rateApp:
+      case .rateApp:
         utils.launchUrlExternal(context, urls.getRateUrl());
         break;
     }
@@ -396,14 +396,14 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
           icon: isFavorite ? const Icon(Icons.favorite) : const Icon(Icons.favorite_border),
           tooltip: isFavorite ? strings.removeFavTooltip : strings.addFavTooltip,
-          onPressed: () => onAction(_AppBarActions.toggleFavorite),
+          onPressed: () => onAction(.toggleFavorite),
         ),
 
         // The Color Information icon button
         IconButton(
           icon: const Icon(Icons.info_outline),
           tooltip: strings.colorInfoTooltip,
-          onPressed: () => onAction(_AppBarActions.colorInfo),
+          onPressed: () => onAction(.colorInfo),
         ),
 
         // Add the overflow menu
@@ -412,19 +412,19 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
           itemBuilder: (BuildContext context) => <PopupMenuEntry<_AppBarActions>>[
             // Add the Color Shades action to the overflow menu
             const PopupMenuItem<_AppBarActions>(
-              value: _AppBarActions.colorShades,
+              value: .colorShades,
               child: Text(strings.colorShadesAction),
             ),
 
             // Add the Available Colors action to the overflow menu
             PopupMenuItem<_AppBarActions>(
-              value: _AppBarActions.availableColors,
+              value: .availableColors,
               child: Text(strings.availableColors(actualColorType)),
             ),
 
             // Add the Favorites action to the overflow menu
             const PopupMenuItem<_AppBarActions>(
-              value: _AppBarActions.favoriteColors,
+              value: .favoriteColors,
               child: Text(strings.favoriteColorsAction),
             ),
           ],

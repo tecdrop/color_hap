@@ -120,9 +120,9 @@ class _ColorListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.sizeOf(context).width;
-    final Color color = colorItem.color;
-    final Color contrastColor = color_utils.contrastColor(color);
+    final width = MediaQuery.sizeOf(context).width;
+    final color = colorItem.color;
+    final contrastColor = color_utils.contrastColor(color);
 
     return InkWell(
       onFocusChange: onFocusChange,
@@ -130,18 +130,18 @@ class _ColorListItem extends StatelessWidget {
       child: Ink(
         decoration: BoxDecoration(
           color: color,
-          border: Border.all(color: focused ? Colors.grey[700]! : color, width: 6.0),
+          border: .all(color: focused ? Colors.grey[700]! : color, width: 6.0),
         ),
 
         // Use padding to constrain the width of the list items so they look ok on large screens
-        padding: EdgeInsets.symmetric(horizontal: max(16.0, (width - 1024) / 2)),
+        padding: .symmetric(horizontal: max(16.0, (width - 1024) / 2)),
 
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: .spaceBetween,
           children: <Widget>[
             Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: .center,
+              crossAxisAlignment: .start,
               spacing: 2.0,
               children: <Widget>[
                 if (showColorType)

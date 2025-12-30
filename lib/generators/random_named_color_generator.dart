@@ -10,5 +10,5 @@ class RandomNamedColorGenerator extends RandomListBasedColorGenerator {
   RandomNamedColorGenerator(super.colors);
 
   @override
-  ColorType get colorType => ColorType.namedColor;
+  ColorType get colorType => .namedColor;
 }

@@ -33,7 +33,7 @@ class ColorFavoritesScreen extends StatefulWidget {
 class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
   /// Exports the favorite colors as a CSV file and uses the platform's share sheet to share it.
   void _exportFavorites() {
-    final String favoritesCsv = preferences.colorFavoritesList.toCsvString();
+    final favoritesCsv = preferences.colorFavoritesList.toCsvString();
     SharePlus.instance.share(
       ShareParams(
         fileNameOverrides: [consts.favoritesCSVFileName],
@@ -54,7 +54,7 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
 
   /// Clears all the favorite colors.
   void _clearFavorites() async {
-    bool? showConfirmation = await showConfirmationDialogBox(
+    final showConfirmation = await showConfirmationDialogBox(
       context,
       title: strings.clearFavoritesDialogTitle,
       content: strings.clearFavoritesDialogMessage,
@@ -68,13 +68,13 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
   /// Performs the specified action on the app bar.
   Future<void> _onAppBarAction(_AppBarActions action) async {
     switch (action) {
-      case _AppBarActions.loadScreenshotColors:
+      case .loadScreenshotColors:
         _loadScreenshotColors();
         break;
-      case _AppBarActions.exportFavoritesAsCsv:
+      case .exportFavoritesAsCsv:
         _exportFavorites();
         break;
-      case _AppBarActions.clearFavorites:
+      case .clearFavorites:
         _clearFavorites();
         break;
     }
@@ -139,12 +139,12 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
   Widget _buildNoFavoritesMessage() {
     return Center(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: .center,
         children: <Widget>[
           Text(
             strings.noFavoritesMessage,
             style: Theme.of(context).textTheme.titleLarge,
-            textAlign: TextAlign.center,
+            textAlign: .center,
           ),
           const SizedBox(height: 16.0),
           const Icon(Icons.favorite_border, size: 32.0),
@@ -189,7 +189,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
             // Dev-only: Load screenshot colors action
             if (kDebugMode)
               const PopupMenuItem<_AppBarActions>(
-                value: _AppBarActions.loadScreenshotColors,
+                value: .loadScreenshotColors,
                 child: Text(strings.loadScreenshotColors),
               ),
 
@@ -197,7 +197,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
 
             // The export as CSV action
             PopupMenuItem<_AppBarActions>(
-              value: _AppBarActions.exportFavoritesAsCsv,
+              value: .exportFavoritesAsCsv,
               enabled: haveFavorites,
               child: const Text(strings.exportFavoritesAsCsv),
             ),
@@ -206,7 +206,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
 
             // The clear favorites action
             PopupMenuItem<_AppBarActions>(
-              value: _AppBarActions.clearFavorites,
+              value: .clearFavorites,
               enabled: haveFavorites,
               child: const Text(strings.clearFavorites),
             ),

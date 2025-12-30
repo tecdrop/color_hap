@@ -67,14 +67,14 @@ class ColorFavoritesList {
 
   /// Returns a CSV string representation of this [ColorFavoritesList].
   String toCsvString() {
-    final StringBuffer csvBuffer = StringBuffer();
+    final csvBuffer = StringBuffer();
 
     // Write the headers first
     csvBuffer.writeln('color,name,type');
 
     // Write the favorite colors
-    for (final ColorItem color in _list) {
-      csvBuffer.writeln(color.toCsvString());
+    for (final colorItem in _list) {
+      csvBuffer.writeln(colorItem.toCsvString());
     }
 
     return csvBuffer.toString();

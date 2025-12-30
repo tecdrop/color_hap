@@ -10,5 +10,5 @@ class RandomWebColorGenerator extends RandomListBasedColorGenerator {
   RandomWebColorGenerator(super.colors);
 
   @override
-  ColorType get colorType => ColorType.webColor;
+  ColorType get colorType => .webColor;
 }

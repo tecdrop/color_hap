@@ -10,7 +10,10 @@ import '../../utils/color_utils.dart' as color_utils;
 ///
 /// Displays the given [Color] in a full screen view.
 class ColorPreviewScreen extends StatelessWidget {
-  const ColorPreviewScreen({super.key, required this.color});
+  const ColorPreviewScreen({
+    super.key,
+    required this.color,
+  });
 
   /// The color to display in the Preview screen.
   final Color color;
@@ -19,7 +22,10 @@ class ColorPreviewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: color,
-      appBar: AppBar(backgroundColor: color, foregroundColor: color_utils.contrastColor(color)),
+      appBar: AppBar(
+        backgroundColor: color,
+        foregroundColor: color_utils.contrastColor(color),
+      ),
     );
   }
 }
