@@ -121,6 +121,10 @@ Color? rgbHexToColor(String? hex) {
 }
 
 /// Builds a color swatch image of the given [color] with the specified [width] and [height].
+///
+/// OPTIMIZE: Currently runs on UI thread but uses async encoding which yields to event loop.
+/// For 512x512 solid colors this is fast. Move to `compute()` isolate only if image size increases
+/// significantly (4K+) or profiling shows measurable jank.
 Future<Uint8List> buildColorSwatch(Color color, int width, int height) async {
   // Create the color swatch using a sequence of graphical operations
   final ui.PictureRecorder recorder = ui.PictureRecorder();
