@@ -21,7 +21,7 @@ import 'available_colors_screen.dart';
 import 'color_favorites_screen.dart';
 import 'color_info_screen.dart';
 import 'color_preview_screen.dart';
-import 'color_shades_screen.dart';
+import 'color_tweak_screen.dart';
 import 'error_screen.dart';
 import 'loading_screen.dart';
 
@@ -151,15 +151,15 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
     _updateState(randomColor);
   }
 
-  /// Navigates to the Color Shades screen for the current color.
-  void _gotoColorShadesScreen() async {
-    final shadeColor = await utils.navigateTo<ColorItem>(
+  /// Navigates to the Color Tweak screen for the current color.
+  void _gotoColorTweakScreen() async {
+    final tweakedColor = await utils.navigateTo<ColorItem>(
       context,
-      ColorShadesScreen(color: _randomColor.color),
+      ColorTweakScreen(initialColor: _randomColor.color),
     );
 
-    // Update the current random color if a new shade color was selected
-    if (shadeColor != null) _updateState(shadeColor);
+    // Update the current random color if a color was tweaked
+    _updateState(tweakedColor);
   }
 
   /// Navigates to the Available Colors screen for the selected color type.
@@ -196,9 +196,9 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         _gotoColorInfoScreen();
         break;
 
-      // Open the Color Shades screen for the current color
+      // Open the Color Tweak screen for the current color
       case .colorShades:
-        _gotoColorShadesScreen();
+        _gotoColorTweakScreen();
         break;
 
       // Open the Available Colors screen
@@ -279,9 +279,9 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         _gotoColorPreviewScreen();
         break;
 
-      // Open the Color Shades screen for the current color
+      // Open the Color Tweak screen for the current color
       case .colorShades:
-        _gotoColorShadesScreen();
+        _gotoColorTweakScreen();
         break;
 
       // Open the Available Colors screen
@@ -351,11 +351,26 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         ),
       ),
 
-      // The shuffle floating action button
-      floatingActionButton: FloatingActionButton.large(
-        onPressed: _shuffleColor,
-        tooltip: strings.shuffleTooltip,
-        child: const Icon(Icons.shuffle),
+      // The floating action buttons
+      floatingActionButton: Column(
+        mainAxisSize: .min,
+        children: [
+          // Mini tweak FAB
+          FloatingActionButton.small(
+            heroTag: 'tweakFab',
+            onPressed: _gotoColorTweakScreen,
+            tooltip: 'Tweak color',
+            child: const Icon(Icons.tune),
+          ),
+          const SizedBox(height: 16.0),
+          // Large shuffle FAB
+          FloatingActionButton.large(
+            heroTag: 'shuffleFab',
+            onPressed: _shuffleColor,
+            tooltip: strings.shuffleTooltip,
+            child: const Icon(Icons.shuffle),
+          ),
+        ],
       ),
     );
   }
