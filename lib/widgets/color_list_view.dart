@@ -19,7 +19,7 @@ class ColorListView extends StatefulWidget {
     this.scrollController,
     required this.itemCount,
     required this.itemData,
-    this.showColorType = true,
+    this.showColorType,
     this.itemButton,
     this.onItemTap,
     this.onItemButtonPressed,
@@ -34,8 +34,11 @@ class ColorListView extends StatefulWidget {
   /// A callback function that returns the title, subtitle, and color for each item in the list.
   final ColorItem Function(int index) itemData;
 
-  /// Whether to show the color type as a subtitle for each item in the list.
-  final bool showColorType;
+  /// A function that determines whether to show the color type for each item.
+  ///
+  /// The function is called with the [ColorItem] and should return true to show the color type
+  /// or false to hide it. If null, color types will be shown for all items by default.
+  final bool Function(ColorItem)? showColorType;
 
   /// A callback function that returns an optional button for each item in the list.
   final ItemButtonData Function(int index)? itemButton;
@@ -89,7 +92,7 @@ class _ColorListItem extends StatelessWidget {
   const _ColorListItem({
     super.key, // ignore: unused_element_parameter
     required this.colorItem,
-    this.showColorType = true,
+    this.showColorType,
     this.itemButton,
     this.focused = false,
     this.onTap,
@@ -100,8 +103,11 @@ class _ColorListItem extends StatelessWidget {
   /// The color item to display.
   final ColorItem colorItem;
 
-  /// Whether to show the color type as a subtitle.
-  final bool showColorType;
+  /// A function that determines whether to show the color type for this item.
+  ///
+  /// The function is called with the [ColorItem] and should return true to show the color type
+  /// or false to hide it. If null, color types will be shown by default.
+  final bool Function(ColorItem)? showColorType;
 
   /// Data for the optional button of the list item.
   final ItemButtonData? itemButton;
@@ -144,7 +150,7 @@ class _ColorListItem extends StatelessWidget {
               crossAxisAlignment: .start,
               spacing: 2.0,
               children: <Widget>[
-                if (showColorType)
+                if (showColorType?.call(colorItem) ?? true)
                   Text(
                     colorItem.type.name.toUpperCase(),
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(color: contrastColor),

@@ -10,6 +10,7 @@ import '../../utils/utils.dart' as utils;
 import '../common/consts.dart' as consts;
 import '../common/strings.dart' as strings;
 import '../models/color_item.dart';
+import '../models/color_type.dart';
 import '../models/random_color_generator.dart';
 import '../widgets/color_list_view.dart';
 
@@ -62,6 +63,15 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
     );
   }
 
+  /// Determines whether to show the color type for a given color item.
+  ///
+  /// For the True Colors screen, only show the color type for known colors
+  /// (basic/web/named/attractive) that appear among the true colors.
+  /// For all other screens, always show the color type.
+  bool _shouldShowColorType(ColorItem item) {
+    return widget.generator.colorType == ColorType.trueColor && item.type != ColorType.trueColor;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +91,7 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
         scrollController: _scrollController,
         itemCount: widget.generator.length,
         itemData: widget.generator.elementAt,
-        showColorType: false,
+        showColorType: _shouldShowColorType,
         onItemTap: (int index) => _popRandomColor(context, index),
       ),
     );

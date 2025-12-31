@@ -127,6 +127,7 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
       key: const PageStorageKey<String>('favoritesListView'),
       itemCount: preferences.colorFavoritesList.length,
       itemData: (index) => preferences.colorFavoritesList.elementAt(index),
+      showColorType: (_) => true,
       itemButton: (_) => (icon: Icons.delete, tooltip: strings.removeFavTooltip),
       onItemTap: (int index) => Navigator.of(
         context,

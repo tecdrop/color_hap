@@ -73,7 +73,7 @@ class _ColorShadesScreenState extends State<ColorShadesScreen> {
       body: ColorListView(
         itemCount: _shadeColorItems.length,
         itemData: (int index) => _shadeColorItems[index],
-        showColorType: true,
+        showColorType: (_) => true,
         onItemTap: (int index) => _popShadeColor(index),
       ),
     );
