@@ -20,6 +20,7 @@ import '../models/color_item.dart';
 import '../models/color_type.dart';
 import '../models/random_color_generator.dart';
 import '../utils/color_utils.dart' as color_utils;
+import 'color_lookup_service.dart' as color_lookup;
 
 Future<Map<ColorType, RandomColorGenerator>> initAllGenerators() async {
   final catalogPaths = <ColorType, String>{
@@ -41,6 +42,10 @@ Future<Map<ColorType, RandomColorGenerator>> initAllGenerators() async {
     .trueColor: RandomTrueColorGenerator(),
   };
   generators[.mixedColor] = RandomMixedColorGenerator(generators);
+
+  // Initialize the color lookup service with all known colors
+  color_lookup.initColorLookup(generators);
+
   return generators;
 }
 

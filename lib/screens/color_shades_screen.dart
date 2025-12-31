@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../common/strings.dart' as strings;
 import '../models/color_item.dart';
+import '../services/color_lookup_service.dart' as color_lookup;
 import '../utils/color_utils.dart' as color_utils;
 import '../widgets/color_list_view.dart';
 
@@ -33,17 +34,27 @@ class _ColorShadesScreenState extends State<ColorShadesScreen> {
   void initState() {
     super.initState();
 
-    /// Generate shades of the provided color and create ColorItem instances for each shade
+    /// Generate shades of the provided color and create ColorItem instances for each shade.
+    ///
+    /// For each shade, check if it exists in the known color catalogs (basic, web, named,
+    /// or attractive). If found, use the known color with its proper type and name.
+    /// Otherwise, create a true color ColorItem.
     final shades = color_utils.generateShades(widget.color, count: 15);
-    _shadeColorItems = shades
-        .map(
-          (color) => ColorItem(
-            type: .trueColor,
-            color: color,
-            listPosition: color_utils.toRGB24(color),
-          ),
-        )
-        .toList();
+    _shadeColorItems = shades.map((color) {
+      // Check if this shade exists in any known catalog
+      final knownColor = color_lookup.findKnownColor(color);
+      if (knownColor != null) {
+        // Return the known color with its proper type and name
+        return knownColor;
+      }
+
+      // Otherwise, return as a true color
+      return ColorItem(
+        type: .trueColor,
+        color: color,
+        listPosition: color_utils.toRGB24(color),
+      );
+    }).toList();
   }
 
   /// Returns to the previous screen with the selected shade color at the given [index].
@@ -62,7 +73,7 @@ class _ColorShadesScreenState extends State<ColorShadesScreen> {
       body: ColorListView(
         itemCount: _shadeColorItems.length,
         itemData: (int index) => _shadeColorItems[index],
-        showColorType: false,
+        showColorType: true,
         onItemTap: (int index) => _popShadeColor(index),
       ),
     );
