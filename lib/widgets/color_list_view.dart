@@ -70,9 +70,10 @@ class _ColorListViewState extends State<ColorListView> {
         itemCount: widget.itemCount,
         itemExtent: consts.colorListItemExtent,
         itemBuilder: (BuildContext context, int index) {
+          final colorItem = widget.itemData(index);
           return _ColorListItem(
-            colorItem: widget.itemData(index),
-            showColorType: widget.showColorType,
+            colorItem: colorItem,
+            showColorType: widget.showColorType?.call(colorItem) ?? true,
             itemButton: widget.itemButton?.call(index),
             focused: index == focusedIndex,
             onTap: () => widget.onItemTap?.call(index),
@@ -92,7 +93,7 @@ class _ColorListItem extends StatelessWidget {
   const _ColorListItem({
     super.key, // ignore: unused_element_parameter
     required this.colorItem,
-    this.showColorType,
+    this.showColorType = true,
     this.itemButton,
     this.focused = false,
     this.onTap,
@@ -103,11 +104,8 @@ class _ColorListItem extends StatelessWidget {
   /// The color item to display.
   final ColorItem colorItem;
 
-  /// A function that determines whether to show the color type for this item.
-  ///
-  /// The function is called with the [ColorItem] and should return true to show the color type
-  /// or false to hide it. If null, color types will be shown by default.
-  final bool Function(ColorItem)? showColorType;
+  /// Whether to show the color type as a subtitle.
+  final bool showColorType;
 
   /// Data for the optional button of the list item.
   final ItemButtonData? itemButton;
@@ -150,7 +148,7 @@ class _ColorListItem extends StatelessWidget {
               crossAxisAlignment: .start,
               spacing: 2.0,
               children: <Widget>[
-                if (showColorType?.call(colorItem) ?? true)
+                if (showColorType)
                   Text(
                     colorItem.type.name.toUpperCase(),
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(color: contrastColor),
