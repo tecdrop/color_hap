@@ -30,8 +30,7 @@ class ColorTweakScreen extends StatefulWidget {
   State<ColorTweakScreen> createState() => _ColorTweakScreenState();
 }
 
-class _ColorTweakScreenState extends State<ColorTweakScreen>
-    with SingleTickerProviderStateMixin {
+class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late Color _currentColor;
 
@@ -82,7 +81,8 @@ class _ColorTweakScreenState extends State<ColorTweakScreen>
   void _applyColor() {
     // Create ColorItem from current color using lookup service
     final knownColor = color_lookup.findKnownColor(_currentColor);
-    final colorItem = knownColor ??
+    final colorItem =
+        knownColor ??
         ColorItem(
           type: .trueColor,
           color: _currentColor,
@@ -92,40 +92,59 @@ class _ColorTweakScreenState extends State<ColorTweakScreen>
     Navigator.of(context).pop<ColorItem>(colorItem);
   }
 
+  /// Performs the specified action on the app bar.
+  void _onAppBarAction(BuildContext context, _AppBarActions action) {
+    switch (action) {
+      // Applies the current color selection
+      case .applyColor:
+        _applyColor();
+        break;
+
+      // Pastes a color from the clipboard
+      case .pasteColor:
+        _pasteColor();
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final contrastColor = color_utils.contrastColor(_currentColor);
 
     return Scaffold(
       backgroundColor: _currentColor,
-      appBar: AppBar(
-        backgroundColor: _currentColor,
-        foregroundColor: contrastColor,
-        iconTheme: IconThemeData(color: contrastColor),
-        title: Text('Tweak Color', style: TextStyle(color: contrastColor)),
-        bottom: TabBar(
-          controller: _tabController,
-          labelColor: contrastColor,
-          unselectedLabelColor: contrastColor.withValues(alpha: 0.6),
-          indicatorColor: contrastColor,
-          tabs: const [
-            Tab(text: 'Adjust'),
-            Tab(text: 'Shades'),
-          ],
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.content_paste),
-            tooltip: 'Paste color',
-            onPressed: _pasteColor,
-          ),
-          IconButton(
-            icon: const Icon(Icons.check),
-            tooltip: 'Apply',
-            onPressed: _applyColor,
-          ),
-        ],
+      appBar: _AppBar(
+        tabController: _tabController,
+        onAction: (action) => _onAppBarAction(context, action),
       ),
+      // appBar: AppBar(
+      //   backgroundColor: _currentColor,
+      //   foregroundColor: contrastColor,
+      //   iconTheme: IconThemeData(color: contrastColor),
+      //   title: Text('Tweak Color', style: TextStyle(color: contrastColor)),
+      //   bottom: TabBar(
+      //     controller: _tabController,
+      //     labelColor: contrastColor,
+      //     unselectedLabelColor: contrastColor.withValues(alpha: 0.6),
+      //     indicatorColor: contrastColor,
+      //     tabs: const [
+      //       Tab(text: 'Adjust'),
+      //       Tab(text: 'Shades'),
+      //     ],
+      //   ),
+      //   actions: [
+      //     IconButton(
+      //       icon: const Icon(Icons.content_paste),
+      //       tooltip: 'Paste color',
+      //       onPressed: _pasteColor,
+      //     ),
+      //     IconButton(
+      //       icon: const Icon(Icons.check),
+      //       tooltip: 'Apply',
+      //       onPressed: _applyColor,
+      //     ),
+      //   ],
+      // ),
       body: Column(
         children: [
           // Known color indicator
@@ -202,4 +221,62 @@ class _ColorTweakScreenState extends State<ColorTweakScreen>
       ),
     );
   }
+}
+
+/// Enum that defines the actions of the app bar.
+enum _AppBarActions { applyColor, pasteColor }
+
+class _AppBar extends StatelessWidget implements PreferredSizeWidget {
+  const _AppBar({
+    super.key, // ignore: unused_element_parameter
+    required this.tabController,
+    required this.onAction,
+  });
+
+  /// The tab controller for managing tab selection.
+  final TabController? tabController;
+
+  /// The callback that is called when an app bar action is pressed.
+  final void Function(_AppBarActions action) onAction;
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      title: const Text(strings.colorTweakScreenTitle),
+
+      /// The tab bar for switching between Adjust and Shades tabs
+      bottom: TabBar(
+        controller: tabController,
+        tabs: const [
+          Tab(text: strings.adjustTabTitle),
+          Tab(text: strings.shadesTabTitle),
+        ],
+      ),
+
+      /// The common operations displayed in this app bar
+      actions: [
+        /// The Apply Color action
+        IconButton(
+          icon: const Icon(Icons.check),
+          tooltip: 'Apply',
+          onPressed: () => onAction(.applyColor),
+        ),
+
+        // Add the overflow menu
+        PopupMenuButton<_AppBarActions>(
+          onSelected: onAction,
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<_AppBarActions>>[
+            // Add the Paste Color action to the overflow menu
+            const PopupMenuItem<_AppBarActions>(
+              value: .pasteColor,
+              child: Text(strings.pasteColorAction),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight + kTextTabBarHeight);
 }

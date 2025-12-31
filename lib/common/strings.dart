@@ -86,6 +86,17 @@ const String shuffleTooltip = 'Get a new random color';
 const String tweakColorTooltip = 'Tweak this color';
 
 // -----------------------------------------------------------------------------------------------
+// Tweak Color Screen
+// -----------------------------------------------------------------------------------------------
+
+const colorTweakScreenTitle = 'Tweak Color';
+
+const adjustTabTitle = 'Adjust';
+const shadesTabTitle = 'Shades';
+
+const pasteColorAction = 'Paste color';
+
+// -----------------------------------------------------------------------------------------------
 // Color Info Screen
 // -----------------------------------------------------------------------------------------------
 
