@@ -58,9 +58,9 @@ const String randomTrueColorDrawer = 'Random True Colors';
 String possibilitiesDrawerSubtitle(String length) => '$length possibilities';
 const String colorReferenceDrawer = 'Color Reference';
 
+const String tweakColorDrawer = 'Tweak Color';
 const String colorInfoDrawer = 'Color Information';
 const String colorPreviewDrawer = 'Color Preview';
-const String colorShadesDrawer = 'Color Shades';
 const String availableColorsDrawer = 'Available Colors';
 const String colorFavoritesDrawer = 'Favorite Colors';
 String colorFavoritesSubtitle(String length, {bool isPlural = true}) =>
@@ -80,10 +80,10 @@ const String initGeneratorsError = 'Error initializing color generators.';
 const String addFavTooltip = 'Add color to favorites';
 const String removeFavTooltip = 'Remove color from favorites';
 const String colorInfoTooltip = 'Color information';
-const String colorShadesAction = 'Color Shades';
 const String favoriteColorsAction = 'Favorite Colors';
 
 const String shuffleTooltip = 'Get a new random color';
+const String tweakColorTooltip = 'Tweak this color';
 
 // -----------------------------------------------------------------------------------------------
 // Color Info Screen
@@ -138,12 +138,6 @@ const String loadScreenshotColors = 'Load Screenshot Colors';
 
 String availableColors(ColorType value) => 'Available ${colorTypePlural[value]}';
 const String aboutTheseColorsTooltip = 'About these colors';
-
-// -----------------------------------------------------------------------------------------------
-// Color Shades Screen
-// -----------------------------------------------------------------------------------------------
-
-const String colorShadesScreenTitle = 'Color Shades';
 
 // -----------------------------------------------------------------------------
 // Loading Screen

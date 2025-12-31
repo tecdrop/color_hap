@@ -20,9 +20,9 @@ enum AppDrawerItems {
   randomNamedColor,
   randomAttractiveColor,
   randomTrueColor,
+  tweakColor,
   colorInfo,
   colorPreview,
-  colorShades,
   availableColors,
   favoriteColors,
   help,
@@ -136,6 +136,14 @@ class AppDrawer extends StatelessWidget {
 
           const Divider(),
 
+          // Tweak Color drawer item
+          _buildItem(
+            context,
+            icon: Icons.tune_outlined,
+            title: strings.tweakColorDrawer,
+            item: .tweakColor,
+          ),
+
           // Color Info drawer item
           _buildItem(
             context,
@@ -150,14 +158,6 @@ class AppDrawer extends StatelessWidget {
             icon: Icons.remove_red_eye_outlined,
             title: strings.colorPreviewDrawer,
             item: .colorPreview,
-          ),
-
-          // Color Shades drawer item
-          _buildItem(
-            context,
-            icon: Icons.tonality_outlined,
-            title: strings.colorShadesDrawer,
-            item: .colorShades,
           ),
 
           // Available Colors drawer item

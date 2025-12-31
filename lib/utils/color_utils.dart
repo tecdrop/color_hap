@@ -138,17 +138,3 @@ Future<Uint8List> buildColorSwatch(Color color, int width, int height) async {
   }
   return pngBytes.buffer.asUint8List();
 }
-
-List<Color> generateShades(Color baseColor, {int count = 10}) {
-  // Default to 10, but allow customization
-  final shades = <Color>[];
-  final hsl = HSLColor.fromColor(baseColor);
-
-  for (var i = count - 1; i >= 0; i--) {
-    final lightness = (i + 0.5) / count;
-    final newHsl = hsl.withLightness(lightness);
-    shades.add(newHsl.toColor());
-  }
-
-  return shades;
-}

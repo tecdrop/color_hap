@@ -36,11 +36,16 @@ class RandomColorScreen extends StatefulWidget {
 }
 
 class _RandomColorScreenState extends State<RandomColorScreen> {
+  /// Whether the color lists and generators are still loading.
   bool _isLoading = true;
+
+  /// The error message if loading failed.
   String? _loadingError;
 
+  /// A map with singleton random color generators for each color type.
   late Map<ColorType, RandomColorGenerator> _generators;
 
+  /// The random number generator used for generating random colors.
   final Random _random = Random();
 
   /// The type of colors to generate.
@@ -196,11 +201,6 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         _gotoColorInfoScreen();
         break;
 
-      // Open the Color Tweak screen for the current color
-      case .colorShades:
-        _gotoColorTweakScreen();
-        break;
-
       // Open the Available Colors screen
       case .availableColors:
         _gotoAvailableColorsScreen();
@@ -280,7 +280,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         break;
 
       // Open the Color Tweak screen for the current color
-      case .colorShades:
+      case .tweakColor:
         _gotoColorTweakScreen();
         break;
 
@@ -352,32 +352,57 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
       ),
 
       // The floating action buttons
-      floatingActionButton: Column(
-        mainAxisSize: .min,
-        children: [
-          // Mini tweak FAB
-          FloatingActionButton.small(
-            heroTag: 'tweakFab',
-            onPressed: _gotoColorTweakScreen,
-            tooltip: 'Tweak color',
-            child: const Icon(Icons.tune),
-          ),
-          const SizedBox(height: 16.0),
-          // Large shuffle FAB
-          FloatingActionButton.large(
-            heroTag: 'shuffleFab',
-            onPressed: _shuffleColor,
-            tooltip: strings.shuffleTooltip,
-            child: const Icon(Icons.shuffle),
-          ),
-        ],
+      floatingActionButton: _Fabs(
+        onShuffle: _shuffleColor,
+        onTweak: _gotoColorTweakScreen,
       ),
     );
   }
 }
 
+/// The floating action buttons of the Random Color screen.
+class _Fabs extends StatelessWidget {
+  const _Fabs({
+    super.key, // ignore: unused_element_parameter
+    required this.onShuffle,
+    required this.onTweak,
+  });
+
+  /// Callback invoked when the shuffle FAB is pressed.
+  final void Function() onShuffle;
+
+  /// Callback invoked when the tweak FAB is pressed.
+  final void Function() onTweak;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: .min,
+      children: [
+        // Mini tweak FAB
+        FloatingActionButton(
+          heroTag: 'tweakFab',
+          onPressed: onTweak,
+          tooltip: strings.tweakColorTooltip,
+          child: const Icon(Icons.tune),
+        ),
+
+        const SizedBox(height: 16.0),
+
+        // Large shuffle FAB
+        FloatingActionButton.large(
+          heroTag: 'shuffleFab',
+          onPressed: onShuffle,
+          tooltip: strings.shuffleTooltip,
+          child: const Icon(Icons.shuffle),
+        ),
+      ],
+    );
+  }
+}
+
 /// Enum that defines the actions of the app bar.
-enum _AppBarActions { toggleFavorite, colorInfo, colorShades, availableColors, favoriteColors }
+enum _AppBarActions { toggleFavorite, colorInfo, availableColors, favoriteColors }
 
 /// The app bar of the Random Color screen.
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -425,12 +450,6 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
         PopupMenuButton<_AppBarActions>(
           onSelected: onAction,
           itemBuilder: (BuildContext context) => <PopupMenuEntry<_AppBarActions>>[
-            // Add the Color Shades action to the overflow menu
-            const PopupMenuItem<_AppBarActions>(
-              value: .colorShades,
-              child: Text(strings.colorShadesAction),
-            ),
-
             // Add the Available Colors action to the overflow menu
             PopupMenuItem<_AppBarActions>(
               value: .availableColors,
