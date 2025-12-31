@@ -20,7 +20,7 @@ class LongAppBarTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isSmallScreen = MediaQuery.of(context).size.width < 600;
+    final isSmallScreen = MediaQuery.sizeOf(context).width < 600;
 
     // The layout for small screens
     final Widget smallScreenLayout = Column(
