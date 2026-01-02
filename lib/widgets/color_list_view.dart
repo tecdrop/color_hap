@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import '../common/consts.dart' as consts;
 import '../models/color_item.dart';
 import '../utils/color_utils.dart' as color_utils;
+import 'color_info_display.dart';
 
 /// Data for an optional button that can be displayed for each item in the list.
 typedef ItemButtonData = ({IconData icon, String tooltip});
@@ -143,28 +144,12 @@ class _ColorListItem extends StatelessWidget {
         child: Row(
           mainAxisAlignment: .spaceBetween,
           children: <Widget>[
-            Column(
-              mainAxisAlignment: .center,
-              crossAxisAlignment: .start,
-              spacing: 2.0,
-              children: <Widget>[
-                if (showColorType)
-                  Text(
-                    colorItem.type.name.toUpperCase(),
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(color: contrastColor),
-                  ),
-
-                if (colorItem.name != null)
-                  Text(
-                    colorItem.name!,
-                    style: Theme.of(context).textTheme.titleMedium!.copyWith(color: contrastColor),
-                  ),
-
-                Text(
-                  colorItem.hexString,
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: contrastColor),
-                ),
-              ],
+            ColorInfoDisplay(
+              colorItem: colorItem,
+              contrastColor: contrastColor,
+              showType: showColorType,
+              size: .small,
+              alignment: .start,
             ),
             if (itemButton != null)
               IconButton(

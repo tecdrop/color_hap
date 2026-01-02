@@ -9,6 +9,7 @@ import '../common/strings.dart' as strings;
 import '../models/color_item.dart';
 import '../services/color_lookup_service.dart' as color_lookup;
 import '../utils/color_utils.dart' as color_utils;
+import '../widgets/color_info_display.dart';
 import '../widgets/rgb_sliders.dart';
 
 /// A screen for tweaking colors with RGB sliders.
@@ -90,6 +91,13 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
   @override
   Widget build(BuildContext context) {
     final contrastColor = color_utils.contrastColor(_currentColor);
+    final knownColor = color_lookup.findKnownColor(_currentColor);
+    final colorItem = knownColor ??
+        ColorItem(
+          type: .trueColor,
+          color: _currentColor,
+          listPosition: color_utils.toRGB24(_currentColor),
+        );
 
     return Scaffold(
       backgroundColor: _currentColor,
@@ -98,8 +106,17 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
       ),
       body: Column(
         children: [
-          // Known color indicator
-          _buildKnownColorIndicator(contrastColor),
+          // Color information display
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ColorInfoDisplay(
+              colorItem: colorItem,
+              contrastColor: contrastColor,
+              showType: knownColor != null,
+              size: .medium,
+              alignment: .center,
+            ),
+          ),
 
           // RGB sliders
           Expanded(
@@ -107,51 +124,6 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
               color: _currentColor,
               onColorChanged: _onColorChanged,
               contrastColor: contrastColor,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildKnownColorIndicator(Color contrastColor) {
-    final knownColor = color_lookup.findKnownColor(_currentColor);
-    final hexCode = color_utils.toHexString(_currentColor);
-
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        mainAxisAlignment: .center,
-        children: [
-          if (knownColor != null) ...[
-            Chip(
-              label: Text(
-                strings.colorTypeSingular[knownColor.type]!,
-                style: TextStyle(
-                  color: contrastColor,
-                  fontSize: 12.0,
-                ),
-              ),
-              backgroundColor: contrastColor.withValues(alpha: 0.2),
-              side: BorderSide(color: contrastColor.withValues(alpha: 0.3)),
-            ),
-            const SizedBox(width: 8.0),
-            Text(
-              knownColor.name!,
-              style: TextStyle(
-                color: contrastColor,
-                fontSize: 16.0,
-                fontWeight: .bold,
-              ),
-            ),
-            const SizedBox(width: 8.0),
-          ],
-          Text(
-            hexCode,
-            style: TextStyle(
-              color: contrastColor,
-              fontSize: 16.0,
-              fontFamily: 'monospace',
             ),
           ),
         ],

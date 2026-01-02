@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../models/color_item.dart';
 import '../utils/color_utils.dart' as color_utils;
+import 'color_info_display.dart';
 
 /// A widget that displays a random color.
 ///
@@ -31,8 +32,6 @@ class RandomColorDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final contrastColor = color_utils.contrastColor(colorItem.color);
-    final textTheme = Theme.of(context).textTheme;
-    final hexTestStyle = colorItem.name != null ? textTheme.titleMedium : textTheme.headlineMedium;
 
     // Use an animated container to animate the color change
     return AnimatedContainer(
@@ -45,24 +44,12 @@ class RandomColorDisplay extends StatelessWidget {
       child: GestureDetector(
         onDoubleTap: onDoubleTap,
         onLongPress: onLongPress,
-        child: Column(
-          crossAxisAlignment: .center,
-          mainAxisAlignment: .center,
-          children: <Widget>[
-            // Display the color hex code
-            Text(
-              colorItem.hexString,
-              style: hexTestStyle?.copyWith(color: contrastColor),
-              textAlign: .center,
-            ),
-            // Display the color name if it is not null
-            if (colorItem.name != null)
-              Text(
-                colorItem.name!,
-                style: textTheme.headlineMedium?.copyWith(color: contrastColor),
-                textAlign: .center,
-              ),
-          ],
+        child: ColorInfoDisplay(
+          colorItem: colorItem,
+          contrastColor: contrastColor,
+          showType: false,
+          size: .large,
+          alignment: .center,
         ),
       ),
     );
