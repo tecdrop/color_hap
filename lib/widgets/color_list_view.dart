@@ -149,7 +149,7 @@ class _ColorListItem extends StatelessWidget {
               contrastColor: contrastColor,
               showType: showColorType,
               size: .small,
-              alignment: .start,
+              centered: false,
             ),
             if (itemButton != null)
               IconButton(

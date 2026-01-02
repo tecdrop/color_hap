@@ -30,7 +30,8 @@ class ColorInfoDisplay extends StatelessWidget {
     required this.contrastColor,
     this.showType = true,
     this.size = .medium,
-    this.alignment = .start,
+    this.centered = false,
+    this.adaptiveHexSize = true,
   });
 
   /// The color item containing the color data to display.
@@ -45,93 +46,93 @@ class ColorInfoDisplay extends StatelessWidget {
   /// The size preset for text styling.
   final ColorInfoSize size;
 
-  /// The cross-axis alignment for the column (center or start).
-  final CrossAxisAlignment alignment;
+  /// Whether to center-align the text (true) or start-align (false).
+  final bool centered;
+
+  /// Whether to adaptively scale hex code size when no color name is present (large size only).
+  final bool adaptiveHexSize;
+
+  /// Text theme style getters for the color type label.
+  static const _typeStyleGetters = {
+    ColorInfoSize.small: _getBodySmall,
+    ColorInfoSize.medium: _getBodySmall,
+    ColorInfoSize.large: _getBodySmall,
+  };
+
+  /// Text theme style getters for the color name.
+  static const _nameStyleGetters = {
+    ColorInfoSize.small: _getTitleMedium,
+    ColorInfoSize.medium: _getTitleLarge,
+    ColorInfoSize.large: _getHeadlineMedium,
+  };
+
+  /// Text theme style getters for the hex code (non-adaptive).
+  static const _hexStyleGetters = {
+    ColorInfoSize.small: _getBodyMedium,
+    ColorInfoSize.medium: _getBodyLarge,
+    ColorInfoSize.large: _getTitleMedium,
+  };
+
+  /// Spacing values for each size.
+  static const _spacingValues = {
+    ColorInfoSize.small: 2.0,
+    ColorInfoSize.medium: 4.0,
+    ColorInfoSize.large: 0.0,
+  };
+
+  // Theme style getter functions
+  static TextStyle _getBodySmall(TextTheme theme) => theme.bodySmall!;
+  static TextStyle _getBodyMedium(TextTheme theme) => theme.bodyMedium!;
+  static TextStyle _getBodyLarge(TextTheme theme) => theme.bodyLarge!;
+  static TextStyle _getTitleMedium(TextTheme theme) => theme.titleMedium!;
+  static TextStyle _getTitleLarge(TextTheme theme) => theme.titleLarge!;
+  static TextStyle _getHeadlineMedium(TextTheme theme) => theme.headlineMedium!;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final textAlign = centered ? TextAlign.center : TextAlign.start;
+    final crossAxisAlignment = centered ? CrossAxisAlignment.center : CrossAxisAlignment.start;
 
     return Column(
-      crossAxisAlignment: alignment,
+      crossAxisAlignment: crossAxisAlignment,
       mainAxisAlignment: .center,
-      spacing: _getSpacing(),
+      spacing: _spacingValues[size]!,
       children: [
-        // Color type (if shown and available)
+        // Color type (if shown)
         if (showType)
           Text(
             colorItem.type.name.toUpperCase(),
-            style: _getTypeStyle(textTheme),
-            textAlign: _getTextAlign(),
+            style: _typeStyleGetters[size]!(textTheme).copyWith(color: contrastColor),
+            textAlign: textAlign,
           ),
 
         // Color name (if available)
         if (colorItem.name != null)
           Text(
             colorItem.name!,
-            style: _getNameStyle(textTheme),
-            textAlign: _getTextAlign(),
+            style: _nameStyleGetters[size]!(textTheme).copyWith(color: contrastColor),
+            textAlign: textAlign,
           ),
 
         // Color hex code (always shown)
         Text(
           colorItem.hexString,
           style: _getHexStyle(textTheme),
-          textAlign: _getTextAlign(),
+          textAlign: textAlign,
         ),
       ],
     );
   }
 
-  /// Returns the spacing between text elements based on size.
-  double _getSpacing() {
-    return switch (size) {
-      .small => 2.0,
-      .medium => 4.0,
-      .large => 0.0,
-    };
-  }
-
-  /// Returns the text alignment based on the column alignment.
-  TextAlign _getTextAlign() {
-    return alignment == .center ? .center : .start;
-  }
-
-  /// Returns the text style for the color type label.
-  TextStyle _getTypeStyle(TextTheme textTheme) {
-    return switch (size) {
-      .small => textTheme.bodySmall!.copyWith(color: contrastColor),
-      .medium => TextStyle(color: contrastColor, fontSize: 12.0),
-      .large => textTheme.bodySmall!.copyWith(color: contrastColor),
-    };
-  }
-
-  /// Returns the text style for the color name.
-  TextStyle _getNameStyle(TextTheme textTheme) {
-    return switch (size) {
-      .small => textTheme.titleMedium!.copyWith(color: contrastColor),
-      // .medium => TextStyle(color: contrastColor, fontSize: 16.0, fontWeight: .bold),
-      .medium => textTheme.titleLarge!.copyWith(color: contrastColor),
-      .large => textTheme.headlineMedium!.copyWith(color: contrastColor),
-    };
-  }
-
-  /// Returns the text style for the hex code.
+  /// Returns the text style for the hex code, with adaptive sizing for large size.
   TextStyle _getHexStyle(TextTheme textTheme) {
-    final baseStyle = switch (size) {
-      .small => textTheme.bodyMedium!.copyWith(color: contrastColor),
-      // .medium => TextStyle(color: contrastColor, fontSize: 16.0, fontFamily: 'monospace'),
-      .medium => textTheme.bodyLarge!.copyWith(color: contrastColor),
-      .large => _getLargeHexStyle(textTheme),
-    };
-    return baseStyle;
-  }
+    // For large size with adaptive hex and no name, use headlineMedium
+    if (size == .large && adaptiveHexSize && colorItem.name == null) {
+      return textTheme.headlineMedium!.copyWith(color: contrastColor);
+    }
 
-  /// Returns the text style for hex code in large size (depends on whether name exists).
-  TextStyle _getLargeHexStyle(TextTheme textTheme) {
-    final baseThemeStyle = colorItem.name != null
-        ? textTheme.titleMedium
-        : textTheme.headlineMedium;
-    return baseThemeStyle!.copyWith(color: contrastColor);
+    // Otherwise use the standard style for the size
+    return _hexStyleGetters[size]!(textTheme).copyWith(color: contrastColor);
   }
 }

@@ -49,7 +49,7 @@ class RandomColorDisplay extends StatelessWidget {
           contrastColor: contrastColor,
           showType: false,
           size: .large,
-          alignment: .center,
+          centered: true,
         ),
       ),
     );

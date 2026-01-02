@@ -114,11 +114,9 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
               child: ColorInfoDisplay(
                 colorItem: colorItem,
                 contrastColor: contrastColor,
-                // showType: knownColor != null,
-                showType: true,
+                showType: knownColor != null,
                 size: .medium,
-                // size: .large,
-                alignment: .center,
+                centered: true,
               ),
             ),
           ),
