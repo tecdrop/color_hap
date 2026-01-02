@@ -5,6 +5,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+/// RGB color component (red, green, or blue).
+enum RgbComponent { red, green, blue }
+
 /// A widget that provides RGB color adjustment controls.
 ///
 /// Displays three sliders with text input controls for adjusting the red, green, and blue
@@ -36,14 +39,25 @@ class _RgbSlidersState extends State<RgbSliders> {
   late int _green;
   late int _blue;
 
-  static const _rgbRed = Color(0xFFFF0000);
-  static const _rgbGreen = Color(0xFF00FF00);
-  static const _rgbBlue = Color(0xFF0000FF);
+  late final Map<RgbComponent, TextEditingController> _controllers;
+
+  static const _componentColors = {
+    RgbComponent.red: Color(0xFFFF0000),
+    RgbComponent.green: Color(0xFF00FF00),
+    RgbComponent.blue: Color(0xFF0000FF),
+  };
 
   @override
   void initState() {
     super.initState();
     _updateFromColor(widget.color);
+
+    // Create controllers in a map
+    _controllers = {
+      RgbComponent.red: TextEditingController(text: _red.toString()),
+      RgbComponent.green: TextEditingController(text: _green.toString()),
+      RgbComponent.blue: TextEditingController(text: _blue.toString()),
+    };
   }
 
   @override
@@ -51,7 +65,20 @@ class _RgbSlidersState extends State<RgbSliders> {
     super.didUpdateWidget(oldWidget);
     if (widget.color != oldWidget.color) {
       _updateFromColor(widget.color);
+      // Update all controller texts
+      _controllers[RgbComponent.red]!.text = _red.toString();
+      _controllers[RgbComponent.green]!.text = _green.toString();
+      _controllers[RgbComponent.blue]!.text = _blue.toString();
     }
+  }
+
+  @override
+  void dispose() {
+    // Dispose all controllers
+    for (final controller in _controllers.values) {
+      controller.dispose();
+    }
+    super.dispose();
   }
 
   void _updateFromColor(Color color) {
@@ -61,33 +88,26 @@ class _RgbSlidersState extends State<RgbSliders> {
   }
 
   void _notifyColorChange() {
-    widget.onColorChanged(
-      Color.fromARGB(
-        255,
-        _red,
-        _green,
-        _blue,
-      ),
-    );
+    widget.onColorChanged(Color.fromARGB(255, _red, _green, _blue));
   }
 
-  void _updateRed(int value) {
-    setState(() {
-      _red = value.clamp(0, 255);
-      _notifyColorChange();
-    });
-  }
+  int _getValue(RgbComponent component) => switch (component) {
+        .red => _red,
+        .green => _green,
+        .blue => _blue,
+      };
 
-  void _updateGreen(int value) {
+  void _updateComponent(RgbComponent component, int value) {
     setState(() {
-      _green = value.clamp(0, 255);
-      _notifyColorChange();
-    });
-  }
-
-  void _updateBlue(int value) {
-    setState(() {
-      _blue = value.clamp(0, 255);
+      final clamped = value.clamp(0, 255);
+      switch (component) {
+        case .red:
+          _red = clamped;
+        case .green:
+          _green = clamped;
+        case .blue:
+          _blue = clamped;
+      }
       _notifyColorChange();
     });
   }
@@ -96,30 +116,20 @@ class _RgbSlidersState extends State<RgbSliders> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      // padding: const .fromLTRB(8.0, 16.0, 16.0, 16.0),
       child: Column(
         mainAxisSize: .min,
         children: [
-          _RgbSliderRow(
-            value: _red,
-            color: _RgbSlidersState._rgbRed,
-            contrastColor: widget.contrastColor,
-            onChanged: _updateRed,
-          ),
-          const SizedBox(height: 16.0),
-          _RgbSliderRow(
-            value: _green,
-            color: _RgbSlidersState._rgbGreen,
-            contrastColor: widget.contrastColor,
-            onChanged: _updateGreen,
-          ),
-          const SizedBox(height: 16.0),
-          _RgbSliderRow(
-            value: _blue,
-            color: _RgbSlidersState._rgbBlue,
-            contrastColor: widget.contrastColor,
-            onChanged: _updateBlue,
-          ),
+          for (final component in RgbComponent.values) ...[
+            _RgbSliderRow(
+              component: component,
+              value: _getValue(component),
+              controller: _controllers[component]!,
+              color: _componentColors[component]!,
+              contrastColor: widget.contrastColor,
+              onChanged: (value) => _updateComponent(component, value),
+            ),
+            if (component != .blue) const SizedBox(height: 16.0),
+          ],
         ],
       ),
     );
@@ -129,13 +139,17 @@ class _RgbSlidersState extends State<RgbSliders> {
 /// A single RGB slider row with value control.
 class _RgbSliderRow extends StatelessWidget {
   const _RgbSliderRow({
+    required this.component,
     required this.value,
+    required this.controller,
     required this.color,
     required this.contrastColor,
     required this.onChanged,
   });
 
+  final RgbComponent component;
   final int value;
+  final TextEditingController controller;
   final Color color;
   final Color contrastColor;
   final ValueChanged<int> onChanged;
@@ -166,9 +180,9 @@ class _RgbSliderRow extends StatelessWidget {
             ),
           ),
         ),
-        // const SizedBox(width: 8.0),
         _RgbValueControl(
           value: value,
+          controller: controller,
           contrastColor: contrastColor,
           onChanged: onChanged,
         ),
@@ -181,11 +195,13 @@ class _RgbSliderRow extends StatelessWidget {
 class _RgbValueControl extends StatefulWidget {
   const _RgbValueControl({
     required this.value,
+    required this.controller,
     required this.contrastColor,
     required this.onChanged,
   });
 
   final int value;
+  final TextEditingController controller;
   final Color contrastColor;
   final ValueChanged<int> onChanged;
 
@@ -194,13 +210,11 @@ class _RgbValueControl extends StatefulWidget {
 }
 
 class _RgbValueControlState extends State<_RgbValueControl> {
-  late TextEditingController _controller;
   late FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: widget.value.toString());
     _focusNode = FocusNode();
     _focusNode.addListener(_onFocusChange);
   }
@@ -209,14 +223,13 @@ class _RgbValueControlState extends State<_RgbValueControl> {
   void didUpdateWidget(_RgbValueControl oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.value != oldWidget.value && !_focusNode.hasFocus) {
-      _controller.text = widget.value.toString();
+      widget.controller.text = widget.value.toString();
     }
   }
 
   @override
   void dispose() {
     _focusNode.removeListener(_onFocusChange);
-    _controller.dispose();
     _focusNode.dispose();
     super.dispose();
   }
@@ -228,15 +241,15 @@ class _RgbValueControlState extends State<_RgbValueControl> {
   }
 
   void _validateAndUpdate() {
-    final parsed = int.tryParse(_controller.text);
+    final parsed = int.tryParse(widget.controller.text);
     if (parsed != null) {
       final clamped = parsed.clamp(0, 255);
-      _controller.text = clamped.toString();
+      widget.controller.text = clamped.toString();
       if (clamped != widget.value) {
         widget.onChanged(clamped);
       }
     } else {
-      _controller.text = widget.value.toString();
+      widget.controller.text = widget.value.toString();
     }
   }
 
@@ -266,7 +279,7 @@ class _RgbValueControlState extends State<_RgbValueControl> {
         SizedBox(
           width: 56.0,
           child: TextField(
-            controller: _controller,
+            controller: widget.controller,
             focusNode: _focusNode,
             keyboardType: .number,
             textAlign: .center,
