@@ -9,14 +9,9 @@ import '../common/strings.dart' as strings;
 import '../models/color_item.dart';
 import '../services/color_lookup_service.dart' as color_lookup;
 import '../utils/color_utils.dart' as color_utils;
-import '../widgets/color_shades_list.dart';
 import '../widgets/rgb_sliders.dart';
 
-/// A screen for tweaking colors with RGB sliders and shade selection.
-///
-/// Provides two tabs:
-/// - Adjust: RGB sliders for precise color adjustment
-/// - Shades: A list of color shades for quick selection
+/// A screen for tweaking colors with RGB sliders.
 class ColorTweakScreen extends StatefulWidget {
   const ColorTweakScreen({
     super.key,
@@ -31,32 +26,17 @@ class ColorTweakScreen extends StatefulWidget {
 }
 
 class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerProviderStateMixin {
-  late TabController _tabController;
   late Color _currentColor;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
     _currentColor = widget.initialColor;
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
   }
 
   void _onColorChanged(Color color) {
     setState(() {
       _currentColor = color;
-    });
-  }
-
-  void _onShadeSelected(Color color) {
-    setState(() {
-      _currentColor = color;
-      _tabController.animateTo(0); // Switch to Adjust tab
     });
   }
 
@@ -114,62 +94,19 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
     return Scaffold(
       backgroundColor: _currentColor,
       appBar: _AppBar(
-        tabController: _tabController,
         onAction: (action) => _onAppBarAction(context, action),
       ),
-      // appBar: AppBar(
-      //   backgroundColor: _currentColor,
-      //   foregroundColor: contrastColor,
-      //   iconTheme: IconThemeData(color: contrastColor),
-      //   title: Text('Tweak Color', style: TextStyle(color: contrastColor)),
-      //   bottom: TabBar(
-      //     controller: _tabController,
-      //     labelColor: contrastColor,
-      //     unselectedLabelColor: contrastColor.withValues(alpha: 0.6),
-      //     indicatorColor: contrastColor,
-      //     tabs: const [
-      //       Tab(text: 'Adjust'),
-      //       Tab(text: 'Shades'),
-      //     ],
-      //   ),
-      //   actions: [
-      //     IconButton(
-      //       icon: const Icon(Icons.content_paste),
-      //       tooltip: 'Paste color',
-      //       onPressed: _pasteColor,
-      //     ),
-      //     IconButton(
-      //       icon: const Icon(Icons.check),
-      //       tooltip: 'Apply',
-      //       onPressed: _applyColor,
-      //     ),
-      //   ],
-      // ),
       body: Column(
         children: [
           // Known color indicator
           _buildKnownColorIndicator(contrastColor),
 
-          // Tab views
+          // RGB sliders
           Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                // Adjust tab
-                SingleChildScrollView(
-                  child: RgbSliders(
-                    color: _currentColor,
-                    onColorChanged: _onColorChanged,
-                    contrastColor: contrastColor,
-                  ),
-                ),
-
-                // Shades tab
-                ColorShadesList(
-                  baseColor: _currentColor,
-                  onShadeSelected: _onShadeSelected,
-                ),
-              ],
+            child: RgbSliders(
+              color: _currentColor,
+              onColorChanged: _onColorChanged,
+              contrastColor: contrastColor,
             ),
           ),
         ],
@@ -229,12 +166,8 @@ enum _AppBarActions { applyColor, pasteColor }
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   const _AppBar({
     super.key, // ignore: unused_element_parameter
-    required this.tabController,
     required this.onAction,
   });
-
-  /// The tab controller for managing tab selection.
-  final TabController? tabController;
 
   /// The callback that is called when an app bar action is pressed.
   final void Function(_AppBarActions action) onAction;
@@ -243,15 +176,6 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: const Text(strings.colorTweakScreenTitle),
-
-      /// The tab bar for switching between Adjust and Shades tabs
-      bottom: TabBar(
-        controller: tabController,
-        tabs: const [
-          Tab(text: strings.adjustTabTitle),
-          Tab(text: strings.shadesTabTitle),
-        ],
-      ),
 
       /// The common operations displayed in this app bar
       actions: [
@@ -278,5 +202,5 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight + kTextTabBarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

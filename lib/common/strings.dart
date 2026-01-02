@@ -91,9 +91,6 @@ const String tweakColorTooltip = 'Tweak this color';
 
 const colorTweakScreenTitle = 'Tweak Color';
 
-const adjustTabTitle = 'Adjust';
-const shadesTabTitle = 'Shades';
-
 const pasteColorAction = 'Paste color';
 
 // -----------------------------------------------------------------------------------------------
