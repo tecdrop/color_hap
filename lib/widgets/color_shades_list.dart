@@ -14,7 +14,7 @@ import 'color_list_view.dart';
 /// Generates 15 shades of the base color using HSL lightness variation and displays them
 /// in a scrollable list. Each shade is checked against the known color catalog to provide
 /// proper color names and types when available.
-class ColorShadesList extends StatelessWidget {
+class ColorShadesList extends StatefulWidget {
   const ColorShadesList({
     super.key,
     required this.baseColor,
@@ -26,6 +26,25 @@ class ColorShadesList extends StatelessWidget {
 
   /// Callback invoked when a shade is selected.
   final ValueChanged<Color> onShadeSelected;
+
+  @override
+  State<ColorShadesList> createState() => _ColorShadesListState();
+}
+
+class _ColorShadesListState extends State<ColorShadesList> {
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   /// Generates shades of the base color by varying the HSL lightness.
   ///
@@ -46,7 +65,7 @@ class ColorShadesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final shades = _generateShades(baseColor);
+    final shades = _generateShades(widget.baseColor);
     final shadeColorItems = shades.map((color) {
       // Check if this shade exists in any known catalog
       final knownColor = color_lookup.findKnownColor(color);
@@ -63,10 +82,11 @@ class ColorShadesList extends StatelessWidget {
     }).toList();
 
     return ColorListView(
+      scrollController: _scrollController,
       itemCount: shadeColorItems.length,
       itemData: (int index) => shadeColorItems[index],
       showColorType: (_) => true,
-      onItemTap: (int index) => onShadeSelected(shadeColorItems[index].color),
+      onItemTap: (int index) => widget.onShadeSelected(shadeColorItems[index].color),
     );
   }
 }
