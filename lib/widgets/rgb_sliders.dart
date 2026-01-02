@@ -36,6 +36,10 @@ class _RgbSlidersState extends State<RgbSliders> {
   late int _green;
   late int _blue;
 
+  static const _rgbRed = Color(0xFFFF0000);
+  static const _rgbGreen = Color(0xFF00FF00);
+  static const _rgbBlue = Color(0xFF0000FF);
+
   @override
   void initState() {
     super.initState();
@@ -57,12 +61,14 @@ class _RgbSlidersState extends State<RgbSliders> {
   }
 
   void _notifyColorChange() {
-    widget.onColorChanged(Color.fromARGB(
-      255,
-      _red,
-      _green,
-      _blue,
-    ));
+    widget.onColorChanged(
+      Color.fromARGB(
+        255,
+        _red,
+        _green,
+        _blue,
+      ),
+    );
   }
 
   void _updateRed(int value) {
@@ -90,26 +96,27 @@ class _RgbSlidersState extends State<RgbSliders> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
+      // padding: const .fromLTRB(8.0, 16.0, 16.0, 16.0),
       child: Column(
         mainAxisSize: .min,
         children: [
           _RgbSliderRow(
             value: _red,
-            color: Colors.red,
+            color: _RgbSlidersState._rgbRed,
             contrastColor: widget.contrastColor,
             onChanged: _updateRed,
           ),
           const SizedBox(height: 16.0),
           _RgbSliderRow(
             value: _green,
-            color: Colors.green,
+            color: _RgbSlidersState._rgbGreen,
             contrastColor: widget.contrastColor,
             onChanged: _updateGreen,
           ),
           const SizedBox(height: 16.0),
           _RgbSliderRow(
             value: _blue,
-            color: Colors.blue,
+            color: _RgbSlidersState._rgbBlue,
             contrastColor: widget.contrastColor,
             onChanged: _updateBlue,
           ),
@@ -140,11 +147,11 @@ class _RgbSliderRow extends StatelessWidget {
         Expanded(
           child: SliderTheme(
             data: SliderTheme.of(context).copyWith(
-              activeTrackColor: color,
-              inactiveTrackColor: color.withValues(alpha: 0.3),
+              activeTrackColor: contrastColor,
+              inactiveTrackColor: contrastColor.withValues(alpha: 0.3),
+              trackHeight: 2.0,
               thumbColor: color,
               overlayColor: color.withValues(alpha: 0.1),
-              valueIndicatorColor: color,
               thumbShape: const RoundSliderThumbShape(
                 enabledThumbRadius: 12.0,
                 elevation: 2.0,
@@ -159,7 +166,7 @@ class _RgbSliderRow extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(width: 8.0),
+        // const SizedBox(width: 8.0),
         _RgbValueControl(
           value: value,
           contrastColor: contrastColor,

@@ -124,7 +124,7 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
 
           // RGB sliders
           Padding(
-            padding: const .symmetric(vertical: 32.0),
+            padding: const .only(bottom: 48.0),
             child: RgbSliders(
               color: _currentColor,
               onColorChanged: _onColorChanged,
