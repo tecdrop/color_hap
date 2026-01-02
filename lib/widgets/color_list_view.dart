@@ -147,9 +147,10 @@ class _ColorListItem extends StatelessWidget {
             ColorInfoDisplay(
               colorItem: colorItem,
               contrastColor: contrastColor,
+              adaptiveHexSize: false,
+              centered: false,
               showType: showColorType,
               size: .small,
-              centered: false,
             ),
             if (itemButton != null)
               IconButton(

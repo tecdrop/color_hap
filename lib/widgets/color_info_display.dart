@@ -73,13 +73,6 @@ class ColorInfoDisplay extends StatelessWidget {
     ColorInfoSize.large: _getTitleMedium,
   };
 
-  /// Text theme style getters for the hex code when name is absent and adaptiveHexSize is on.
-  static const _hexStyleGettersAdaptive = {
-    ColorInfoSize.small: _getBodyMedium,
-    ColorInfoSize.medium: _getBodyLarge,
-    ColorInfoSize.large: _getHeadlineMedium,
-  };
-
   /// Spacing values for each size.
   static const _spacingValues = {
     ColorInfoSize.small: 2.0,
@@ -134,9 +127,9 @@ class ColorInfoDisplay extends StatelessWidget {
 
   /// Returns the text style for the hex code, with optional adaptive sizing.
   TextStyle _getHexStyle(TextTheme textTheme) {
-    // Use adaptive style when adaptiveHexSize is enabled and no name is present
+    // When adaptiveHexSize is enabled and no name is present, use name style (make hex as large as name would be)
     final styleGetter = (adaptiveHexSize && colorItem.name == null)
-        ? _hexStyleGettersAdaptive[size]!
+        ? _nameStyleGetters[size]!
         : _hexStyleGetters[size]!;
 
     return styleGetter(textTheme).copyWith(color: contrastColor);

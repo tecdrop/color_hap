@@ -47,9 +47,10 @@ class RandomColorDisplay extends StatelessWidget {
         child: ColorInfoDisplay(
           colorItem: colorItem,
           contrastColor: contrastColor,
+          adaptiveHexSize: true,
+          centered: true,
           showType: false,
           size: .large,
-          centered: true,
         ),
       ),
     );
