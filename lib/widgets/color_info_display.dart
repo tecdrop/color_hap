@@ -110,7 +110,8 @@ class ColorInfoDisplay extends StatelessWidget {
   TextStyle _getNameStyle(TextTheme textTheme) {
     return switch (size) {
       .small => textTheme.titleMedium!.copyWith(color: contrastColor),
-      .medium => TextStyle(color: contrastColor, fontSize: 16.0, fontWeight: .bold),
+      // .medium => TextStyle(color: contrastColor, fontSize: 16.0, fontWeight: .bold),
+      .medium => textTheme.titleLarge!.copyWith(color: contrastColor),
       .large => textTheme.headlineMedium!.copyWith(color: contrastColor),
     };
   }
@@ -119,7 +120,8 @@ class ColorInfoDisplay extends StatelessWidget {
   TextStyle _getHexStyle(TextTheme textTheme) {
     final baseStyle = switch (size) {
       .small => textTheme.bodyMedium!.copyWith(color: contrastColor),
-      .medium => TextStyle(color: contrastColor, fontSize: 16.0, fontFamily: 'monospace'),
+      // .medium => TextStyle(color: contrastColor, fontSize: 16.0, fontFamily: 'monospace'),
+      .medium => textTheme.bodyLarge!.copyWith(color: contrastColor),
       .large => _getLargeHexStyle(textTheme),
     };
     return baseStyle;
@@ -127,7 +129,9 @@ class ColorInfoDisplay extends StatelessWidget {
 
   /// Returns the text style for hex code in large size (depends on whether name exists).
   TextStyle _getLargeHexStyle(TextTheme textTheme) {
-    final baseThemeStyle = colorItem.name != null ? textTheme.titleMedium : textTheme.headlineMedium;
+    final baseThemeStyle = colorItem.name != null
+        ? textTheme.titleMedium
+        : textTheme.headlineMedium;
     return baseThemeStyle!.copyWith(color: contrastColor);
   }
 }

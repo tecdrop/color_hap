@@ -92,7 +92,8 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
   Widget build(BuildContext context) {
     final contrastColor = color_utils.contrastColor(_currentColor);
     final knownColor = color_lookup.findKnownColor(_currentColor);
-    final colorItem = knownColor ??
+    final colorItem =
+        knownColor ??
         ColorItem(
           type: .trueColor,
           color: _currentColor,
@@ -107,19 +108,24 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
       body: Column(
         children: [
           // Color information display
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ColorInfoDisplay(
-              colorItem: colorItem,
-              contrastColor: contrastColor,
-              showType: knownColor != null,
-              size: .medium,
-              alignment: .center,
+          Expanded(
+            child: Padding(
+              padding: const .all(16.0),
+              child: ColorInfoDisplay(
+                colorItem: colorItem,
+                contrastColor: contrastColor,
+                // showType: knownColor != null,
+                showType: true,
+                size: .medium,
+                // size: .large,
+                alignment: .center,
+              ),
             ),
           ),
 
           // RGB sliders
-          Expanded(
+          Padding(
+            padding: const .symmetric(vertical: 32.0),
             child: RgbSliders(
               color: _currentColor,
               onColorChanged: _onColorChanged,
