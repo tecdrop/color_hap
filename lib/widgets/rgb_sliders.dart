@@ -35,10 +35,7 @@ class RgbSliders extends StatefulWidget {
 }
 
 class _RgbSlidersState extends State<RgbSliders> {
-  late int _red;
-  late int _green;
-  late int _blue;
-
+  late Map<RgbComponent, int> _values;
   late final Map<RgbComponent, TextEditingController> _controllers;
 
   static const _componentColors = {
@@ -52,11 +49,10 @@ class _RgbSlidersState extends State<RgbSliders> {
     super.initState();
     _updateFromColor(widget.color);
 
-    // Create controllers in a map
+    // Create controllers based on current values
     _controllers = {
-      RgbComponent.red: TextEditingController(text: _red.toString()),
-      RgbComponent.green: TextEditingController(text: _green.toString()),
-      RgbComponent.blue: TextEditingController(text: _blue.toString()),
+      for (final component in RgbComponent.values)
+        component: TextEditingController(text: _values[component].toString()),
     };
   }
 
@@ -66,9 +62,9 @@ class _RgbSlidersState extends State<RgbSliders> {
     if (widget.color != oldWidget.color) {
       _updateFromColor(widget.color);
       // Update all controller texts
-      _controllers[RgbComponent.red]!.text = _red.toString();
-      _controllers[RgbComponent.green]!.text = _green.toString();
-      _controllers[RgbComponent.blue]!.text = _blue.toString();
+      for (final component in RgbComponent.values) {
+        _controllers[component]!.text = _values[component].toString();
+      }
     }
   }
 
@@ -82,32 +78,27 @@ class _RgbSlidersState extends State<RgbSliders> {
   }
 
   void _updateFromColor(Color color) {
-    _red = (color.r * 255).round();
-    _green = (color.g * 255).round();
-    _blue = (color.b * 255).round();
+    _values = {
+      RgbComponent.red: (color.r * 255).round(),
+      RgbComponent.green: (color.g * 255).round(),
+      RgbComponent.blue: (color.b * 255).round(),
+    };
   }
 
   void _notifyColorChange() {
-    widget.onColorChanged(Color.fromARGB(255, _red, _green, _blue));
+    widget.onColorChanged(Color.fromARGB(
+      255,
+      _values[RgbComponent.red]!,
+      _values[RgbComponent.green]!,
+      _values[RgbComponent.blue]!,
+    ));
   }
 
-  int _getValue(RgbComponent component) => switch (component) {
-        .red => _red,
-        .green => _green,
-        .blue => _blue,
-      };
+  int _getValue(RgbComponent component) => _values[component]!;
 
   void _updateComponent(RgbComponent component, int value) {
     setState(() {
-      final clamped = value.clamp(0, 255);
-      switch (component) {
-        case .red:
-          _red = clamped;
-        case .green:
-          _green = clamped;
-        case .blue:
-          _blue = clamped;
-      }
+      _values[component] = value.clamp(0, 255);
       _notifyColorChange();
     });
   }
