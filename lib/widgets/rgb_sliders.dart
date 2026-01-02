@@ -301,6 +301,7 @@ class _RgbValueControlState extends State<_RgbValueControl> {
         // The decrement button
         IconButton(
           color: widget.contrastColor,
+          disabledColor: widget.contrastColor.withValues(alpha: 0.3),
           iconSize: 20.0,
           onPressed: widget.value > 0 ? _decrement : null,
           icon: const Icon(Icons.remove),
@@ -339,6 +340,7 @@ class _RgbValueControlState extends State<_RgbValueControl> {
         // The increment button
         IconButton(
           color: widget.contrastColor,
+          disabledColor: widget.contrastColor.withValues(alpha: 0.3),
           iconSize: 20.0,
           onPressed: widget.value < 255 ? _increment : null,
           icon: const Icon(Icons.add),
