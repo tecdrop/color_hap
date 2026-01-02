@@ -157,9 +157,9 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
       /// The common operations displayed in this app bar
       actions: [
         /// The Apply Color action
-        IconButton(
+        TextButton.icon(
           icon: const Icon(Icons.check),
-          tooltip: 'Apply',
+          label: const Text(strings.applyColorAction),
           onPressed: () => onAction(.applyColor),
         ),
 
