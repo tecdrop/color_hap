@@ -35,14 +35,20 @@ class RgbSliders extends StatefulWidget {
 }
 
 class _RgbSlidersState extends State<RgbSliders> {
+  /// The current RGB component values.
   late Map<RgbComponent, int> _values;
+
+  /// The text controllers for each RGB component.
   late final Map<RgbComponent, TextEditingController> _controllers;
+
+  /// The focus nodes for each RGB component.
   late final Map<RgbComponent, FocusNode> _focusNodes;
 
-  static const _componentColors = {
-    RgbComponent.red: Color(0xFFFF0000),
-    RgbComponent.green: Color(0xFF00FF00),
-    RgbComponent.blue: Color(0xFF0000FF),
+  /// The colors for each RGB component.
+  static const _componentColors = <RgbComponent, Color>{
+    .red: Color(0xFFFF0000),
+    .green: Color(0xFF00FF00),
+    .blue: Color(0xFF0000FF),
   };
 
   @override
@@ -55,7 +61,6 @@ class _RgbSlidersState extends State<RgbSliders> {
       for (final component in RgbComponent.values)
         component: TextEditingController(text: _values[component].toString()),
     };
-
     _focusNodes = {
       for (final component in RgbComponent.values) component: FocusNode(),
     };
@@ -92,14 +97,16 @@ class _RgbSlidersState extends State<RgbSliders> {
     super.dispose();
   }
 
+  /// Updates the internal RGB values from the given color.
   void _updateFromColor(Color color) {
     _values = {
-      RgbComponent.red: (color.r * 255).round(),
-      RgbComponent.green: (color.g * 255).round(),
-      RgbComponent.blue: (color.b * 255).round(),
+      .red: (color.r * 255).round(),
+      .green: (color.g * 255).round(),
+      .blue: (color.b * 255).round(),
     };
   }
 
+  /// Notifies the parent widget of a color change.
   void _notifyColorChange() {
     widget.onColorChanged(
       Color.fromARGB(
@@ -111,6 +118,7 @@ class _RgbSlidersState extends State<RgbSliders> {
     );
   }
 
+  /// Updates a specific RGB component value.
   void _updateComponent(RgbComponent component, int value) {
     setState(() {
       _values[component] = value.clamp(0, 255);
@@ -118,12 +126,14 @@ class _RgbSlidersState extends State<RgbSliders> {
     });
   }
 
+  /// Handles focus changes for text fields to validate input.
   void _onFocusChange(RgbComponent component) {
     if (!_focusNodes[component]!.hasFocus) {
       _validateAndUpdate(component);
     }
   }
 
+  /// Validates and updates the RGB component value from the text field.
   void _validateAndUpdate(RgbComponent component) {
     final controller = _controllers[component]!;
     final parsed = int.tryParse(controller.text);
@@ -141,14 +151,15 @@ class _RgbSlidersState extends State<RgbSliders> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const .all(16.0),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: .min,
         children: [
           for (final component in RgbComponent.values) ...[
             Row(
               children: [
                 Expanded(
+                  // The RGB slider
                   child: _RgbSlider(
                     value: _values[component]!,
                     color: _componentColors[component]!,
@@ -156,6 +167,8 @@ class _RgbSlidersState extends State<RgbSliders> {
                     onChanged: (value) => _updateComponent(component, value),
                   ),
                 ),
+
+                // The value control with +/- buttons and text field
                 _RgbValueControl(
                   value: _values[component]!,
                   controller: _controllers[component]!,
@@ -166,7 +179,7 @@ class _RgbSlidersState extends State<RgbSliders> {
                 ),
               ],
             ),
-            if (component != RgbComponent.blue) const SizedBox(height: 16.0),
+            if (component != .blue) const SizedBox(height: 16.0),
           ],
         ],
       ),
@@ -183,14 +196,22 @@ class _RgbSlider extends StatelessWidget {
     required this.onChanged,
   });
 
+  /// The current RGB component value (0-255).
   final int value;
+
+  /// The color of the slider track and thumb.
   final Color color;
+
+  /// The contrast color for UI elements (black or white based on background).
   final Color contrastColor;
+
+  /// Callback invoked when the value changes.
   final ValueChanged<int> onChanged;
 
   @override
   Widget build(BuildContext context) {
     return SliderTheme(
+      // Customize the slider appearance
       data: SliderTheme.of(context).copyWith(
         activeTrackColor: contrastColor,
         inactiveTrackColor: contrastColor.withValues(alpha: 0.3),
@@ -203,6 +224,7 @@ class _RgbSlider extends StatelessWidget {
           pressedElevation: 4.0,
         ),
       ),
+      // The slider itself
       child: Slider(
         value: value.toDouble(),
         min: 0,
@@ -224,13 +246,25 @@ class _RgbValueControl extends StatelessWidget {
     required this.onSubmitted,
   });
 
+  /// The current RGB component value (0-255).
   final int value;
+
+  /// The text controller for the value input field.
   final TextEditingController controller;
+
+  /// The focus node for the value input field.
   final FocusNode focusNode;
+
+  /// The contrast color for UI elements (black or white based on background).
   final Color contrastColor;
+
+  /// Callback invoked when the value changes.
   final ValueChanged<int> onChanged;
+
+  /// Callback invoked when the value is submitted.
   final VoidCallback onSubmitted;
 
+  /// Adjusts the value by the given delta and invokes the onChanged callback.
   void _adjustValue(int delta) {
     final newValue = (value + delta).clamp(0, 255);
     if (newValue != value) {
@@ -241,8 +275,9 @@ class _RgbValueControl extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: .min,
       children: [
+        // The decrement button
         IconButton(
           color: contrastColor,
           disabledColor: contrastColor.withValues(alpha: 0.3),
@@ -252,15 +287,17 @@ class _RgbValueControl extends StatelessWidget {
         ),
         SizedBox(
           width: 56.0,
+
+          // The text field for direct value input
           child: TextField(
             controller: controller,
             focusNode: focusNode,
-            keyboardType: TextInputType.number,
-            textAlign: TextAlign.center,
+            keyboardType: .number,
+            textAlign: .center,
             style: TextStyle(color: contrastColor),
             decoration: InputDecoration(
               isDense: true,
-              contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
+              contentPadding: const .symmetric(vertical: 8.0),
               border: OutlineInputBorder(
                 borderSide: BorderSide(color: contrastColor),
               ),
@@ -278,6 +315,8 @@ class _RgbValueControl extends StatelessWidget {
             onSubmitted: (_) => onSubmitted(),
           ),
         ),
+
+        // The increment button
         IconButton(
           color: contrastColor,
           disabledColor: contrastColor.withValues(alpha: 0.3),
