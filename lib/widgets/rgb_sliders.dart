@@ -35,13 +35,10 @@ class RgbSliders extends StatefulWidget {
 }
 
 class _RgbSlidersState extends State<RgbSliders> {
-  /// Current RGB component values (0-255).
   late Map<RgbComponent, int> _values;
-
-  /// Text controllers for the RGB component value input fields.
   late final Map<RgbComponent, TextEditingController> _controllers;
+  late final Map<RgbComponent, FocusNode> _focusNodes;
 
-  /// Predefined colors for each RGB component.
   static const _componentColors = {
     RgbComponent.red: Color(0xFFFF0000),
     RgbComponent.green: Color(0xFF00FF00),
@@ -53,11 +50,20 @@ class _RgbSlidersState extends State<RgbSliders> {
     super.initState();
     _updateFromColor(widget.color);
 
-    // Create controllers based on current values
+    // Create controllers and focus nodes
     _controllers = {
       for (final component in RgbComponent.values)
         component: TextEditingController(text: _values[component].toString()),
     };
+
+    _focusNodes = {
+      for (final component in RgbComponent.values) component: FocusNode(),
+    };
+
+    // Add focus listeners for validation
+    for (final entry in _focusNodes.entries) {
+      entry.value.addListener(() => _onFocusChange(entry.key));
+    }
   }
 
   @override
@@ -65,23 +71,27 @@ class _RgbSlidersState extends State<RgbSliders> {
     super.didUpdateWidget(oldWidget);
     if (widget.color != oldWidget.color) {
       _updateFromColor(widget.color);
-      // Update all controller texts
+      // Update controller texts only if not focused
       for (final component in RgbComponent.values) {
-        _controllers[component]!.text = _values[component].toString();
+        if (!_focusNodes[component]!.hasFocus) {
+          _controllers[component]!.text = _values[component].toString();
+        }
       }
     }
   }
 
   @override
   void dispose() {
-    // Dispose all controllers
+    // Dispose all controllers and focus nodes
     for (final controller in _controllers.values) {
       controller.dispose();
+    }
+    for (final focusNode in _focusNodes.values) {
+      focusNode.dispose();
     }
     super.dispose();
   }
 
-  /// Update internal RGB values from the given color.
   void _updateFromColor(Color color) {
     _values = {
       RgbComponent.red: (color.r * 255).round(),
@@ -90,7 +100,6 @@ class _RgbSlidersState extends State<RgbSliders> {
     };
   }
 
-  /// Notify the parent widget of the color change.
   void _notifyColorChange() {
     widget.onColorChanged(
       Color.fromARGB(
@@ -102,10 +111,6 @@ class _RgbSlidersState extends State<RgbSliders> {
     );
   }
 
-  /// Get the current value of the specified RGB component.
-  int _getValue(RgbComponent component) => _values[component]!;
-
-  /// Update the specified RGB component with a new value.
   void _updateComponent(RgbComponent component, int value) {
     setState(() {
       _values[component] = value.clamp(0, 255);
@@ -113,23 +118,55 @@ class _RgbSlidersState extends State<RgbSliders> {
     });
   }
 
+  void _onFocusChange(RgbComponent component) {
+    if (!_focusNodes[component]!.hasFocus) {
+      _validateAndUpdate(component);
+    }
+  }
+
+  void _validateAndUpdate(RgbComponent component) {
+    final controller = _controllers[component]!;
+    final parsed = int.tryParse(controller.text);
+    if (parsed != null) {
+      final clamped = parsed.clamp(0, 255);
+      controller.text = clamped.toString();
+      if (clamped != _values[component]!) {
+        _updateComponent(component, clamped);
+      }
+    } else {
+      controller.text = _values[component].toString();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const .all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
-        mainAxisSize: .min,
+        mainAxisSize: MainAxisSize.min,
         children: [
           for (final component in RgbComponent.values) ...[
-            _RgbSliderRow(
-              component: component,
-              value: _getValue(component),
-              controller: _controllers[component]!,
-              color: _componentColors[component]!,
-              contrastColor: widget.contrastColor,
-              onChanged: (value) => _updateComponent(component, value),
+            Row(
+              children: [
+                Expanded(
+                  child: _RgbSlider(
+                    value: _values[component]!,
+                    color: _componentColors[component]!,
+                    contrastColor: widget.contrastColor,
+                    onChanged: (value) => _updateComponent(component, value),
+                  ),
+                ),
+                _RgbValueControl(
+                  value: _values[component]!,
+                  controller: _controllers[component]!,
+                  focusNode: _focusNodes[component]!,
+                  contrastColor: widget.contrastColor,
+                  onChanged: (value) => _updateComponent(component, value),
+                  onSubmitted: () => _validateAndUpdate(component),
+                ),
+              ],
             ),
-            if (component != .blue) const SizedBox(height: 16.0),
+            if (component != RgbComponent.blue) const SizedBox(height: 16.0),
           ],
         ],
       ),
@@ -137,212 +174,115 @@ class _RgbSlidersState extends State<RgbSliders> {
   }
 }
 
-/// A single RGB slider row with value control.
-class _RgbSliderRow extends StatelessWidget {
-  const _RgbSliderRow({
-    required this.component,
+/// A single RGB slider widget.
+class _RgbSlider extends StatelessWidget {
+  const _RgbSlider({
     required this.value,
-    required this.controller,
     required this.color,
     required this.contrastColor,
     required this.onChanged,
   });
 
-  /// The RGB component this slider row controls.
-  final RgbComponent component;
-
-  /// The current value of the component (0-255).
   final int value;
-
-  /// The text controller for the value input field.
-  final TextEditingController controller;
-
-  /// The color of the slider track.
   final Color color;
-
-  /// The contrast color for UI elements.
   final Color contrastColor;
-
-  /// Callback invoked when the component value changes.
   final ValueChanged<int> onChanged;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: SliderTheme(
-            // Customize the slider appearance
-            data: SliderTheme.of(context).copyWith(
-              activeTrackColor: contrastColor,
-              inactiveTrackColor: contrastColor.withValues(alpha: 0.3),
-              trackHeight: 2.0,
-              thumbColor: color,
-              overlayColor: color.withValues(alpha: 0.1),
-              thumbShape: const RoundSliderThumbShape(
-                enabledThumbRadius: 12.0,
-                elevation: 2.0,
-                pressedElevation: 4.0,
-              ),
-            ),
-
-            // The slider for adjusting the RGB component value
-            child: Slider(
-              value: value.toDouble(),
-              min: 0,
-              max: 255,
-              onChanged: (newValue) => onChanged(newValue.round()),
-            ),
-          ),
+    return SliderTheme(
+      data: SliderTheme.of(context).copyWith(
+        activeTrackColor: contrastColor,
+        inactiveTrackColor: contrastColor.withValues(alpha: 0.3),
+        trackHeight: 2.0,
+        thumbColor: color,
+        overlayColor: color.withValues(alpha: 0.1),
+        thumbShape: const RoundSliderThumbShape(
+          enabledThumbRadius: 12.0,
+          elevation: 2.0,
+          pressedElevation: 4.0,
         ),
-
-        // The value control with +/- buttons and text field
-        _RgbValueControl(
-          value: value,
-          controller: controller,
-          contrastColor: contrastColor,
-          onChanged: onChanged,
-        ),
-      ],
+      ),
+      child: Slider(
+        value: value.toDouble(),
+        min: 0,
+        max: 255,
+        onChanged: (newValue) => onChanged(newValue.round()),
+      ),
     );
   }
 }
 
 /// Value control with +/- buttons and text field.
-class _RgbValueControl extends StatefulWidget {
+class _RgbValueControl extends StatelessWidget {
   const _RgbValueControl({
     required this.value,
     required this.controller,
+    required this.focusNode,
     required this.contrastColor,
     required this.onChanged,
+    required this.onSubmitted,
   });
 
-  /// The current value of the RGB component (0-255).
   final int value;
-
-  /// The text controller for the value input field.
   final TextEditingController controller;
-
-  /// The contrast color for UI elements.
+  final FocusNode focusNode;
   final Color contrastColor;
-
-  /// Callback invoked when the component value changes.
   final ValueChanged<int> onChanged;
+  final VoidCallback onSubmitted;
 
-  @override
-  State<_RgbValueControl> createState() => _RgbValueControlState();
-}
-
-class _RgbValueControlState extends State<_RgbValueControl> {
-  /// Focus node to monitor text field focus changes.
-  late FocusNode _focusNode;
-
-  @override
-  void initState() {
-    super.initState();
-    _focusNode = FocusNode();
-    _focusNode.addListener(_onFocusChange);
-  }
-
-  @override
-  void didUpdateWidget(_RgbValueControl oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.value != oldWidget.value && !_focusNode.hasFocus) {
-      widget.controller.text = widget.value.toString();
-    }
-  }
-
-  @override
-  void dispose() {
-    _focusNode.removeListener(_onFocusChange);
-    _focusNode.dispose();
-    super.dispose();
-  }
-
-  /// Handle focus changes to validate input when focus is lost.
-  void _onFocusChange() {
-    if (!_focusNode.hasFocus) {
-      _validateAndUpdate();
-    }
-  }
-
-  void _validateAndUpdate() {
-    final parsed = int.tryParse(widget.controller.text);
-    if (parsed != null) {
-      final clamped = parsed.clamp(0, 255);
-      widget.controller.text = clamped.toString();
-      if (clamped != widget.value) {
-        widget.onChanged(clamped);
-      }
-    } else {
-      widget.controller.text = widget.value.toString();
-    }
-  }
-
-  /// Decrement the value by 1 and notify the change.
-  void _decrement() {
-    if (widget.value > 0) {
-      widget.onChanged(widget.value - 1);
-    }
-  }
-
-  /// Increment the value by 1 and notify the change.
-  void _increment() {
-    if (widget.value < 255) {
-      widget.onChanged(widget.value + 1);
+  void _adjustValue(int delta) {
+    final newValue = (value + delta).clamp(0, 255);
+    if (newValue != value) {
+      onChanged(newValue);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisSize: .min,
+      mainAxisSize: MainAxisSize.min,
       children: [
-        // The decrement button
         IconButton(
-          color: widget.contrastColor,
-          disabledColor: widget.contrastColor.withValues(alpha: 0.3),
+          color: contrastColor,
+          disabledColor: contrastColor.withValues(alpha: 0.3),
           iconSize: 20.0,
-          onPressed: widget.value > 0 ? _decrement : null,
+          onPressed: value > 0 ? () => _adjustValue(-1) : null,
           icon: const Icon(Icons.remove),
         ),
         SizedBox(
           width: 56.0,
-
-          // The text field for direct value input
           child: TextField(
-            controller: widget.controller,
-            focusNode: _focusNode,
-            keyboardType: .number,
-            textAlign: .center,
-            style: TextStyle(color: widget.contrastColor),
+            controller: controller,
+            focusNode: focusNode,
+            keyboardType: TextInputType.number,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: contrastColor),
             decoration: InputDecoration(
               isDense: true,
-              contentPadding: const .symmetric(vertical: 8.0),
+              contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
               border: OutlineInputBorder(
-                borderSide: BorderSide(color: widget.contrastColor),
+                borderSide: BorderSide(color: contrastColor),
               ),
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: widget.contrastColor.withValues(alpha: 0.5)),
+                borderSide: BorderSide(color: contrastColor.withValues(alpha: 0.5)),
               ),
               focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: widget.contrastColor),
+                borderSide: BorderSide(color: contrastColor),
               ),
             ),
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,
               LengthLimitingTextInputFormatter(3),
             ],
-            onSubmitted: (_) => _validateAndUpdate(),
+            onSubmitted: (_) => onSubmitted(),
           ),
         ),
-
-        // The increment button
         IconButton(
-          color: widget.contrastColor,
-          disabledColor: widget.contrastColor.withValues(alpha: 0.3),
+          color: contrastColor,
+          disabledColor: contrastColor.withValues(alpha: 0.3),
           iconSize: 20.0,
-          onPressed: widget.value < 255 ? _increment : null,
+          onPressed: value < 255 ? () => _adjustValue(1) : null,
           icon: const Icon(Icons.add),
         ),
       ],
