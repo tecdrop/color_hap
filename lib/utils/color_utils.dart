@@ -5,7 +5,6 @@
 /// A collection of utility functions for working with colors.
 library;
 
-import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../common/types.dart';

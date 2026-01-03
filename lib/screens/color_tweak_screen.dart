@@ -3,13 +3,13 @@
 // in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../common/strings.dart' as strings;
 import '../models/color_item.dart';
 import '../services/color_lookup_service.dart' as color_lookup;
 import '../utils/color_utils.dart' as color_utils;
 import '../widgets/color_info_display.dart';
+import '../widgets/edit_color_dialog.dart';
 import '../widgets/rgb_sliders.dart';
 
 /// A screen for tweaking colors with RGB sliders.
@@ -41,21 +41,16 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
     });
   }
 
-  Future<void> _pasteColor() async {
-    final clipboardData = await Clipboard.getData(Clipboard.kTextPlain);
-    if (clipboardData?.text != null) {
-      final color = color_utils.rgbHexToColor(clipboardData!.text);
-      if (color != null) {
-        setState(() {
-          _currentColor = color;
-        });
-      } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Invalid color code in clipboard')),
-          );
-        }
-      }
+  Future<void> _editColorCode() async {
+    final newColor = await showEditColorDialog(
+      context: context,
+      initialColor: _currentColor,
+    );
+
+    if (newColor != null) {
+      setState(() {
+        _currentColor = newColor;
+      });
     }
   }
 
@@ -81,9 +76,9 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
         _applyColor();
         break;
 
-      // Pastes a color from the clipboard
-      case .pasteColor:
-        _pasteColor();
+      // Shows dialog to edit color code
+      case .editColorCode:
+        _editColorCode();
         break;
     }
   }
@@ -137,7 +132,7 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
 }
 
 /// Enum that defines the actions of the app bar.
-enum _AppBarActions { applyColor, pasteColor }
+enum _AppBarActions { applyColor, editColorCode }
 
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   const _AppBar({
@@ -166,10 +161,10 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
         PopupMenuButton<_AppBarActions>(
           onSelected: onAction,
           itemBuilder: (BuildContext context) => <PopupMenuEntry<_AppBarActions>>[
-            // Add the Paste Color action to the overflow menu
+            // Add the Edit Color Code action to the overflow menu
             const PopupMenuItem<_AppBarActions>(
-              value: .pasteColor,
-              child: Text(strings.pasteColorAction),
+              value: .editColorCode,
+              child: Text(strings.editColorCodeAction),
             ),
           ],
         ),

@@ -92,7 +92,7 @@ const String tweakColorTooltip = 'Tweak this color';
 const colorTweakScreenTitle = 'Tweak Color';
 
 const applyColorAction = 'APPLY';
-const pasteColorAction = 'Paste color';
+const editColorCodeAction = 'Edit color code';
 
 // -----------------------------------------------------------------------------------------------
 // Color Info Screen
