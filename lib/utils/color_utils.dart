@@ -10,6 +10,7 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
+import '../common/types.dart';
 import 'utils.dart' as utils;
 
 /// Returns the given [Color] with full alpha (0xFF).
@@ -20,6 +21,23 @@ int withFullAlpha(int colorCode) {
 /// Returns the given [Color] without the alpha channel (0x00).
 int toRGB24(Color color) {
   return color.toARGB32() & 0x00FFFFFF;
+}
+
+Color withRGBComponent(Color color, RGBComponent component, int value) {
+  final clampedValue = value.clamp(0, 255);
+  return switch (component) {
+    .red => color.withRed(clampedValue),
+    .green => color.withGreen(clampedValue),
+    .blue => color.withBlue(clampedValue),
+  };
+}
+
+int getRGBComponentValue(Color color, RGBComponent component) {
+  return switch (component) {
+    .red => (color.r * 255).round(),
+    .green => (color.g * 255).round(),
+    .blue => (color.b * 255).round(),
+  };
 }
 
 /// Returns the black or white contrast color of the given [Color].
@@ -145,7 +163,7 @@ Color getSubtleVariation(Color color, {double factor = 0.05}) {
   var lightness = hsl.lightness;
   var saturation = hsl.saturation;
 
-  if (lightness < 0.5) {
+  if (ThemeData.estimateBrightnessForColor(color) == .dark) {
     // Dark background: Make it LIGHTER and LESS saturated
     lightness = math.min(1.0, lightness + factor);
     saturation = math.max(0.0, saturation - (factor * 0.5));

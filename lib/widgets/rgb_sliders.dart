@@ -4,10 +4,8 @@
 
 import 'package:flutter/material.dart';
 
+import '../common/types.dart';
 import '../utils/color_utils.dart' as color_utils;
-
-/// RGB color component (red, green, or blue).
-enum RgbComponent { red, green, blue }
 
 /// A widget that provides RGB color adjustment controls.
 ///
@@ -39,13 +37,14 @@ class RgbSliders extends StatefulWidget {
 }
 
 class _RgbSlidersState extends State<RgbSliders> {
-  // late Map<RgbComponent, int> _values;
+  /// The current color being edited.
   late Color _currentColor;
 
-  static const _componentColors = {
-    RgbComponent.red: Color(0xFFFF0000),
-    RgbComponent.green: Color(0xFF00FF00),
-    RgbComponent.blue: Color(0xFF0000FF),
+  /// Predefined colors for each RGB component.
+  static const _componentColors = <RGBComponent, Color>{
+    .red: Color(0xFFFF0000),
+    .green: Color(0xFF00FF00),
+    .blue: Color(0xFF0000FF),
   };
 
   @override
@@ -62,20 +61,11 @@ class _RgbSlidersState extends State<RgbSliders> {
     }
   }
 
-  void _notifyColorChange() {
-    widget.onColorChanged(_currentColor);
-  }
-
-  void _updateComponent(RgbComponent component, int value) {
+  /// Updates the specified RGB component of the current color and notifies the parent widget.
+  void _updateComponent(RGBComponent component, int value) {
     setState(() {
-      final clampedValue = value.clamp(0, 255);
-      _currentColor = switch (component) {
-        RgbComponent.red => _currentColor.withRed(clampedValue),
-        RgbComponent.green => _currentColor.withGreen(clampedValue),
-        RgbComponent.blue => _currentColor.withBlue(clampedValue),
-      };
-
-      _notifyColorChange();
+      _currentColor = color_utils.withRGBComponent(_currentColor, component, value);
+      widget.onColorChanged(_currentColor);
     });
   }
 
@@ -84,26 +74,21 @@ class _RgbSlidersState extends State<RgbSliders> {
     final contrastColor = color_utils.contrastColor(_currentColor);
 
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const .all(16.0),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: .min,
         children: [
-          for (final component in RgbComponent.values) ...[
+          for (final component in RGBComponent.values) ...[
+            // The slider control for each RGB component (red, green, blue)
             _RgbSliderControl(
+              value: color_utils.getRGBComponentValue(_currentColor, component),
               layout: widget.layout,
-
-              value: switch (component) {
-                RgbComponent.red => (_currentColor.r * 255).round(),
-                RgbComponent.green => (_currentColor.g * 255).round(),
-                RgbComponent.blue => (_currentColor.b * 255).round(),
-              },
-
               rgbComponentColor: _componentColors[component]!,
               backgroundColor: _currentColor,
               contrastColor: contrastColor,
               onChanged: (value) => _updateComponent(component, value),
             ),
-            if (component != RgbComponent.blue) const SizedBox(height: 16.0),
+            if (component != .blue) const SizedBox(height: 16.0),
           ],
         ],
       ),
@@ -122,13 +107,25 @@ class _RgbSliderControl extends StatelessWidget {
     required this.onChanged,
   });
 
-  final Axis layout;
+  /// The current value of the RGB component (0-255).
   final int value;
+
+  /// The layout direction for the slider control.
+  final Axis layout;
+
+  /// The color representing the RGB component (red, green, or blue).
   final Color rgbComponentColor;
+
+  /// The background color where the slider is placed.
   final Color backgroundColor;
+
+  /// The color used for text and icons to ensure contrast against the background.
   final Color contrastColor;
+
+  /// Callback invoked when the RGB component value changes.
   final ValueChanged<int> onChanged;
 
+  /// Adjusts the current value by the given delta and invokes the onChanged callback.
   void _adjustValue(int delta) {
     final newValue = (value + delta).clamp(0, 255);
     if (newValue != value) {
@@ -162,12 +159,11 @@ class _RgbSliderControl extends StatelessWidget {
 
     // Build the value control (buttons + text)
     final control = Row(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: .min,
       children: [
         // Decrement button
         _AdjustButton(
           backgroundColor: backgroundColor,
-          contrastColor: contrastColor,
           onPressed: value > 0 ? () => _adjustValue(-1) : null,
           child: const Icon(Icons.remove),
         ),
@@ -177,43 +173,42 @@ class _RgbSliderControl extends StatelessWidget {
           width: 42.0,
           child: Text(
             value.toString(),
-            textAlign: TextAlign.center,
-            style: TextStyle(
+            textAlign: .center,
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
               color: contrastColor,
-              fontSize: 16.0,
-              fontWeight: FontWeight.w500,
+              fontWeight: .w500,
             ),
           ),
         ),
-        // const SizedBox(width: 8.0),
 
         // Increment button
         _AdjustButton(
           backgroundColor: backgroundColor,
-          contrastColor: contrastColor,
           onPressed: value < 255 ? () => _adjustValue(1) : null,
           child: const Icon(Icons.add),
         ),
       ],
     );
 
-    // Layout based on axis
-    return layout == Axis.vertical
-        ? Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              control,
-              const SizedBox(height: 4.0),
-              sliderWidget,
-            ],
-          )
-        : Row(
-            children: [
-              Expanded(child: sliderWidget),
-              const SizedBox(width: 8.0),
-              control,
-            ],
-          );
+    return switch (layout) {
+      // Vertical layout: control above slider
+      Axis.vertical => Column(
+        mainAxisSize: .min,
+        children: [
+          control,
+          const SizedBox(height: 4.0),
+          sliderWidget,
+        ],
+      ),
+      // Horizontal layout: control to the right of slider
+      Axis.horizontal => Row(
+        children: [
+          Expanded(child: sliderWidget),
+          const SizedBox(width: 8.0),
+          control,
+        ],
+      ),
+    };
   }
 }
 
@@ -222,15 +217,12 @@ class _AdjustButton extends StatelessWidget {
   const _AdjustButton({
     super.key, // ignore: unused_element_parameter
     required this.backgroundColor,
-    required this.contrastColor,
     this.onPressed,
     required this.child,
   });
 
-  /// The color of the button.
+  /// The background color of the area where the button is placed.
   final Color backgroundColor;
-
-  final Color contrastColor;
 
   /// Callback invoked when the button is pressed.
   final void Function()? onPressed;
@@ -241,6 +233,7 @@ class _AdjustButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final buttonColor = color_utils.getSubtleVariation(backgroundColor);
+    final contrastColor = color_utils.contrastColor(backgroundColor);
 
     return FilledButton(
       onPressed: onPressed,
