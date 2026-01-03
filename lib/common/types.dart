@@ -5,5 +5,5 @@
 /// Common type definitions used throughout the application.
 library;
 
-/// RGB color component (red, green, or blue).
-enum RGBComponent { red, green, blue }
+/// RGB color channel (red, green, or blue).
+enum RGBChannel { red, green, blue }

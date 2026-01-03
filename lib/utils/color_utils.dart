@@ -6,12 +6,14 @@
 library;
 
 import 'dart:math' as math;
-import 'dart:typed_data';
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
 import '../common/types.dart';
 import 'utils.dart' as utils;
+
+// -----------------------------------------------------------------------------------------------
+// Color channel manipulations
+// -----------------------------------------------------------------------------------------------
 
 /// Returns the given [Color] with full alpha (0xFF).
 int withFullAlpha(int colorCode) {
@@ -23,17 +25,19 @@ int toRGB24(Color color) {
   return color.toARGB32() & 0x00FFFFFF;
 }
 
-Color withRGBComponent(Color color, RGBComponent component, int value) {
+/// Returns a new Color with the specified RGB channel set to the given value.
+Color withRGBChannel(Color color, RGBChannel channel, int value) {
   final clampedValue = value.clamp(0, 255);
-  return switch (component) {
+  return switch (channel) {
     .red => color.withRed(clampedValue),
     .green => color.withGreen(clampedValue),
     .blue => color.withBlue(clampedValue),
   };
 }
 
-int getRGBComponentValue(Color color, RGBComponent component) {
-  return switch (component) {
+/// Returns the value of the specified RGB channel from the given [Color].
+int getRGBChannelValue(Color color, RGBChannel channel) {
+  return switch (channel) {
     .red => (color.r * 255).round(),
     .green => (color.g * 255).round(),
     .blue => (color.b * 255).round(),
@@ -58,48 +62,14 @@ Color contrastIconColor(Color color) {
   };
 }
 
+// -----------------------------------------------------------------------------------------------
+// Color hex string conversions
+// -----------------------------------------------------------------------------------------------
+
 /// Returns the hexadecimal string representation of the given [Color].
 String toHexString(Color color, {bool withHash = true}) {
   final hex = (color.toARGB32() & 0xFFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase();
   return withHash ? '#$hex' : hex;
-}
-
-/// Returns the hexadecimal string representation of the given [Color].
-String codeToHex(int colorCode, {bool withHash = true}) {
-  final hex = (colorCode & 0xFFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase();
-  return withHash ? '#$hex' : hex;
-}
-
-/// Returns the RGB string representation of the given [Color].
-String toRGBString(Color color) {
-  return 'rgb(${(color.r * 255).round()}, ${(color.g * 255).round()}, ${(color.b * 255).round()})';
-}
-
-/// Returns the HSV string representation of the given [Color].
-String toHSVString(Color color) {
-  final hsvColor = HSVColor.fromColor(color);
-  return 'hsv(${hsvColor.hue.toStringAsFixed(0)}, ${(hsvColor.saturation * 100).toStringAsFixed(0)}%, ${(hsvColor.value * 100).toStringAsFixed(0)}%)';
-}
-
-/// Returns the HSL string representation of the given [Color].
-String toHSLString(Color color) {
-  final hslColor = HSLColor.fromColor(color);
-  return 'hsl(${hslColor.hue.toStringAsFixed(0)}, ${(hslColor.saturation * 100).toStringAsFixed(0)}%, ${(hslColor.lightness * 100).toStringAsFixed(0)}%)';
-}
-
-/// Returns the decimal string representation of the given [Color] value.
-String toDecimalString(Color color) {
-  return utils.intToCommaSeparatedString(color.withAlpha(0).toARGB32());
-}
-
-/// Returns the string representation of the relative luminance of the given [Color].
-String luminanceString(Color color) {
-  return color.computeLuminance().toStringAsFixed(5);
-}
-
-/// Returns the string representation (`light` or `dark`) of the brightness of the given [Color].
-String brightnessString(Color color) {
-  return ThemeData.estimateBrightnessForColor(color).name;
 }
 
 /// Converts an opaque hexadecimal color string into a Color value.
@@ -137,27 +107,47 @@ Color? rgbHexToColor(String? hex) {
   return null;
 }
 
-/// Builds a color swatch image of the given [color] with the specified [width] and [height].
-///
-/// OPTIMIZE: Currently runs on UI thread but uses async encoding which yields to event loop.
-/// For 512x512 solid colors this is fast. Move to `compute()` isolate only if image size increases
-/// significantly (4K+) or profiling shows measurable jank.
-Future<Uint8List> buildColorSwatch(Color color, int width, int height) async {
-  // Create the color swatch using a sequence of graphical operations
-  final recorder = ui.PictureRecorder();
-  final canvas = Canvas(recorder, .fromLTWH(0, 0, width.toDouble(), height.toDouble()));
-  canvas.drawColor(color, .src);
-  final picture = recorder.endRecording();
+// -----------------------------------------------------------------------------------------------
+// Color information string conversions
+// -----------------------------------------------------------------------------------------------
 
-  // Convert the picture to a PNG image and return its bytes
-  final img = await picture.toImage(width, height);
-  final pngBytes = await img.toByteData(format: .png);
-  if (pngBytes == null) {
-    throw Exception('Failed to encode color swatch to PNG');
-  }
-  return pngBytes.buffer.asUint8List();
+/// Returns the RGB string representation of the given [Color].
+String toRGBString(Color color) {
+  return 'rgb(${(color.r * 255).round()}, ${(color.g * 255).round()}, ${(color.b * 255).round()})';
 }
 
+/// Returns the HSV string representation of the given [Color].
+String toHSVString(Color color) {
+  final hsvColor = HSVColor.fromColor(color);
+  return 'hsv(${hsvColor.hue.toStringAsFixed(0)}, ${(hsvColor.saturation * 100).toStringAsFixed(0)}%, ${(hsvColor.value * 100).toStringAsFixed(0)}%)';
+}
+
+/// Returns the HSL string representation of the given [Color].
+String toHSLString(Color color) {
+  final hslColor = HSLColor.fromColor(color);
+  return 'hsl(${hslColor.hue.toStringAsFixed(0)}, ${(hslColor.saturation * 100).toStringAsFixed(0)}%, ${(hslColor.lightness * 100).toStringAsFixed(0)}%)';
+}
+
+/// Returns the decimal string representation of the given [Color] value.
+String toDecimalString(Color color) {
+  return utils.intToCommaSeparatedString(color.withAlpha(0).toARGB32());
+}
+
+/// Returns the string representation of the relative luminance of the given [Color].
+String luminanceString(Color color) {
+  return color.computeLuminance().toStringAsFixed(5);
+}
+
+/// Returns the string representation (`light` or `dark`) of the brightness of the given [Color].
+String brightnessString(Color color) {
+  return ThemeData.estimateBrightnessForColor(color).name;
+}
+
+// -----------------------------------------------------------------------------------------------
+// Color variations & effects
+// -----------------------------------------------------------------------------------------------
+
+/// Returns a subtle variation of the given [Color] for use as a background or highlight.
 Color getSubtleVariation(Color color, {double factor = 0.05}) {
   final hsl = HSLColor.fromColor(color);
   var lightness = hsl.lightness;

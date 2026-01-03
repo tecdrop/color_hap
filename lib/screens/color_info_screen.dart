@@ -12,6 +12,7 @@ import '../common/consts.dart' as consts;
 import '../common/strings.dart' as strings;
 import '../common/urls.dart' as urls;
 import '../models/color_item.dart';
+import '../services/color_swatch_builder.dart';
 import '../utils/color_utils.dart' as color_utils;
 import '../utils/utils.dart' as utils;
 import '../widgets/color_info_list.dart';
@@ -135,7 +136,7 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
       final fileName = consts.colorSwatchFileName(hexCode);
 
       // Create the color swatch image file
-      final pngBytes = await color_utils.buildColorSwatch(widget.colorItem.color, 512, 512);
+      final pngBytes = await buildColorSwatch(widget.colorItem.color, 512, 512);
       final xFile = XFile.fromData(pngBytes, name: fileName, mimeType: 'image/png');
 
       // Summon the platform's share sheet to share the image file

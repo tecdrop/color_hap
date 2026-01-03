@@ -10,7 +10,7 @@ import '../utils/color_utils.dart' as color_utils;
 /// A widget that provides RGB color adjustment controls.
 ///
 /// Displays three sliders with increment/decrement buttons for adjusting the red, green, and blue
-/// components of a color. Each slider has a colored thumb and is accompanied by +/- buttons
+/// channels of a color. Each slider has a colored thumb and is accompanied by +/- buttons
 /// and a text value display.
 class RgbSliders extends StatefulWidget {
   const RgbSliders({
@@ -40,8 +40,8 @@ class _RgbSlidersState extends State<RgbSliders> {
   /// The current color being edited.
   late Color _currentColor;
 
-  /// Predefined colors for each RGB component.
-  static const _componentColors = <RGBComponent, Color>{
+  /// Predefined colors for each RGB channel.
+  static const _rgbChannelColors = <RGBChannel, Color>{
     .red: Color(0xFFFF0000),
     .green: Color(0xFF00FF00),
     .blue: Color(0xFF0000FF),
@@ -61,10 +61,10 @@ class _RgbSlidersState extends State<RgbSliders> {
     }
   }
 
-  /// Updates the specified RGB component of the current color and notifies the parent widget.
-  void _updateComponent(RGBComponent component, int value) {
+  /// Updates the specified RGB channel of the current color and notifies the parent widget.
+  void _updateRGBChannel(RGBChannel channel, int value) {
     setState(() {
-      _currentColor = color_utils.withRGBComponent(_currentColor, component, value);
+      _currentColor = color_utils.withRGBChannel(_currentColor, channel, value);
       widget.onColorChanged(_currentColor);
     });
   }
@@ -78,17 +78,17 @@ class _RgbSlidersState extends State<RgbSliders> {
       child: Column(
         mainAxisSize: .min,
         children: [
-          for (final component in RGBComponent.values) ...[
-            // The slider control for each RGB component (red, green, blue)
+          for (final rgbChannel in RGBChannel.values) ...[
+            // The slider control for each RGB channel (red, green, blue)
             _RgbSliderControl(
-              value: color_utils.getRGBComponentValue(_currentColor, component),
+              value: color_utils.getRGBChannelValue(_currentColor, rgbChannel),
               layout: widget.layout,
-              rgbComponentColor: _componentColors[component]!,
+              rgbChannelColor: _rgbChannelColors[rgbChannel]!,
               backgroundColor: _currentColor,
               contrastColor: contrastColor,
-              onChanged: (value) => _updateComponent(component, value),
+              onChanged: (value) => _updateRGBChannel(rgbChannel, value),
             ),
-            if (component != .blue) const SizedBox(height: 16.0),
+            if (rgbChannel != .blue) const SizedBox(height: 16.0),
           ],
         ],
       ),
@@ -101,20 +101,20 @@ class _RgbSliderControl extends StatelessWidget {
   const _RgbSliderControl({
     required this.layout,
     required this.value,
-    required this.rgbComponentColor,
+    required this.rgbChannelColor,
     required this.backgroundColor,
     required this.contrastColor,
     required this.onChanged,
   });
 
-  /// The current value of the RGB component (0-255).
+  /// The current value of the RGB channel (0-255).
   final int value;
 
   /// The layout direction for the slider control.
   final Axis layout;
 
-  /// The color representing the RGB component (red, green, or blue).
-  final Color rgbComponentColor;
+  /// The color representing the RGB channel (red, green, or blue).
+  final Color rgbChannelColor;
 
   /// The background color where the slider is placed.
   final Color backgroundColor;
@@ -122,7 +122,7 @@ class _RgbSliderControl extends StatelessWidget {
   /// The color used for text and icons to ensure contrast against the background.
   final Color contrastColor;
 
-  /// Callback invoked when the RGB component value changes.
+  /// Callback invoked when the RGB channel value changes.
   final ValueChanged<int> onChanged;
 
   /// Adjusts the current value by the given delta and invokes the onChanged callback.
@@ -141,8 +141,8 @@ class _RgbSliderControl extends StatelessWidget {
         activeTrackColor: contrastColor,
         inactiveTrackColor: contrastColor.withValues(alpha: 0.3),
         trackHeight: 2.0,
-        thumbColor: rgbComponentColor,
-        overlayColor: rgbComponentColor.withValues(alpha: 0.1),
+        thumbColor: rgbChannelColor,
+        overlayColor: rgbChannelColor.withValues(alpha: 0.1),
         thumbShape: const RoundSliderThumbShape(
           enabledThumbRadius: 12.0,
           elevation: 2.0,
@@ -204,7 +204,7 @@ class _RgbSliderControl extends StatelessWidget {
       Axis.horizontal => Row(
         children: [
           Expanded(child: sliderWidget),
-          const SizedBox(width: 8.0),
+          const SizedBox(width: 4.0),
           control,
         ],
       ),
