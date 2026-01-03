@@ -128,7 +128,6 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
             child: RgbSliders(
               color: _currentColor,
               onColorChanged: _onColorChanged,
-              contrastColor: contrastColor,
             ),
           ),
         ],

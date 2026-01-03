@@ -5,6 +5,7 @@
 /// A collection of utility functions for working with colors.
 library;
 
+import 'dart:math' as math;
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
@@ -137,4 +138,22 @@ Future<Uint8List> buildColorSwatch(Color color, int width, int height) async {
     throw Exception('Failed to encode color swatch to PNG');
   }
   return pngBytes.buffer.asUint8List();
+}
+
+Color getSubtleVariation(Color color, {double factor = 0.05}) {
+  final hsl = HSLColor.fromColor(color);
+  var lightness = hsl.lightness;
+  var saturation = hsl.saturation;
+
+  if (lightness < 0.5) {
+    // Dark background: Make it LIGHTER and LESS saturated
+    lightness = math.min(1.0, lightness + factor);
+    saturation = math.max(0.0, saturation - (factor * 0.5));
+  } else {
+    // Light background: Make it DARKER and MORE saturated
+    lightness = math.max(0.0, lightness - factor);
+    saturation = math.min(1.0, saturation + (factor * 0.5));
+  }
+
+  return hsl.withLightness(lightness).withSaturation(saturation).toColor();
 }

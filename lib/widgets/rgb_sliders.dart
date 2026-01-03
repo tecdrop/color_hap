@@ -4,6 +4,8 @@
 
 import 'package:flutter/material.dart';
 
+import '../utils/color_utils.dart' as color_utils;
+
 /// RGB color component (red, green, or blue).
 enum RgbComponent { red, green, blue }
 
@@ -17,7 +19,6 @@ class RgbSliders extends StatefulWidget {
     super.key,
     required this.color,
     required this.onColorChanged,
-    required this.contrastColor,
     this.layout = Axis.vertical,
   });
 
@@ -26,9 +27,6 @@ class RgbSliders extends StatefulWidget {
 
   /// Callback invoked when the color changes.
   final ValueChanged<Color> onColorChanged;
-
-  /// The contrast color for UI elements (black or white based on background).
-  final Color contrastColor;
 
   /// The layout direction for the slider controls.
   ///
@@ -91,6 +89,8 @@ class _RgbSlidersState extends State<RgbSliders> {
 
   @override
   Widget build(BuildContext context) {
+    final contrastColor = color_utils.contrastColor(widget.color);
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -101,7 +101,7 @@ class _RgbSlidersState extends State<RgbSliders> {
               layout: widget.layout,
               value: _values[component]!,
               color: _componentColors[component]!,
-              contrastColor: widget.contrastColor,
+              contrastColor: contrastColor,
               onChanged: (value) => _updateComponent(component, value),
             ),
             if (component != RgbComponent.blue) const SizedBox(height: 16.0),
