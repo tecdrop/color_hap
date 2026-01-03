@@ -165,9 +165,9 @@ class _RgbSliderControl extends StatelessWidget {
       children: [
         // Decrement button
         _AdjustButton(
-          iconData: Icons.remove,
           color: contrastColor,
           onPressed: value > 0 ? () => _adjustValue(-1) : null,
+          child: const Icon(Icons.remove),
         ),
 
         // Value display
@@ -187,9 +187,9 @@ class _RgbSliderControl extends StatelessWidget {
 
         // Increment button
         _AdjustButton(
-          iconData: Icons.add,
           color: contrastColor,
           onPressed: value < 255 ? () => _adjustValue(1) : null,
+          child: const Icon(Icons.add),
         ),
       ],
     );
@@ -218,13 +218,10 @@ class _RgbSliderControl extends StatelessWidget {
 class _AdjustButton extends StatelessWidget {
   const _AdjustButton({
     super.key, // ignore: unused_element_parameter
-    required this.iconData,
     required this.color,
     this.onPressed,
+    required this.child,
   });
-
-  /// The icon to display inside the button.
-  final IconData iconData;
 
   /// The color of the button.
   final Color color;
@@ -232,19 +229,24 @@ class _AdjustButton extends StatelessWidget {
   /// Callback invoked when the button is pressed.
   final void Function()? onPressed;
 
+  /// The widget to display inside the button (e.g., an icon).
+  final Widget child;
+
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = color.withValues(alpha: 0.075);
+    final backgroundColor = color.withValues(alpha: 0.15);
 
     return FilledButton(
       onPressed: onPressed,
       style: FilledButton.styleFrom(
         backgroundColor: backgroundColor,
         disabledBackgroundColor: backgroundColor,
+        disabledForegroundColor: color.withValues(alpha: 0.3),
         foregroundColor: color,
+        iconSize: 20.0,
         shape: const CircleBorder(),
       ),
-      child: Icon(iconData, size: 20),
+      child: child,
     );
   }
 }
