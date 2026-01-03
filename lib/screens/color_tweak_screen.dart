@@ -8,9 +8,10 @@ import '../common/strings.dart' as strings;
 import '../models/color_item.dart';
 import '../services/color_lookup_service.dart' as color_lookup;
 import '../utils/color_utils.dart' as color_utils;
+import '../utils/utils.dart' as utils;
 import '../widgets/color_info_display.dart';
-import '../widgets/edit_color_dialog.dart';
 import '../widgets/rgb_sliders.dart';
+import 'edit_color_screen.dart';
 
 /// A screen for tweaking colors with RGB sliders.
 class ColorTweakScreen extends StatefulWidget {
@@ -42,15 +43,13 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
   }
 
   Future<void> _editColorCode() async {
-    final newColor = await showEditColorDialog(
-      context: context,
-      initialColor: _currentColor,
+    final newColor = await utils.navigateTo(
+      context,
+      EditColorScreen(initialColor: _currentColor),
     );
 
     if (newColor != null) {
-      setState(() {
-        _currentColor = newColor;
-      });
+      setState(() => _currentColor = newColor);
     }
   }
 
@@ -97,7 +96,6 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
 
     return Scaffold(
       backgroundColor: _currentColor,
-      resizeToAvoidBottomInset: false,
       appBar: _AppBar(
         onAction: (action) => _onAppBarAction(context, action),
       ),
