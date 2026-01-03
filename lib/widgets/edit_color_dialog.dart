@@ -20,7 +20,7 @@ Future<Color?> showEditColorDialog({
 }) {
   return showDialog<Color>(
     context: context,
-    // barrierColor: Colors.black54,
+    barrierColor: Colors.black54,
     builder: (context) => _EditColorDialog(initialColor: initialColor),
   );
 }
@@ -96,7 +96,6 @@ class _EditColorDialogState extends State<_EditColorDialog> {
   @override
   Widget build(BuildContext context) {
     final contrastColor = color_utils.contrastColor(_previewColor);
-    final appBarTheme = Theme.of(context).appBarTheme;
 
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -108,95 +107,83 @@ class _EditColorDialogState extends State<_EditColorDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Title bar - uses AppBarTheme colors
-            Container(
-              color: appBarTheme.backgroundColor,
-              width: double.infinity,
-              padding: const EdgeInsets.all(24),
-              child: Text(
-                strings.editColorDialogTitle,
-                style: Theme.of(context).appBarTheme.titleTextStyle?.copyWith(
-                  color: contrastColor,
-                ),
-              ),
-            ),
+            // Dialog title bar
+            const _TitleBar(),
 
             // Content + Actions - preview color
             Container(
               color: _previewColor,
-              padding: const EdgeInsets.fromLTRB(24, 24, 24, 8),
+              padding: const EdgeInsets.fromLTRB(24.0, 32.0, 24.0, 8.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   // Hex input field
-                  Row(
-                    children: [
-                      // Static "#" prefix
-                      Text(
-                        '#',
-                        style: TextStyle(
-                          color: contrastColor,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-
-                      // Hex input field
-                      Expanded(
-                        child: TextField(
-                          controller: _controller,
-                          autofocus: true,
-                          maxLength: 6,
-                          style: TextStyle(
-                            color: contrastColor,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1.2,
-                          ),
-                          decoration: InputDecoration(
-                            counterText: '', // Hide character counter
-                            border: InputBorder.none,
-                            hintText: 'RRGGBB',
-                            hintStyle: TextStyle(
-                              color: contrastColor.withValues(alpha: 0.4),
-                              letterSpacing: 1.2,
-                            ),
-                            errorText: _isValid ? null : 'Invalid hex',
-                            errorStyle: TextStyle(color: contrastColor),
-                          ),
-                          inputFormatters: [
-                            // Only allow hex characters (0-9, A-F, case insensitive)
-                            FilteringTextInputFormatter.allow(RegExp('[0-9A-Fa-f]')),
-                            // Auto-uppercase
-                            TextInputFormatter.withFunction((oldValue, newValue) {
-                              return newValue.copyWith(text: newValue.text.toUpperCase());
-                            }),
-                          ],
-                          keyboardType: TextInputType.text,
-                          textCapitalization: TextCapitalization.characters,
-                          onSubmitted: (_) => _onConfirm(),
-                        ),
-                      ),
-                    ],
+                  _HexInput(
+                    foregroundColor: contrastColor,
+                    isValid: _isValid,
+                    controller: _controller,
+                    onSubmitted: (_) => _onConfirm(),
                   ),
 
-                  const SizedBox(height: 16),
+                  // Hex input field
+                  // Row(
+                  //   children: [
+                  //     // Static "#" prefix
+                  //     Text(
+                  //       '#',
+                  //       style: TextStyle(
+                  //         color: contrastColor,
+                  //         fontSize: 18,
+                  //         fontWeight: FontWeight.bold,
+                  //       ),
+                  //     ),
+                  //     const SizedBox(width: 4),
+
+                  //     // Hex input field
+                  //     Expanded(
+                  //       child: TextField(
+                  //         controller: _controller,
+                  //         autofocus: true,
+                  //         maxLength: 6,
+                  //         style: TextStyle(
+                  //           color: contrastColor,
+                  //           fontSize: 18,
+                  //           fontWeight: FontWeight.bold,
+                  //           letterSpacing: 1.2,
+                  //         ),
+                  //         decoration: InputDecoration(
+                  //           counterText: '', // Hide character counter
+                  //           border: InputBorder.none,
+                  //           hintText: 'RRGGBB',
+                  //           hintStyle: TextStyle(
+                  //             color: contrastColor.withValues(alpha: 0.4),
+                  //             letterSpacing: 1.2,
+                  //           ),
+                  //           errorText: _isValid ? null : 'Invalid hex',
+                  //           errorStyle: TextStyle(color: contrastColor),
+                  //         ),
+                  //         inputFormatters: [
+                  //           // Only allow hex characters (0-9, A-F, case insensitive)
+                  //           FilteringTextInputFormatter.allow(RegExp('[0-9A-Fa-f]')),
+                  //           // Auto-uppercase
+                  //           TextInputFormatter.withFunction((oldValue, newValue) {
+                  //             return newValue.copyWith(text: newValue.text.toUpperCase());
+                  //           }),
+                  //         ],
+                  //         keyboardType: TextInputType.text,
+                  //         textCapitalization: TextCapitalization.characters,
+                  //         onSubmitted: (_) => _onConfirm(),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                  const SizedBox(height: 32.0),
 
                   // Action buttons with OverflowBar
-                  OverflowBar(
-                    alignment: MainAxisAlignment.end,
-                    spacing: 8,
-                    children: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop<Color>(),
-                        child: Text('Cancel', style: TextStyle(color: contrastColor)),
-                      ),
-                      TextButton(
-                        onPressed: _isValid && _controller.text.length == 6 ? _onConfirm : null,
-                        child: Text('Apply', style: TextStyle(color: contrastColor)),
-                      ),
-                    ],
+                  _ActionsBar(
+                    foregroundColor: contrastColor,
+                    onCancelPressed: () => Navigator.of(context).pop<Color>(),
+                    onApplyPressed: _isValid && _controller.text.length == 6 ? _onConfirm : null,
                   ),
                 ],
               ),
@@ -204,6 +191,134 @@ class _EditColorDialogState extends State<_EditColorDialog> {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Private widget for the dialog title bar.
+class _TitleBar extends StatelessWidget {
+  const _TitleBar({
+    super.key, // ignore: unused_element_parameter
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final appBarTheme = Theme.of(context).appBarTheme;
+
+    return Container(
+      color: appBarTheme.backgroundColor,
+      width: .infinity,
+      padding: const .symmetric(vertical: 20.0, horizontal: 24.0),
+      child: Text(
+        strings.editColorDialogTitle,
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          color: appBarTheme.foregroundColor,
+        ),
+      ),
+    );
+  }
+}
+
+/// Private widget for the hex input field in the dialog.
+class _HexInput extends StatelessWidget {
+  const _HexInput({
+    super.key, // ignore: unused_element_parameter
+    required this.foregroundColor,
+    this.isValid = false,
+    this.controller,
+    this.onSubmitted,
+  });
+
+  /// The color used for the text.
+  final Color foregroundColor;
+
+  /// Whether the current input is valid.
+  final bool isValid;
+
+  /// The text editing controller for the input field.
+  final TextEditingController? controller;
+
+  /// Callback for when the user submits the input (e.g., presses Enter).
+  final void Function(String)? onSubmitted;
+
+  @override
+  Widget build(BuildContext context) {
+    final border = UnderlineInputBorder(
+      borderSide: BorderSide(color: foregroundColor, width: 2.0),
+    );
+
+    return TextField(
+      controller: controller,
+      autofocus: true,
+      maxLength: 6,
+      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+        color: foregroundColor,
+        letterSpacing: 1.2,
+      ),
+      decoration: InputDecoration(
+        prefixIcon: Icon(Icons.tag, color: foregroundColor),
+        counterText: '', // Hide character counter
+        enabledBorder: border,
+        focusedBorder: border,
+
+        hintText: 'RRGGBB',
+        hintStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
+          color: foregroundColor.withValues(alpha: 0.4),
+          letterSpacing: 1.2,
+        ),
+        errorText: isValid ? null : 'Invalid hex',
+        errorStyle: TextStyle(color: foregroundColor),
+      ),
+      inputFormatters: [
+        // Only allow hex characters (0-9, A-F, case insensitive)
+        FilteringTextInputFormatter.allow(RegExp('[0-9A-Fa-f]')),
+        // Auto-uppercase
+        TextInputFormatter.withFunction((oldValue, newValue) {
+          return newValue.copyWith(text: newValue.text.toUpperCase());
+        }),
+      ],
+      keyboardType: TextInputType.text,
+      textCapitalization: TextCapitalization.characters,
+      onSubmitted: onSubmitted,
+    );
+  }
+}
+
+/// Private widget for action buttons bar in the dialog.
+class _ActionsBar extends StatelessWidget {
+  const _ActionsBar({
+    super.key, // ignore: unused_element_parameter
+    required this.foregroundColor,
+    this.onCancelPressed,
+    this.onApplyPressed,
+  });
+
+  /// The color used for the button text.
+  final Color foregroundColor;
+
+  /// Callback for when the Cancel button is pressed.
+  final void Function()? onCancelPressed;
+
+  /// Callback for when the Apply button is pressed.
+  final void Function()? onApplyPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return OverflowBar(
+      alignment: .end,
+      spacing: 8,
+      children: [
+        TextButton(
+          style: TextButton.styleFrom(foregroundColor: foregroundColor),
+          onPressed: onCancelPressed,
+          child: const Text(strings.cancelAction),
+        ),
+        TextButton(
+          style: TextButton.styleFrom(foregroundColor: foregroundColor),
+          onPressed: onApplyPressed,
+          child: const Text(strings.applyAction),
+        ),
+      ],
     );
   }
 }

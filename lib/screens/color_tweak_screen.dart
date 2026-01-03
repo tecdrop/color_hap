@@ -97,6 +97,7 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
 
     return Scaffold(
       backgroundColor: _currentColor,
+      resizeToAvoidBottomInset: false,
       appBar: _AppBar(
         onAction: (action) => _onAppBarAction(context, action),
       ),

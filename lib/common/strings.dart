@@ -100,6 +100,9 @@ const editColorCodeAction = 'Edit color code';
 
 const editColorDialogTitle = 'Edit color code';
 
+const cancelAction = 'Cancel';
+const applyAction = 'Apply';
+
 // -----------------------------------------------------------------------------------------------
 // Color Info Screen
 // -----------------------------------------------------------------------------------------------
