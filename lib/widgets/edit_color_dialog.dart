@@ -29,6 +29,7 @@ Future<Color?> showEditColorDialog({
 class _EditColorDialog extends StatefulWidget {
   const _EditColorDialog({required this.initialColor});
 
+  /// The initial color to display in the dialog.
   final Color initialColor;
 
   @override
@@ -36,8 +37,13 @@ class _EditColorDialog extends StatefulWidget {
 }
 
 class _EditColorDialogState extends State<_EditColorDialog> {
+  /// The text editing controller for the hex input field.
   late TextEditingController _controller;
+
+  /// The current preview color based on user input.
   late Color _previewColor;
+
+  /// Whether the current input is a valid hex color code.
   bool _isValid = true;
 
   @override
@@ -66,6 +72,7 @@ class _EditColorDialogState extends State<_EditColorDialog> {
     super.dispose();
   }
 
+  /// Callback for when the text in the input field changes.
   void _onTextChanged() {
     final text = _controller.text;
 
@@ -87,6 +94,7 @@ class _EditColorDialogState extends State<_EditColorDialog> {
     });
   }
 
+  /// Callback for when the user confirms the color selection.
   void _onConfirm() {
     if (_isValid && _controller.text.length == 6) {
       Navigator.of(context).pop<Color>(_previewColor);
@@ -100,92 +108,34 @@ class _EditColorDialogState extends State<_EditColorDialog> {
     return Dialog(
       backgroundColor: Colors.transparent,
       child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(28),
-        ),
-        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(borderRadius: .circular(28)),
+        clipBehavior: .antiAlias,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: .min,
           children: [
             // Dialog title bar
             const _TitleBar(),
 
-            // Content + Actions - preview color
+            // Hex input field
             Container(
               color: _previewColor,
-              padding: const EdgeInsets.fromLTRB(24.0, 32.0, 24.0, 8.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Hex input field
-                  _HexInput(
-                    foregroundColor: contrastColor,
-                    isValid: _isValid,
-                    controller: _controller,
-                    onSubmitted: (_) => _onConfirm(),
-                  ),
+              padding: const .fromLTRB(24.0, 32.0, 24.0, 32.0),
+              child: _HexInput(
+                foregroundColor: contrastColor,
+                isValid: _isValid,
+                controller: _controller,
+                onSubmitted: (_) => _onConfirm(),
+              ),
+            ),
 
-                  // Hex input field
-                  // Row(
-                  //   children: [
-                  //     // Static "#" prefix
-                  //     Text(
-                  //       '#',
-                  //       style: TextStyle(
-                  //         color: contrastColor,
-                  //         fontSize: 18,
-                  //         fontWeight: FontWeight.bold,
-                  //       ),
-                  //     ),
-                  //     const SizedBox(width: 4),
-
-                  //     // Hex input field
-                  //     Expanded(
-                  //       child: TextField(
-                  //         controller: _controller,
-                  //         autofocus: true,
-                  //         maxLength: 6,
-                  //         style: TextStyle(
-                  //           color: contrastColor,
-                  //           fontSize: 18,
-                  //           fontWeight: FontWeight.bold,
-                  //           letterSpacing: 1.2,
-                  //         ),
-                  //         decoration: InputDecoration(
-                  //           counterText: '', // Hide character counter
-                  //           border: InputBorder.none,
-                  //           hintText: 'RRGGBB',
-                  //           hintStyle: TextStyle(
-                  //             color: contrastColor.withValues(alpha: 0.4),
-                  //             letterSpacing: 1.2,
-                  //           ),
-                  //           errorText: _isValid ? null : 'Invalid hex',
-                  //           errorStyle: TextStyle(color: contrastColor),
-                  //         ),
-                  //         inputFormatters: [
-                  //           // Only allow hex characters (0-9, A-F, case insensitive)
-                  //           FilteringTextInputFormatter.allow(RegExp('[0-9A-Fa-f]')),
-                  //           // Auto-uppercase
-                  //           TextInputFormatter.withFunction((oldValue, newValue) {
-                  //             return newValue.copyWith(text: newValue.text.toUpperCase());
-                  //           }),
-                  //         ],
-                  //         keyboardType: TextInputType.text,
-                  //         textCapitalization: TextCapitalization.characters,
-                  //         onSubmitted: (_) => _onConfirm(),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                  const SizedBox(height: 32.0),
-
-                  // Action buttons with OverflowBar
-                  _ActionsBar(
-                    foregroundColor: contrastColor,
-                    onCancelPressed: () => Navigator.of(context).pop<Color>(),
-                    onApplyPressed: _isValid && _controller.text.length == 6 ? _onConfirm : null,
-                  ),
-                ],
+            // Action buttons with OverflowBar
+            Container(
+              color: _previewColor,
+              padding: const .fromLTRB(24.0, 0.0, 24.0, 8.0),
+              child: _ActionsBar(
+                foregroundColor: contrastColor,
+                onCancelPressed: () => Navigator.of(context).pop<Color>(),
+                onApplyPressed: _isValid && _controller.text.length == 6 ? _onConfirm : null,
               ),
             ),
           ],
