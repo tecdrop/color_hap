@@ -164,19 +164,11 @@ class _RgbSliderControl extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         // Decrement button
-        FilledButton(
+        _AdjustButton(
+          iconData: Icons.remove,
+          color: contrastColor,
           onPressed: value > 0 ? () => _adjustValue(-1) : null,
-          style: FilledButton.styleFrom(
-            backgroundColor: contrastColor.withValues(alpha: 0.3),
-            disabledBackgroundColor: contrastColor.withValues(alpha: 0.3),
-            foregroundColor: contrastColor,
-            shape: const CircleBorder(),
-            // padding: const EdgeInsets.all(12.0),
-            // minimumSize: const Size(48, 48),
-          ),
-          child: const Icon(Icons.remove, size: 20),
         ),
-        // const SizedBox(width: 8.0),
 
         // Value display
         SizedBox(
@@ -194,17 +186,10 @@ class _RgbSliderControl extends StatelessWidget {
         // const SizedBox(width: 8.0),
 
         // Increment button
-        FilledButton(
+        _AdjustButton(
+          iconData: Icons.add,
+          color: contrastColor,
           onPressed: value < 255 ? () => _adjustValue(1) : null,
-          style: FilledButton.styleFrom(
-            backgroundColor: contrastColor.withValues(alpha: 0.3),
-            disabledBackgroundColor: contrastColor.withValues(alpha: 0.3),
-            foregroundColor: contrastColor,
-            shape: const CircleBorder(),
-            // padding: const EdgeInsets.all(12.0),
-            // minimumSize: const Size(48, 48),
-          ),
-          child: const Icon(Icons.add, size: 20),
         ),
       ],
     );
@@ -226,5 +211,40 @@ class _RgbSliderControl extends StatelessWidget {
               control,
             ],
           );
+  }
+}
+
+/// A circular button used for incrementing or decrementing RGB values.
+class _AdjustButton extends StatelessWidget {
+  const _AdjustButton({
+    super.key, // ignore: unused_element_parameter
+    required this.iconData,
+    required this.color,
+    this.onPressed,
+  });
+
+  /// The icon to display inside the button.
+  final IconData iconData;
+
+  /// The color of the button.
+  final Color color;
+
+  /// Callback invoked when the button is pressed.
+  final void Function()? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final backgroundColor = color.withValues(alpha: 0.075);
+
+    return FilledButton(
+      onPressed: onPressed,
+      style: FilledButton.styleFrom(
+        backgroundColor: backgroundColor,
+        disabledBackgroundColor: backgroundColor,
+        foregroundColor: color,
+        shape: const CircleBorder(),
+      ),
+      child: Icon(iconData, size: 20),
+    );
   }
 }
