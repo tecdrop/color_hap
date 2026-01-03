@@ -165,7 +165,8 @@ class _RgbSliderControl extends StatelessWidget {
       children: [
         // Decrement button
         _AdjustButton(
-          color: contrastColor,
+          backgroundColor: color,
+          contrastColor: contrastColor,
           onPressed: value > 0 ? () => _adjustValue(-1) : null,
           child: const Icon(Icons.remove),
         ),
@@ -187,7 +188,8 @@ class _RgbSliderControl extends StatelessWidget {
 
         // Increment button
         _AdjustButton(
-          color: contrastColor,
+          backgroundColor: color,
+          contrastColor: contrastColor,
           onPressed: value < 255 ? () => _adjustValue(1) : null,
           child: const Icon(Icons.add),
         ),
@@ -218,13 +220,16 @@ class _RgbSliderControl extends StatelessWidget {
 class _AdjustButton extends StatelessWidget {
   const _AdjustButton({
     super.key, // ignore: unused_element_parameter
-    required this.color,
+    required this.backgroundColor,
+    required this.contrastColor,
     this.onPressed,
     required this.child,
   });
 
   /// The color of the button.
-  final Color color;
+  final Color backgroundColor;
+
+  final Color contrastColor;
 
   /// Callback invoked when the button is pressed.
   final void Function()? onPressed;
@@ -234,15 +239,15 @@ class _AdjustButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = color.withValues(alpha: 0.15);
+    final buttonColor = color_utils.getSubtleVariation(backgroundColor);
 
     return FilledButton(
       onPressed: onPressed,
       style: FilledButton.styleFrom(
-        backgroundColor: backgroundColor,
-        disabledBackgroundColor: backgroundColor,
-        disabledForegroundColor: color.withValues(alpha: 0.3),
-        foregroundColor: color,
+        backgroundColor: buttonColor,
+        disabledBackgroundColor: buttonColor,
+        disabledForegroundColor: contrastColor.withValues(alpha: 0.3),
+        foregroundColor: contrastColor,
         iconSize: 20.0,
         shape: const CircleBorder(),
       ),
