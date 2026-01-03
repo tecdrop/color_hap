@@ -167,16 +167,16 @@ class _RgbSliderControl extends StatelessWidget {
         FilledButton(
           onPressed: value > 0 ? () => _adjustValue(-1) : null,
           style: FilledButton.styleFrom(
-            backgroundColor: contrastColor,
+            backgroundColor: contrastColor.withValues(alpha: 0.3),
             disabledBackgroundColor: contrastColor.withValues(alpha: 0.3),
-            foregroundColor: color,
+            foregroundColor: contrastColor,
             shape: const CircleBorder(),
-            padding: const EdgeInsets.all(12.0),
-            minimumSize: const Size(48, 48),
+            // padding: const EdgeInsets.all(12.0),
+            // minimumSize: const Size(48, 48),
           ),
           child: const Icon(Icons.remove, size: 20),
         ),
-        const SizedBox(width: 8.0),
+        // const SizedBox(width: 8.0),
 
         // Value display
         SizedBox(
@@ -191,18 +191,18 @@ class _RgbSliderControl extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(width: 8.0),
+        // const SizedBox(width: 8.0),
 
         // Increment button
         FilledButton(
           onPressed: value < 255 ? () => _adjustValue(1) : null,
           style: FilledButton.styleFrom(
-            backgroundColor: contrastColor,
+            backgroundColor: contrastColor.withValues(alpha: 0.3),
             disabledBackgroundColor: contrastColor.withValues(alpha: 0.3),
-            foregroundColor: color,
+            foregroundColor: contrastColor,
             shape: const CircleBorder(),
-            padding: const EdgeInsets.all(12.0),
-            minimumSize: const Size(48, 48),
+            // padding: const EdgeInsets.all(12.0),
+            // minimumSize: const Size(48, 48),
           ),
           child: const Icon(Icons.add, size: 20),
         ),
@@ -215,7 +215,7 @@ class _RgbSliderControl extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               control,
-              const SizedBox(height: 8.0),
+              const SizedBox(height: 4.0),
               sliderWidget,
             ],
           )
