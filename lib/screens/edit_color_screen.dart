@@ -2,12 +2,12 @@
 // Use of this source code is governed by an MIT-style license that can be found
 // in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
-import 'package:color_hap/widgets/transparency_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../common/strings.dart' as strings;
 import '../utils/color_utils.dart' as color_utils;
+import '../widgets/transparency_grid.dart';
 
 class EditColorScreen extends StatefulWidget {
   const EditColorScreen({
