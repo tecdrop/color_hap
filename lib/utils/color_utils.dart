@@ -148,20 +148,11 @@ String brightnessString(Color color) {
 // -----------------------------------------------------------------------------------------------
 
 /// Returns a subtle variation of the given [Color] for use as a background or highlight.
-Color getSubtleVariation(Color color, {double factor = 0.05}) {
-  final hsl = HSLColor.fromColor(color);
-  var lightness = hsl.lightness;
-  var saturation = hsl.saturation;
-
-  if (ThemeData.estimateBrightnessForColor(color) == .dark) {
-    // Dark background: Make it LIGHTER and LESS saturated
-    lightness = math.min(1.0, lightness + factor);
-    saturation = math.max(0.0, saturation - (factor * 0.5));
-  } else {
-    // Light background: Make it DARKER and MORE saturated
-    lightness = math.max(0.0, lightness - factor);
-    saturation = math.min(1.0, saturation + (factor * 0.5));
-  }
-
-  return hsl.withLightness(lightness).withSaturation(saturation).toColor();
+Color getSubtleVariation(Color color, {double opacity = 0.12}) {
+  return switch (ThemeData.estimateBrightnessForColor(color)) {
+    // Mix with white for dark backgrounds
+    .dark => Color.lerp(color, Colors.white, opacity)!,
+    // Mix with black for light backgrounds
+    .light => Color.lerp(color, Colors.black, opacity)!,
+  };
 }
