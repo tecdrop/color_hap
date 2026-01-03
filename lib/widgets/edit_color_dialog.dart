@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../common/strings.dart' as strings;
 import '../utils/color_utils.dart' as color_utils;
 
 /// Shows a dialog to edit a color by entering its hex code.
@@ -19,6 +20,7 @@ Future<Color?> showEditColorDialog({
 }) {
   return showDialog<Color>(
     context: context,
+    // barrierColor: Colors.black54,
     builder: (context) => _EditColorDialog(initialColor: initialColor),
   );
 }
@@ -94,75 +96,114 @@ class _EditColorDialogState extends State<_EditColorDialog> {
   @override
   Widget build(BuildContext context) {
     final contrastColor = color_utils.contrastColor(_previewColor);
+    final appBarTheme = Theme.of(context).appBarTheme;
 
-    return AlertDialog(
-      backgroundColor: _previewColor,
-      title: Text(
-        'Enter Color Code',
-        style: TextStyle(color: contrastColor),
-      ),
-      content: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Static "#" prefix
-          Text(
-            '#',
-            style: TextStyle(
-              color: contrastColor,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(width: 4),
-
-          // Hex input field
-          Expanded(
-            child: TextField(
-              controller: _controller,
-              autofocus: true,
-              maxLength: 6,
-              style: TextStyle(
-                color: contrastColor,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1.2,
-              ),
-              decoration: InputDecoration(
-                counterText: '', // Hide character counter
-                border: InputBorder.none,
-                hintText: 'RRGGBB',
-                hintStyle: TextStyle(
-                  color: contrastColor.withValues(alpha: 0.4),
-                  letterSpacing: 1.2,
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(28),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Title bar - uses AppBarTheme colors
+            Container(
+              color: appBarTheme.backgroundColor,
+              width: double.infinity,
+              padding: const EdgeInsets.all(24),
+              child: Text(
+                strings.editColorDialogTitle,
+                style: Theme.of(context).appBarTheme.titleTextStyle?.copyWith(
+                  color: contrastColor,
                 ),
-                errorText: _isValid ? null : 'Invalid hex',
-                errorStyle: TextStyle(color: contrastColor),
               ),
-              inputFormatters: [
-                // Only allow hex characters (0-9, A-F, case insensitive)
-                FilteringTextInputFormatter.allow(RegExp('[0-9A-Fa-f]')),
-                // Auto-uppercase
-                TextInputFormatter.withFunction((oldValue, newValue) {
-                  return newValue.copyWith(text: newValue.text.toUpperCase());
-                }),
-              ],
-              keyboardType: TextInputType.text,
-              textCapitalization: TextCapitalization.characters,
-              onSubmitted: (_) => _onConfirm(),
             ),
-          ),
-        ],
+
+            // Content + Actions - preview color
+            Container(
+              color: _previewColor,
+              padding: const EdgeInsets.fromLTRB(24, 24, 24, 8),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Hex input field
+                  Row(
+                    children: [
+                      // Static "#" prefix
+                      Text(
+                        '#',
+                        style: TextStyle(
+                          color: contrastColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+
+                      // Hex input field
+                      Expanded(
+                        child: TextField(
+                          controller: _controller,
+                          autofocus: true,
+                          maxLength: 6,
+                          style: TextStyle(
+                            color: contrastColor,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.2,
+                          ),
+                          decoration: InputDecoration(
+                            counterText: '', // Hide character counter
+                            border: InputBorder.none,
+                            hintText: 'RRGGBB',
+                            hintStyle: TextStyle(
+                              color: contrastColor.withValues(alpha: 0.4),
+                              letterSpacing: 1.2,
+                            ),
+                            errorText: _isValid ? null : 'Invalid hex',
+                            errorStyle: TextStyle(color: contrastColor),
+                          ),
+                          inputFormatters: [
+                            // Only allow hex characters (0-9, A-F, case insensitive)
+                            FilteringTextInputFormatter.allow(RegExp('[0-9A-Fa-f]')),
+                            // Auto-uppercase
+                            TextInputFormatter.withFunction((oldValue, newValue) {
+                              return newValue.copyWith(text: newValue.text.toUpperCase());
+                            }),
+                          ],
+                          keyboardType: TextInputType.text,
+                          textCapitalization: TextCapitalization.characters,
+                          onSubmitted: (_) => _onConfirm(),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // Action buttons with OverflowBar
+                  OverflowBar(
+                    alignment: MainAxisAlignment.end,
+                    spacing: 8,
+                    children: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop<Color>(),
+                        child: Text('Cancel', style: TextStyle(color: contrastColor)),
+                      ),
+                      TextButton(
+                        onPressed: _isValid && _controller.text.length == 6 ? _onConfirm : null,
+                        child: Text('Apply', style: TextStyle(color: contrastColor)),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop<Color>(),
-          child: Text('Cancel', style: TextStyle(color: contrastColor)),
-        ),
-        TextButton(
-          onPressed: _isValid && _controller.text.length == 6 ? _onConfirm : null,
-          child: Text('Apply', style: TextStyle(color: contrastColor)),
-        ),
-      ],
     );
   }
 }
