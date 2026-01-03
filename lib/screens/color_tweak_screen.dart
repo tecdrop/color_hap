@@ -126,7 +126,7 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
           Padding(
             padding: const .only(bottom: 48.0),
             child: RgbSliders(
-              color: _currentColor,
+              initialColor: _currentColor,
               onColorChanged: _onColorChanged,
             ),
           ),

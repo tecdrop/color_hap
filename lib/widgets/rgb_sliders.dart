@@ -17,13 +17,13 @@ enum RgbComponent { red, green, blue }
 class RgbSliders extends StatefulWidget {
   const RgbSliders({
     super.key,
-    required this.color,
+    required this.initialColor,
     required this.onColorChanged,
     this.layout = Axis.vertical,
   });
 
   /// The current color being edited.
-  final Color color;
+  final Color initialColor;
 
   /// Callback invoked when the color changes.
   final ValueChanged<Color> onColorChanged;
@@ -39,7 +39,8 @@ class RgbSliders extends StatefulWidget {
 }
 
 class _RgbSlidersState extends State<RgbSliders> {
-  late Map<RgbComponent, int> _values;
+  // late Map<RgbComponent, int> _values;
+  late Color _currentColor;
 
   static const _componentColors = {
     RgbComponent.red: Color(0xFFFF0000),
@@ -50,46 +51,37 @@ class _RgbSlidersState extends State<RgbSliders> {
   @override
   void initState() {
     super.initState();
-    _updateFromColor(widget.color);
+    _currentColor = widget.initialColor;
   }
 
   @override
   void didUpdateWidget(RgbSliders oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.color != oldWidget.color) {
-      _updateFromColor(widget.color);
+    if (widget.initialColor != oldWidget.initialColor) {
+      _currentColor = widget.initialColor;
     }
   }
 
-  void _updateFromColor(Color color) {
-    _values = {
-      RgbComponent.red: (color.r * 255).round(),
-      RgbComponent.green: (color.g * 255).round(),
-      RgbComponent.blue: (color.b * 255).round(),
-    };
-  }
-
   void _notifyColorChange() {
-    widget.onColorChanged(
-      Color.fromARGB(
-        255,
-        _values[RgbComponent.red]!,
-        _values[RgbComponent.green]!,
-        _values[RgbComponent.blue]!,
-      ),
-    );
+    widget.onColorChanged(_currentColor);
   }
 
   void _updateComponent(RgbComponent component, int value) {
     setState(() {
-      _values[component] = value.clamp(0, 255);
+      final clampedValue = value.clamp(0, 255);
+      _currentColor = switch (component) {
+        RgbComponent.red => _currentColor.withRed(clampedValue),
+        RgbComponent.green => _currentColor.withGreen(clampedValue),
+        RgbComponent.blue => _currentColor.withBlue(clampedValue),
+      };
+
       _notifyColorChange();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final contrastColor = color_utils.contrastColor(widget.color);
+    final contrastColor = color_utils.contrastColor(_currentColor);
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -99,8 +91,15 @@ class _RgbSlidersState extends State<RgbSliders> {
           for (final component in RgbComponent.values) ...[
             _RgbSliderControl(
               layout: widget.layout,
-              value: _values[component]!,
-              color: _componentColors[component]!,
+
+              value: switch (component) {
+                RgbComponent.red => (_currentColor.r * 255).round(),
+                RgbComponent.green => (_currentColor.g * 255).round(),
+                RgbComponent.blue => (_currentColor.b * 255).round(),
+              },
+
+              rgbComponentColor: _componentColors[component]!,
+              backgroundColor: _currentColor,
               contrastColor: contrastColor,
               onChanged: (value) => _updateComponent(component, value),
             ),
@@ -117,14 +116,16 @@ class _RgbSliderControl extends StatelessWidget {
   const _RgbSliderControl({
     required this.layout,
     required this.value,
-    required this.color,
+    required this.rgbComponentColor,
+    required this.backgroundColor,
     required this.contrastColor,
     required this.onChanged,
   });
 
   final Axis layout;
   final int value;
-  final Color color;
+  final Color rgbComponentColor;
+  final Color backgroundColor;
   final Color contrastColor;
   final ValueChanged<int> onChanged;
 
@@ -143,8 +144,8 @@ class _RgbSliderControl extends StatelessWidget {
         activeTrackColor: contrastColor,
         inactiveTrackColor: contrastColor.withValues(alpha: 0.3),
         trackHeight: 2.0,
-        thumbColor: color,
-        overlayColor: color.withValues(alpha: 0.1),
+        thumbColor: rgbComponentColor,
+        overlayColor: rgbComponentColor.withValues(alpha: 0.1),
         thumbShape: const RoundSliderThumbShape(
           enabledThumbRadius: 12.0,
           elevation: 2.0,
@@ -165,7 +166,7 @@ class _RgbSliderControl extends StatelessWidget {
       children: [
         // Decrement button
         _AdjustButton(
-          backgroundColor: color,
+          backgroundColor: backgroundColor,
           contrastColor: contrastColor,
           onPressed: value > 0 ? () => _adjustValue(-1) : null,
           child: const Icon(Icons.remove),
@@ -188,7 +189,7 @@ class _RgbSliderControl extends StatelessWidget {
 
         // Increment button
         _AdjustButton(
-          backgroundColor: color,
+          backgroundColor: backgroundColor,
           contrastColor: contrastColor,
           onPressed: value < 255 ? () => _adjustValue(1) : null,
           child: const Icon(Icons.add),
