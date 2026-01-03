@@ -137,27 +137,25 @@ class _RgbSliderControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Build the slider
-    final slider = Expanded(
-      child: SliderTheme(
-        data: SliderTheme.of(context).copyWith(
-          activeTrackColor: contrastColor,
-          inactiveTrackColor: contrastColor.withValues(alpha: 0.3),
-          trackHeight: 2.0,
-          thumbColor: color,
-          overlayColor: color.withValues(alpha: 0.1),
-          thumbShape: const RoundSliderThumbShape(
-            enabledThumbRadius: 12.0,
-            elevation: 2.0,
-            pressedElevation: 4.0,
-          ),
+    // Build the slider widget
+    final sliderWidget = SliderTheme(
+      data: SliderTheme.of(context).copyWith(
+        activeTrackColor: contrastColor,
+        inactiveTrackColor: contrastColor.withValues(alpha: 0.3),
+        trackHeight: 2.0,
+        thumbColor: color,
+        overlayColor: color.withValues(alpha: 0.1),
+        thumbShape: const RoundSliderThumbShape(
+          enabledThumbRadius: 12.0,
+          elevation: 2.0,
+          pressedElevation: 4.0,
         ),
-        child: Slider(
-          value: value.toDouble(),
-          min: 0,
-          max: 255,
-          onChanged: (newValue) => onChanged(newValue.round()),
-        ),
+      ),
+      child: Slider(
+        value: value.toDouble(),
+        min: 0,
+        max: 255,
+        onChanged: (newValue) => onChanged(newValue.round()),
       ),
     );
 
@@ -218,12 +216,12 @@ class _RgbSliderControl extends StatelessWidget {
             children: [
               control,
               const SizedBox(height: 8.0),
-              slider,
+              sliderWidget,
             ],
           )
         : Row(
             children: [
-              slider,
+              Expanded(child: sliderWidget),
               const SizedBox(width: 8.0),
               control,
             ],
