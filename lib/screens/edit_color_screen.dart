@@ -19,7 +19,7 @@ class EditColorScreen extends StatefulWidget {
     required this.initialColor,
   });
 
-  /// The initial color to display in the dialog.
+  /// The initial color to edit.
   final Color initialColor;
 
   @override

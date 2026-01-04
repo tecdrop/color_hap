@@ -37,11 +37,11 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
   @override
   void initState() {
     super.initState();
-    _changeColor(widget.initialColor, updateState: false);
+    _updateColor(widget.initialColor, updateState: false);
   }
 
-  /// Changes the current color and updates the corresponding color item.
-  void _changeColor(Color color, {bool updateState = true}) {
+  /// Updates the current color and the corresponding color item and optionally updates the state.
+  void _updateColor(Color color, {bool updateState = true}) {
     _currentColor = color;
 
     // Check if the color is a known color, otherwise create a true color item
@@ -64,7 +64,7 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
       EditColorScreen(initialColor: _currentColor),
     );
 
-    if (newColor != null) _changeColor(newColor);
+    if (newColor != null) _updateColor(newColor);
   }
 
   /// Performs the specified action on the app bar.
@@ -75,7 +75,7 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
         Navigator.of(context).pop<ColorItem>(_currentColorItem);
         break;
 
-      // Shows dialog to edit color code
+      // Navigates to the EditColorScreen to edit the color code
       case .editColorCode:
         _editColorCode();
         break;
@@ -114,7 +114,7 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
               child: RgbSliders(
                 initialColor: _currentColor,
                 layout: .horizontal,
-                onColorChanged: _changeColor,
+                onColorChanged: _updateColor,
               ),
             ),
           ),
@@ -138,7 +138,7 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
           child: RgbSliders(
             initialColor: _currentColor,
             layout: .vertical,
-            onColorChanged: _changeColor,
+            onColorChanged: _updateColor,
           ),
         ),
       ],
