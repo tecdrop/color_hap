@@ -34,5 +34,11 @@ ThemeData getAppTheme(Brightness brightness) {
         foregroundColor: backgroundColor,
       ),
     ),
+
+    // Text selection colors - used in text fields such as the hex input
+    textSelectionTheme: const TextSelectionThemeData(
+      selectionColor: Colors.grey,
+      selectionHandleColor: Colors.grey,
+    ),
   );
 }

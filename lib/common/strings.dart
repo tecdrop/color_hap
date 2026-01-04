@@ -100,6 +100,8 @@ const editColorCodeAction = 'Edit color code';
 
 const editColorScreenTitle = 'Edit Color Code';
 
+const inputHexHint = 'RRGGBB';
+
 // -----------------------------------------------------------------------------------------------
 // Color Info Screen
 // -----------------------------------------------------------------------------------------------

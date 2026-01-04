@@ -9,6 +9,7 @@ import '../common/strings.dart' as strings;
 import '../utils/color_utils.dart' as color_utils;
 import '../widgets/transparency_grid.dart';
 
+/// A screen that allows the user to edit a color by entering its hex code.
 class EditColorScreen extends StatefulWidget {
   const EditColorScreen({
     super.key,
@@ -38,12 +39,6 @@ class _EditColorScreenState extends State<EditColorScreen> {
     final hexString = color_utils.toHexString(widget.initialColor, withHash: false);
     _controller = TextEditingController(text: hexString);
 
-    // Select all text for easy replacement
-    _controller.selection = TextSelection(
-      baseOffset: 0,
-      extentOffset: _controller.text.length,
-    );
-
     // Listen to text changes and validate
     _controller.addListener(_onTextChanged);
   }
@@ -72,6 +67,7 @@ class _EditColorScreenState extends State<EditColorScreen> {
     setState(() => _currentColor = null);
   }
 
+  /// Navigates back with the selected color when Apply is pressed.
   void _onApply() {
     if (_currentColor != null) {
       Navigator.of(context).pop<Color>(_currentColor!);
@@ -84,52 +80,27 @@ class _EditColorScreenState extends State<EditColorScreen> {
         ? color_utils.contrastColor(_currentColor!)
         : Colors.black;
 
-    final border = UnderlineInputBorder(
-      borderSide: BorderSide(color: contrastColor, width: 2.0),
-    );
-
     return TransparencyGrid(
       child: Scaffold(
+        // Set the screen background to the current color inputed by the user
+        // If no valid color, use transparent so the transparency grid shows through
         backgroundColor: _currentColor ?? Colors.transparent,
+
+        // The app bar with the Apply action
         appBar: _AppBar(
+          // Only enable the Apply action if there is a valid current color
           onApply: _currentColor != null ? _onApply : null,
         ),
+
+        // The body with the hex input field in the center
         body: Center(
           child: SizedBox(
             width: 175,
-            child: TextField(
+
+            // The hex input field
+            child: _HexInput(
+              foregroundColor: contrastColor,
               controller: _controller,
-              autofocus: true,
-              maxLength: 6,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: contrastColor,
-                letterSpacing: 1.2,
-              ),
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.tag),
-                prefixIconColor: contrastColor,
-
-                counterText: '', // Hide character counter
-                enabledBorder: border,
-                focusedBorder: border,
-
-                hintText: 'RRGGBB',
-                hintStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: contrastColor.withValues(alpha: 0.4),
-                  letterSpacing: 1.2,
-                ),
-              ),
-              inputFormatters: [
-                // Only allow hex characters (0-9, A-F, case insensitive)
-                FilteringTextInputFormatter.allow(RegExp('[0-9A-Fa-f]')),
-                // Auto-uppercase
-                TextInputFormatter.withFunction((oldValue, newValue) {
-                  return newValue.copyWith(text: newValue.text.toUpperCase());
-                }),
-              ],
-              keyboardType: TextInputType.text,
-              textCapitalization: TextCapitalization.characters,
-              // onSubmitted: onSubmitted,
             ),
           ),
         ),
@@ -155,7 +126,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
 
       /// The common operations displayed in this app bar
       actions: [
-        /// The Apply Color action
+        /// The Apply action - only shown if [onApply] is not null
         if (onApply != null)
           TextButton.icon(
             icon: const Icon(Icons.check),
@@ -168,4 +139,67 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
+
+/// A text input field for entering a hex color code.
+class _HexInput extends StatelessWidget {
+  const _HexInput({
+    super.key, // ignore: unused_element_parameter
+    required this.foregroundColor,
+    this.controller,
+  });
+
+  /// The foreground color to use for text and borders.
+  final Color foregroundColor;
+
+  /// The text editing controller for the hex input field.
+  final TextEditingController? controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final border = UnderlineInputBorder(
+      borderSide: BorderSide(color: foregroundColor, width: 2.0),
+    );
+
+    return TextField(
+      controller: controller,
+
+      // Input field configuration
+      autofocus: true,
+      cursorColor: foregroundColor,
+      keyboardType: TextInputType.text,
+      maxLength: 6,
+      style: Theme.of(context).textTheme.titleLarge?.copyWith(color: foregroundColor),
+      textCapitalization: TextCapitalization.characters,
+
+      // Decoration for the input field
+      decoration: InputDecoration(
+        prefixIcon: const Icon(Icons.tag),
+        prefixIconColor: foregroundColor,
+
+        // Hide character counter
+        counterText: '',
+
+        // The underline border
+        enabledBorder: border,
+        focusedBorder: border,
+
+        // The RRGGBB hint text
+        hintText: strings.inputHexHint,
+        hintStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
+          color: foregroundColor.withValues(alpha: 0.4),
+        ),
+      ),
+
+      // Input formatters to restrict input to valid hex characters
+      inputFormatters: [
+        // Only allow hex characters (0-9, A-F, case insensitive)
+        FilteringTextInputFormatter.allow(RegExp('[0-9A-Fa-f]')),
+        // Auto-uppercase
+        TextInputFormatter.withFunction((oldValue, newValue) {
+          return newValue.copyWith(text: newValue.text.toUpperCase());
+        }),
+      ],
+    );
+  }
 }
