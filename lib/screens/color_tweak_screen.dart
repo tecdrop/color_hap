@@ -28,50 +28,43 @@ class ColorTweakScreen extends StatefulWidget {
 }
 
 class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerProviderStateMixin {
+  /// The current color being edited.
   late Color _currentColor;
+
+  /// The current color item corresponding to the current color.
   late ColorItem _currentColorItem;
 
   @override
   void initState() {
     super.initState();
-    _currentColor = widget.initialColor;
-    _currentColorItem = _lookupColorItem(widget.initialColor);
+    _changeColor(widget.initialColor, updateState: false);
   }
 
-  /// Looks up the color in the known colors catalog and returns a ColorItem.
-  ColorItem _lookupColorItem(Color color) {
-    final knownColor = color_lookup.findKnownColor(color);
-    return knownColor ??
+  /// Changes the current color and updates the corresponding color item.
+  void _changeColor(Color color, {bool updateState = true}) {
+    _currentColor = color;
+
+    // Check if the color is a known color, otherwise create a true color item
+    _currentColorItem =
+        color_lookup.findKnownColor(color) ??
         ColorItem(
           type: .trueColor,
           color: color,
           listPosition: color_utils.toRGB24(color),
         );
+
+    // Update the state if required
+    if (updateState) setState(() {});
   }
 
-  void _onColorChanged(Color color) {
-    setState(() {
-      _currentColor = color;
-      _currentColorItem = _lookupColorItem(color);
-    });
-  }
-
+  /// Navigates to the EditColorScreen to allow the user to edit the color code.
   Future<void> _editColorCode() async {
     final newColor = await utils.navigateTo(
       context,
       EditColorScreen(initialColor: _currentColor),
     );
 
-    if (newColor != null) {
-      setState(() {
-        _currentColor = newColor;
-        _currentColorItem = _lookupColorItem(newColor);
-      });
-    }
-  }
-
-  void _applyColor() {
-    Navigator.of(context).pop<ColorItem>(_currentColorItem);
+    if (newColor != null) _changeColor(newColor);
   }
 
   /// Performs the specified action on the app bar.
@@ -79,7 +72,7 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
     switch (action) {
       // Applies the current color selection
       case .applyColor:
-        _applyColor();
+        Navigator.of(context).pop<ColorItem>(_currentColorItem);
         break;
 
       // Shows dialog to edit color code
@@ -121,7 +114,7 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
               child: RgbSliders(
                 initialColor: _currentColor,
                 layout: .horizontal,
-                onColorChanged: _onColorChanged,
+                onColorChanged: _changeColor,
               ),
             ),
           ),
@@ -145,7 +138,7 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
           child: RgbSliders(
             initialColor: _currentColor,
             layout: .vertical,
-            onColorChanged: _onColorChanged,
+            onColorChanged: _changeColor,
           ),
         ),
       ],
