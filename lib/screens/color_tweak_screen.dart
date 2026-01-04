@@ -29,16 +29,30 @@ class ColorTweakScreen extends StatefulWidget {
 
 class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerProviderStateMixin {
   late Color _currentColor;
+  late ColorItem _currentColorItem;
 
   @override
   void initState() {
     super.initState();
     _currentColor = widget.initialColor;
+    _currentColorItem = _lookupColorItem(widget.initialColor);
+  }
+
+  /// Looks up the color in the known colors catalog and returns a ColorItem.
+  ColorItem _lookupColorItem(Color color) {
+    final knownColor = color_lookup.findKnownColor(color);
+    return knownColor ??
+        ColorItem(
+          type: .trueColor,
+          color: color,
+          listPosition: color_utils.toRGB24(color),
+        );
   }
 
   void _onColorChanged(Color color) {
     setState(() {
       _currentColor = color;
+      _currentColorItem = _lookupColorItem(color);
     });
   }
 
@@ -49,22 +63,15 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
     );
 
     if (newColor != null) {
-      setState(() => _currentColor = newColor);
+      setState(() {
+        _currentColor = newColor;
+        _currentColorItem = _lookupColorItem(newColor);
+      });
     }
   }
 
   void _applyColor() {
-    // Create ColorItem from current color using lookup service
-    final knownColor = color_lookup.findKnownColor(_currentColor);
-    final colorItem =
-        knownColor ??
-        ColorItem(
-          type: .trueColor,
-          color: _currentColor,
-          listPosition: color_utils.toRGB24(_currentColor),
-        );
-
-    Navigator.of(context).pop<ColorItem>(colorItem);
+    Navigator.of(context).pop<ColorItem>(_currentColorItem);
   }
 
   /// Performs the specified action on the app bar.
@@ -85,25 +92,17 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
   @override
   Widget build(BuildContext context) {
     final contrastColor = color_utils.contrastColor(_currentColor);
-    final knownColor = color_lookup.findKnownColor(_currentColor);
-    final colorItem =
-        knownColor ??
-        ColorItem(
-          type: .trueColor,
-          color: _currentColor,
-          listPosition: color_utils.toRGB24(_currentColor),
-        );
 
     // Determine layout based on screen width
     final isWideLayout = MediaQuery.sizeOf(context).width >= 600;
 
     // Reusable color info widget
     final colorInfo = ColorInfoDisplay(
-      colorItem: colorItem,
+      colorItem: _currentColorItem,
       contrastColor: contrastColor,
       adaptiveHexSize: true,
       centered: true,
-      showType: knownColor != null,
+      showType: _currentColorItem.name != null,
       size: .medium,
     );
 
