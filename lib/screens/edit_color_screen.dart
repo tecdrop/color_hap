@@ -101,6 +101,9 @@ class _EditColorScreenState extends State<EditColorScreen> {
             child: _HexInput(
               foregroundColor: contrastColor,
               controller: _controller,
+
+              // When the user presses Enter, navigate back with the color if valid
+              onSubmitted: (_) => _onApply(),
             ),
           ),
         ),
@@ -147,6 +150,7 @@ class _HexInput extends StatelessWidget {
     super.key, // ignore: unused_element_parameter
     required this.foregroundColor,
     this.controller,
+    this.onSubmitted,
   });
 
   /// The foreground color to use for text and borders.
@@ -154,6 +158,9 @@ class _HexInput extends StatelessWidget {
 
   /// The text editing controller for the hex input field.
   final TextEditingController? controller;
+
+  /// Callback for when the user submits the input (presses Enter).
+  final void Function(String)? onSubmitted;
 
   @override
   Widget build(BuildContext context) {
@@ -163,6 +170,7 @@ class _HexInput extends StatelessWidget {
 
     return TextField(
       controller: controller,
+      onSubmitted: onSubmitted,
 
       // Input field configuration
       autofocus: true,
