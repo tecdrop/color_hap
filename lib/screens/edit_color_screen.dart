@@ -124,19 +124,23 @@ class _EditColorScreenState extends State<EditColorScreen> {
                 ),
               ),
 
-              // Show color info if the color is a known color
-              if (_currentColorItem != null)
-                Padding(
-                  padding: const .only(top: 16.0),
-                  child: ColorInfoDisplay(
-                    colorItem: _currentColorItem!,
-                    contrastColor: contrastColor,
-                    showType: true,
-                    showCode: false,
-                    size: .small,
-                    centered: true,
-                  ),
+              // Reserve fixed space for color info to prevent layout shifts
+              Padding(
+                padding: const .only(top: 16.0),
+                child: SizedBox(
+                  height: 48.0,
+                  child: _currentColorItem != null
+                      ? ColorInfoDisplay(
+                          colorItem: _currentColorItem!,
+                          contrastColor: contrastColor,
+                          showType: true,
+                          showCode: false,
+                          size: .small,
+                          centered: true,
+                        )
+                      : const SizedBox.shrink(),
                 ),
+              ),
             ],
           ),
         ),
