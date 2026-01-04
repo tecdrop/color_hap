@@ -144,6 +144,7 @@ class _EditColorScreenState extends State<EditColorScreen> {
                   showCode: false,
                   size: .small,
                   centered: true,
+                  alwaysShowNameLine: true,
                 ),
               ),
             ],

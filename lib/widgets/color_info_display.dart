@@ -33,6 +33,7 @@ class ColorInfoDisplay extends StatelessWidget {
     this.size = .medium,
     this.centered = false,
     this.adaptiveHexSize = true,
+    this.alwaysShowNameLine = false,
   });
 
   /// The color item containing the color data to display.
@@ -55,6 +56,10 @@ class ColorInfoDisplay extends StatelessWidget {
 
   /// Whether to adaptively scale hex code size when no color name is present (large size only).
   final bool adaptiveHexSize;
+
+  /// Whether to always render the name line (even when null) to prevent layout shifts.
+  /// When true, an empty space is reserved for the name even if colorItem.name is null.
+  final bool alwaysShowNameLine;
 
   /// Text theme style getters for the color type label.
   static const _typeStyleGetters = {
@@ -111,10 +116,10 @@ class ColorInfoDisplay extends StatelessWidget {
             textAlign: textAlign,
           ),
 
-        // Color name (if available)
-        if (colorItem.name != null)
+        // Color name (if available, or always if alwaysShowNameLine is true)
+        if (colorItem.name != null || alwaysShowNameLine)
           Text(
-            colorItem.name!,
+            colorItem.name ?? '',
             style: _nameStyleGetters[size]!(textTheme).copyWith(color: contrastColor),
             textAlign: textAlign,
           ),
