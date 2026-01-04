@@ -59,7 +59,7 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
 
   /// Navigates to the EditColorScreen to allow the user to edit the color code.
   Future<void> _editColorCode() async {
-    final newColor = await utils.navigateTo(
+    final newColor = await utils.navigateTo<Color>(
       context,
       EditColorScreen(initialColor: _currentColor),
     );

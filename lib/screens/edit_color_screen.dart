@@ -6,7 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../common/strings.dart' as strings;
+import '../models/color_item.dart';
+import '../services/color_lookup_service.dart' as color_lookup;
 import '../utils/color_utils.dart' as color_utils;
+import '../widgets/color_info_display.dart';
 import '../widgets/transparency_grid.dart';
 
 /// A screen that allows the user to edit a color by entering its hex code.
@@ -29,6 +32,9 @@ class _EditColorScreenState extends State<EditColorScreen> {
 
   /// The current color based on user input.
   Color? _currentColor;
+
+  /// The current color item if the color is a known color.
+  ColorItem? _currentColorItem;
 
   @override
   void initState() {
@@ -58,13 +64,19 @@ class _EditColorScreenState extends State<EditColorScreen> {
     if (text.length == 7) {
       final color = color_utils.rgbHexToColor(text);
       if (color != null) {
-        setState(() => _currentColor = color);
+        setState(() {
+          _currentColor = color;
+          _currentColorItem = color_lookup.findKnownColor(color);
+        });
         return;
       }
     }
 
     // Invalid input
-    setState(() => _currentColor = null);
+    setState(() {
+      _currentColor = null;
+      _currentColorItem = null;
+    });
   }
 
   /// Navigates back with the selected color when Apply is pressed.
@@ -92,21 +104,40 @@ class _EditColorScreenState extends State<EditColorScreen> {
           onApply: _currentColor != null ? _onApply : null,
         ),
 
-        // The body with the hex input field in the center
+        // The body with the hex input field and color info in the center
         body: Center(
-          child: SizedBox(
-            // An opinionated fixed width that fits "#RRGGBB" comfortably on all tested font sizes,
-            // including the largest system accessibility font settings (tested on Android)
-            width: 164.0,
+          child: Column(
+            mainAxisSize: .min,
+            children: [
+              SizedBox(
+                // An opinionated fixed width that fits "#RRGGBB" comfortably on all tested font sizes,
+                // including the largest system accessibility font settings (tested on Android)
+                width: 164.0,
 
-            // The hex input field
-            child: _HexInput(
-              foregroundColor: contrastColor,
-              controller: _controller,
+                // The hex input field
+                child: _HexInput(
+                  foregroundColor: contrastColor,
+                  controller: _controller,
 
-              // When the user presses Enter, navigate back with the color if valid
-              onSubmitted: (_) => _onApply(),
-            ),
+                  // When the user presses Enter, navigate back with the color if valid
+                  onSubmitted: (_) => _onApply(),
+                ),
+              ),
+
+              // Show color info if the color is a known color
+              if (_currentColorItem != null)
+                Padding(
+                  padding: const .only(top: 16.0),
+                  child: ColorInfoDisplay(
+                    colorItem: _currentColorItem!,
+                    contrastColor: contrastColor,
+                    showType: true,
+                    showCode: false,
+                    size: .small,
+                    centered: true,
+                  ),
+                ),
+            ],
           ),
         ),
       ),
