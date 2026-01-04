@@ -91,9 +91,22 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
     // Then display a snackbar with an undo action
     final snackBar = SnackBar(
       content: const Text(strings.removedFromFavorites),
+
+      // Persist is now required for snackbars with actions to auto-dismiss
+      persist: false,
+
+      // The undo action
       action: SnackBarAction(
         label: strings.undoRemoveFromFavorites,
-        onPressed: () => setState(() => preferences.colorFavoritesList.insert(index, randomColor)),
+        onPressed: () {
+          // 1. Always restore the data (so the item comes back in your database/list)
+          preferences.colorFavoritesList.insert(index, randomColor);
+
+          // 2. Only update the screen IF the screen is still there
+          if (mounted) {
+            setState(() {});
+          }
+        },
       ),
     );
     ScaffoldMessenger.of(context)
