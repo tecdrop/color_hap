@@ -107,57 +107,63 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
       size: .medium,
     );
 
+    final landscapeLayout = Row(
+      children: [
+        // Color information display in the center of the left half
+        Expanded(
+          child: Center(child: colorInfo),
+        ),
+
+        // RGB sliders in the center of the right half
+        Expanded(
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 600.0),
+              child: RgbSliders(
+                initialColor: _currentColor,
+                layout: .horizontal,
+                onColorChanged: _onColorChanged,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+
+    final portraitLayout = Column(
+      children: [
+        // Color information display filling the available space at the top
+        Expanded(
+          child: Padding(
+            padding: const .symmetric(vertical: 16.0),
+            child: colorInfo,
+          ),
+        ),
+
+        // RGB sliders at the bottom
+        Padding(
+          padding: const .only(bottom: 48.0),
+          child: RgbSliders(
+            initialColor: _currentColor,
+            layout: .vertical,
+            onColorChanged: _onColorChanged,
+          ),
+        ),
+      ],
+    );
+
     return Scaffold(
       backgroundColor: _currentColor,
+
+      // The app bar with actions
       appBar: _AppBar(
         onAction: (action) => _onAppBarAction(context, action),
       ),
+
+      // The body with color info and RGB sliders
       body: Padding(
         padding: const .all(16.0),
-        child: isWideLayout
-            ? Row(
-                children: [
-                  // Left half - Color information display
-                  Expanded(
-                    child: Center(child: colorInfo),
-                  ),
-
-                  // Right half - RGB sliders
-                  Expanded(
-                    child: Center(
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 600),
-                        child: RgbSliders(
-                          initialColor: _currentColor,
-                          layout: Axis.horizontal,
-                          onColorChanged: _onColorChanged,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            : Column(
-                children: [
-                  // Color information display
-                  Expanded(
-                    child: Padding(
-                      padding: const .symmetric(vertical: 16.0),
-                      child: colorInfo,
-                    ),
-                  ),
-
-                  // RGB sliders
-                  Padding(
-                    padding: const .only(bottom: 48.0),
-                    child: RgbSliders(
-                      initialColor: _currentColor,
-                      layout: Axis.vertical,
-                      onColorChanged: _onColorChanged,
-                    ),
-                  ),
-                ],
-              ),
+        child: isWideLayout ? landscapeLayout : portraitLayout,
       ),
     );
   }
