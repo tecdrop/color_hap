@@ -36,6 +36,14 @@ class _EditColorScreenState extends State<EditColorScreen> {
   /// The current color item if the color is a known color.
   ColorItem? _currentColorItem;
 
+  /// Placeholder color item used to reserve space when no known color is found.
+  static const _placeholderColorItem = ColorItem(
+    type: .basicColor,
+    color: Colors.black,
+    name: '',
+    listPosition: 0,
+  );
+
   @override
   void initState() {
     super.initState();
@@ -124,21 +132,18 @@ class _EditColorScreenState extends State<EditColorScreen> {
                 ),
               ),
 
-              // Reserve fixed space for color info to prevent layout shifts
-              Padding(
-                padding: const .only(top: 16.0),
-                child: SizedBox(
-                  height: 48.0,
-                  child: _currentColorItem != null
-                      ? ColorInfoDisplay(
-                          colorItem: _currentColorItem!,
-                          contrastColor: contrastColor,
-                          showType: true,
-                          showCode: false,
-                          size: .small,
-                          centered: true,
-                        )
-                      : const SizedBox.shrink(),
+              /// The color info display for known colors below the input field; if no known color
+              /// is found, we still reserve the space using a placeholder to prevent layout shifts
+              const SizedBox(height: 16.0),
+              Opacity(
+                opacity: _currentColorItem != null ? 1.0 : 0.0,
+                child: ColorInfoDisplay(
+                  colorItem: _currentColorItem ?? _placeholderColorItem,
+                  contrastColor: contrastColor,
+                  showType: true,
+                  showCode: false,
+                  size: .small,
+                  centered: true,
                 ),
               ),
             ],
