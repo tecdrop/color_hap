@@ -95,7 +95,9 @@ class _EditColorScreenState extends State<EditColorScreen> {
         // The body with the hex input field in the center
         body: Center(
           child: SizedBox(
-            width: 120.0,
+            // An opinionated fixed width that fits "#RRGGBB" comfortably on all tested font sizes,
+            // including the largest system accessibility font settings (tested on Android)
+            width: 164.0,
 
             // The hex input field
             child: _HexInput(
