@@ -29,6 +29,7 @@ class ColorInfoDisplay extends StatelessWidget {
     required this.colorItem,
     required this.contrastColor,
     this.showType = true,
+    this.showCode = true,
     this.size = .medium,
     this.centered = false,
     this.adaptiveHexSize = true,
@@ -42,6 +43,9 @@ class ColorInfoDisplay extends StatelessWidget {
 
   /// Whether to show the color type label.
   final bool showType;
+
+  /// Whether to show the color hex code (usually always true).
+  final bool showCode;
 
   /// The size preset for text styling.
   final ColorInfoSize size;
@@ -115,12 +119,13 @@ class ColorInfoDisplay extends StatelessWidget {
             textAlign: textAlign,
           ),
 
-        // Color hex code (always shown)
-        Text(
-          colorItem.hexString,
-          style: _getHexStyle(textTheme),
-          textAlign: textAlign,
-        ),
+        // Color hex code (usually always shown)
+        if (showCode)
+          Text(
+            colorItem.hexString,
+            style: _getHexStyle(textTheme),
+            textAlign: textAlign,
+          ),
       ],
     );
   }

@@ -95,7 +95,7 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
       contrastColor: contrastColor,
       adaptiveHexSize: true,
       centered: true,
-      showType: _currentColorItem.name != null,
+      showType: _currentColorItem.type != .trueColor,
       size: .medium,
     );
 
