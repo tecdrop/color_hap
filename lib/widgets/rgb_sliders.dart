@@ -73,25 +73,22 @@ class _RgbSlidersState extends State<RgbSliders> {
   Widget build(BuildContext context) {
     final contrastColor = color_utils.contrastColor(_currentColor);
 
-    return Padding(
-      padding: const .all(16.0),
-      child: Column(
-        mainAxisSize: .min,
-        children: [
-          for (final rgbChannel in RGBChannel.values) ...[
-            // The slider control for each RGB channel (red, green, blue)
-            _RgbSliderControl(
-              value: color_utils.getRGBChannelValue(_currentColor, rgbChannel),
-              layout: widget.layout,
-              rgbChannelColor: _rgbChannelColors[rgbChannel]!,
-              backgroundColor: _currentColor,
-              contrastColor: contrastColor,
-              onChanged: (value) => _updateRGBChannel(rgbChannel, value),
-            ),
-            if (rgbChannel != .blue) const SizedBox(height: 16.0),
-          ],
+    return Column(
+      mainAxisSize: .min,
+      children: [
+        for (final rgbChannel in RGBChannel.values) ...[
+          // The slider control for each RGB channel (red, green, blue)
+          _RgbSliderControl(
+            value: color_utils.getRGBChannelValue(_currentColor, rgbChannel),
+            layout: widget.layout,
+            rgbChannelColor: _rgbChannelColors[rgbChannel]!,
+            backgroundColor: _currentColor,
+            contrastColor: contrastColor,
+            onChanged: (value) => _updateRGBChannel(rgbChannel, value),
+          ),
+          if (rgbChannel != .blue) const SizedBox(height: 16.0),
         ],
-      ),
+      ],
     );
   }
 }

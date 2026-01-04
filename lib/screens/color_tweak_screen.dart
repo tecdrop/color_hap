@@ -94,37 +94,70 @@ class _ColorTweakScreenState extends State<ColorTweakScreen> with SingleTickerPr
           listPosition: color_utils.toRGB24(_currentColor),
         );
 
+    // Determine layout based on screen width
+    final isWideLayout = MediaQuery.sizeOf(context).width >= 600;
+
+    // Reusable color info widget
+    final colorInfo = ColorInfoDisplay(
+      colorItem: colorItem,
+      contrastColor: contrastColor,
+      adaptiveHexSize: true,
+      centered: true,
+      showType: knownColor != null,
+      size: .medium,
+    );
+
     return Scaffold(
       backgroundColor: _currentColor,
       appBar: _AppBar(
         onAction: (action) => _onAppBarAction(context, action),
       ),
-      body: Column(
-        children: [
-          // Color information display
-          Expanded(
-            child: Padding(
-              padding: const .all(16.0),
-              child: ColorInfoDisplay(
-                colorItem: colorItem,
-                contrastColor: contrastColor,
-                adaptiveHexSize: true,
-                centered: true,
-                showType: knownColor != null,
-                size: .medium,
-              ),
-            ),
-          ),
+      body: Padding(
+        padding: const .all(16.0),
+        child: isWideLayout
+            ? Row(
+                children: [
+                  // Left half - Color information display
+                  Expanded(
+                    child: Center(child: colorInfo),
+                  ),
 
-          // RGB sliders
-          Padding(
-            padding: const .only(bottom: 48.0),
-            child: RgbSliders(
-              initialColor: _currentColor,
-              onColorChanged: _onColorChanged,
-            ),
-          ),
-        ],
+                  // Right half - RGB sliders
+                  Expanded(
+                    child: Center(
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 600),
+                        child: RgbSliders(
+                          initialColor: _currentColor,
+                          layout: Axis.horizontal,
+                          onColorChanged: _onColorChanged,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            : Column(
+                children: [
+                  // Color information display
+                  Expanded(
+                    child: Padding(
+                      padding: const .symmetric(vertical: 16.0),
+                      child: colorInfo,
+                    ),
+                  ),
+
+                  // RGB sliders
+                  Padding(
+                    padding: const .only(bottom: 48.0),
+                    child: RgbSliders(
+                      initialColor: _currentColor,
+                      layout: Axis.vertical,
+                      onColorChanged: _onColorChanged,
+                    ),
+                  ),
+                ],
+              ),
       ),
     );
   }
