@@ -5,6 +5,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
+import '../common/consts.dart' as consts;
 import '../common/strings.dart' as strings;
 import '../utils/color_utils.dart' as color_utils;
 
@@ -42,7 +43,9 @@ class ColorInfoList extends StatelessWidget {
       child: ListView.separated(
         // Use padding to constrain the width of the list items so they look ok on large screens
         // Also add some bottom padding to the list to make space for the floating action button
-        padding: EdgeInsets.symmetric(horizontal: max(0, (width - 800) / 2)).copyWith(bottom: 64.0),
+        padding: EdgeInsets.symmetric(
+          horizontal: max(0, (width - consts.maxContentWidth) / 2),
+        ).copyWith(bottom: 64.0),
 
         itemCount: infos.length,
         itemBuilder: (BuildContext context, int index) {

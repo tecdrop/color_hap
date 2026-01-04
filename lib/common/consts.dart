@@ -6,13 +6,16 @@
 library;
 
 /// The parameter name for colors with no name.
-const String noNameColorParam = 'noname';
+const noNameColorParam = 'noname';
 
 /// The color swatch image file name for a given hex code.
 String colorSwatchFileName(String hexCode) => 'colorhap_${hexCode}_random_color_swatch.png';
 
 /// The name of the favorites CSV export file.
-const String favoritesCSVFileName = 'colorhap_favorites.csv';
+const favoritesCSVFileName = 'colorhap_favorites.csv';
 
 /// The height of the color list item.
-const double colorListItemExtent = 128.0;
+const colorListItemExtent = 128.0;
+
+/// The maximum content width for constraining list view items on large screens.
+const maxContentWidth = 800.0;

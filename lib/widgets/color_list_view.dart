@@ -139,7 +139,7 @@ class _ColorListItem extends StatelessWidget {
         ),
 
         // Use padding to constrain the width of the list items so they look ok on large screens
-        padding: .symmetric(horizontal: max(16.0, (width - 1024) / 2)),
+        padding: .symmetric(horizontal: max(16.0, (width - consts.maxContentWidth) / 2)),
 
         child: Row(
           mainAxisAlignment: .spaceBetween,
