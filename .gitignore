@@ -48,3 +48,5 @@ app.*.map.json
 CLAUDE.md
 .claude
 .claude/
+.gemini
+.gemini/
