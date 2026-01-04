@@ -35,8 +35,8 @@ class _EditColorScreenState extends State<EditColorScreen> {
     super.initState();
     _currentColor = widget.initialColor;
 
-    // Initialize with hex code (without #)
-    final hexString = color_utils.toHexString(widget.initialColor, withHash: false);
+    // Initialize with hex code (with #)
+    final hexString = color_utils.toHexString(widget.initialColor);
     _controller = TextEditingController(text: hexString);
 
     // Listen to text changes and validate
@@ -54,8 +54,8 @@ class _EditColorScreenState extends State<EditColorScreen> {
   void _onTextChanged() {
     final text = _controller.text;
 
-    // Validate hex string (must be 6 characters, 0-9 A-F)
-    if (text.length == 6) {
+    // Validate hex string (must be 7 characters, # and 0-9 A-F)
+    if (text.length == 7) {
       final color = color_utils.rgbHexToColor(text);
       if (color != null) {
         setState(() => _currentColor = color);
@@ -95,7 +95,7 @@ class _EditColorScreenState extends State<EditColorScreen> {
         // The body with the hex input field in the center
         body: Center(
           child: SizedBox(
-            width: 175,
+            width: 120.0,
 
             // The hex input field
             child: _HexInput(
@@ -167,16 +167,14 @@ class _HexInput extends StatelessWidget {
       // Input field configuration
       autofocus: true,
       cursorColor: foregroundColor,
-      keyboardType: TextInputType.text,
-      maxLength: 6,
+      keyboardType: .text,
+      maxLength: 7,
       style: Theme.of(context).textTheme.titleLarge?.copyWith(color: foregroundColor),
-      textCapitalization: TextCapitalization.characters,
+      textAlign: .center,
+      textCapitalization: .characters,
 
       // Decoration for the input field
       decoration: InputDecoration(
-        prefixIcon: const Icon(Icons.tag),
-        prefixIconColor: foregroundColor,
-
         // Hide character counter
         counterText: '',
 
@@ -193,13 +191,38 @@ class _HexInput extends StatelessWidget {
 
       // Input formatters to restrict input to valid hex characters
       inputFormatters: [
-        // Only allow hex characters (0-9, A-F, case insensitive)
+        // 1. First, strict allow-list (this strips non-hex chars)
         FilteringTextInputFormatter.allow(RegExp('[0-9A-Fa-f]')),
-        // Auto-uppercase
-        TextInputFormatter.withFunction((oldValue, newValue) {
-          return newValue.copyWith(text: newValue.text.toUpperCase());
-        }),
+
+        // 2. Then, enforce length (6 digits + 1 hash = 7 chars total)
+        LengthLimitingTextInputFormatter(7),
+
+        // 3. Finally, ensure '#' is present and uppercase
+        _HexInputFormatter(),
       ],
+    );
+  }
+}
+
+/// A text input formatter that ensures the hex input is uppercase and prefixed with '#'.
+class _HexInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    // 1. Always uppercase the input
+    final upperText = newValue.text.toUpperCase();
+
+    // 2. If the # is already there, we only needed to uppercase. Return as is.
+    if (upperText.startsWith('#')) {
+      return newValue.copyWith(text: upperText);
+    }
+
+    // 3. If missing, prepend '#' and shift the selection (cursor) +1
+    return TextEditingValue(
+      text: '#$upperText',
+      selection: newValue.selection.copyWith(
+        baseOffset: newValue.selection.baseOffset + 1,
+        extentOffset: newValue.selection.extentOffset + 1,
+      ),
     );
   }
 }
