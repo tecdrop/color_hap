@@ -35,7 +35,7 @@ const String _colorFavoritesListKey = 'colorFavoritesList';
 
 /// The list of favorite colors.
 ColorFavoritesList colorFavoritesList = ColorFavoritesList(
-  onChanged: saveColorFavoritesList,
+  onChanged: () => saveColorFavoritesList(),
 );
 
 /// Saves the favorite colors list to persistent storage.
