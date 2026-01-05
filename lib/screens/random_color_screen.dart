@@ -192,7 +192,6 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
             _randomColor,
             index: _colorFavIndex,
           );
-          preferences.saveColorFavoritesList();
         });
         break;
 

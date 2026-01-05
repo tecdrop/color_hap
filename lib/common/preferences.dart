@@ -34,7 +34,9 @@ Future<void> _saveColorType() async {
 const String _colorFavoritesListKey = 'colorFavoritesList';
 
 /// The list of favorite colors.
-ColorFavoritesList colorFavoritesList = ColorFavoritesList();
+ColorFavoritesList colorFavoritesList = ColorFavoritesList(
+  onChanged: saveColorFavoritesList,
+);
 
 /// Saves the favorite colors list to persistent storage.
 ///

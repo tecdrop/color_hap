@@ -4,10 +4,17 @@
 
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
 import 'color_item.dart';
 
 /// A list of favorite random colors.
 class ColorFavoritesList {
+  ColorFavoritesList({this.onChanged});
+
+  /// Callback invoked whenever the list is modified.
+  final VoidCallback? onChanged;
+
   /// The list of [ColorItem] objects in the favorites list.
   final List<ColorItem> _list = <ColorItem>[];
 
@@ -25,13 +32,21 @@ class ColorFavoritesList {
   /// Inserts the given [ColorItem] at the given [index] in the favorites list.
   void insert(int index, ColorItem colorItem) {
     _list.insert(index, colorItem);
+    onChanged?.call();
   }
 
   /// Removes the color at the given [index] from the favorites list.
-  ColorItem removeAt(int index) => _list.removeAt(index);
+  ColorItem removeAt(int index) {
+    final result = _list.removeAt(index);
+    onChanged?.call();
+    return result;
+  }
 
   /// Clears the favorites list.
-  void clear() => _list.clear();
+  void clear() {
+    _list.clear();
+    onChanged?.call();
+  }
 
   /// Removes the given [colorItem] from the favorites list if it is already there, or adds it to
   /// the list if it is not.
@@ -40,13 +55,16 @@ class ColorFavoritesList {
   /// The optional [index] parameter can be used to specify the color index in the favorites list.
   int toggle(ColorItem colorItem, {int? index}) {
     index ??= indexOf(colorItem);
+    final int result;
     if (index >= 0 && index < _list.length) {
       _list.removeAt(index);
-      return -1;
+      result = -1;
     } else {
       _list.add(colorItem);
-      return _list.length - 1;
+      result = _list.length - 1;
     }
+    onChanged?.call();
+    return result;
   }
 
   /// Returns a list of JSON string representations of the colors in this [ColorFavoritesList].
