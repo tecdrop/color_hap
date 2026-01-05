@@ -2,6 +2,7 @@
 // Use of this source code is governed by an MIT-style license that can be found
 // in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 
 import '../models/color_item.dart';
@@ -28,17 +29,26 @@ final Map<int, ColorItem> _knownColorsMap = {};
 /// This should be called once during app initialization, after all color generators
 /// have been loaded. The map is populated in reverse priority order (attractive first,
 /// basic last) so that higher priority colors overwrite lower priority ones.
-///
-/// Memory footprint: ~562 KB for 11,719 colors
 void initColorLookup(Map<ColorType, RandomColorGenerator> generators) {
   _knownColorsMap.clear();
 
-  // Add colors in reverse priority order (later additions overwrite earlier ones)
-  // Priority: Basic > Web > Named > Attractive
-  _addColorsToMap(generators[ColorType.attractiveColor]!); // Lowest priority (10,000 colors)
-  _addColorsToMap(generators[ColorType.namedColor]!); // Medium priority (1,566 colors)
-  _addColorsToMap(generators[ColorType.webColor]!); // High priority (139 colors)
-  _addColorsToMap(generators[ColorType.basicColor]!); // Highest priority (14 colors)
+  // The color types in reverse priority order (later additions overwrite earlier ones)
+  const types = [
+    ColorType.attractiveColor,
+    ColorType.namedColor,
+    ColorType.webColor,
+    ColorType.basicColor,
+  ];
+
+  // Populate the map with colors from each generator
+  for (final type in types) {
+    final generator = generators[type];
+    if (generator != null) {
+      _addColorsToMap(generator);
+    } else {
+      if (kDebugMode) debugPrint('Missing color generator: $type');
+    }
+  }
 }
 
 /// Adds all colors from a generator to the lookup map.
