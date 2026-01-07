@@ -5,6 +5,8 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart' show kDebugMode;
+
 import '../models/color_item.dart';
 import '../models/color_type.dart';
 import '../models/random_color_generator.dart';
@@ -48,18 +50,28 @@ class RandomMixedColorGenerator implements RandomColorGenerator {
   @override
   int get length => 0xFFFFFF + 1;
 
-  /// Returns a color by index by delegating to the True Color generator.
+  /// Returns a color item by index by delegating to the True Color generator.
   ///
   /// This method should not be called because the mixed color generator does not have a
   /// well-defined order of colors. It is implemented to satisfy the interface.
   @override
   ColorItem elementAt(int index) {
+    if (kDebugMode) {
+      print('RandomMixedColorGenerator.elementAt($index) should not be called directly.');
+    }
+
     return generators[ColorType.trueColor]!.elementAt(index);
   }
 
-  /// Returns the [ColorItem] corresponding to the given [color].
+  /// Returns the [ColorItem] for the given [color] by delegating to the True Color generator.
+  ///
+  /// This method should not be called. It is implemented to satisfy the interface.
   @override
   ColorItem? elementFrom(Color color) {
+    if (kDebugMode) {
+      print('RandomMixedColorGenerator.elementFrom($color) should not be called directly.');
+    }
+
     return generators[ColorType.trueColor]!.elementFrom(color);
   }
 }

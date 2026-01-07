@@ -10,6 +10,13 @@ import 'color_item.dart';
 import 'color_type.dart';
 import 'random_color_generator.dart';
 
+/// The result of toggling a color in the favorites list.
+enum ToggleResult {
+  added,
+  removed,
+  noOp,
+}
+
 /// A list of favorite random colors.
 class ColorFavoritesList {
   ColorFavoritesList({
@@ -48,27 +55,6 @@ class ColorFavoritesList {
     return result;
   }
 
-  // /// Returns the index of the given [colorItem] in the favorites list, or -1 if it is not there.
-  // int indexOf(ColorItem colorItem) {
-  //   return _list.indexOf(colorItem);
-  // }
-
-  /// Returns the color at the given [index] in the favorites list.
-  // ColorItem elementAt(int index) => _list.elementAt(index);
-
-  // /// Inserts the given [ColorItem] at the given [index] in the favorites list.
-  // void insert(int index, ColorItem colorItem) {
-  //   _list.insert(index, colorItem);
-  //   onChanged?.call();
-  // }
-
-  // /// Removes the color at the given [index] from the favorites list.
-  // ColorItem removeAt(int index) {
-  //   final result = _list.removeAt(index);
-  //   onChanged?.call();
-  //   return result;
-  // }
-
   /// Clears the favorites list.
   void clear() {
     _setOfFavorites.clear();
@@ -78,35 +64,23 @@ class ColorFavoritesList {
   /// Removes the given [colorItem] from the favorites list if it is already there, or adds it to
   /// the list if it is not.
   ///
-  /// Returns the index of the color in the favorites list if it was added, or -1 if it was removed.
-  /// The optional [index] parameter can be used to specify the color index in the favorites list.
-  void toggle(ColorItem colorItem) {
-    // index ??= indexOf(colorItem);
-    // final int result;
-    // if (index >= 0 && index < _list.length) {
-    //   _list.removeAt(index);
-    //   result = -1;
-    // } else {
-    //   _list.add(colorItem);
-    //   result = _list.length - 1;
-    // }
+  /// Returns a [ToggleResult] indicating whether the color was added, removed, or if no operation
+  /// was performed (because the color was already in the desired state).
+  ToggleResult toggle(ColorItem colorItem) {
+    var result = ToggleResult.noOp;
 
     if (_setOfFavorites.contains(colorItem)) {
-      _setOfFavorites.remove(colorItem);
+      result = _setOfFavorites.remove(colorItem) ? ToggleResult.removed : ToggleResult.noOp;
     } else {
-      _setOfFavorites.add(colorItem);
+      result = _setOfFavorites.add(colorItem) ? ToggleResult.added : ToggleResult.noOp;
     }
 
     onChanged?.call();
+    return result;
   }
 
   List<ColorItem> toList() {
     return _setOfFavorites.toList();
-  }
-
-  /// Returns a list of JSON string representations of the colors in this [ColorFavoritesList].
-  List<String> toJsonStringList() {
-    return _setOfFavorites.map((ColorItem color) => jsonEncode(color.toJson())).toList();
   }
 
   /// Returns a list of compact storage string representations of the favorite colors.
@@ -114,21 +88,40 @@ class ColorFavoritesList {
     return _setOfFavorites.map((ColorItem colorItem) => colorItem.key).toList();
   }
 
+  /// Loads the colors in this [ColorFavoritesList] from the given list of compact storage string
+  /// representations.
   void loadFromKeyList(
     List<String>? keyList, {
     required Map<ColorType, RandomColorGenerator> generators,
   }) {
     if (keyList == null) return;
 
+    // First clear the existing favorites
     _setOfFavorites.clear();
-    for (final key in keyList) {
-      final type = ColorType.fromPrefix(key[0]);
-      if (type == null) continue;
 
+    // Parse each key and reconstruct the ColorItem
+    for (final key in keyList) {
+      // First extract the color type from the key prefix
+      final type = ColorType.fromPrefix(key[0]);
+      if (type == null) {
+        if (kDebugMode) {
+          debugPrint('Invalid color favorite key: $key (unknown type prefix)');
+        }
+        continue;
+      }
+
+      // Then extract the hex string and convert to Color
       final hexString = key.substring(1);
       final color = color_utils.rgbHexToColor(hexString);
+      if (color == null) {
+        if (kDebugMode) {
+          debugPrint('Invalid color favorite key: $key (invalid hex string)');
+        }
+        continue;
+      }
 
-      final colorItem = generators[type]?.elementFrom(color!);
+      // Finally, find the corresponding ColorItem from the generator and add it to the favorites
+      final colorItem = generators[type]?.elementFrom(color);
       if (colorItem != null) {
         _setOfFavorites.add(colorItem);
       }
