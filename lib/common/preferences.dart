@@ -26,8 +26,6 @@ set colorType(ColorType value) {
 
 /// Saves the color type setting to persistent storage.
 Future<void> _saveColorType() async {
-  // final preferences = await SharedPreferences.getInstance();
-  // await preferences.setInt(_colorTypeKey, _colorType.index);
   await _asyncPrefs.setInt(_colorTypeKey, _colorType.index);
 }
 
@@ -46,8 +44,6 @@ ColorFavoritesList colorFavoritesList = ColorFavoritesList(
 ///
 /// This should be called whenever the list of favorite colors changes (add, remove, clear, etc.)
 Future<void> saveColorFavoritesList() async {
-  // final preferences = await SharedPreferences.getInstance();
-  // await preferences.setStringList(_colorFavoritesListKey, colorFavoritesList.toJsonStringList());
   final favKeyList = colorFavoritesList.toKeyList();
   await _asyncPrefs.setStringList(_colorFavoritesListKey, favKeyList);
 }
@@ -58,15 +54,29 @@ Future<void> saveColorFavoritesList() async {
 
 /// Loads app settings from persistent storage.
 Future<void> loadSettings(Map<ColorType, RandomColorGenerator> generators) async {
-  // final preferences = await SharedPreferences.getInstance();
-
   // Load the last color type used by the user
-  // _colorType = .values[preferences.getInt(_colorTypeKey) ?? 0];
   _colorType = ColorType.values[await _asyncPrefs.getInt(_colorTypeKey) ?? 0];
 
-  // Load the list of favorite colors
-  // colorFavoritesList.loadFromJsonStringList(preferences.getStringList(_colorFavoritesListKey));
-
+  // Load the favorite colors list
   final favKeyList = await _asyncPrefs.getStringList(_colorFavoritesListKey);
   colorFavoritesList.loadFromKeyList(favKeyList, generators: generators);
+
+  // If new format is empty, try migrating from old JSON format
+  if (favKeyList == null || favKeyList.isEmpty) {
+    // Load the favorites JSON string list from the old SharedPreferences
+    final oldPreferences = await SharedPreferences.getInstance();
+    final oldJsonList = oldPreferences.getStringList(_colorFavoritesListKey);
+
+    // Only migrate if old data exists
+    if (oldJsonList != null && oldJsonList.isNotEmpty) {
+      // ignore: deprecated_member_use_from_same_package
+      colorFavoritesList.loadFromJsonStringList(oldJsonList);
+
+      // Explicitly save to new format
+      await saveColorFavoritesList();
+
+      // Only clear old format after successful save
+      await oldPreferences.remove(_colorFavoritesListKey);
+    }
+  }
 }

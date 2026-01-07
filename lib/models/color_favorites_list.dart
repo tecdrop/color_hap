@@ -128,8 +128,8 @@ class ColorFavoritesList {
     }
   }
 
-  /// Loads the colors in this [ColorFavoritesList] from the given list of JSON string
-  /// representations.
+  /// Loads the favorites list from the given list of JSON string representations.
+  @Deprecated('Use loadFromKeyList() instead. This is only for migration.')
   void loadFromJsonStringList(List<String>? jsonStringList) {
     if (jsonStringList == null) return;
 
