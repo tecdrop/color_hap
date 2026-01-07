@@ -100,6 +100,9 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
       Future.delayed(const Duration(seconds: 5)),
     ]);
 
+    // Restore the last selected color type
+    _colorType = preferences.colorType;
+
     // Generate the first random color - this also updates state
     _shuffleColor();
   }
@@ -121,9 +124,6 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
     // Start color list loading (cached for subsequent uses)
     _initAppData();
-
-    // Restore the last selected color type
-    _colorType = preferences.colorType;
   }
 
   void _updateState(ColorItem? randomColor) {
