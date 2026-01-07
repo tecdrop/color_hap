@@ -66,6 +66,16 @@ class ColorItem {
     return type.hashCode ^ color.hashCode ^ (name?.hashCode ?? 0) ^ (listPosition?.hashCode ?? 0);
   }
 
+  /// Creates a [ColorItem] from a compact JSON array.
+  ///
+  /// [json] is a single list item, e.g., ["000000", "Black"] or ["FCF5AB"].
+  /// [type] must be passed in because it's not in the compact JSON.
+  /// [index] is the position in the parent list.
+  ColorItem.fromCompactJson(List<dynamic> json, this.type, int index)
+    : listPosition = index,
+      color = Color(int.parse('0xFF${json[0]}')),
+      name = json.length > 1 ? json[1] : null;
+
   /// Creates a [ColorItem] from a JSON object.
   ColorItem.fromJson(Map<String, dynamic> json)
     : type = .values[json['type']],
