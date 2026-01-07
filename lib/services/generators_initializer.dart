@@ -35,37 +35,14 @@ Future<Map<ColorType, RandomColorGenerator>> initAllGenerators() async {
 
   // Load and parse each color data file
   for (final type in colorDataFiles.keys) {
-    // Load each color data file as a string
-    final colorDataString = await rootBundle.loadString(colorDataFiles[type]!);
-
-    // Decode the JSON string
-    final decodedColorData = convert.jsonDecode(colorDataString);
-
-    // A valid color data file must be a JSON array
-    if (decodedColorData is! List) continue;
-
-    final colors = <ColorItem>[];
-
-    // Parse each color item from the JSON array
-    for (var i = 0; i < decodedColorData.length; i++) {
-      final item = decodedColorData[i];
-
-      // Each item must be a list (compact JSON format)
-      if (item is! List) continue; // skip invalid entries
-
-      try {
-        colors.add(ColorItem.fromCompactJson(item, type, colors.length));
-      } on Exception catch (e) {
-        if (kDebugMode) debugPrint('Failed to parse color item in ${type.id} at index $i: $e');
-      }
-    }
+    final colorItems = await _loadColorItems(type, colorDataFiles[type]!);
 
     // Create the appropriate generator based on the ColorType
     final generator = switch (type) {
-      ColorType.basicColor => RandomBasicColorGenerator(colors),
-      ColorType.webColor => RandomWebColorGenerator(colors),
-      ColorType.namedColor => RandomNamedColorGenerator(colors),
-      ColorType.attractiveColor => RandomAttractiveColorGenerator(colors),
+      ColorType.basicColor => RandomBasicColorGenerator(colorItems),
+      ColorType.webColor => RandomWebColorGenerator(colorItems),
+      ColorType.namedColor => RandomNamedColorGenerator(colorItems),
+      ColorType.attractiveColor => RandomAttractiveColorGenerator(colorItems),
       _ => null,
     };
 
@@ -97,6 +74,40 @@ Future<Map<ColorType, RandomColorGenerator>> initAllGenerators() async {
   color_lookup.initColorLookup(generators);
 
   return generators;
+}
+
+/// Loads color items from a JSON data file for the given [ColorType].
+Future<List<ColorItem>> _loadColorItems(ColorType type, String colorDataFile) async {
+  final colorItems = <ColorItem>[];
+
+  // Load each color data file as a string
+  final colorDataString = await rootBundle.loadString(colorDataFile);
+
+  // Decode the JSON string
+  final decodedColorData = convert.jsonDecode(colorDataString);
+
+  // A valid color data file must be a JSON array
+  if (decodedColorData is! List) {
+    if (kDebugMode) debugPrint('Invalid color data file for ${type.id}: Not a JSON array');
+    return colorItems;
+  }
+
+  // Parse each color item from the JSON array
+  for (var i = 0; i < decodedColorData.length; i++) {
+    final item = decodedColorData[i];
+
+    // Each item must be a list (compact JSON format)
+    if (item is! List) continue; // skip invalid entries
+
+    try {
+      colorItems.add(ColorItem.fromCompactJson(item, type, colorItems.length));
+    } on Exception catch (e) {
+      // Skip invalid entries, just log in debug mode
+      if (kDebugMode) debugPrint('Failed to parse color item in ${type.id} at index $i: $e');
+    }
+  }
+
+  return colorItems;
 }
 
 // Future<Map<ColorType, List<ColorItem>>> _loadAllColorLists(
