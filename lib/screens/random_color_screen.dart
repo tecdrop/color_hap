@@ -59,14 +59,11 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
     listPosition: 0,
   );
 
-  // The index of the current color in the favorites list.
-  int _colorFavIndex = -1;
-
   /// A map with the number of possible random colors for each color type.
   late Map<ColorType, int> _possibilityCount;
 
   /// Loads all color lists from assets and initializes singleton generators
-  Future<void> _initAllGenerators() async {
+  Future<void> _initAppData() async {
     try {
       _generators = await initAllGenerators();
 
@@ -86,9 +83,6 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
       // Done loading
       _isLoading = false;
-
-      // Generate the first random color - this also updates state
-      _shuffleColor();
     } on Exception catch (e) {
       // Handle loading errors
       if (kDebugMode) debugPrint('Failed to initialize color generators: $e');
@@ -99,6 +93,15 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         });
       }
     }
+
+    // Try to load the app settings from Shared Preferences
+    await Future.any([
+      preferences.loadSettings(_generators),
+      Future.delayed(const Duration(seconds: 5)),
+    ]);
+
+    // Generate the first random color - this also updates state
+    _shuffleColor();
   }
 
   /// Retries loading color lists and generators
@@ -109,7 +112,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
         _loadingError = null;
       });
     }
-    await _initAllGenerators();
+    await _initAppData();
   }
 
   @override
@@ -117,7 +120,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
     super.initState();
 
     // Start color list loading (cached for subsequent uses)
-    _initAllGenerators();
+    _initAppData();
 
     // Restore the last selected color type
     _colorType = preferences.colorType;
@@ -126,7 +129,6 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
   void _updateState(ColorItem? randomColor) {
     setState(() {
       if (randomColor != null) _randomColor = randomColor;
-      _colorFavIndex = preferences.colorFavoritesList.indexOf(_randomColor);
     });
   }
 
@@ -188,10 +190,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
       // Toggle the current color in the favorites list
       case .toggleFavorite:
         setState(() {
-          _colorFavIndex = preferences.colorFavoritesList.toggle(
-            _randomColor,
-            index: _colorFavIndex,
-          );
+          preferences.colorFavoritesList.toggle(_randomColor);
         });
         break;
 
@@ -327,7 +326,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
       // The app bar
       appBar: _AppBar(
         actualColorType: _randomColor.type,
-        isFavorite: _colorFavIndex >= 0,
+        isFavorite: preferences.colorFavoritesList.contains(_randomColor),
         onAction: _onAction,
       ),
 

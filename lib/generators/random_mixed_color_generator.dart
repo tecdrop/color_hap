@@ -3,6 +3,7 @@
 // in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
 import 'dart:math';
+import 'dart:ui';
 
 import '../models/color_item.dart';
 import '../models/color_type.dart';
@@ -54,5 +55,11 @@ class RandomMixedColorGenerator implements RandomColorGenerator {
   @override
   ColorItem elementAt(int index) {
     return generators[ColorType.trueColor]!.elementAt(index);
+  }
+
+  /// Returns the [ColorItem] corresponding to the given [color].
+  @override
+  ColorItem? elementFrom(Color color) {
+    return generators[ColorType.trueColor]!.elementFrom(color);
   }
 }

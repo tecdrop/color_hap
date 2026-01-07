@@ -83,10 +83,13 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
   /// Deletes the favorite color at the given [index] from the list.
   ///
   /// Also displays a snackbar with an undo action.
-  void _deleteFavoriteColor(int index) {
-    // First remove the color from the list
-    late final ColorItem randomColor;
-    setState(() => randomColor = preferences.colorFavoritesList.removeAt(index));
+  void _deleteFavoriteColor(ColorItem colorItem) {
+    // First remove the color item from the favorites list
+    final wasRemoved = preferences.colorFavoritesList.remove(colorItem);
+    if (!wasRemoved) return;
+
+    // Update the screen if the item was actually removed
+    setState(() {});
 
     // Then display a snackbar with an undo action
     final snackBar = SnackBar(
@@ -100,12 +103,10 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
         label: strings.undoRemoveFromFavorites,
         onPressed: () {
           // 1. Always restore the data (so the item comes back in your database/list)
-          preferences.colorFavoritesList.insert(index, randomColor);
+          preferences.colorFavoritesList.add(colorItem);
 
           // 2. Only update the screen IF the screen is still there
-          if (mounted) {
-            setState(() {});
-          }
+          if (mounted) setState(() {});
         },
       ),
     );
@@ -136,16 +137,20 @@ class _ColorFavoritesScreenState extends State<ColorFavoritesScreen> {
 
   /// Builds the list of favorite colors.
   Widget _buildFavoritesListView() {
+    final favoritesList = preferences.colorFavoritesList.toList();
+
     return ColorListView(
       key: const PageStorageKey<String>('favoritesListView'),
-      itemCount: preferences.colorFavoritesList.length,
-      itemData: (index) => preferences.colorFavoritesList.elementAt(index),
+      itemCount: favoritesList.length,
+      itemData: (index) => favoritesList.elementAt(index),
       showColorType: (_) => true,
       itemButton: (_) => (icon: Icons.delete, tooltip: strings.removeFavTooltip),
       onItemTap: (int index) => Navigator.of(
         context,
-      ).pop<ColorItem>(preferences.colorFavoritesList.elementAt(index)),
-      onItemButtonPressed: _deleteFavoriteColor,
+      ).pop<ColorItem>(favoritesList.elementAt(index)),
+      onItemButtonPressed: (int index) => _deleteFavoriteColor(
+        favoritesList.elementAt(index),
+      ),
     );
   }
 

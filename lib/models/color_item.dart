@@ -47,6 +47,14 @@ class ColorItem {
   /// The hex string of this [ColorItem].
   String get hexString => color_utils.toHexString(color);
 
+  /// The compact storage key of this [ColorItem].
+  ///
+  /// Format: "{type prefix}{hex without hash}", e.g., "BFF0000" for the basic color red.
+  String get key {
+    final hexString = color_utils.toHexString(color, withHash: false);
+    return '${type.prefix}$hexString';
+  }
+
   /// Overrides the equality operator to compare two [ColorItem] objects.
   /// Two [ColorItem]s are equal if they have the same color type, color, name, and list position.
   @override

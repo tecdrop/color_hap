@@ -4,21 +4,11 @@
 
 import 'package:flutter/material.dart';
 
-import 'common/preferences.dart' as preferences;
 import 'common/strings.dart' as strings;
 import 'common/theme.dart';
 import 'screens/random_color_screen.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // First try to load the app settings from Shared Preferences
-  await Future.any([
-    preferences.loadSettings(),
-    Future.delayed(const Duration(seconds: 5)),
-  ]);
-
-  // Then run the app
   runApp(const ColorHapApp());
 }
 

@@ -74,4 +74,10 @@ class RandomTrueColorGenerator implements RandomColorGenerator {
       listPosition: index,
     );
   }
+
+  /// Returns the [ColorItem] corresponding to the given [color].
+  @override
+  ColorItem? elementFrom(Color color) {
+    return elementAt(color.toARGB32() & 0x00FFFFFF);
+  }
 }

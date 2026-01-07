@@ -3,6 +3,9 @@
 // in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
 import 'dart:math';
+import 'dart:ui';
+
+import 'package:collection/collection.dart';
 
 import '../models/random_color_generator.dart';
 import 'color_item.dart';
@@ -33,5 +36,11 @@ abstract class RandomListBasedColorGenerator implements RandomColorGenerator {
   @override
   ColorItem elementAt(int index) {
     return colors[index];
+  }
+
+  /// Returns the [ColorItem] corresponding to the given [color], or null if not found.
+  @override
+  ColorItem? elementFrom(Color color) {
+    return colors.firstWhereOrNull((item) => item.color == color);
   }
 }

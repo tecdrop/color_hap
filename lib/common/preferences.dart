@@ -6,6 +6,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/color_favorites_list.dart';
 import '../models/color_type.dart';
+import '../models/random_color_generator.dart';
+
+final _asyncPrefs = SharedPreferencesAsync();
 
 // -----------------------------------------------------------------------------------------------
 // colorType setting
@@ -23,8 +26,9 @@ set colorType(ColorType value) {
 
 /// Saves the color type setting to persistent storage.
 Future<void> _saveColorType() async {
-  final preferences = await SharedPreferences.getInstance();
-  await preferences.setInt(_colorTypeKey, _colorType.index);
+  // final preferences = await SharedPreferences.getInstance();
+  // await preferences.setInt(_colorTypeKey, _colorType.index);
+  await _asyncPrefs.setInt(_colorTypeKey, _colorType.index);
 }
 
 // -----------------------------------------------------------------------------------------------
@@ -42,8 +46,10 @@ ColorFavoritesList colorFavoritesList = ColorFavoritesList(
 ///
 /// This should be called whenever the list of favorite colors changes (add, remove, clear, etc.)
 Future<void> saveColorFavoritesList() async {
-  final preferences = await SharedPreferences.getInstance();
-  await preferences.setStringList(_colorFavoritesListKey, colorFavoritesList.toJsonStringList());
+  // final preferences = await SharedPreferences.getInstance();
+  // await preferences.setStringList(_colorFavoritesListKey, colorFavoritesList.toJsonStringList());
+  final favKeyList = colorFavoritesList.toKeyList();
+  await _asyncPrefs.setStringList(_colorFavoritesListKey, favKeyList);
 }
 
 // -----------------------------------------------------------------------------------------------
@@ -51,12 +57,16 @@ Future<void> saveColorFavoritesList() async {
 // -----------------------------------------------------------------------------------------------
 
 /// Loads app settings from persistent storage.
-Future<void> loadSettings() async {
-  final preferences = await SharedPreferences.getInstance();
+Future<void> loadSettings(Map<ColorType, RandomColorGenerator> generators) async {
+  // final preferences = await SharedPreferences.getInstance();
 
   // Load the last color type used by the user
-  _colorType = .values[preferences.getInt(_colorTypeKey) ?? 0];
+  // _colorType = .values[preferences.getInt(_colorTypeKey) ?? 0];
+  _colorType = ColorType.values[await _asyncPrefs.getInt(_colorTypeKey) ?? 0];
 
   // Load the list of favorite colors
-  colorFavoritesList.loadFromJsonStringList(preferences.getStringList(_colorFavoritesListKey));
+  // colorFavoritesList.loadFromJsonStringList(preferences.getStringList(_colorFavoritesListKey));
+
+  final favKeyList = await _asyncPrefs.getStringList(_colorFavoritesListKey);
+  colorFavoritesList.loadFromKeyList(favKeyList, generators: generators);
 }

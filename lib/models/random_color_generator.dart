@@ -3,6 +3,7 @@
 // in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
 import 'dart:math';
+import 'dart:ui';
 
 import 'color_item.dart';
 import 'color_type.dart';
@@ -20,4 +21,7 @@ abstract interface class RandomColorGenerator {
 
   /// Returns the index-th color in the generator.
   ColorItem elementAt(int index);
+
+  /// Returns the color item corresponding to the given [color].
+  ColorItem? elementFrom(Color color);
 }
