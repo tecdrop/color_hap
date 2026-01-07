@@ -71,11 +71,11 @@ void main() {
     test('should have loaded all colors from catalogs', () {
       final count = color_lookup.knownColorsCount;
 
-      // We have: 14 basic + 139 web + 1566 named + 10000 attractive
+      // We have: 14 basic + 139 web + 1566 named + 5000 attractive
       // But some colors overlap (lower priority get overwritten)
       // So the count should be less than the sum but more than the largest catalog
-      expect(count, greaterThan(10000)); // At least as many as attractive colors
-      expect(count, lessThanOrEqualTo(14 + 139 + 1566 + 10000)); // At most the sum
+      expect(count, greaterThan(5000)); // At least as many as attractive colors
+      expect(count, lessThanOrEqualTo(14 + 139 + 1566 + 5000)); // At most the sum
     });
 
     test('should strip alpha channel when looking up colors', () {
