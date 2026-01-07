@@ -80,9 +80,9 @@ class ColorItem {
   /// [type] must be passed in because it's not in the compact JSON.
   /// [index] is the position in the parent list.
   ColorItem.fromCompactJson(List<dynamic> json, this.type, int index)
-    : listPosition = index,
-      color = Color(int.parse('0xFF${json[0]}')),
-      name = json.length > 1 ? json[1] : null;
+    : color = color_utils.rgbHexToColor(json[0])!,
+      name = json.length > 1 ? json[1] : null,
+      listPosition = index;
 
   /// Creates a [ColorItem] from a JSON object.
   ColorItem.fromJson(Map<String, dynamic> json)

@@ -114,40 +114,42 @@ class _EditColorScreenState extends State<EditColorScreen> {
 
         // The body with the hex input field and color info in the center
         body: Center(
-          child: Column(
-            mainAxisSize: .min,
-            children: [
-              SizedBox(
-                // An opinionated fixed width that fits "#RRGGBB" comfortably on all tested font sizes,
-                // including the largest system accessibility font settings (tested on Android)
-                width: 164.0,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: .min,
+              children: [
+                SizedBox(
+                  // An opinionated fixed width that fits "#RRGGBB" comfortably on all tested font sizes,
+                  // including the largest system accessibility font settings (tested on Android)
+                  width: 164.0,
 
-                // The hex input field
-                child: _HexInput(
-                  foregroundColor: contrastColor,
-                  controller: _controller,
+                  // The hex input field
+                  child: _HexInput(
+                    foregroundColor: contrastColor,
+                    controller: _controller,
 
-                  // When the user presses Enter, navigate back with the color if valid
-                  onSubmitted: (_) => _onApply(),
+                    // When the user presses Enter, navigate back with the color if valid
+                    onSubmitted: (_) => _onApply(),
+                  ),
                 ),
-              ),
 
-              /// The color info display for known colors below the input field; if no known color
-              /// is found, we still reserve the space using a placeholder to prevent layout shifts
-              const SizedBox(height: 16.0),
-              Opacity(
-                opacity: _currentColorItem != null ? 1.0 : 0.0,
-                child: ColorInfoDisplay(
-                  colorItem: _currentColorItem ?? _placeholderColorItem,
-                  contrastColor: contrastColor,
-                  showType: true,
-                  showCode: false,
-                  size: .small,
-                  centered: true,
-                  alwaysShowNameLine: true,
+                /// The color info display for known colors below the input field; if no known color
+                /// is found, we still reserve the space using a placeholder to prevent layout shifts
+                const SizedBox(height: 16.0),
+                Opacity(
+                  opacity: _currentColorItem != null ? 1.0 : 0.0,
+                  child: ColorInfoDisplay(
+                    colorItem: _currentColorItem ?? _placeholderColorItem,
+                    contrastColor: contrastColor,
+                    showType: true,
+                    showCode: false,
+                    size: .small,
+                    centered: true,
+                    alwaysShowNameLine: true,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
