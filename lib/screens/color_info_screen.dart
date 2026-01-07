@@ -76,7 +76,7 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
       // Opens the web browser to search for the current color
       case .colorWebSearch:
         final url = urls.onlineSearch + Uri.encodeComponent(widget.colorItem.longTitle);
-        utils.launchUrlExternal(context, url);
+        utils.launchUrlExternal(url);
         break;
 
       // Copies all the color information to the clipboard
@@ -187,7 +187,6 @@ enum _AppBarActions { colorPreview, colorWebSearch, copyAll, shareAll }
 /// The app bar of the Color Info screen.
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   const _AppBar({
-    super.key, // ignore: unused_element_parameter
     required this.title,
     required this.onAction,
   });

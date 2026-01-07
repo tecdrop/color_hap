@@ -5,9 +5,6 @@
 /// Application-wide constants.
 library;
 
-/// The parameter name for colors with no name.
-const noNameColorParam = 'noname';
-
 /// The color swatch image file name for a given hex code.
 String colorSwatchFileName(String hexCode) => 'colorhap_${hexCode}_random_color_swatch.png';
 

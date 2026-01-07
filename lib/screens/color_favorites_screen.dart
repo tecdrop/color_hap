@@ -17,7 +17,7 @@ import '../widgets/color_list_view.dart';
 import '../widgets/confirmation_dialog_box.dart';
 
 /// The storage bucket used to store the scroll position of the list of favorite colors.
-final PageStorageBucket colorReferenceBucket = PageStorageBucket();
+final colorReferenceBucket = PageStorageBucket();
 
 /// The Color Favorites screen.
 ///
@@ -179,7 +179,6 @@ enum _AppBarActions { loadScreenshotColors, clearFavorites, exportFavoritesAsCsv
 /// The app bar of the Color Info screen.
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   const _AppBar({
-    super.key, // ignore: unused_element_parameter
     required this.title,
     required this.onAction,
     this.haveFavorites = true,

@@ -26,8 +26,8 @@ class ColorFavoritesList {
   /// Callback invoked whenever the list is modified.
   final VoidCallback? onChanged;
 
-  /// The list of [ColorItem] objects in the favorites list.
-  final Set<ColorItem> _setOfFavorites = <ColorItem>{};
+  /// The set of [ColorItem] objects in the favorites list.
+  final _setOfFavorites = <ColorItem>{};
 
   /// The number of colors in the favorites list.
   int get length => _setOfFavorites.length;

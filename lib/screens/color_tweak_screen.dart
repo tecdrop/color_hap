@@ -166,7 +166,6 @@ enum _AppBarActions { applyColor, editColorCode }
 
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   const _AppBar({
-    super.key, // ignore: unused_element_parameter
     required this.onAction,
   });
 

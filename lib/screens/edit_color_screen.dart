@@ -160,7 +160,6 @@ class _EditColorScreenState extends State<EditColorScreen> {
 /// The app bar for the Edit Color screen.
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   const _AppBar({
-    super.key, // ignore: unused_element_parameter
     this.onApply,
   });
 
@@ -192,7 +191,6 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
 /// A text input field for entering a hex color code.
 class _HexInput extends StatelessWidget {
   const _HexInput({
-    super.key, // ignore: unused_element_parameter
     required this.foregroundColor,
     this.controller,
     this.onSubmitted,

@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import '../models/color_item.dart';
 
 /// The predefined list of branding colors for screenshot generation.
-const List<ColorItem> screenshotColors = [
+const screenshotColors = [
   ColorItem(
     type: .basicColor,
     color: Color(0XFF0088FF),

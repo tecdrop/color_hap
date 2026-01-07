@@ -34,14 +34,6 @@ Future<T?> navigatorTo<T>(NavigatorState navigator, Widget screen) async {
 }
 
 /// Shows a [SnackBar] with the specified [text] across all registered [Scaffold]s.
-void showSnackBar(BuildContext context, String text) {
-  final snackBar = SnackBar(content: Text(text));
-  ScaffoldMessenger.of(context)
-    ..removeCurrentSnackBar()
-    ..showSnackBar(snackBar);
-}
-
-/// Shows a [SnackBar] with the specified [text] across all registered [Scaffold]s.
 void showSnackBarForAsync(ScaffoldMessengerState messengerState, String text) {
   final snackBar = SnackBar(content: Text(text));
   messengerState
@@ -62,6 +54,6 @@ Future<void> copyToClipboard(BuildContext context, String value) async {
 }
 
 /// Launches the specified [URL] in the mobile platform, using the default external application.
-Future<void> launchUrlExternal(BuildContext context, String url) async {
-  await launchUrl(Uri.parse(url), mode: .externalApplication);
+Future<bool> launchUrlExternal(String url) async {
+  return await launchUrl(Uri.parse(url), mode: .externalApplication);
 }

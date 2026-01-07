@@ -30,7 +30,7 @@ class AvailableColorsScreen extends StatefulWidget {
 
 class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
   late final ScrollController _scrollController;
-  final Random random = Random();
+  final random = Random();
 
   @override
   void initState() {
@@ -57,10 +57,7 @@ class _AvailableColorsScreenState extends State<AvailableColorsScreen> {
 
   /// Opens the "About These Colors" help page in the default web browser.
   void _openAboutTheseColors() {
-    utils.launchUrlExternal(
-      context,
-      urls.aboutTheseColors(widget.generator.colorType.id),
-    );
+    utils.launchUrlExternal(urls.aboutTheseColors(widget.generator.colorType.id));
   }
 
   /// Determines whether to show the color type for a given color item.

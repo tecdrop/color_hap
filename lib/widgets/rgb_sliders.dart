@@ -212,7 +212,6 @@ class _RgbSliderControl extends StatelessWidget {
 /// A circular button used for incrementing or decrementing RGB values.
 class _AdjustButton extends StatelessWidget {
   const _AdjustButton({
-    super.key, // ignore: unused_element_parameter
     required this.backgroundColor,
     this.onPressed,
     required this.child,

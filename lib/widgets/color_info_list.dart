@@ -69,7 +69,6 @@ class ColorInfoList extends StatelessWidget {
 /// A list item widget that displays color information.
 class _ColorInfoItem extends StatelessWidget {
   const _ColorInfoItem({
-    super.key, // ignore: unused_element_parameter
     required this.textColor,
     required this.infoKey,
     required this.infoValue,

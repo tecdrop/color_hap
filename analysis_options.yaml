@@ -14,6 +14,7 @@ linter:
     - avoid_final_parameters
     - omit_local_variable_types
     - omit_obvious_local_variable_types
+    - omit_obvious_property_types
     - parameter_assignments
     - prefer_const_constructors
     - prefer_const_declarations

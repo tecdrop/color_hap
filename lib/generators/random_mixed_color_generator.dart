@@ -4,8 +4,7 @@
 
 import 'dart:math';
 import 'dart:ui';
-
-import 'package:flutter/foundation.dart' show kDebugMode;
+import 'package:flutter/foundation.dart' show kDebugMode, debugPrint;
 
 import '../models/color_item.dart';
 import '../models/color_type.dart';
@@ -57,7 +56,7 @@ class RandomMixedColorGenerator implements RandomColorGenerator {
   @override
   ColorItem elementAt(int index) {
     if (kDebugMode) {
-      print('RandomMixedColorGenerator.elementAt($index) should not be called directly.');
+      debugPrint('RandomMixedColorGenerator.elementAt($index) should not be called directly.');
     }
 
     return generators[ColorType.trueColor]!.elementAt(index);
@@ -69,7 +68,7 @@ class RandomMixedColorGenerator implements RandomColorGenerator {
   @override
   ColorItem? elementFrom(Color color) {
     if (kDebugMode) {
-      print('RandomMixedColorGenerator.elementFrom($color) should not be called directly.');
+      debugPrint('RandomMixedColorGenerator.elementFrom($color) should not be called directly.');
     }
 
     return generators[ColorType.trueColor]!.elementFrom(color);

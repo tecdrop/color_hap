@@ -58,7 +58,7 @@ class _ColorListViewState extends State<ColorListView> {
   /// The index of the currently focused item in the list.
   ///
   /// We keep track of this to highlight the focused item using a border.
-  int focusedIndex = -1;
+  var focusedIndex = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +92,6 @@ class _ColorListViewState extends State<ColorListView> {
 /// A list item that displays a color with a title and an optional subtitle and button.
 class _ColorListItem extends StatelessWidget {
   const _ColorListItem({
-    super.key, // ignore: unused_element_parameter
     required this.colorItem,
     this.showColorType = true,
     this.itemButton,

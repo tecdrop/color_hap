@@ -37,7 +37,7 @@ class RandomColorScreen extends StatefulWidget {
 
 class _RandomColorScreenState extends State<RandomColorScreen> {
   /// Whether the color lists and generators are still loading.
-  bool _isLoading = true;
+  var _isLoading = true;
 
   /// The error message if loading failed.
   String? _loadingError;
@@ -46,14 +46,14 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
   late Map<ColorType, RandomColorGenerator> _generators;
 
   /// The random number generator used for generating random colors.
-  final Random _random = Random();
+  final _random = Random();
 
   /// The type of colors to generate (by default, mixed colors).
   var _colorType = ColorType.mixedColor;
 
   // The current random color.
   // Initialized with a default black true color value to avoid null checks.
-  ColorItem _randomColor = const ColorItem(
+  var _randomColor = const ColorItem(
     type: .trueColor,
     color: Colors.black,
     listPosition: 0,
@@ -234,7 +234,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
     switch (item) {
       // Launch the external RGB Color Wallpaper Pro url
       case .setWallpaper:
-        utils.launchUrlExternal(context, urls.setWallpaper);
+        utils.launchUrlExternal(urls.setWallpaper);
         break;
 
       // Reopen the Random Color screen for generating random colors (of any type)
@@ -294,17 +294,17 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 
       // Launch the external Online Help url
       case .help:
-        utils.launchUrlExternal(context, urls.help);
+        utils.launchUrlExternal(urls.help);
         break;
 
       // Launch the external View Source url
       case .viewSource:
-        utils.launchUrlExternal(context, urls.viewSource);
+        utils.launchUrlExternal(urls.viewSource);
         break;
 
       // Launch the external Rate App url
       case .rateApp:
-        utils.launchUrlExternal(context, urls.getRateUrl());
+        utils.launchUrlExternal(urls.getRateUrl());
         break;
     }
   }
@@ -361,7 +361,6 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
 /// The floating action buttons of the Random Color screen.
 class _Fabs extends StatelessWidget {
   const _Fabs({
-    super.key, // ignore: unused_element_parameter
     required this.onShuffle,
     required this.onTweak,
   });
@@ -405,7 +404,6 @@ enum _AppBarActions { toggleFavorite, colorInfo, availableColors, favoriteColors
 /// The app bar of the Random Color screen.
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   const _AppBar({
-    super.key, // ignore: unused_element_parameter
     required this.actualColorType,
     required this.isFavorite,
     required this.onAction,
