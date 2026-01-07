@@ -48,8 +48,8 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
   /// The random number generator used for generating random colors.
   final Random _random = Random();
 
-  /// The type of colors to generate.
-  late ColorType _colorType;
+  /// The type of colors to generate (by default, mixed colors).
+  var _colorType = ColorType.mixedColor;
 
   // The current random color.
   // Initialized with a default black true color value to avoid null checks.
