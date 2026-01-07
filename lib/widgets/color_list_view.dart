@@ -16,7 +16,7 @@ typedef ItemButtonData = ({IconData icon, String tooltip});
 /// A list view that displays a list of available colors.
 class ColorListView extends StatefulWidget {
   const ColorListView({
-    super.key, // ignore: unused_element
+    super.key,
     this.scrollController,
     required this.itemCount,
     required this.itemData,
