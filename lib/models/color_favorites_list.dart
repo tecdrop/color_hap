@@ -124,6 +124,17 @@ class ColorFavoritesList {
       final colorItem = generators[type]?.elementFrom(color);
       if (colorItem != null) {
         _setOfFavorites.add(colorItem);
+      } else {
+        // Color not found in its original catalog - fallback to True Color to prevent data loss
+        final trueColorItem = generators[ColorType.trueColor]?.elementFrom(color);
+        if (trueColorItem != null) {
+          _setOfFavorites.add(trueColorItem);
+          if (kDebugMode) {
+            debugPrint(
+              'Migrated missing ${type.name} favorite to True Color: ${color.toARGB32().toRadixString(16).padLeft(8, '0').toUpperCase()}',
+            );
+          }
+        }
       }
     }
   }

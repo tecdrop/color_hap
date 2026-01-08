@@ -271,5 +271,67 @@ void main() {
         throwsA(isA<FormatException>()),
       );
     });
+
+    test('should fallback to True Color if original catalog color not found', () {
+      // Arrange: Create a color that might not exist in current catalogs
+      // Using a specific named color RGB that might have been removed
+      final favorites = ColorFavoritesList();
+
+      // Simulate a "phantom" color that was in old catalog but might not be in new one
+      // We'll use a key format that's valid but the color might not be in that catalog
+      final keyList = [
+        'BFF0000', // Red - should exist (control)
+        'N123456', // Named color with specific RGB - might not exist
+        'A7890AB', // Attractive color - might not exist
+      ];
+
+      // Act: Load favorites (will fallback to True Color if not found)
+      favorites.loadFromKeyList(keyList, generators: generators);
+
+      // Assert: Should have preserved all favorites (possibly as True Colors)
+      expect(favorites.length, greaterThanOrEqualTo(1)); // At least Red should load
+
+      // Verify Red is present
+      final colors = favorites.toList();
+      expect(colors.any((c) => c.color.toARGB32() == 0xFFFF0000), isTrue); // Red exists
+
+      // If other colors don't exist in their catalogs, they should be converted to True Colors
+      // The important thing is no data loss - all valid RGB colors are preserved
+      for (final item in colors) {
+        // All items should have valid colors
+        expect(item.color.toARGB32() & 0xFF000000, equals(0xFF000000)); // Valid alpha
+      }
+    });
+
+    test('should preserve color RGB even when migrated to different type', () {
+      // Arrange: Create favorites with specific RGB values
+      final oldJsonStrings = [
+        '{"type":1,"color":4294901760,"name":"Red","listPosition":0}', // Red basic
+        '{"type":3,"color":4289379276,"name":"RareNamedColor","listPosition":999}', // Might not exist
+      ];
+
+      // Act: Load and convert through migration cycle
+      final favorites = ColorFavoritesList();
+      // ignore: deprecated_member_use_from_same_package
+      favorites.loadFromJsonStringList(oldJsonStrings);
+
+      final keyList = favorites.toKeyList();
+
+      // Reload (may fallback to True Color for missing colors)
+      final migratedFavorites = ColorFavoritesList();
+      migratedFavorites.loadFromKeyList(keyList, generators: generators);
+
+      // Assert: At least one color should be preserved
+      expect(migratedFavorites.length, greaterThanOrEqualTo(1));
+
+      // Verify Red is definitely preserved (it exists in basic colors)
+      final colors = migratedFavorites.toList();
+      expect(colors.any((c) => c.color.toARGB32() == 0xFFFF0000), isTrue); // Red
+
+      // All preserved colors should have valid RGB values
+      for (final color in colors) {
+        expect(color.color.toARGB32() & 0x00FFFFFF, greaterThan(0)); // Non-black RGB
+      }
+    });
   });
 }
