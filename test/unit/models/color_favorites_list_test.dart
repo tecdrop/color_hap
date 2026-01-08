@@ -2,8 +2,8 @@
 // Use of this source code is governed by an MIT-style license that can be found
 // in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/material.dart';
 
 import 'package:color_hap/models/color_favorites_list.dart';
 import 'package:color_hap/models/color_item.dart';
@@ -272,6 +272,26 @@ void main() {
       });
     });
 
+    group('Compact JSON Parsing', () {
+      test('fromCompactJson should parse short and long hex and accept leading #', () {
+        final ci1 = ColorItem.fromCompactJson(['#FFF'], ColorType.trueColor, 0);
+        expect(ci1.color.toARGB32() & 0xFFFFFF, equals(0xFFFFFF));
+
+        final ci2 = ColorItem.fromCompactJson(['fff'], ColorType.trueColor, 1);
+        expect(ci2.color.toARGB32() & 0xFFFFFF, equals(0xFFFFFF));
+
+        final ci3 = ColorItem.fromCompactJson(['FCF5AB'], ColorType.trueColor, 2);
+        expect(ci3.color.toARGB32() & 0xFFFFFF, equals(0xFCF5AB));
+      });
+
+      test('fromCompactJson should throw on invalid hex input', () {
+        expect(
+          () => ColorItem.fromCompactJson(['GGG'], ColorType.basicColor, 0),
+          throwsA(isA<TypeError>()),
+        );
+      });
+    });
+
     group('Load from Key List', () {
       test('loadFromKeyList should reconstruct favorites correctly', () {
         final keyList = ['BFF0000', 'B0000FF', 'W00FF00'];
@@ -309,6 +329,20 @@ void main() {
           'XINVALID', // Invalid prefix
           'B0000FF', // Valid: Blue
           'ZZZZZZZ', // Invalid prefix
+        ];
+
+        favoritesList.loadFromKeyList(keyList, generators: generators);
+
+        // Should only load the 2 valid colors
+        expect(favoritesList.length, equals(2));
+      });
+
+      test('loadFromKeyList should skip entries with invalid hex gracefully', () {
+        final keyList = [
+          'BFF0000', // valid red
+          'BZZZZZZ', // invalid hex, valid prefix
+          'B0000FF', // valid blue
+          'W#GGG', // invalid hex with hash, valid prefix
         ];
 
         favoritesList.loadFromKeyList(keyList, generators: generators);
@@ -412,9 +446,12 @@ void main() {
 
         // Verify same favorites exist
         expect(newFavorites.length, equals(3));
-        expect(newFavorites.toList().map((c) => c.color.toARGB32()).toSet(), equals(
-          favoritesList.toList().map((c) => c.color.toARGB32()).toSet(),
-        ));
+        expect(
+          newFavorites.toList().map((c) => c.color.toARGB32()).toSet(),
+          equals(
+            favoritesList.toList().map((c) => c.color.toARGB32()).toSet(),
+          ),
+        );
       });
     });
 
