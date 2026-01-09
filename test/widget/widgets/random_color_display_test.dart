@@ -25,7 +25,9 @@ void main() {
         ),
       );
 
-      // Assert: Name should be visible
+      // Assert: Should render 2 Text widgets (name + hex, no type shown in RandomColorDisplay)
+      expect(find.byType(Text), findsNWidgets(2));
+      // Name should be visible
       expect(find.text('Red'), findsOneWidget);
       // Hex should also be visible (always shown)
       expect(find.text('#FF0000'), findsOneWidget);
@@ -49,10 +51,10 @@ void main() {
         ),
       );
 
-      // Assert: Hex should be visible
+      // Assert: Should render only 1 Text widget (hex only, no name or type)
+      expect(find.byType(Text), findsOneWidget);
+      // Hex should be visible
       expect(find.text('#ABCDEF'), findsOneWidget);
-      // Name should not be present (no Text widget with empty string in this case)
-      // The widget conditionally renders the name Text widget only if name != null
     });
 
     testWidgets('should use white text on dark colors', (WidgetTester tester) async {
