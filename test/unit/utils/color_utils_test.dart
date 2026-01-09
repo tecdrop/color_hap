@@ -74,6 +74,11 @@ void main() {
     });
 
     group('Invalid input', () {
+      test('should return null for null input', () {
+        final color = color_utils.rgbHexToColor(null);
+        expect(color, isNull);
+      });
+
       test('should return null for invalid hex characters', () {
         final color = color_utils.rgbHexToColor('GGGGGG');
         expect(color, isNull);
@@ -96,6 +101,13 @@ void main() {
       test('should return null for special characters', () {
         final color = color_utils.rgbHexToColor('FF@000');
         expect(color, isNull);
+      });
+
+      // No trimming: This is a low-level parser. Input sanitization should happen at UI layer.
+      test('should return null for hex with whitespace', () {
+        expect(color_utils.rgbHexToColor(' FF0000'), isNull);
+        expect(color_utils.rgbHexToColor('FF0000 '), isNull);
+        expect(color_utils.rgbHexToColor(' #FF0000 '), isNull);
       });
     });
   });
