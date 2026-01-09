@@ -101,12 +101,15 @@ class ColorFavoritesList {
 
     // Parse each key and reconstruct the ColorItem
     for (final key in keyList) {
+      if (key.isEmpty) {
+        if (kDebugMode) debugPrint('Invalid color favorite key: $key (empty string)');
+        continue;
+      }
+
       // First extract the color type from the key prefix
       final type = ColorType.fromPrefix(key[0]);
       if (type == null) {
-        if (kDebugMode) {
-          debugPrint('Invalid color favorite key: $key (unknown type prefix)');
-        }
+        if (kDebugMode) debugPrint('Invalid color favorite key: $key (unknown type prefix)');
         continue;
       }
 
@@ -114,9 +117,7 @@ class ColorFavoritesList {
       final hexString = key.substring(1);
       final color = color_utils.rgbHexToColor(hexString);
       if (color == null) {
-        if (kDebugMode) {
-          debugPrint('Invalid color favorite key: $key (invalid hex string)');
-        }
+        if (kDebugMode) debugPrint('Invalid color favorite key: $key (invalid hex string)');
         continue;
       }
 
