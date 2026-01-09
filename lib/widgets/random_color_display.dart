@@ -1,11 +1,12 @@
-// Copyright 2020-2025 Tecdrop SRL. All rights reserved.
+// Copyright 2020-2026 Tecdrop SRL. All rights reserved.
 // Use of this source code is governed by an MIT-style license that can be found
 // in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
 import 'package:flutter/material.dart';
 
-import '../models/random_color.dart';
+import '../models/color_item.dart';
 import '../utils/color_utils.dart' as color_utils;
+import 'color_info_display.dart';
 
 /// A widget that displays a random color.
 ///
@@ -14,13 +15,13 @@ import '../utils/color_utils.dart' as color_utils;
 class RandomColorDisplay extends StatelessWidget {
   const RandomColorDisplay({
     super.key,
-    required this.randomColor,
+    required this.colorItem,
     this.onDoubleTap,
     this.onLongPress,
   });
 
   /// The random color to display.
-  final RandomColor randomColor;
+  final ColorItem colorItem;
 
   /// The function to call when the user double-taps the color hex code and name.
   final void Function()? onDoubleTap;
@@ -30,40 +31,26 @@ class RandomColorDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color contrastColor = color_utils.contrastColor(randomColor.color);
-    final TextTheme textTheme = Theme.of(context).textTheme;
-    final TextStyle? hexTestStyle =
-        randomColor.name != null ? textTheme.titleMedium : textTheme.headlineMedium;
+    final contrastColor = color_utils.contrastColor(colorItem.color);
 
     // Use an animated container to animate the color change
     return AnimatedContainer(
       duration: const Duration(seconds: 1),
-      color: randomColor.color,
-      width: double.infinity,
-      height: double.infinity,
-      alignment: Alignment.center,
-      padding: const EdgeInsets.all(16.0),
+      color: colorItem.color,
+      width: .infinity,
+      height: .infinity,
+      alignment: .center,
+      padding: const .all(16.0),
       child: GestureDetector(
         onDoubleTap: onDoubleTap,
         onLongPress: onLongPress,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            // Display the color hex code
-            Text(
-              randomColor.hexString,
-              style: hexTestStyle?.copyWith(color: contrastColor),
-              textAlign: TextAlign.center,
-            ),
-            // Display the color name if it is not null
-            if (randomColor.name != null)
-              Text(
-                randomColor.name!,
-                style: textTheme.headlineMedium?.copyWith(color: contrastColor),
-                textAlign: TextAlign.center,
-              ),
-          ],
+        child: ColorInfoDisplay(
+          colorItem: colorItem,
+          contrastColor: contrastColor,
+          adaptiveHexSize: true,
+          centered: true,
+          showType: false,
+          size: .large,
         ),
       ),
     );

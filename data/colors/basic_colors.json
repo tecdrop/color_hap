@@ -1,0 +1,16 @@
+[
+  ["000000", "black"],
+  ["FFFFFF", "white"],
+  ["FF0000", "red"],
+  ["00FF00", "green"],
+  ["0000FF", "blue"],
+  ["FFFF00", "yellow"],
+  ["FF00FF", "magenta"],
+  ["00FFFF", "cyan"],
+  ["FF8800", "orange"],
+  ["FF0080", "rose"],
+  ["88FF00", "chartreuse"],
+  ["8800FF", "violet"],
+  ["00FF88", "spring green"],
+  ["0088FF", "azure"]
+]

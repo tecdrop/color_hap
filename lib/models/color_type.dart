@@ -1,40 +1,37 @@
-// Copyright 2020-2025 Tecdrop SRL. All rights reserved.
+// Copyright 2020-2026 Tecdrop SRL. All rights reserved.
 // Use of this source code is governed by an MIT-style license that can be found
 // in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
+import 'package:collection/collection.dart';
+
 /// An enhanced enum to specify the different kinds of random colors.
 enum ColorType {
-  mixedColor,
-  basicColor,
-  webColor,
-  namedColor,
-  attractiveColor,
-  trueColor;
+  mixedColor(id: 'mixed', name: 'Mixed Color', prefix: 'M'),
+  basicColor(id: 'basic', name: 'Basic Color', prefix: 'B'),
+  webColor(id: 'web', name: 'Web Color', prefix: 'W'),
+  namedColor(id: 'named', name: 'Named Color', prefix: 'N'),
+  attractiveColor(id: 'attractive', name: 'Attractive Color', prefix: 'A'),
+  trueColor(id: 'true', name: 'True Color', prefix: 'T')
+  ;
 
-  const ColorType();
+  /// Creates a new instance of [ColorType].
+  const ColorType({
+    required this.id,
+    required this.name,
+    required this.prefix,
+  });
 
-  /// Creates a [ColorType] from a short string representation.
-  factory ColorType.fromShortString(String? value) {
-    return _shortStrings.entries
-        .firstWhere(
-          (MapEntry<ColorType, String> entry) => entry.value == value,
-          orElse: () => _shortStrings.entries.first,
-        )
-        .key;
+  /// The unique identifier of the color type.
+  final String id;
+
+  /// The name of the color type.
+  final String name;
+
+  /// The single-character prefix used for compact storage keys.
+  final String prefix;
+
+  /// Returns the [ColorType] corresponding to the given [prefix], or null if not found.
+  static ColorType? fromPrefix(String prefix) {
+    return ColorType.values.firstWhereOrNull((type) => type.prefix == prefix);
   }
-
-  /// Returns a short string representation of this [ColorType].
-  String toShortString() {
-    return _shortStrings[this] ?? (throw ArgumentError('No short string representation for $this'));
-  }
-
-  /// A map of [ColorType] values to their short string representation.
-  static const Map<ColorType, String> _shortStrings = <ColorType, String>{
-    ColorType.mixedColor: 'mixed',
-    ColorType.basicColor: 'basic',
-    ColorType.webColor: 'web',
-    ColorType.namedColor: 'named',
-    ColorType.attractiveColor: 'attractive',
-    ColorType.trueColor: 'true',
-  };
 }

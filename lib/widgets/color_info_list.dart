@@ -1,12 +1,12 @@
-// Copyright 2020-2025 Tecdrop SRL. All rights reserved.
+// Copyright 2020-2026 Tecdrop SRL. All rights reserved.
 // Use of this source code is governed by an MIT-style license that can be found
 // in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
 import 'dart:math';
 import 'package:flutter/material.dart';
 
+import '../common/consts.dart' as consts;
 import '../common/strings.dart' as strings;
-import '../models/random_color.dart';
 import '../utils/color_utils.dart' as color_utils;
 
 /// A list view of color information items.
@@ -14,14 +14,14 @@ class ColorInfoList extends StatelessWidget {
   /// Creates a new [ColorInfoList] instance.
   const ColorInfoList({
     super.key,
-    required this.randomColor,
+    required this.color,
     required this.infos,
     this.onCopyPressed,
     this.onSharePressed,
   });
 
   /// The random color whose information is displayed in the list.
-  final RandomColor randomColor;
+  final Color color;
 
   /// The list of color information items to display.
   final List<({String key, String value})> infos;
@@ -34,9 +34,8 @@ class ColorInfoList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color color = randomColor.color;
-    final Color contrastColor = color_utils.contrastColor(color);
-    final double width = MediaQuery.of(context).size.width;
+    final contrastColor = color_utils.contrastColor(color);
+    final width = MediaQuery.sizeOf(context).width;
 
     return DividerTheme(
       // Use a hairline divider between the list items
@@ -44,7 +43,9 @@ class ColorInfoList extends StatelessWidget {
       child: ListView.separated(
         // Use padding to constrain the width of the list items so they look ok on large screens
         // Also add some bottom padding to the list to make space for the floating action button
-        padding: EdgeInsets.symmetric(horizontal: max(0, (width - 800) / 2)).copyWith(bottom: 64.0),
+        padding: EdgeInsets.symmetric(
+          horizontal: max(0, (width - consts.maxContentWidth) / 2),
+        ).copyWith(bottom: 64.0),
 
         itemCount: infos.length,
         itemBuilder: (BuildContext context, int index) {
@@ -68,7 +69,6 @@ class ColorInfoList extends StatelessWidget {
 /// A list item widget that displays color information.
 class _ColorInfoItem extends StatelessWidget {
   const _ColorInfoItem({
-    super.key, // ignore: unused_element_parameter
     required this.textColor,
     required this.infoKey,
     required this.infoValue,
@@ -95,8 +95,7 @@ class _ColorInfoItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       // Style the list item
-      // contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32.0),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+      contentPadding: const .symmetric(horizontal: 16.0, vertical: 24.0),
       textColor: textColor,
       iconColor: textColor.withValues(alpha: 0.7),
 
@@ -106,7 +105,7 @@ class _ColorInfoItem extends StatelessWidget {
 
       // Add the Copy and Share buttons to the trailing widget
       trailing: Row(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: .min,
         children: <Widget>[
           IconButton(
             icon: const Icon(Icons.content_copy_outlined),

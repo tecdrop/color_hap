@@ -1,7 +1,8 @@
-// Copyright 2020-2025 Tecdrop SRL. All rights reserved.
+// Copyright 2020-2026 Tecdrop SRL. All rights reserved.
 // Use of this source code is governed by an MIT-style license that can be found
 // in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -10,7 +11,8 @@ import 'package:share_plus/share_plus.dart';
 import '../common/consts.dart' as consts;
 import '../common/strings.dart' as strings;
 import '../common/urls.dart' as urls;
-import '../models/random_color.dart';
+import '../models/color_item.dart';
+import '../services/color_swatch_builder.dart';
 import '../utils/color_utils.dart' as color_utils;
 import '../utils/utils.dart' as utils;
 import '../widgets/color_info_list.dart';
@@ -21,10 +23,10 @@ import 'color_preview_screen.dart';
 /// Displays the given [RandomColor] in different formats, and other color information, and allows
 /// the user to copy or share the information.
 class ColorInfoScreen extends StatefulWidget {
-  const ColorInfoScreen({super.key, required this.randomColor});
+  const ColorInfoScreen({super.key, required this.colorItem});
 
   /// The random color to display in the Color Info screen.
-  final RandomColor randomColor;
+  final ColorItem colorItem;
 
   @override
   State<ColorInfoScreen> createState() => _ColorInfoScreenState();
@@ -42,14 +44,14 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
     super.initState();
 
     // Prepare the list of color information to display
-    final Color color = widget.randomColor.color;
+    final color = widget.colorItem.color;
     _infos = [
-      if (widget.randomColor.name != null) ...[
-        (key: strings.colorTitleInfo, value: widget.randomColor.longTitle),
-        (key: strings.colorNameInfo, value: widget.randomColor.name!),
+      if (widget.colorItem.name != null) ...[
+        (key: strings.colorTitleInfo, value: widget.colorItem.longTitle),
+        (key: strings.colorNameInfo, value: widget.colorItem.name!),
       ],
       (key: strings.hexInfo, value: color_utils.toHexString(color)),
-      (key: strings.colorTypeInfo, value: strings.randomColorType(widget.randomColor.type)),
+      (key: strings.colorTypeInfo, value: strings.randomColorType(widget.colorItem.type)),
       (key: strings.rgbInfo, value: color_utils.toRGBString(color)),
       (key: strings.hsvInfo, value: color_utils.toHSVString(color)),
       (key: strings.hslInfo, value: color_utils.toHSLString(color)),
@@ -66,24 +68,24 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
   void _onAppBarAction(BuildContext context, _AppBarActions action) {
     switch (action) {
       // Navigates to the Color Preview screen
-      case _AppBarActions.colorPreview:
+      case .colorPreview:
         // gotoColorPreviewRoute(context, widget.randomColor.color);
-        utils.navigateTo(context, ColorPreviewScreen(color: widget.randomColor.color));
+        utils.navigateTo(context, ColorPreviewScreen(color: widget.colorItem.color));
         break;
 
       // Opens the web browser to search for the current color
-      case _AppBarActions.colorWebSearch:
-        final String url = urls.onlineSearch + Uri.encodeComponent(widget.randomColor.longTitle);
-        utils.launchUrlExternal(context, url);
+      case .colorWebSearch:
+        final url = urls.onlineSearch + Uri.encodeComponent(widget.colorItem.longTitle);
+        utils.launchUrlExternal(url);
         break;
 
       // Copies all the color information to the clipboard
-      case _AppBarActions.copyAll:
+      case .copyAll:
         _copyAll();
         break;
 
       // Shares all the color information
-      case _AppBarActions.shareAll:
+      case .shareAll:
         _shareAll();
         break;
     }
@@ -91,48 +93,69 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
 
   /// Copies the value of the item in the list that the user wants to copy.
   Future<void> _copyItem(BuildContext context, String key, String value) async {
-    ScaffoldMessengerState messengerState = ScaffoldMessenger.of(context);
+    final messengerState = ScaffoldMessenger.of(context);
     await Clipboard.setData(ClipboardData(text: value));
     utils.showSnackBarForAsync(messengerState, strings.copiedSnack(value));
   }
 
   /// Share the value of the item in the list that the user wants to share.
-  void _shareItem(String key, String value) {
-    Share.share(value);
+  Future<void> _shareItem(BuildContext context, String key, String value) async {
+    final messengerState = ScaffoldMessenger.of(context);
+    try {
+      await SharePlus.instance.share(ShareParams(text: value));
+    } on Exception catch (e) {
+      if (kDebugMode) debugPrint('Failed to share item: $e');
+      utils.showSnackBarForAsync(messengerState, strings.shareItemError);
+    }
   }
 
   /// Copies all the color information to the clipboard.
   Future<void> _copyAll() async {
-    ScaffoldMessengerState messengerState = ScaffoldMessenger.of(context);
+    final messengerState = ScaffoldMessenger.of(context);
     await Clipboard.setData(ClipboardData(text: _infosAsString));
     utils.showSnackBarForAsync(messengerState, strings.allInfoCopied);
   }
 
   /// Shares all the color information.
-  void _shareAll() async {
-    Share.share(_infosAsString);
+  Future<void> _shareAll() async {
+    final messengerState = ScaffoldMessenger.of(context);
+    try {
+      await SharePlus.instance.share(ShareParams(text: _infosAsString));
+    } on Exception catch (e) {
+      if (kDebugMode) debugPrint('Failed to share all info: $e');
+      utils.showSnackBarForAsync(messengerState, strings.shareAllError);
+    }
   }
 
-  /// Shares all the color information.
-  void _shareColorSwatch() async {
-    // Generate the color swatch image file name
-    final String hexCode = color_utils.toHexString(widget.randomColor.color, withHash: false);
-    final String fileName = consts.colorSwatchFileName(hexCode);
+  /// Shares the color swatch image.
+  Future<void> _shareColorSwatch() async {
+    final messengerState = ScaffoldMessenger.of(context);
+    try {
+      // Generate the color swatch image file name
+      final hexCode = color_utils.toHexString(widget.colorItem.color, withHash: false);
+      final fileName = consts.colorSwatchFileName(hexCode);
 
-    // Create the color swatch image file
-    Uint8List pngBytes = await color_utils.buildColorSwatch(widget.randomColor.color, 512, 512);
-    final XFile xFile = XFile.fromData(pngBytes, name: fileName, mimeType: 'image/png');
+      // Create the color swatch image file
+      final pngBytes = await buildColorSwatch(widget.colorItem.color, 512, 512);
+      final xFile = XFile.fromData(pngBytes, name: fileName, mimeType: 'image/png');
 
-    // Summon the platform's share sheet to share the image file
-    await Share.shareXFiles([
-      xFile,
-    ], text: strings.shareSwatchMessage(widget.randomColor.longTitle));
+      // Summon the platform's share sheet to share the image file
+      await SharePlus.instance.share(
+        ShareParams(
+          text: strings.shareSwatchMessage(widget.colorItem.longTitle),
+          files: [xFile],
+        ),
+      );
+    } on Exception catch (e) {
+      if (kDebugMode) debugPrint('Failed to share color swatch: $e');
+      utils.showSnackBarForAsync(messengerState, strings.shareSwatchError);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: widget.randomColor.color,
+      backgroundColor: widget.colorItem.color,
 
       // The app bar with the title and Color Preview and Color Web Search actions
       appBar: _AppBar(
@@ -142,10 +165,10 @@ class _ColorInfoScreenState extends State<ColorInfoScreen> {
 
       // The body of the screen with the color information list
       body: ColorInfoList(
-        randomColor: widget.randomColor,
+        color: widget.colorItem.color,
         infos: _infos,
         onCopyPressed: (key, value) => _copyItem(context, key, value),
-        onSharePressed: (key, value) => _shareItem(key, value),
+        onSharePressed: (key, value) => _shareItem(context, key, value),
       ),
 
       // The Share Swatch floating action button
@@ -164,7 +187,6 @@ enum _AppBarActions { colorPreview, colorWebSearch, copyAll, shareAll }
 /// The app bar of the Color Info screen.
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   const _AppBar({
-    super.key, // ignore: unused_element_parameter
     required this.title,
     required this.onAction,
   });
@@ -186,32 +208,31 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
           icon: const Icon(Icons.remove_red_eye_outlined),
           tooltip: strings.colorPreviewAction,
-          onPressed: () => onAction(_AppBarActions.colorPreview),
+          onPressed: () => onAction(.colorPreview),
         ),
 
         // Add the overflow menu
         PopupMenuButton<_AppBarActions>(
           onSelected: onAction,
-          itemBuilder:
-              (BuildContext context) => <PopupMenuEntry<_AppBarActions>>[
-                // Add the Copy All action to the overflow menu
-                const PopupMenuItem<_AppBarActions>(
-                  value: _AppBarActions.copyAll,
-                  child: Text(strings.copyAllAction),
-                ),
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<_AppBarActions>>[
+            // Add the Copy All action to the overflow menu
+            const PopupMenuItem<_AppBarActions>(
+              value: .copyAll,
+              child: Text(strings.copyAllAction),
+            ),
 
-                // Add the Share All action to the overflow menu
-                const PopupMenuItem<_AppBarActions>(
-                  value: _AppBarActions.shareAll,
-                  child: Text(strings.shareAllAction),
-                ),
+            // Add the Share All action to the overflow menu
+            const PopupMenuItem<_AppBarActions>(
+              value: .shareAll,
+              child: Text(strings.shareAllAction),
+            ),
 
-                // Add the Color Web Search action to the overflow menu
-                const PopupMenuItem<_AppBarActions>(
-                  value: _AppBarActions.colorWebSearch,
-                  child: Text(strings.colorWebSearchAction),
-                ),
-              ],
+            // Add the Color Web Search action to the overflow menu
+            const PopupMenuItem<_AppBarActions>(
+              value: .colorWebSearch,
+              child: Text(strings.colorWebSearchAction),
+            ),
+          ],
         ),
       ],
     );

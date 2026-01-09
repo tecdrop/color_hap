@@ -1,4 +1,4 @@
-// Copyright 2020-2025 Tecdrop SRL. All rights reserved.
+// Copyright 2020-2026 Tecdrop SRL. All rights reserved.
 // Use of this source code is governed by an MIT-style license that can be found
 // in the LICENSE file or at https://www.tecdrop.com/colorhap/license/.
 
@@ -6,10 +6,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import '../common/consts.dart' as consts;
+import '../models/color_item.dart';
 import '../utils/color_utils.dart' as color_utils;
-
-/// Data for an item in the color list view.
-typedef ColorListItemData = ({Color color, String title, String? subtitle});
+import 'color_info_display.dart';
 
 /// Data for an optional button that can be displayed for each item in the list.
 typedef ItemButtonData = ({IconData icon, String tooltip});
@@ -17,10 +16,11 @@ typedef ItemButtonData = ({IconData icon, String tooltip});
 /// A list view that displays a list of available colors.
 class ColorListView extends StatefulWidget {
   const ColorListView({
-    super.key, // ignore: unused_element
+    super.key,
     this.scrollController,
     required this.itemCount,
     required this.itemData,
+    this.showColorType,
     this.itemButton,
     this.onItemTap,
     this.onItemButtonPressed,
@@ -30,10 +30,16 @@ class ColorListView extends StatefulWidget {
   final ScrollController? scrollController;
 
   /// A callback function that returns the number of items to display in the list.
-  final int Function() itemCount;
+  final int itemCount;
 
   /// A callback function that returns the title, subtitle, and color for each item in the list.
-  final ColorListItemData Function(int index) itemData;
+  final ColorItem Function(int index) itemData;
+
+  /// A function that determines whether to show the color type for each item.
+  ///
+  /// The function is called with the [ColorItem] and should return true to show the color type
+  /// or false to hide it. If null, color types will be shown for all items by default.
+  final bool Function(ColorItem)? showColorType;
 
   /// A callback function that returns an optional button for each item in the list.
   final ItemButtonData Function(int index)? itemButton;
@@ -52,7 +58,7 @@ class _ColorListViewState extends State<ColorListView> {
   /// The index of the currently focused item in the list.
   ///
   /// We keep track of this to highlight the focused item using a border.
-  int focusedIndex = -1;
+  var focusedIndex = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -62,22 +68,20 @@ class _ColorListViewState extends State<ColorListView> {
       child: ListView.builder(
         primary: widget.scrollController == null,
         controller: widget.scrollController,
-        itemCount: widget.itemCount(),
+        itemCount: widget.itemCount,
         itemExtent: consts.colorListItemExtent,
         itemBuilder: (BuildContext context, int index) {
-          final ColorListItemData item = widget.itemData(index);
+          final colorItem = widget.itemData(index);
           return _ColorListItem(
-            color: item.color,
-            title: item.title,
-            subtitle: item.subtitle,
+            colorItem: colorItem,
+            showColorType: widget.showColorType?.call(colorItem) ?? true,
             itemButton: widget.itemButton?.call(index),
             focused: index == focusedIndex,
             onTap: () => widget.onItemTap?.call(index),
             onButtonPressed: () => widget.onItemButtonPressed?.call(index),
-            onFocusChange:
-                (bool hasFocus) => setState(() {
-                  focusedIndex = hasFocus ? index : -1;
-                }),
+            onFocusChange: (bool hasFocus) => setState(() {
+              focusedIndex = hasFocus ? index : -1;
+            }),
           );
         },
       ),
@@ -88,10 +92,8 @@ class _ColorListViewState extends State<ColorListView> {
 /// A list item that displays a color with a title and an optional subtitle and button.
 class _ColorListItem extends StatelessWidget {
   const _ColorListItem({
-    super.key, // ignore: unused_element_parameter
-    required this.color,
-    required this.title,
-    this.subtitle,
+    required this.colorItem,
+    this.showColorType = true,
     this.itemButton,
     this.focused = false,
     this.onTap,
@@ -99,14 +101,11 @@ class _ColorListItem extends StatelessWidget {
     this.onFocusChange,
   });
 
-  /// The color of the list item.
-  final Color color;
+  /// The color item to display.
+  final ColorItem colorItem;
 
-  /// The title of the list item.
-  final String title;
-
-  /// The optional subtitle of the list item.
-  final String? subtitle;
+  /// Whether to show the color type as a subtitle.
+  final bool showColorType;
 
   /// Data for the optional button of the list item.
   final ItemButtonData? itemButton;
@@ -125,9 +124,9 @@ class _ColorListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width;
-
-    final Color contrastColor = color_utils.contrastColor(color);
+    final width = MediaQuery.sizeOf(context).width;
+    final color = colorItem.color;
+    final contrastColor = color_utils.contrastColor(color);
 
     return InkWell(
       onFocusChange: onFocusChange,
@@ -135,29 +134,22 @@ class _ColorListItem extends StatelessWidget {
       child: Ink(
         decoration: BoxDecoration(
           color: color,
-          border: Border.all(color: focused ? Colors.grey[700]! : color, width: 6.0),
+          border: .all(color: focused ? Colors.grey[700]! : color, width: 6.0),
         ),
 
         // Use padding to constrain the width of the list items so they look ok on large screens
-        padding: EdgeInsets.symmetric(horizontal: max(16.0, (width - 1024) / 2)),
+        padding: .symmetric(horizontal: max(16.0, (width - consts.maxContentWidth) / 2)),
 
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: .spaceBetween,
           children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(color: contrastColor),
-                ),
-                if (subtitle != null)
-                  Text(
-                    subtitle!,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: contrastColor),
-                  ),
-              ],
+            ColorInfoDisplay(
+              colorItem: colorItem,
+              contrastColor: contrastColor,
+              adaptiveHexSize: false,
+              centered: false,
+              showType: showColorType,
+              size: .small,
             ),
             if (itemButton != null)
               IconButton(
