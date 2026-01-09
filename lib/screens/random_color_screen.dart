@@ -68,7 +68,7 @@ class _RandomColorScreenState extends State<RandomColorScreen> {
       _generators = await initAllGenerators();
 
       // Await a short delay to show the loading screen
-      // await Future<void>.delayed(const Duration(milliseconds: 1000));
+      // await Future<void>.delayed(const Duration(milliseconds: 5000));
 
       // throw some exception for testing
       // throw Exception(

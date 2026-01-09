@@ -13,21 +13,28 @@ ThemeData getAppTheme(Brightness brightness) {
     brightness: brightness,
     useMaterial3: true,
     scaffoldBackgroundColor: backgroundColor,
-    drawerTheme: DrawerThemeData(backgroundColor: backgroundColor),
+
+    // Used for app bars throughout the app
     appBarTheme: AppBarTheme(
       backgroundColor: backgroundColor,
       foregroundColor: foregroundColor,
     ),
-    bottomAppBarTheme: BottomAppBarThemeData(color: backgroundColor),
-    popupMenuTheme: PopupMenuThemeData(color: backgroundColor),
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: backgroundColor,
-      foregroundColor: foregroundColor,
-    ),
+
+    // Used for the Clear Favorites confirmation dialog
     dialogTheme: DialogThemeData(backgroundColor: backgroundColor),
-    textButtonTheme: TextButtonThemeData(
-      style: TextButton.styleFrom(foregroundColor: foregroundColor),
+
+    // Used for the main screen drawer
+    drawerTheme: DrawerThemeData(backgroundColor: backgroundColor),
+
+    // Used for the elevated button in the Error screen
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: backgroundColor,
+        foregroundColor: foregroundColor,
+      ),
     ),
+
+    // Used for the increment/decrement buttons in the RGB sliders
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
         backgroundColor: foregroundColor,
@@ -35,7 +42,26 @@ ThemeData getAppTheme(Brightness brightness) {
       ),
     ),
 
-    // Text selection colors - used in text fields such as the hex input
+    // Used for the floating action button in the main screen and Color Info screen
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: backgroundColor,
+      foregroundColor: foregroundColor,
+    ),
+
+    // Used for action bar overflow menus throughout the app
+    popupMenuTheme: PopupMenuThemeData(color: backgroundColor),
+
+    // Used for the progress indicator in the Loading screen
+    progressIndicatorTheme: ProgressIndicatorThemeData(
+      color: foregroundColor,
+    ),
+
+    // Used for text buttons throughout the app
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(foregroundColor: foregroundColor),
+    ),
+
+    // Used for text selection color in the hex input field in the Edit Color Code screen
     textSelectionTheme: const TextSelectionThemeData(
       selectionColor: Colors.grey,
       selectionHandleColor: Colors.grey,
