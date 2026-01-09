@@ -1,7 +1,10 @@
-import 'dart:convert' as convert;
+// Copyright 2020-2026 Tecdrop SRL. All rights reserved.
+// Use of this source code is governed by an MIT-style license that can be found
+// in the LICENSE file or at https://www.tecdrop.com/colorhap/license.
 
-import 'package:flutter/services.dart';
+import 'dart:convert' as convert;
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
