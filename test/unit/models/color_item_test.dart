@@ -183,6 +183,14 @@ void main() {
 
         expect(colorItem.color.toARGB32(), equals(0xFFABCDEF));
       });
+
+      // Fail fast: Invalid data in controlled JSON files is a programming error, not user input.
+      test('should throw when compact JSON has invalid hex', () {
+        expect(
+          () => ColorItem.fromCompactJson(['GGGGGG'], ColorType.attractiveColor, 0),
+          throwsA(isA<TypeError>()),
+        );
+      });
     });
 
     group('Equality and Set operations', () {
