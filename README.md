@@ -6,6 +6,7 @@
 [![GitHub Code Size badge](https://img.shields.io/github/languages/code-size/tecdrop/color_hap)](https://github.com/tecdrop/color_hap)
 [![Style badge](https://img.shields.io/badge/style-flutter__lints-4BC0F5.svg)](https://pub.dev/packages/flutter_lints)
 [![Contributions Welcome badge](https://img.shields.io/badge/contributions-welcome-cornflowerblue)](#Contributing)
+[![Downloads from GitHub Releases](https://img.shields.io/github/downloads/tecdrop/color_hap/total)](https://github.com/tecdrop/color_hap/releases)
 
 ColorHap is a random color generator for developers and creatives. It allows you to generate a vast array of colors, including basic, web, named, attractive, and true random colors. Stuck on a design decision? Spark your inspiration with unexpected color combinations.
 
@@ -13,12 +14,19 @@ Beyond randomization, ColorHap lets you browse and select specific colors with e
 
 Available as a native Android app and a Progressive Web App (PWA), ColorHap runs on multiple platforms without ads or internet access. It's a free and open-source project built with Flutter for exploring endless color possibilities and finding inspiration for any project.
 
-![ColorHap running on various platforms](/repo-assets/colorhap-screenshots-on-various-platforms.png)
+![ColorHap running on various platforms](/repo-assets/screenshots/colorhap-screenshots-on-various-platforms.png)
 
 ## Try ColorHap
 
 * **On any platform:** [Run the web app](https://colorhap.tecdrop.com/) and/or install it from your browser on Android, ChromeOS, iOS, Linux, macOS, Windows, etc.
-* **On Android:** [Get it on Google Play](https://play.google.com/store/apps/details?id=com.tecdrop.colorhap&referrer=utm_source%3Dgithub%26utm_medium%3Dbutton%26utm_content%3Dgithub-repo-readme) or from [GitHub Releases](https://github.com/tecdrop/color_hap/releases).
+* **On Android:** [Get it on Google Play]() or from [GitHub Releases](https://github.com/tecdrop/color_hap/releases).
+
+### On Android
+
+<p float="left">
+  <a href="https://play.google.com/store/apps/details?id=com.tecdrop.colorhap&referrer=utm_source%3Dgithub%26utm_medium%3Dbutton%26utm_content%3Dgithub-repo-readme"><img height="62.5" src="repo-assets/buttons/get-it-on-google-play.png" alt="Get ColorHap for Android on Google Play"></a>&nbsp;
+  <a href="https://github.com/tecdrop/color_hap/releases/latest"><img height="62.5" src="repo-assets/buttons/download-from-github-releases.png" alt="Download ColorHap for Android from GitHub Releases"></a>
+</p>
 
 ## Learn More
 
@@ -56,7 +64,7 @@ ColorHap is free, and we love creating and sharing projects like this with the c
 
 | Our Pro Apps | [Pitch Black Wallpaper Pro](https://www.tecdrop.com/pitchblackwallpaperpro/) | [RGB Color Wallpaper Pro](https://www.tecdrop.com/rgbcolorwallpaperpro/) |
 | ------------ | ------------------------- | --- |
-| <a href="https://www.tecdrop.com/apps/pro/"><img width="200" src="/repo-assets/tecdrop-pro-apps.png" alt="Tecdrop Pro Apps" /></a> | <li>Pitch black & dark wallpapers</li><li>AI-generated wallpapers</li><li>Enhances battery life</li><li>Reduces eyestrain</li> | <li>Set ColorHap colors as wallpaper</li><li>Endless color options, built-in & custom</li><li>Reduce visual clutter</li><li>Enhanced device aesthetics</li> |
+| <a href="https://www.tecdrop.com/apps/pro/"><img width="200" src="/repo-assets/screenshots/tecdrop-pro-apps.png" alt="Tecdrop Pro Apps" /></a> | <li>Pitch black & dark wallpapers</li><li>AI-generated wallpapers</li><li>Enhances battery life</li><li>Reduces eyestrain</li> | <li>Set ColorHap colors as wallpaper</li><li>Endless color options, built-in & custom</li><li>Reduce visual clutter</li><li>Enhanced device aesthetics</li> |
 
 **Your support helps us keep creating [free apps](https://www.tecdrop.com/apps/free/)!**
 
