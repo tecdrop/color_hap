@@ -18,8 +18,9 @@ Available as a native Android app and a Progressive Web App (PWA), ColorHap runs
 
 ## Try ColorHap
 
-* **On any platform:** [Run the web app](https://colorhap.tecdrop.com/) and/or install it from your browser on Android, ChromeOS, iOS, Linux, macOS, Windows, etc.
-* **On Android:** [Get it on Google Play]() or from [GitHub Releases](https://github.com/tecdrop/color_hap/releases).
+### On any platform
+
+[Run the web app](https://colorhap.tecdrop.com/) and/or install it from your browser on Android, ChromeOS, iOS, Linux, macOS, Windows, etc.
 
 ### On Android
 
