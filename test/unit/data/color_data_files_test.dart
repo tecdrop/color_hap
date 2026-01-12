@@ -42,6 +42,36 @@ void main() {
       );
     });
   });
+
+  group('Color data files uniqueness validation', () {
+    test('basic_colors.json has no duplicate hex codes', () async {
+      await _validateUniqueHexCodes('data/colors/basic_colors.json');
+    });
+
+    test('basic_colors.json has no duplicate names (case-insensitive)', () async {
+      await _validateUniqueNames('data/colors/basic_colors.json');
+    });
+
+    test('web_colors.json has no duplicate hex codes', () async {
+      await _validateUniqueHexCodes('data/colors/web_colors.json');
+    });
+
+    test('web_colors.json has no duplicate names (case-insensitive)', () async {
+      await _validateUniqueNames('data/colors/web_colors.json');
+    });
+
+    test('named_colors.json has no duplicate hex codes', () async {
+      await _validateUniqueHexCodes('data/colors/named_colors.json');
+    });
+
+    test('named_colors.json has no duplicate names (case-insensitive)', () async {
+      await _validateUniqueNames('data/colors/named_colors.json');
+    });
+
+    test('attractive_colors.json has no duplicate hex codes', () async {
+      await _validateUniqueHexCodes('data/colors/attractive_colors.json');
+    });
+  });
 }
 
 /// Validates a color data file's format and count.
@@ -130,5 +160,58 @@ Future<void> _validateColorDataFile({
         reason: 'Name at index $i should not be empty',
       );
     }
+  }
+}
+
+/// Validates that a color data file has no duplicate hex codes.
+///
+/// Reports the specific hex code that is duplicated and at which indices.
+Future<void> _validateUniqueHexCodes(String path) async {
+  final colorDataString = await rootBundle.loadString(path);
+  final colorData = convert.jsonDecode(colorDataString) as List;
+
+  final seenHexCodes = <String, int>{};
+
+  for (var i = 0; i < colorData.length; i++) {
+    final item = colorData[i] as List;
+    final hexCode = item[0] as String;
+
+    if (seenHexCodes.containsKey(hexCode)) {
+      fail(
+        'Duplicate hex code "$hexCode" found at index $i '
+        '(previously seen at index ${seenHexCodes[hexCode]})',
+      );
+    }
+
+    seenHexCodes[hexCode] = i;
+  }
+}
+
+/// Validates that a color data file has no duplicate names (case-insensitive).
+///
+/// Reports the specific name that is duplicated and at which indices.
+Future<void> _validateUniqueNames(String path) async {
+  final colorDataString = await rootBundle.loadString(path);
+  final colorData = convert.jsonDecode(colorDataString) as List;
+
+  final seenNames = <String, int>{};
+
+  for (var i = 0; i < colorData.length; i++) {
+    final item = colorData[i] as List;
+
+    // Skip if this item doesn't have a name (attractive colors)
+    if (item.length < 2) continue;
+
+    final name = item[1] as String;
+    final normalizedName = name.toLowerCase();
+
+    if (seenNames.containsKey(normalizedName)) {
+      fail(
+        'Duplicate name "$name" (case-insensitive) found at index $i '
+        '(previously seen as "${colorData[seenNames[normalizedName]!][1]}" at index ${seenNames[normalizedName]})',
+      );
+    }
+
+    seenNames[normalizedName] = i;
   }
 }
